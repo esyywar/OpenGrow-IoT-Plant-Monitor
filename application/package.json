@@ -1,0 +1,17 @@
+{
+  "name": "application",
+  "version": "1.0.0",
+  "description": "Mqtt broker and web application for IoT plant controller",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rahul Eswar",
+  "license": "MIT",
+  "dependencies": {
+    "aedes": "^0.42.4",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.20",
+    "mqtt": "^4.1.0"
+  }
+}
