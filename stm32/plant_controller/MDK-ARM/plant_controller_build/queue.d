@@ -1,0 +1,15 @@
+.\plant_controller_build\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/queue.c
+.\plant_controller_build\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\plant_controller_build\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\plant_controller_build\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+.\plant_controller_build\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\plant_controller_build\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\plant_controller_build\queue.o: ../Inc/FreeRTOSConfig.h
+.\plant_controller_build\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+.\plant_controller_build\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+.\plant_controller_build\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+.\plant_controller_build\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+.\plant_controller_build\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+.\plant_controller_build\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+.\plant_controller_build\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+.\plant_controller_build\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
