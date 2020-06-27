@@ -43,10 +43,15 @@
 
 /* USER CODE END PM */
 
-/* Private variables ---------------------------------------------------------*/
+/* Peripheral handle variables */
 ADC_HandleTypeDef Adc_sensor;
 
 UART_HandleTypeDef Usart2_data_tx;
+
+DMA_HandleTypeDef DMA2_adc_pipe;
+
+/* Private global variables */
+uint16_t humidity_sensor;
 
 /* Definitions for BlinkLED_01 */
 osThreadId_t BlinkLED_01Handle;
@@ -85,6 +90,11 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
+
+static void DMA2_Init(void);
+
+static void DMA2_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe);
+
 void Blinky_01(void *argument);
 void Blinky_02(void *argument);
 void Blinky_03(void *argument);
@@ -129,6 +139,9 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_ADC1_Init();
+	
+	DMA2_Init();
+	
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -229,18 +242,9 @@ void SystemClock_Config(void)
   */
 static void MX_ADC1_Init(void)
 {
-
-  /* USER CODE BEGIN ADC1_Init 0 */
-
-  /* USER CODE END ADC1_Init 0 */
-
   ADC_ChannelConfTypeDef sConfig = {0};
 
-  /* USER CODE BEGIN ADC1_Init 1 */
-
-  /* USER CODE END ADC1_Init 1 */
-  /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
-  */
+  /* Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) */
   Adc_sensor.Instance = ADC1;
   Adc_sensor.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
   Adc_sensor.Init.Resolution = ADC_RESOLUTION_12B;
@@ -251,28 +255,23 @@ static void MX_ADC1_Init(void)
   Adc_sensor.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   Adc_sensor.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   Adc_sensor.Init.NbrOfConversion = 1;
-  Adc_sensor.Init.DMAContinuousRequests = DISABLE;
+  Adc_sensor.Init.DMAContinuousRequests = ENABLE;
   Adc_sensor.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+	
   if (HAL_ADC_Init(&Adc_sensor) != HAL_OK)
   {
     Error_Handler();
   }
-  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
-  */
+	
+  /* Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = 1;
   sConfig.SamplingTime = ADC_SAMPLETIME_112CYCLES;
+	
   if (HAL_ADC_ConfigChannel(&Adc_sensor, &sConfig) != HAL_OK)
   {
     Error_Handler();
   }
-	
-	NVIC_SetPriority(ADC_IRQn, 25);
-	NVIC_EnableIRQ (ADC_IRQn);
-  /* USER CODE BEGIN ADC1_Init 2 */
-
-  /* USER CODE END ADC1_Init 2 */
-
 }
 
 /**
@@ -282,33 +281,20 @@ static void MX_ADC1_Init(void)
   */
 static void MX_USART2_UART_Init(void)
 {
-
-  /* USER CODE BEGIN USART2_Init 0 */
-
-  /* USER CODE END USART2_Init 0 */
-
-  /* USER CODE BEGIN USART2_Init 1 */
-
-  /* USER CODE END USART2_Init 1 */
+  /* UART2 Init */
   Usart2_data_tx.Instance = USART2;
-  Usart2_data_tx.Init.BaudRate = 115200;
+  Usart2_data_tx.Init.BaudRate = 14400U;
   Usart2_data_tx.Init.WordLength = UART_WORDLENGTH_8B;
   Usart2_data_tx.Init.StopBits = UART_STOPBITS_1;
   Usart2_data_tx.Init.Parity = UART_PARITY_NONE;
   Usart2_data_tx.Init.Mode = UART_MODE_TX;
   Usart2_data_tx.Init.HwFlowCtl = UART_HWCONTROL_NONE;
   Usart2_data_tx.Init.OverSampling = UART_OVERSAMPLING_8;
+	
   if (HAL_UART_Init(&Usart2_data_tx) != HAL_OK)
   {
     Error_Handler();
   }
-	
-	NVIC_SetPriority(USART2_IRQn, 45);
-	NVIC_EnableIRQ (USART2_IRQn);
-  /* USER CODE BEGIN USART2_Init 2 */
-
-  /* USER CODE END USART2_Init 2 */
-
 }
 
 /**
@@ -335,6 +321,7 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PC5 PC6 PC8 */
@@ -342,9 +329,38 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
 }
+
+/**
+  * @brief DMA2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void DMA2_Init(void) {
+	DMA2_adc_pipe.Instance = DMA2_Stream0;
+	
+	DMA2_adc_pipe.Init.Channel = DMA_CHANNEL_0;
+	DMA2_adc_pipe.Init.Direction = DMA_PERIPH_TO_MEMORY;
+	DMA2_adc_pipe.Init.Mode = DMA_NORMAL;
+	DMA2_adc_pipe.Init.PeriphInc = DMA_PINC_DISABLE;
+	DMA2_adc_pipe.Init.MemInc = DMA_MINC_DISABLE;
+	DMA2_adc_pipe.Init.MemBurst = DMA_MBURST_SINGLE;
+	DMA2_adc_pipe.Init.PeriphBurst = DMA_PBURST_SINGLE;
+	DMA2_adc_pipe.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+	DMA2_adc_pipe.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+	DMA2_adc_pipe.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+	DMA2_adc_pipe.Init.Priority = DMA_PRIORITY_MEDIUM;
+	DMA2_adc_pipe.XferCpltCallback = &DMA2_Transfer_Cmplt_Callback;
+	
+	if (HAL_DMA_Init(&DMA2_adc_pipe) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+
 
 /* USER CODE BEGIN 4 */
 
@@ -394,48 +410,42 @@ void Blinky_02(void *argument)
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_Blinky_03 */
 void Blinky_03(void *argument)
 {
-  /* USER CODE BEGIN Blinky_03 */
-  /* Infinite loop */
   for(;;)
   {
 		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
     osDelay(750);
   }
-  /* USER CODE END Blinky_03 */
 }
 
-/* USER CODE BEGIN Header_SensorRead */
 /**
-* @brief Take analog reading from sensor every 5 seconds
+* @brief Take analog reading from sensor every second
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_SensorRead */
 void SensorRead(void *argument)
 {
-  /* USER CODE BEGIN SensorRead */
-  /* Infinite loop */
   for(;;)
   {
+		/* Set DMA to transfer from ADC to data buffer */
+		HAL_DMA_Start_IT(&DMA2_adc_pipe, (uint32_t)&(ADC1->DR), (uint32_t)&humidity_sensor, 1);
+		
 		/* Read value from ADC1 at pin GPIO A0 */
-		HAL_ADC_Start_IT(&Adc_sensor);
+		HAL_ADC_Start_DMA(&Adc_sensor, (uint32_t*)&humidity_sensor, 1);
 				
     osDelay(1000);
   }
-  /* USER CODE END SensorRead */
 }
 
-/* ADC interrupt read complete callback - Send data by USART2 */
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* pAdc_periph) {
-	uint16_t sensorData =  HAL_ADC_GetValue(pAdc_periph);
-	HAL_ADC_Stop_IT(pAdc_periph);
+/* DMA transfer compelte callback - Now send data by USART2 */
+static void DMA2_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe) {
+	HAL_ADC_Stop_DMA(&Adc_sensor);
 	
 	/* Write data out from UART2 */
 	char output[50];
-	sprintf(output, "%i\r\n", sensorData);
+	sprintf(output, "%i\r\n", humidity_sensor);
+	
 	HAL_UART_Transmit_IT(&Usart2_data_tx, (uint8_t*)output, strlen(output));
 }
 

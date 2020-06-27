@@ -69,14 +69,23 @@ void HAL_MspInit(void)
 
   __HAL_RCC_SYSCFG_CLK_ENABLE();
   __HAL_RCC_PWR_CLK_ENABLE();
+	 __HAL_RCC_DMA2_CLK_ENABLE();
 
   /* System interrupt init*/
   /* PendSV_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(PendSV_IRQn, 15, 0);
 
-  /* USER CODE BEGIN MspInit 1 */
+  /* Enable interrupt for ADC */
+	HAL_NVIC_SetPriority(ADC_IRQn, 10, 2);
+	HAL_NVIC_EnableIRQ (ADC_IRQn);
+	
+	/* Enable interrupt for USART2 */
+	HAL_NVIC_SetPriority(USART2_IRQn, 10, 3);
+	HAL_NVIC_EnableIRQ (USART2_IRQn);
 
-  /* USER CODE END MspInit 1 */
+  /* Enable interrupt for DMA2 */
+	HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 10, 1);
+	HAL_NVIC_EnableIRQ (DMA2_Stream0_IRQn);
 }
 
 /**

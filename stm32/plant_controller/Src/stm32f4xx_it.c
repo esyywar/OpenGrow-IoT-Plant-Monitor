@@ -60,6 +60,7 @@
 /* External variables --------------------------------------------------------*/
 extern ADC_HandleTypeDef Adc_sensor;
 extern UART_HandleTypeDef Usart2_data_tx;
+extern DMA_HandleTypeDef DMA2_adc_pipe;
 extern TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN EV */
@@ -171,6 +172,11 @@ void USART2_IRQHandler(void)
 /* Calling HAL ADC interrupt handler */
 void ADC_IRQHandler(void) {
 	HAL_ADC_IRQHandler(&Adc_sensor);
+}
+
+/* Calling HAL DMA interrupt handler for DMA2_Stream 0 */
+void DMA2_Stream0_IRQHandler(void) {
+	HAL_DMA_IRQHandler(&DMA2_adc_pipe);
 }
 
 /**
