@@ -58,6 +58,8 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
+extern ADC_HandleTypeDef Adc_sensor;
+extern UART_HandleTypeDef Usart2_data_tx;
 extern TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN EV */
@@ -159,6 +161,17 @@ void DebugMon_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32f4xx.s).                    */
 /******************************************************************************/
+
+/* Calling HAL USART interrupt handler for USART2 */
+void USART2_IRQHandler(void)
+{
+  HAL_UART_IRQHandler(&Usart2_data_tx);
+}
+
+/* Calling HAL ADC interrupt handler */
+void ADC_IRQHandler(void) {
+	HAL_ADC_IRQHandler(&Adc_sensor);
+}
 
 /**
   * @brief This function handles TIM6 global interrupt and DAC1, DAC2 underrun error interrupts.

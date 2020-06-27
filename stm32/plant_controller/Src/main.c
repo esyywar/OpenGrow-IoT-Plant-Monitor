@@ -21,6 +21,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include <stdio.h>
+#include <string.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -42,6 +44,10 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+ADC_HandleTypeDef Adc_sensor;
+
+UART_HandleTypeDef Usart2_data_tx;
+
 /* Definitions for BlinkLED_01 */
 osThreadId_t BlinkLED_01Handle;
 const osThreadAttr_t BlinkLED_01_attributes = {
@@ -63,11 +69,11 @@ const osThreadAttr_t BlinkLED_03_attributes = {
   .priority = (osPriority_t) osPriorityBelowNormal6,
   .stack_size = 128 * 4
 };
-/* Definitions for BlinkLED_04 */
-osThreadId_t BlinkLED_04Handle;
-const osThreadAttr_t BlinkLED_04_attributes = {
-  .name = "BlinkLED_04",
-  .priority = (osPriority_t) osPriorityBelowNormal5,
+/* Definitions for ADC_Read */
+osThreadId_t ADC_ReadHandle;
+const osThreadAttr_t ADC_Read_attributes = {
+  .name = "ADC_Read",
+  .priority = (osPriority_t) osPriorityAboveNormal1,
   .stack_size = 128 * 4
 };
 /* USER CODE BEGIN PV */
@@ -77,10 +83,12 @@ const osThreadAttr_t BlinkLED_04_attributes = {
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_USART2_UART_Init(void);
+static void MX_ADC1_Init(void);
 void Blinky_01(void *argument);
 void Blinky_02(void *argument);
 void Blinky_03(void *argument);
-void Blinky_04(void *argument);
+void SensorRead(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -119,6 +127,8 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_USART2_UART_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -152,8 +162,8 @@ int main(void)
   /* creation of BlinkLED_03 */
   BlinkLED_03Handle = osThreadNew(Blinky_03, NULL, &BlinkLED_03_attributes);
 
-  /* creation of BlinkLED_04 */
-  BlinkLED_04Handle = osThreadNew(Blinky_04, NULL, &BlinkLED_04_attributes);
+  /* creation of ADC_Read */
+  ADC_ReadHandle = osThreadNew(SensorRead, NULL, &ADC_Read_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -213,6 +223,95 @@ void SystemClock_Config(void)
 }
 
 /**
+  * @brief ADC1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_ADC1_Init(void)
+{
+
+  /* USER CODE BEGIN ADC1_Init 0 */
+
+  /* USER CODE END ADC1_Init 0 */
+
+  ADC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN ADC1_Init 1 */
+
+  /* USER CODE END ADC1_Init 1 */
+  /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
+  */
+  Adc_sensor.Instance = ADC1;
+  Adc_sensor.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
+  Adc_sensor.Init.Resolution = ADC_RESOLUTION_12B;
+  Adc_sensor.Init.ScanConvMode = DISABLE;
+  Adc_sensor.Init.ContinuousConvMode = DISABLE;
+  Adc_sensor.Init.DiscontinuousConvMode = DISABLE;
+  Adc_sensor.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  Adc_sensor.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  Adc_sensor.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  Adc_sensor.Init.NbrOfConversion = 1;
+  Adc_sensor.Init.DMAContinuousRequests = DISABLE;
+  Adc_sensor.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  if (HAL_ADC_Init(&Adc_sensor) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
+  */
+  sConfig.Channel = ADC_CHANNEL_0;
+  sConfig.Rank = 1;
+  sConfig.SamplingTime = ADC_SAMPLETIME_112CYCLES;
+  if (HAL_ADC_ConfigChannel(&Adc_sensor, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+	
+	NVIC_SetPriority(ADC_IRQn, 25);
+	NVIC_EnableIRQ (ADC_IRQn);
+  /* USER CODE BEGIN ADC1_Init 2 */
+
+  /* USER CODE END ADC1_Init 2 */
+
+}
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  Usart2_data_tx.Instance = USART2;
+  Usart2_data_tx.Init.BaudRate = 115200;
+  Usart2_data_tx.Init.WordLength = UART_WORDLENGTH_8B;
+  Usart2_data_tx.Init.StopBits = UART_STOPBITS_1;
+  Usart2_data_tx.Init.Parity = UART_PARITY_NONE;
+  Usart2_data_tx.Init.Mode = UART_MODE_TX;
+  Usart2_data_tx.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  Usart2_data_tx.Init.OverSampling = UART_OVERSAMPLING_8;
+  if (HAL_UART_Init(&Usart2_data_tx) != HAL_OK)
+  {
+    Error_Handler();
+  }
+	
+	NVIC_SetPriority(USART2_IRQn, 45);
+	NVIC_EnableIRQ (USART2_IRQn);
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -235,14 +334,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pin = GPIO_PIN_5;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PC5 PC6 PC8 */
   GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_8;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
 }
@@ -268,7 +367,6 @@ void Blinky_01(void *argument)
     osDelay(1000);
   }
   /* USER CODE END 5 */ 
-	osThreadTerminate(argument);
 }
 
 /* USER CODE BEGIN Header_Blinky_02 */
@@ -288,7 +386,6 @@ void Blinky_02(void *argument)
     osDelay(250);
   }
   /* USER CODE END Blinky_02 */
-	osThreadTerminate(argument);
 }
 
 /* USER CODE BEGIN Header_Blinky_03 */
@@ -308,28 +405,40 @@ void Blinky_03(void *argument)
     osDelay(750);
   }
   /* USER CODE END Blinky_03 */
-	osThreadTerminate(argument);
 }
 
-/* USER CODE BEGIN Header_Blinky_04 */
+/* USER CODE BEGIN Header_SensorRead */
 /**
-* @brief Function implementing the BlinkLED_04 thread.
+* @brief Take analog reading from sensor every 5 seconds
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_Blinky_04 */
-void Blinky_04(void *argument)
+/* USER CODE END Header_SensorRead */
+void SensorRead(void *argument)
 {
-  /* USER CODE BEGIN Blinky_04 */
+  /* USER CODE BEGIN SensorRead */
   /* Infinite loop */
   for(;;)
   {
-    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
-    osDelay(1500);
+		/* Read value from ADC1 at pin GPIO A0 */
+		HAL_ADC_Start_IT(&Adc_sensor);
+				
+    osDelay(1000);
   }
-  /* USER CODE END Blinky_04 */
-	osThreadTerminate(argument);
+  /* USER CODE END SensorRead */
 }
+
+/* ADC interrupt read complete callback - Send data by USART2 */
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* pAdc_periph) {
+	uint16_t sensorData =  HAL_ADC_GetValue(pAdc_periph);
+	HAL_ADC_Stop_IT(pAdc_periph);
+	
+	/* Write data out from UART2 */
+	char output[50];
+	sprintf(output, "%i\r\n", sensorData);
+	HAL_UART_Transmit_IT(&Usart2_data_tx, (uint8_t*)output, strlen(output));
+}
+
 
  /**
   * @brief  Period elapsed callback in non blocking mode
