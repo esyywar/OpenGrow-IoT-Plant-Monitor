@@ -58,8 +58,9 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern ADC_HandleTypeDef Adc_sensor;
-extern UART_HandleTypeDef Usart2_data_tx;
+extern I2C_HandleTypeDef I2c1_espComm;
+extern SPI_HandleTypeDef Spi1_oledWrite;
+extern UART_HandleTypeDef Uart2_debug;
 extern DMA_HandleTypeDef DMA2_adc_pipe;
 extern TIM_HandleTypeDef htim6;
 
@@ -163,20 +164,65 @@ void DebugMon_Handler(void)
 /* please refer to the startup file (startup_stm32f4xx.s).                    */
 /******************************************************************************/
 
-/* Calling HAL USART interrupt handler for USART2 */
-void USART2_IRQHandler(void)
-{
-  HAL_UART_IRQHandler(&Usart2_data_tx);
-}
-
-/* Calling HAL ADC interrupt handler */
-void ADC_IRQHandler(void) {
-	HAL_ADC_IRQHandler(&Adc_sensor);
-}
-
 /* Calling HAL DMA interrupt handler for DMA2_Stream 0 */
 void DMA2_Stream0_IRQHandler(void) {
 	HAL_DMA_IRQHandler(&DMA2_adc_pipe);
+}
+
+/**
+  * @brief This function handles I2C1 event interrupt.
+  */
+void I2C1_EV_IRQHandler(void)
+{
+  /* USER CODE BEGIN I2C1_EV_IRQn 0 */
+
+  /* USER CODE END I2C1_EV_IRQn 0 */
+  HAL_I2C_EV_IRQHandler(&I2c1_espComm);
+  /* USER CODE BEGIN I2C1_EV_IRQn 1 */
+
+  /* USER CODE END I2C1_EV_IRQn 1 */
+}
+
+/**
+  * @brief This function handles I2C1 error interrupt.
+  */
+void I2C1_ER_IRQHandler(void)
+{
+  /* USER CODE BEGIN I2C1_ER_IRQn 0 */
+
+  /* USER CODE END I2C1_ER_IRQn 0 */
+  HAL_I2C_ER_IRQHandler(&I2c1_espComm);
+  /* USER CODE BEGIN I2C1_ER_IRQn 1 */
+
+  /* USER CODE END I2C1_ER_IRQn 1 */
+}
+
+/**
+  * @brief This function handles SPI1 global interrupt.
+  */
+void SPI1_IRQHandler(void)
+{
+  /* USER CODE BEGIN SPI1_IRQn 0 */
+
+  /* USER CODE END SPI1_IRQn 0 */
+  HAL_SPI_IRQHandler(&Spi1_oledWrite);
+  /* USER CODE BEGIN SPI1_IRQn 1 */
+
+  /* USER CODE END SPI1_IRQn 1 */
+}
+
+/**
+  * @brief This function handles USART2 global interrupt.
+  */
+void USART2_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART2_IRQn 0 */
+
+  /* USER CODE END USART2_IRQn 0 */
+  HAL_UART_IRQHandler(&Uart2_debug);
+  /* USER CODE BEGIN USART2_IRQn 1 */
+
+  /* USER CODE END USART2_IRQn 1 */
 }
 
 /**

@@ -20,6 +20,9 @@
 ".\plant_controller_build\stm32f4xx_hal_cortex.o"
 ".\plant_controller_build\stm32f4xx_hal.o"
 ".\plant_controller_build\stm32f4xx_hal_exti.o"
+".\plant_controller_build\stm32f4xx_hal_i2c.o"
+".\plant_controller_build\stm32f4xx_hal_i2c_ex.o"
+".\plant_controller_build\stm32f4xx_hal_spi.o"
 ".\plant_controller_build\stm32f4xx_hal_tim.o"
 ".\plant_controller_build\stm32f4xx_hal_tim_ex.o"
 ".\plant_controller_build\stm32f4xx_hal_uart.o"
@@ -34,6 +37,8 @@
 ".\plant_controller_build\cmsis_os2.o"
 ".\plant_controller_build\heap_4.o"
 ".\plant_controller_build\port.o"
+".\plant_controller_build\fonts.o"
+".\plant_controller_build\ssd1306.o"
 --library_type=microlib --strict --scatter ".\plant_controller_build\plant_controller_build.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

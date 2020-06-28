@@ -59,7 +59,7 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
   HAL_RCC_GetClockConfig(&clkconfig, &pFLatency);
   
   /* Compute TIM6 clock */
-  uwTimclock = HAL_RCC_GetPCLK1Freq();
+  uwTimclock = 2*HAL_RCC_GetPCLK1Freq();
    
   /* Compute the prescaler value to have TIM6 counter clock equal to 1MHz */
   uwPrescalerValue = (uint32_t) ((uwTimclock / 1000000) - 1);

@@ -22,41 +22,28 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
+/* SSD1306 SPI Drivers */
+#include "ssd1306.h"
+#include "fonts.h"
 
-/* USER CODE END Includes */
 
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Peripheral handle variables */
-ADC_HandleTypeDef Adc_sensor;
-
-UART_HandleTypeDef Usart2_data_tx;
-
+/* Peripheral handle variables ---------------------------------------------------------*/
+ADC_HandleTypeDef Adc1_sensorsRead;
+I2C_HandleTypeDef I2c1_espComm;
+SPI_HandleTypeDef Spi1_oledWrite;
+UART_HandleTypeDef Uart2_debug;
 DMA_HandleTypeDef DMA2_adc_pipe;
 
-/* Private global variables */
-uint16_t humidity_sensor;
+/* Private variables */
+uint16_t moisture_sensors;
 
-/* Definitions for BlinkLED_01 */
-osThreadId_t BlinkLED_01Handle;
-const osThreadAttr_t BlinkLED_01_attributes = {
-  .name = "BlinkLED_01",
+/* Definitions for Update_OLED */
+osThreadId_t Update_OLEDHandle;
+const osThreadAttr_t Update_OLED_attributes = {
+  .name = "Update_OLED",
   .priority = (osPriority_t) osPriorityNormal,
   .stack_size = 128 * 4
 };
@@ -74,10 +61,10 @@ const osThreadAttr_t BlinkLED_03_attributes = {
   .priority = (osPriority_t) osPriorityBelowNormal6,
   .stack_size = 128 * 4
 };
-/* Definitions for ADC_Read */
-osThreadId_t ADC_ReadHandle;
-const osThreadAttr_t ADC_Read_attributes = {
-  .name = "ADC_Read",
+/* Definitions for Get_Sensor_Data */
+osThreadId_t Get_Sensor_DataHandle;
+const osThreadAttr_t Get_Sensor_Data_attributes = {
+  .name = "Get_Sensor_Data",
   .priority = (osPriority_t) osPriorityAboveNormal1,
   .stack_size = 128 * 4
 };
@@ -87,15 +74,18 @@ const osThreadAttr_t ADC_Read_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
+static void MX_SPI1_Init(void);
+static void MX_I2C1_Init(void);
 
+/* DMA functions */
 static void DMA2_Init(void);
-
 static void DMA2_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe);
 
-void Blinky_01(void *argument);
+void OLED_Write(void *argument);
 void Blinky_02(void *argument);
 void Blinky_03(void *argument);
 void SensorRead(void *argument);
@@ -115,18 +105,10 @@ void SensorRead(void *argument);
   */
 int main(void)
 {
-  /* USER CODE BEGIN 1 */
-
-  /* USER CODE END 1 */
-
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
-
-  /* USER CODE BEGIN Init */
-
-  /* USER CODE END Init */
 
   /* Configure the system clock */
   SystemClock_Config();
@@ -139,12 +121,10 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_ADC1_Init();
-	
-	DMA2_Init();
-	
-  /* USER CODE BEGIN 2 */
+  MX_SPI1_Init();
+  MX_I2C1_Init();
 
-  /* USER CODE END 2 */
+	DMA2_Init();
 
   /* Init scheduler */
   osKernelInitialize();
@@ -166,8 +146,8 @@ int main(void)
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* creation of BlinkLED_01 */
-  BlinkLED_01Handle = osThreadNew(Blinky_01, NULL, &BlinkLED_01_attributes);
+  /* creation of Update_OLED */
+  Update_OLEDHandle = osThreadNew(OLED_Write, NULL, &Update_OLED_attributes);
 
   /* creation of BlinkLED_02 */
   BlinkLED_02Handle = osThreadNew(Blinky_02, NULL, &BlinkLED_02_attributes);
@@ -175,8 +155,8 @@ int main(void)
   /* creation of BlinkLED_03 */
   BlinkLED_03Handle = osThreadNew(Blinky_03, NULL, &BlinkLED_03_attributes);
 
-  /* creation of ADC_Read */
-  ADC_ReadHandle = osThreadNew(SensorRead, NULL, &ADC_Read_attributes);
+  /* creation of Get_Sensor_Data */
+  Get_Sensor_DataHandle = osThreadNew(SensorRead, NULL, &Get_Sensor_Data_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -209,14 +189,26 @@ void SystemClock_Config(void)
   /** Configure the main internal regulator output voltage 
   */
   __HAL_RCC_PWR_CLK_ENABLE();
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE3);
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
   /** Initializes the CPU, AHB and APB busses clocks 
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLM = 8;
+  RCC_OscInitStruct.PLL.PLLN = 180;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+  RCC_OscInitStruct.PLL.PLLQ = 2;
+  RCC_OscInitStruct.PLL.PLLR = 2;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Activate the Over-Drive mode 
+  */
+  if (HAL_PWREx_EnableOverDrive() != HAL_OK)
   {
     Error_Handler();
   }
@@ -224,12 +216,12 @@ void SystemClock_Config(void)
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLRCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
   {
     Error_Handler();
   }
@@ -242,36 +234,120 @@ void SystemClock_Config(void)
   */
 static void MX_ADC1_Init(void)
 {
+
+  /* USER CODE BEGIN ADC1_Init 0 */
+
+  /* USER CODE END ADC1_Init 0 */
+
   ADC_ChannelConfTypeDef sConfig = {0};
 
-  /* Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) */
-  Adc_sensor.Instance = ADC1;
-  Adc_sensor.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
-  Adc_sensor.Init.Resolution = ADC_RESOLUTION_12B;
-  Adc_sensor.Init.ScanConvMode = DISABLE;
-  Adc_sensor.Init.ContinuousConvMode = DISABLE;
-  Adc_sensor.Init.DiscontinuousConvMode = DISABLE;
-  Adc_sensor.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  Adc_sensor.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-  Adc_sensor.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  Adc_sensor.Init.NbrOfConversion = 1;
-  Adc_sensor.Init.DMAContinuousRequests = ENABLE;
-  Adc_sensor.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  /* USER CODE BEGIN ADC1_Init 1 */
+
+  /* USER CODE END ADC1_Init 1 */
+  /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
+  */
+  Adc1_sensorsRead.Instance = ADC1;
+  Adc1_sensorsRead.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+  Adc1_sensorsRead.Init.Resolution = ADC_RESOLUTION_12B;
+  Adc1_sensorsRead.Init.ScanConvMode = DISABLE;
+  Adc1_sensorsRead.Init.ContinuousConvMode = DISABLE;
+  Adc1_sensorsRead.Init.DiscontinuousConvMode = DISABLE;
+  Adc1_sensorsRead.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  Adc1_sensorsRead.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  Adc1_sensorsRead.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  Adc1_sensorsRead.Init.NbrOfConversion = 1;
+  Adc1_sensorsRead.Init.DMAContinuousRequests = ENABLE;
+  Adc1_sensorsRead.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
 	
-  if (HAL_ADC_Init(&Adc_sensor) != HAL_OK)
+  if (HAL_ADC_Init(&Adc1_sensorsRead) != HAL_OK)
   {
     Error_Handler();
   }
-	
-  /* Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. */
+  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = 1;
   sConfig.SamplingTime = ADC_SAMPLETIME_112CYCLES;
 	
-  if (HAL_ADC_ConfigChannel(&Adc_sensor, &sConfig) != HAL_OK)
+  if (HAL_ADC_ConfigChannel(&Adc1_sensorsRead, &sConfig) != HAL_OK)
   {
     Error_Handler();
   }
+  /* USER CODE BEGIN ADC1_Init 2 */
+
+  /* USER CODE END ADC1_Init 2 */
+
+}
+
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  I2c1_espComm.Instance = I2C1;
+  I2c1_espComm.Init.ClockSpeed = 100000;
+  I2c1_espComm.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  I2c1_espComm.Init.OwnAddress1 = 0;
+  I2c1_espComm.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  I2c1_espComm.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  I2c1_espComm.Init.OwnAddress2 = 0;
+  I2c1_espComm.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  I2c1_espComm.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&I2c1_espComm) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief SPI1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_SPI1_Init(void)
+{
+
+  /* USER CODE BEGIN SPI1_Init 0 */
+
+  /* USER CODE END SPI1_Init 0 */
+
+  /* USER CODE BEGIN SPI1_Init 1 */
+
+  /* USER CODE END SPI1_Init 1 */
+  /* SPI1 parameter configuration*/
+  Spi1_oledWrite.Instance = SPI1;
+  Spi1_oledWrite.Init.Mode = SPI_MODE_MASTER;
+  Spi1_oledWrite.Init.Direction = SPI_DIRECTION_2LINES;
+  Spi1_oledWrite.Init.DataSize = SPI_DATASIZE_8BIT;
+  Spi1_oledWrite.Init.CLKPolarity = SPI_POLARITY_LOW;
+  Spi1_oledWrite.Init.CLKPhase = SPI_PHASE_1EDGE;
+  Spi1_oledWrite.Init.NSS = SPI_NSS_HARD_OUTPUT;
+  Spi1_oledWrite.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  Spi1_oledWrite.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  Spi1_oledWrite.Init.TIMode = SPI_TIMODE_DISABLE;
+  Spi1_oledWrite.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  Spi1_oledWrite.Init.CRCPolynomial = 10;
+  if (HAL_SPI_Init(&Spi1_oledWrite) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN SPI1_Init 2 */
+
+  /* USER CODE END SPI1_Init 2 */
+
 }
 
 /**
@@ -281,56 +357,27 @@ static void MX_ADC1_Init(void)
   */
 static void MX_USART2_UART_Init(void)
 {
-  /* UART2 Init */
-  Usart2_data_tx.Instance = USART2;
-  Usart2_data_tx.Init.BaudRate = 14400U;
-  Usart2_data_tx.Init.WordLength = UART_WORDLENGTH_8B;
-  Usart2_data_tx.Init.StopBits = UART_STOPBITS_1;
-  Usart2_data_tx.Init.Parity = UART_PARITY_NONE;
-  Usart2_data_tx.Init.Mode = UART_MODE_TX;
-  Usart2_data_tx.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  Usart2_data_tx.Init.OverSampling = UART_OVERSAMPLING_8;
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  Uart2_debug.Instance = USART2;
+  Uart2_debug.Init.BaudRate = 14400;
+  Uart2_debug.Init.WordLength = UART_WORDLENGTH_8B;
+  Uart2_debug.Init.StopBits = UART_STOPBITS_1;
+  Uart2_debug.Init.Parity = UART_PARITY_NONE;
+  Uart2_debug.Init.Mode = UART_MODE_TX;
+  Uart2_debug.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  Uart2_debug.Init.OverSampling = UART_OVERSAMPLING_16;
 	
-  if (HAL_UART_Init(&Usart2_data_tx) != HAL_OK)
+  if (HAL_UART_Init(&Uart2_debug) != HAL_OK)
   {
     Error_Handler();
   }
-}
-
-/**
-  * @brief GPIO Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_GPIO_Init(void)
-{
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOC_CLK_ENABLE();
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_8, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin : PA5 */
-  GPIO_InitStruct.Pin = GPIO_PIN_5;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : PC5 PC6 PC8 */
-  GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_8;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 }
 
 /**
@@ -339,6 +386,8 @@ static void MX_GPIO_Init(void)
   * @retval None
   */
 static void DMA2_Init(void) {
+	__HAL_RCC_DMA2_CLK_ENABLE();
+	
 	DMA2_adc_pipe.Instance = DMA2_Stream0;
 	
 	DMA2_adc_pipe.Init.Channel = DMA_CHANNEL_0;
@@ -358,34 +407,56 @@ static void DMA2_Init(void) {
   {
     Error_Handler();
   }
+	
+	/* DMA2 interrupt config */
+  HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
+}
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_8, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : PC5 PC6 PC8 */
+  GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_8;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 }
 
 
-
-/* USER CODE BEGIN 4 */
-
-/* USER CODE END 4 */
-
-/* USER CODE BEGIN Header_Blinky_01 */
 /**
-  * @brief  Function implementing the BlinkLED_01 thread.
+  * @brief  Function implementing the Update_OLED thread.
   * @param  argument: Not used 
   * @retval None
   */
-/* USER CODE END Header_Blinky_01 */
-void Blinky_01(void *argument)
+/* USER CODE END Header_OLED_Write */
+void OLED_Write(void *argument)
 {
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
   for(;;)
   {
-		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-    osDelay(1000);
+		osDelay(1);
   }
   /* USER CODE END 5 */ 
 }
 
-/* USER CODE BEGIN Header_Blinky_02 */
+
 /**
 * @brief Function implementing the BlinkLED_02 thread.
 * @param argument: Not used
@@ -404,51 +475,59 @@ void Blinky_02(void *argument)
   /* USER CODE END Blinky_02 */
 }
 
-/* USER CODE BEGIN Header_Blinky_03 */
+
 /**
 * @brief Function implementing the BlinkLED_03 thread.
 * @param argument: Not used
 * @retval None
 */
+/* USER CODE END Header_Blinky_03 */
 void Blinky_03(void *argument)
 {
+  /* USER CODE BEGIN Blinky_03 */
+  /* Infinite loop */
   for(;;)
   {
-		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
-    osDelay(750);
+    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
+    osDelay(1000);
   }
+  /* USER CODE END Blinky_03 */
 }
 
+
 /**
-* @brief Take analog reading from sensor every second
+* @brief Function implementing the Get_Sensor_Data thread.
 * @param argument: Not used
 * @retval None
 */
+/* USER CODE END Header_SensorRead */
 void SensorRead(void *argument)
 {
+  /* USER CODE BEGIN SensorRead */
+  /* Infinite loop */
   for(;;)
   {
 		/* Set DMA to transfer from ADC to data buffer */
-		HAL_DMA_Start_IT(&DMA2_adc_pipe, (uint32_t)&(ADC1->DR), (uint32_t)&humidity_sensor, 1);
+		HAL_DMA_Start_IT(&DMA2_adc_pipe, (uint32_t)&(ADC1->DR), (uint32_t)&moisture_sensors, 1);
 		
 		/* Read value from ADC1 at pin GPIO A0 */
-		HAL_ADC_Start_DMA(&Adc_sensor, (uint32_t*)&humidity_sensor, 1);
-				
+		HAL_ADC_Start_DMA(&Adc1_sensorsRead, (uint32_t*)&moisture_sensors, 1);
+		
     osDelay(1000);
   }
+  /* USER CODE END SensorRead */
 }
 
 /* DMA transfer compelte callback - Now send data by USART2 */
 static void DMA2_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe) {
-	HAL_ADC_Stop_DMA(&Adc_sensor);
+	HAL_ADC_Stop_DMA(&Adc1_sensorsRead);
 	
 	/* Write data out from UART2 */
 	char output[50];
-	sprintf(output, "%i\r\n", humidity_sensor);
+	sprintf(output, "%i\r\n", moisture_sensors);
 	
-	HAL_UART_Transmit_IT(&Usart2_data_tx, (uint8_t*)output, strlen(output));
+	HAL_UART_Transmit_IT(&Uart2_debug, (uint8_t*)output, strlen(output));
 }
-
 
  /**
   * @brief  Period elapsed callback in non blocking mode

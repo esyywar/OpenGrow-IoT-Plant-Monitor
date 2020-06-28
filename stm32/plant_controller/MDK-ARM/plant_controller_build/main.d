@@ -28,8 +28,11 @@
 .\plant_controller_build\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
 .\plant_controller_build\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 .\plant_controller_build\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
+.\plant_controller_build\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h
+.\plant_controller_build\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c_ex.h
 .\plant_controller_build\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 .\plant_controller_build\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+.\plant_controller_build\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h
 .\plant_controller_build\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 .\plant_controller_build\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 .\plant_controller_build\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
@@ -45,4 +48,7 @@
 .\plant_controller_build\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 .\plant_controller_build\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 .\plant_controller_build\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\plant_controller_build\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\plant_controller_build\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\plant_controller_build\main.o: ..\Drivers\SSD1306\Inc\ssd1306.h
+.\plant_controller_build\main.o: ..\Drivers\SSD1306\Inc\fonts.h
