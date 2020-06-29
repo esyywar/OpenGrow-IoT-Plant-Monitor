@@ -35,7 +35,7 @@ ADC_HandleTypeDef Adc1_sensorsRead;
 I2C_HandleTypeDef I2c1_espComm;
 SPI_HandleTypeDef Spi1_oledWrite;
 UART_HandleTypeDef Uart2_debug;
-DMA_HandleTypeDef DMA2_adc_pipe;
+DMA_HandleTypeDef DMA2_adc_pipe, DMA2_oled_pipe;
 
 /* Private variables */
 uint16_t moisture_sensors;
@@ -68,9 +68,7 @@ const osThreadAttr_t Get_Sensor_Data_attributes = {
   .priority = (osPriority_t) osPriorityAboveNormal1,
   .stack_size = 128 * 4
 };
-/* USER CODE BEGIN PV */
 
-/* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
@@ -83,21 +81,15 @@ static void MX_I2C1_Init(void);
 
 /* DMA functions */
 static void DMA2_Init(void);
-static void DMA2_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe);
+static void DMA2_ADC1_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe);
+static void DMA2_OLED_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_oled_pipe);
 
+/* Thread functions */
 void OLED_Write(void *argument);
 void Blinky_02(void *argument);
 void Blinky_03(void *argument);
 void SensorRead(void *argument);
 
-/* USER CODE BEGIN PFP */
-
-/* USER CODE END PFP */
-
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
 
 /**
   * @brief  The application entry point.
@@ -330,24 +322,21 @@ static void MX_SPI1_Init(void)
   /* SPI1 parameter configuration*/
   Spi1_oledWrite.Instance = SPI1;
   Spi1_oledWrite.Init.Mode = SPI_MODE_MASTER;
-  Spi1_oledWrite.Init.Direction = SPI_DIRECTION_2LINES;
+  Spi1_oledWrite.Init.Direction = SPI_DIRECTION_1LINE;
   Spi1_oledWrite.Init.DataSize = SPI_DATASIZE_8BIT;
   Spi1_oledWrite.Init.CLKPolarity = SPI_POLARITY_LOW;
   Spi1_oledWrite.Init.CLKPhase = SPI_PHASE_1EDGE;
   Spi1_oledWrite.Init.NSS = SPI_NSS_HARD_OUTPUT;
-  Spi1_oledWrite.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  Spi1_oledWrite.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
   Spi1_oledWrite.Init.FirstBit = SPI_FIRSTBIT_MSB;
   Spi1_oledWrite.Init.TIMode = SPI_TIMODE_DISABLE;
   Spi1_oledWrite.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
   Spi1_oledWrite.Init.CRCPolynomial = 10;
+	
   if (HAL_SPI_Init(&Spi1_oledWrite) != HAL_OK)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN SPI1_Init 2 */
-
-  /* USER CODE END SPI1_Init 2 */
-
 }
 
 /**
@@ -388,8 +377,10 @@ static void MX_USART2_UART_Init(void)
 static void DMA2_Init(void) {
 	__HAL_RCC_DMA2_CLK_ENABLE();
 	
+	/*
+	* Stream 0, channel 0 used to transfer ADC readings to data variable
+	*/
 	DMA2_adc_pipe.Instance = DMA2_Stream0;
-	
 	DMA2_adc_pipe.Init.Channel = DMA_CHANNEL_0;
 	DMA2_adc_pipe.Init.Direction = DMA_PERIPH_TO_MEMORY;
 	DMA2_adc_pipe.Init.Mode = DMA_NORMAL;
@@ -401,16 +392,36 @@ static void DMA2_Init(void) {
 	DMA2_adc_pipe.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
 	DMA2_adc_pipe.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
 	DMA2_adc_pipe.Init.Priority = DMA_PRIORITY_MEDIUM;
-	DMA2_adc_pipe.XferCpltCallback = &DMA2_Transfer_Cmplt_Callback;
+	DMA2_adc_pipe.XferCpltCallback = &DMA2_ADC1_Transfer_Cmplt_Callback;
 	
 	if (HAL_DMA_Init(&DMA2_adc_pipe) != HAL_OK)
   {
     Error_Handler();
   }
 	
-	/* DMA2 interrupt config */
+	/*
+	* Stream 3, channel 3 used to transfer SSD1306 buffer data to SPI1 TxBuffer
+	*/
+	DMA2_oled_pipe.Init.Channel = DMA_CHANNEL_0;
+	DMA2_oled_pipe.Init.Direction = DMA_MEMORY_TO_PERIPH;
+	DMA2_oled_pipe.Init.Mode = DMA_NORMAL;
+	DMA2_oled_pipe.Init.PeriphInc = DMA_PINC_DISABLE;
+	DMA2_oled_pipe.Init.MemInc = DMA_MINC_ENABLE;
+	DMA2_oled_pipe.Init.MemBurst = DMA_MBURST_SINGLE;
+	DMA2_oled_pipe.Init.PeriphBurst = DMA_PBURST_SINGLE;
+	DMA2_oled_pipe.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+	DMA2_oled_pipe.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+	DMA2_oled_pipe.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+	DMA2_oled_pipe.Init.Priority = DMA_PRIORITY_VERY_HIGH;
+	DMA2_oled_pipe.XferCpltCallback = &DMA2_OLED_Transfer_Cmplt_Callback;
+	
+	/* DMA2 stream 0 interrupt config */
   HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
+	
+	/* DMA2 stream 3 interrupt config */
+	HAL_NVIC_SetPriority(DMA2_Stream3_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream3_IRQn);
 }
 
 /**
@@ -518,16 +529,28 @@ void SensorRead(void *argument)
   /* USER CODE END SensorRead */
 }
 
+
+
+/********************** Interrupt routine callbacks *****************************/
+
 /* DMA transfer compelte callback - Now send data by USART2 */
-static void DMA2_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe) {
+static void DMA2_ADC1_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe) {
 	HAL_ADC_Stop_DMA(&Adc1_sensorsRead);
 	
-	/* Write data out from UART2 */
+	/* Write data out from UART2 (for debug purposes) */
 	char output[50];
 	sprintf(output, "%i\r\n", moisture_sensors);
 	
 	HAL_UART_Transmit_IT(&Uart2_debug, (uint8_t*)output, strlen(output));
 }
+
+static void DMA2_OLED_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_oled_pipe) {
+		// Implement oled finish transfer code
+	
+		// TODO
+		// Release mutex / binary semaphore here
+}
+
 
  /**
   * @brief  Period elapsed callback in non blocking mode
@@ -539,15 +562,9 @@ static void DMA2_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe) {
   */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-  /* USER CODE BEGIN Callback 0 */
-
-  /* USER CODE END Callback 0 */
   if (htim->Instance == TIM6) {
     HAL_IncTick();
   }
-  /* USER CODE BEGIN Callback 1 */
-
-  /* USER CODE END Callback 1 */
 }
 
 /**

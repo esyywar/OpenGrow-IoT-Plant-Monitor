@@ -5,6 +5,8 @@
    ----------------------------------------------------------------------
    	Copyright (C) Alexander Lutsai, 2016
     Copyright (C) Tilen Majerle, 2015
+		
+		Modified by: Rahul Eswar, 2020
     
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,9 +29,9 @@
 #ifdef __cplusplus
 extern C {
 #endif
-
-/**
- * This SSD1306 LCD uses I2C for communication
+ 
+ /**
+ * Library for SSD1306 driver with SPI communication
  *
  * Library features functions for drawing lines, rectangles and circles.
  *
@@ -41,8 +43,9 @@ SSD1306    |STM32F10x    |DESCRIPTION
 
 VCC        |3.3V         |
 GND        |GND          |
-SCL        |PB6          |Serial clock line
-SDA        |PB7          |Serial data line
+SCK        |PA5          |Serial clock line
+MOSI       |PA7          |Data line (stm32 -> SSD1306)
+CS         |PA4          |Chip select (active low)
  */
 
 #include "stm32f4xx_hal.h"
@@ -53,21 +56,107 @@ SDA        |PB7          |Serial data line
 #include "string.h"
 
 
-/* I2C address */
-#ifndef SSD1306_I2C_ADDR
-#define SSD1306_I2C_ADDR         0x78
-//#define SSD1306_I2C_ADDR       0x7A
-#endif
+/*******************************************************
+********** SSD1306 settings
+*******************************************************/
 
-/* SSD1306 settings */
 /* SSD1306 width in pixels */
 #ifndef SSD1306_WIDTH
-#define SSD1306_WIDTH            128
+#define SSD1306_WIDTH            				128
 #endif
+
 /* SSD1306 LCD height in pixels */
 #ifndef SSD1306_HEIGHT
-#define SSD1306_HEIGHT           64
+#define SSD1306_HEIGHT           				32
 #endif
+
+/* Pixel colours */
+#define SSD1306_PX_CLR_BLACK						0
+#define SSD1306_PX_CLR_WHITE						1
+
+
+/*******************************************************
+********** SSD1306 Command Macros
+*******************************************************/
+
+/*
+* Fundamental commands
+*/
+#define SSD1306_CMD_CONTRAST_CTRL				0x81
+#define SSD1306_CMD_UPDATE							0xA4
+#define SSD1306_CMD_ALL_ON							0xA5
+#define SSD1306_CMD_NORM_DISP						0xA6
+#define SSD1306_CMD_INVERT_DISP					0xA7
+#define SSD1306_CMD_DISP_ON							0xAF
+#define SSD1306_CMD_DISP_OFF						0xAE
+
+/*
+* Charge pump (transform 7/5 V for display) 
+*/
+#define SSD1306_CMD_CHRG_PUMP_SET				0x8D
+#define SSD1306_CMD_CHRG_PUMP_EN				0x14
+
+/* 
+* Addressing mode 
+*/
+#define SSD1306_CMD_ADDR_MODE_PAGE			0x10
+#define SSD1306_CMD_ADDR_MODE_HORZ			0x00
+#define SSD1306_CMD_ADDR_MODE_VERT			0x01
+
+/* 
+* Hardware configurations 
+*/
+#define SSD1306_CMD_START_LINE					0x40
+#define SSD1306_CMD_SEG_REMAP						0xA0
+#define SSD1306_CMD_COM_SCAN_DIR				0xC0
+#define SSD1306_CMD_MUX_RATIO_SET				0xA8
+#define SSD1306_CMD_DISP_OFFSET_SET			0xD3
+#define SSD1306_COM_HW_CONFIG_SET				0xDA
+
+/*
+* Clock configuration
+*/
+#define SSD1306_CLK_SET									0xD5
+#define SSD1306_CLK_CHRG_PRD_SET				0xD9
+
+/*
+* Power management 
+*/
+#define SSD1306_CLK_VCOM_SET						0xDB
+
+
+/*******************************************************
+********** SSD1306 Config Macros (User set)
+*******************************************************/
+
+/*
+* Hardware configurations
+*/
+#define SSD1306_MUX_RATIO_VALUE					0x3F
+#define SSD1306_DISP_OFFSET_VALUE				0x00
+#define SSD1306_COM_HW_CONFIG_VALUE			0x12
+
+/*
+* Clock configuration
+*/
+#define SSD1306_CLK_MAX									0xF0
+#define SSD1306_CLK_CHRG_PRD_VALUE			0x22
+
+/*
+* Power management
+*/
+#define SSD1306_CLK_VCOM_VALUE					0x20
+
+
+/* I2C address */
+#ifndef SSD1306_I2C_ADDR
+#define SSD1306_I2C_ADDR         				0x78
+#endif
+
+
+/*******************************************************
+********** SSD1306 Config Macros (User set)
+*******************************************************/
 
 /**
  * @brief  SSD1306 color enumeration
@@ -77,10 +166,26 @@ typedef enum {
 	SSD1306_COLOR_WHITE = 0x01  /*!< Pixel is set. Color depends on LCD */
 } SSD1306_COLOR_t;
 
+/* Private SSD1306 structure */
+typedef struct {
+	uint16_t CurrentX;
+	uint16_t CurrentY;
+	uint8_t Inverted;
+	uint8_t Initialized;
+	uint8_t state;
+} SSD1306_t;
 
+/* State macros - set when data from buffer is being loaded */
+#define SSD1306_STATE_READY					0
+#define SSD1306_STATE_BUSY					1
+
+
+/**********************************************************
+********** SSD1306 Driver Functions API - Display Ctrl
+**********************************************************/
 
 /**
- * @brief  Initializes SSD1306 LCD
+ * @brief  Initializes SSD1306 OLED
  * @param  None
  * @retval Initialization status:
  *           - 0: LCD was not detected on I2C port
@@ -90,17 +195,18 @@ uint8_t SSD1306_Init(void);
 
 /** 
  * @brief  Updates buffer from internal RAM to LCD
- * @note   This function must be called each time you do some changes to LCD, to update buffer from RAM to LCD
- * @param  None
- * @retval None
+ * @note   This function must be called each time you do some changes to OLED, to update buffer from RAM to OLED
  */
 void SSD1306_UpdateScreen(void);
+
+/** 
+ * @brief  Clears the screen
+ */
+void SSD1306_Clear (void);
 
 /**
  * @brief  Toggles pixels invertion inside internal RAM
  * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
- * @param  None
- * @retval None
  */
 void SSD1306_ToggleInvert(void);
 
@@ -108,7 +214,6 @@ void SSD1306_ToggleInvert(void);
  * @brief  Fills entire LCD with desired color
  * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
  * @param  Color: Color to be used for screen fill. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
- * @retval None
  */
 void SSD1306_Fill(SSD1306_COLOR_t Color);
 
@@ -118,7 +223,6 @@ void SSD1306_Fill(SSD1306_COLOR_t Color);
  * @param  x: X location. This parameter can be a value between 0 and SSD1306_WIDTH - 1
  * @param  y: Y location. This parameter can be a value between 0 and SSD1306_HEIGHT - 1
  * @param  color: Color to be used for screen fill. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
- * @retval None
  */
 void SSD1306_DrawPixel(uint16_t x, uint16_t y, SSD1306_COLOR_t color);
 
@@ -126,7 +230,6 @@ void SSD1306_DrawPixel(uint16_t x, uint16_t y, SSD1306_COLOR_t color);
  * @brief  Sets cursor pointer to desired location for strings
  * @param  x: X location. This parameter can be a value between 0 and SSD1306_WIDTH - 1
  * @param  y: Y location. This parameter can be a value between 0 and SSD1306_HEIGHT - 1
- * @retval None
  */
 void SSD1306_GotoXY(uint16_t x, uint16_t y);
 
@@ -228,6 +331,11 @@ void SSD1306_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t
 #define ssd1306_I2C_TIMEOUT					20000
 #endif
 
+
+/*************************************************************
+****** SSD1306 Driver Functions API - Data Communication
+**************************************************************/
+
 /**
  * @brief  Initializes SSD1306 LCD
  * @param  None
@@ -259,6 +367,22 @@ void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data);
 void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t *data, uint16_t count);
 
 /**
+ * @brief  Writes a command to the ssd1306 - this function blocks while sending data
+ * @param  SPI_HandleTypeDef* pSPI_periph - pointer to handle for SPI peripheral
+ * @param  uint8_t* pTxBuffer - pointer to the data buffer
+ * @param  uint8_t len - length of data to be sent
+ */
+void ssd1306_SPI_WriteCmd(SPI_HandleTypeDef* pSPI_periph, uint8_t* pTxBuffer, uint16_t len);
+
+/**
+ * @brief  Fills the display data buffer with new screen using DMA to transfer (length is size of SSD1306 buffer defined in ssd1306.c)
+ * @param  SPI_HandleTypeDef* pSPI_periph - pointer to handle for SPI peripheral
+ * @param  uint8_t* pTxBuffer - pointer to the data buffer
+ */
+void ssd1306_SPI_WriteDisp(SPI_HandleTypeDef* pSPI_periph, uint8_t* pTxBuffer);
+
+
+/**
  * @brief  Draws the Bitmap
  * @param  X:  X location to start the Drawing
  * @param  Y:  Y location to start the Drawing
@@ -269,36 +393,26 @@ void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t *data, uint16_
  */
 void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16_t w, int16_t h, SSD1306_COLOR_t color);
 
-// scroll the screen for fixed rows
+
+/*************************************************************
+****** SSD1306 Driver Functions API - Scrolling functions
+**************************************************************/
 
 void SSD1306_ScrollRight(uint8_t start_row, uint8_t end_row);
 
-
 void SSD1306_ScrollLeft(uint8_t start_row, uint8_t end_row);
-
 
 void SSD1306_Scrolldiagright(uint8_t start_row, uint8_t end_row);
 
-
 void SSD1306_Scrolldiagleft(uint8_t start_row, uint8_t end_row);
-
-
 
 void SSD1306_Stopscroll(void);
 
 
-// inverts the display i = 1->inverted, i = 0->normal
-
+/*************************************************************
+****** SSD1306 Driver Functions API - Colour Inversion
+**************************************************************/
 void SSD1306_InvertDisplay (int i);
-
-
-
-
-
-
-// clear the display
-
-void SSD1306_Clear (void);
 
 
 /* C++ detection */

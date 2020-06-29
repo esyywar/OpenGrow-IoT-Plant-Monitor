@@ -62,6 +62,7 @@ extern I2C_HandleTypeDef I2c1_espComm;
 extern SPI_HandleTypeDef Spi1_oledWrite;
 extern UART_HandleTypeDef Uart2_debug;
 extern DMA_HandleTypeDef DMA2_adc_pipe;
+extern DMA_HandleTypeDef DMA2_oled_pipe;
 extern TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN EV */
@@ -159,9 +160,7 @@ void DebugMon_Handler(void)
 
 /******************************************************************************/
 /* STM32F4xx Peripheral Interrupt Handlers                                    */
-/* Add here the Interrupt Handlers for the used peripherals.                  */
-/* For the available peripheral interrupt handler names,                      */
-/* please refer to the startup file (startup_stm32f4xx.s).                    */
+/* DMA2 Stream 0, DMA2 Stream 3, I2C EV, I2C ER, SPI1, USART2, TIM6           */
 /******************************************************************************/
 
 /* Calling HAL DMA interrupt handler for DMA2_Stream 0 */
@@ -169,18 +168,17 @@ void DMA2_Stream0_IRQHandler(void) {
 	HAL_DMA_IRQHandler(&DMA2_adc_pipe);
 }
 
+/* Calling HAL DMA interrupt handler for DMA2_Stream 0 */
+void DMA2_Stream3_IRQHandler(void) {
+	HAL_DMA_IRQHandler(&DMA2_oled_pipe);
+}
+
 /**
   * @brief This function handles I2C1 event interrupt.
   */
 void I2C1_EV_IRQHandler(void)
 {
-  /* USER CODE BEGIN I2C1_EV_IRQn 0 */
-
-  /* USER CODE END I2C1_EV_IRQn 0 */
   HAL_I2C_EV_IRQHandler(&I2c1_espComm);
-  /* USER CODE BEGIN I2C1_EV_IRQn 1 */
-
-  /* USER CODE END I2C1_EV_IRQn 1 */
 }
 
 /**
@@ -188,13 +186,7 @@ void I2C1_EV_IRQHandler(void)
   */
 void I2C1_ER_IRQHandler(void)
 {
-  /* USER CODE BEGIN I2C1_ER_IRQn 0 */
-
-  /* USER CODE END I2C1_ER_IRQn 0 */
   HAL_I2C_ER_IRQHandler(&I2c1_espComm);
-  /* USER CODE BEGIN I2C1_ER_IRQn 1 */
-
-  /* USER CODE END I2C1_ER_IRQn 1 */
 }
 
 /**
@@ -202,13 +194,7 @@ void I2C1_ER_IRQHandler(void)
   */
 void SPI1_IRQHandler(void)
 {
-  /* USER CODE BEGIN SPI1_IRQn 0 */
-
-  /* USER CODE END SPI1_IRQn 0 */
   HAL_SPI_IRQHandler(&Spi1_oledWrite);
-  /* USER CODE BEGIN SPI1_IRQn 1 */
-
-  /* USER CODE END SPI1_IRQn 1 */
 }
 
 /**
@@ -216,13 +202,7 @@ void SPI1_IRQHandler(void)
   */
 void USART2_IRQHandler(void)
 {
-  /* USER CODE BEGIN USART2_IRQn 0 */
-
-  /* USER CODE END USART2_IRQn 0 */
   HAL_UART_IRQHandler(&Uart2_debug);
-  /* USER CODE BEGIN USART2_IRQn 1 */
-
-  /* USER CODE END USART2_IRQn 1 */
 }
 
 /**
@@ -230,16 +210,8 @@ void USART2_IRQHandler(void)
   */
 void TIM6_DAC_IRQHandler(void)
 {
-  /* USER CODE BEGIN TIM6_DAC_IRQn 0 */
-
-  /* USER CODE END TIM6_DAC_IRQn 0 */
   HAL_TIM_IRQHandler(&htim6);
-  /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
-
-  /* USER CODE END TIM6_DAC_IRQn 1 */
 }
 
-/* USER CODE BEGIN 1 */
 
-/* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
