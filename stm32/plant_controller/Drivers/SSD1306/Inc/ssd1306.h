@@ -132,6 +132,7 @@ CS         |PA4          |Chip select (active low)
 /*
 * Hardware configurations
 */
+#define SSD1306_CONTRAST_VALUE					0x7F
 #define SSD1306_MUX_RATIO_VALUE					0x3F
 #define SSD1306_DISP_OFFSET_VALUE				0x00
 #define SSD1306_COM_HW_CONFIG_VALUE			0x12
@@ -367,19 +368,17 @@ void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data);
 void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t *data, uint16_t count);
 
 /**
- * @brief  Writes a command to the ssd1306 - this function blocks while sending data
- * @param  SPI_HandleTypeDef* pSPI_periph - pointer to handle for SPI peripheral
+ * @brief  Writes a 8-bit command to the ssd1306 - this function blocks while sending data
  * @param  uint8_t* pTxBuffer - pointer to the data buffer
  * @param  uint8_t len - length of data to be sent
  */
-void ssd1306_SPI_WriteCmd(SPI_HandleTypeDef* pSPI_periph, uint8_t* pTxBuffer, uint16_t len);
+void ssd1306_SPI_WriteCmd(uint8_t command);
 
 /**
  * @brief  Fills the display data buffer with new screen using DMA to transfer (length is size of SSD1306 buffer defined in ssd1306.c)
- * @param  SPI_HandleTypeDef* pSPI_periph - pointer to handle for SPI peripheral
  * @param  uint8_t* pTxBuffer - pointer to the data buffer
  */
-void ssd1306_SPI_WriteDisp(SPI_HandleTypeDef* pSPI_periph, uint8_t* pTxBuffer);
+void ssd1306_SPI_WriteDisp(uint8_t* pTxBuffer);
 
 
 /**

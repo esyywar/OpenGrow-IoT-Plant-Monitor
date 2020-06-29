@@ -1600,12 +1600,12 @@ Section Cross References
     ssd1306.o(i.SSD1306_Fill) refers to memseta.o(.text) for __aeabi_memset
     ssd1306.o(i.SSD1306_Fill) refers to ssd1306.o(.bss) for SSD1306_Buffer
     ssd1306.o(i.SSD1306_GotoXY) refers to ssd1306.o(.data) for SSD1306
-    ssd1306.o(i.SSD1306_Init) refers to ssd1306.o(i.ssd1306_I2C_Init) for ssd1306_I2C_Init
-    ssd1306.o(i.SSD1306_Init) refers to stm32f4xx_hal_i2c.o(i.HAL_I2C_IsDeviceReady) for HAL_I2C_IsDeviceReady
-    ssd1306.o(i.SSD1306_Init) refers to ssd1306.o(i.ssd1306_I2C_Write) for ssd1306_I2C_Write
+    ssd1306.o(i.SSD1306_Init) refers to stm32f4xx_hal_spi.o(i.HAL_SPI_GetState) for HAL_SPI_GetState
+    ssd1306.o(i.SSD1306_Init) refers to ssd1306.o(i.ssd1306_SPI_WriteCmd) for ssd1306_SPI_WriteCmd
     ssd1306.o(i.SSD1306_Init) refers to ssd1306.o(i.SSD1306_Fill) for SSD1306_Fill
     ssd1306.o(i.SSD1306_Init) refers to ssd1306.o(i.SSD1306_UpdateScreen) for SSD1306_UpdateScreen
-    ssd1306.o(i.SSD1306_Init) refers to main.o(.bss) for I2c1_espComm
+    ssd1306.o(i.SSD1306_Init) refers to stm32f4xx_hal.o(i.HAL_Delay) for HAL_Delay
+    ssd1306.o(i.SSD1306_Init) refers to main.o(.bss) for Spi1_oledWrite
     ssd1306.o(i.SSD1306_Init) refers to ssd1306.o(.data) for SSD1306
     ssd1306.o(i.SSD1306_InvertDisplay) refers to ssd1306.o(i.ssd1306_I2C_Write) for ssd1306_I2C_Write
     ssd1306.o(i.SSD1306_OFF) refers to ssd1306.o(i.ssd1306_I2C_Write) for ssd1306_I2C_Write
@@ -1628,7 +1628,9 @@ Section Cross References
     ssd1306.o(i.ssd1306_I2C_WriteMulti) refers to stm32f4xx_hal_i2c.o(i.HAL_I2C_Master_Transmit) for HAL_I2C_Master_Transmit
     ssd1306.o(i.ssd1306_I2C_WriteMulti) refers to main.o(.bss) for I2c1_espComm
     ssd1306.o(i.ssd1306_SPI_WriteCmd) refers to stm32f4xx_hal_spi.o(i.HAL_SPI_Transmit) for HAL_SPI_Transmit
+    ssd1306.o(i.ssd1306_SPI_WriteCmd) refers to main.o(.bss) for Spi1_oledWrite
     ssd1306.o(i.ssd1306_SPI_WriteDisp) refers to stm32f4xx_hal_spi.o(i.HAL_SPI_Transmit_DMA) for HAL_SPI_Transmit_DMA
+    ssd1306.o(i.ssd1306_SPI_WriteDisp) refers to main.o(.bss) for Spi1_oledWrite
     entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry10a.o(.ARM.Collect$$$$0000000D) for __rt_final_cpp
     entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry11a.o(.ARM.Collect$$$$0000000F) for __rt_final_exit
     entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry7b.o(.ARM.Collect$$$$00000008) for _main_clock
@@ -2660,7 +2662,7 @@ Removing Unused input sections from the image.
     Removing ssd1306.o(i.SSD1306_DrawTriangle), (64 bytes).
     Removing ssd1306.o(i.SSD1306_Fill), (32 bytes).
     Removing ssd1306.o(i.SSD1306_GotoXY), (12 bytes).
-    Removing ssd1306.o(i.SSD1306_Init), (364 bytes).
+    Removing ssd1306.o(i.SSD1306_Init), (172 bytes).
     Removing ssd1306.o(i.SSD1306_InvertDisplay), (30 bytes).
     Removing ssd1306.o(i.SSD1306_OFF), (34 bytes).
     Removing ssd1306.o(i.SSD1306_ON), (34 bytes).
@@ -2673,11 +2675,10 @@ Removing Unused input sections from the image.
     Removing ssd1306.o(i.SSD1306_Stopscroll), (14 bytes).
     Removing ssd1306.o(i.SSD1306_ToggleInvert), (52 bytes).
     Removing ssd1306.o(i.SSD1306_UpdateScreen), (72 bytes).
-    Removing ssd1306.o(i.ssd1306_I2C_Init), (16 bytes).
     Removing ssd1306.o(i.ssd1306_I2C_Write), (40 bytes).
     Removing ssd1306.o(i.ssd1306_I2C_WriteMulti), (68 bytes).
     Removing ssd1306.o(i.ssd1306_SPI_WriteCmd), (24 bytes).
-    Removing ssd1306.o(i.ssd1306_SPI_WriteDisp), (20 bytes).
+    Removing ssd1306.o(i.ssd1306_SPI_WriteDisp), (24 bytes).
     Removing ssd1306.o(.bss), (512 bytes).
     Removing ssd1306.o(.data), (8 bytes).
     Removing dadd.o(.text), (334 bytes).
@@ -2687,7 +2688,7 @@ Removing Unused input sections from the image.
     Removing cdrcmple.o(.text), (48 bytes).
     Removing depilogue.o(.text), (186 bytes).
 
-787 unused section(s) (total 90182 bytes) removed from the image.
+786 unused section(s) (total 89978 bytes) removed from the image.
 
 ==============================================================================
 
@@ -3547,27 +3548,27 @@ Memory Map of the image
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x08000000   0x08000000   0x000001c4   Data   RO            3    RESET               startup_stm32f446xx.o
-    0x080001c4   0x080001c4   0x00000000   Code   RO         6144  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x080001c4   0x080001c4   0x00000004   Code   RO         6420    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x080001c8   0x080001c8   0x00000004   Code   RO         6423    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x080001cc   0x080001cc   0x00000000   Code   RO         6425    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x080001cc   0x080001cc   0x00000000   Code   RO         6427    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x080001cc   0x080001cc   0x00000008   Code   RO         6428    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x080001d4   0x080001d4   0x00000000   Code   RO         6430    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x080001d4   0x080001d4   0x00000000   Code   RO         6432    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x080001d4   0x080001d4   0x00000004   Code   RO         6421    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x080001c4   0x080001c4   0x00000000   Code   RO         6138  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x080001c4   0x080001c4   0x00000004   Code   RO         6414    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x080001c8   0x080001c8   0x00000004   Code   RO         6417    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x080001cc   0x080001cc   0x00000000   Code   RO         6419    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x080001cc   0x080001cc   0x00000000   Code   RO         6421    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x080001cc   0x080001cc   0x00000008   Code   RO         6422    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x080001d4   0x080001d4   0x00000000   Code   RO         6424    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x080001d4   0x080001d4   0x00000000   Code   RO         6426    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x080001d4   0x080001d4   0x00000004   Code   RO         6415    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
     0x080001d8   0x080001d8   0x000000be   Code   RO         5834    .emb_text           port.o
     0x08000296   0x08000296   0x00000002   PAD
     0x08000298   0x08000298   0x00000024   Code   RO            4    .text               startup_stm32f446xx.o
-    0x080002bc   0x080002bc   0x00000062   Code   RO         6147    .text               mc_w.l(uldiv.o)
-    0x0800031e   0x0800031e   0x00000024   Code   RO         6149    .text               mc_w.l(memcpya.o)
-    0x08000342   0x08000342   0x00000024   Code   RO         6153    .text               mc_w.l(memseta.o)
-    0x08000366   0x08000366   0x0000000e   Code   RO         6155    .text               mc_w.l(strlen.o)
-    0x08000374   0x08000374   0x0000002c   Code   RO         6437    .text               mc_w.l(uidiv.o)
-    0x080003a0   0x080003a0   0x0000001e   Code   RO         6439    .text               mc_w.l(llshl.o)
-    0x080003be   0x080003be   0x00000020   Code   RO         6441    .text               mc_w.l(llushr.o)
+    0x080002bc   0x080002bc   0x00000062   Code   RO         6141    .text               mc_w.l(uldiv.o)
+    0x0800031e   0x0800031e   0x00000024   Code   RO         6143    .text               mc_w.l(memcpya.o)
+    0x08000342   0x08000342   0x00000024   Code   RO         6147    .text               mc_w.l(memseta.o)
+    0x08000366   0x08000366   0x0000000e   Code   RO         6149    .text               mc_w.l(strlen.o)
+    0x08000374   0x08000374   0x0000002c   Code   RO         6431    .text               mc_w.l(uidiv.o)
+    0x080003a0   0x080003a0   0x0000001e   Code   RO         6433    .text               mc_w.l(llshl.o)
+    0x080003be   0x080003be   0x00000020   Code   RO         6435    .text               mc_w.l(llushr.o)
     0x080003de   0x080003de   0x00000002   PAD
-    0x080003e0   0x080003e0   0x00000024   Code   RO         6454    .text               mc_w.l(init.o)
+    0x080003e0   0x080003e0   0x00000024   Code   RO         6448    .text               mc_w.l(init.o)
     0x08000404   0x08000404   0x0000007e   Code   RO          524    i.ADC_DMAConvCplt   stm32f4xx_hal_adc.o
     0x08000482   0x08000482   0x0000001a   Code   RO          525    i.ADC_DMAError      stm32f4xx_hal_adc.o
     0x0800049c   0x0800049c   0x0000000e   Code   RO          526    i.ADC_DMAHalfConvCplt  stm32f4xx_hal_adc.o
@@ -3711,17 +3712,17 @@ Memory Map of the image
     0x08004064   0x08004064   0x00000068   Code   RO         3904    i.UART_Transmit_IT  stm32f4xx_hal_uart.o
     0x080040cc   0x080040cc   0x00000010   Code   RO          324    i.USART2_IRQHandler  stm32f4xx_it.o
     0x080040dc   0x080040dc   0x00000004   Code   RO          325    i.UsageFault_Handler  stm32f4xx_it.o
-    0x080040e0   0x080040e0   0x00000028   Code   RO         6206    i.__0sprintf$1      mc_w.l(printf1.o)
+    0x080040e0   0x080040e0   0x00000028   Code   RO         6200    i.__0sprintf$1      mc_w.l(printf1.o)
     0x08004108   0x08004108   0x00000010   Code   RO         1713    i.__NVIC_GetPriorityGrouping  stm32f4xx_hal_cortex.o
     0x08004118   0x08004118   0x00000028   Code   RO         1714    i.__NVIC_SetPriority  stm32f4xx_hal_cortex.o
     0x08004140   0x08004140   0x00000006   Code   RO         5340    i.__get_BASEPRI     cmsis_os2.o
     0x08004146   0x08004146   0x00000006   Code   RO         5341    i.__get_IPSR        cmsis_os2.o
     0x0800414c   0x0800414c   0x00000006   Code   RO         5342    i.__get_PRIMASK     cmsis_os2.o
-    0x08004152   0x08004152   0x0000000e   Code   RO         6464    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x08004160   0x08004160   0x00000002   Code   RO         6465    i.__scatterload_null  mc_w.l(handlers.o)
-    0x08004162   0x08004162   0x0000000e   Code   RO         6466    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x08004170   0x08004170   0x00000154   Code   RO         6211    i._printf_core      mc_w.l(printf1.o)
-    0x080042c4   0x080042c4   0x0000000a   Code   RO         6213    i._sputc            mc_w.l(printf1.o)
+    0x08004152   0x08004152   0x0000000e   Code   RO         6458    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x08004160   0x08004160   0x00000002   Code   RO         6459    i.__scatterload_null  mc_w.l(handlers.o)
+    0x08004162   0x08004162   0x0000000e   Code   RO         6460    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x08004170   0x08004170   0x00000154   Code   RO         6205    i._printf_core      mc_w.l(printf1.o)
+    0x080042c4   0x080042c4   0x0000000a   Code   RO         6207    i._sputc            mc_w.l(printf1.o)
     0x080042ce   0x080042ce   0x00000002   PAD
     0x080042d0   0x080042d0   0x00000094   Code   RO           28    i.main              main.o
     0x08004364   0x08004364   0x00000038   Code   RO         5343    i.osDelay           cmsis_os2.o
@@ -3801,7 +3802,7 @@ Memory Map of the image
     0x080063a4   0x080063a4   0x00000008   Data   RO         1412    .constdata          stm32f4xx_hal_dma.o
     0x080063ac   0x080063ac   0x00000018   Data   RO         4184    .constdata          system_stm32f4xx.o
     0x080063c4   0x080063c4   0x00000034   Data   RO           31    .conststring        main.o
-    0x080063f8   0x080063f8   0x00000020   Data   RO         6462    Region$$Table       anon$$obj.o
+    0x080063f8   0x080063f8   0x00000020   Data   RO         6456    Region$$Table       anon$$obj.o
 
 
     Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08006418, Size: 0x00004fa8, Max: 0x00020000, ABSOLUTE)
@@ -3839,7 +3840,7 @@ Image component sizes
          0          0          0          0          0      18544   event_groups.o
        692         62          0         24      15360       5063   heap_4.o
        148          0          0          0          0       3854   list.o
-      1194        186        196         20        500     757371   main.o
+      1194        186        196         20        500     757367   main.o
       1014         92          0         12          0      12257   port.o
       1918         20          0          0         64      18108   queue.o
         36          8        452          0       1024        884   startup_stm32f446xx.o
@@ -3865,7 +3866,7 @@ Image component sizes
       1318        124          0         20        280      33655   timers.o
 
     ----------------------------------------------------------------------
-     24142       1380        712        156      20236    1041677   Object Totals
+     24142       1380        712        156      20236    1041673   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         30          0          0          3          4          0   (incl. Padding)
 
@@ -3912,8 +3913,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     24912       1406        712        156      20236    1022089   Grand Totals
-     24912       1406        712        156      20236    1022089   ELF Image Totals
+     24912       1406        712        156      20236    1022085   Grand Totals
+     24912       1406        712        156      20236    1022085   ELF Image Totals
      24912       1406        712        156          0          0   ROM Totals
 
 ==============================================================================

@@ -311,14 +311,6 @@ static void MX_I2C1_Init(void)
   */
 static void MX_SPI1_Init(void)
 {
-
-  /* USER CODE BEGIN SPI1_Init 0 */
-
-  /* USER CODE END SPI1_Init 0 */
-
-  /* USER CODE BEGIN SPI1_Init 1 */
-
-  /* USER CODE END SPI1_Init 1 */
   /* SPI1 parameter configuration*/
   Spi1_oledWrite.Instance = SPI1;
   Spi1_oledWrite.Init.Mode = SPI_MODE_MASTER;

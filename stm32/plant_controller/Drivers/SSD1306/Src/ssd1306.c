@@ -22,21 +22,43 @@
  */
 #include "ssd1306.h"
 
+/*******************************************************
+********** Private variables
+*******************************************************/
+
 /* Handle for comm perpipheral */
 extern I2C_HandleTypeDef I2c1_espComm;
 
-/* Write command */
-#define SSD1306_WRITECOMMAND(command)      ssd1306_I2C_Write(SSD1306_I2C_ADDR, 0x00, (command))
-/* Write data */
-#define SSD1306_WRITEDATA(data)            ssd1306_I2C_Write(SSD1306_I2C_ADDR, 0x40, (data))
-/* Absolute value */
-#define ABS(x)   ((x) > 0 ? (x) : -(x))
+/* Handle for SPI communication peripheral */
+extern SPI_HandleTypeDef Spi1_oledWrite;
 
 /* SSD1306 data buffer */
 static uint8_t SSD1306_Buffer[SSD1306_WIDTH * SSD1306_HEIGHT / 8];
 
 /* Private variable */
 static SSD1306_t SSD1306;
+
+
+/*******************************************************
+********** Macros
+*******************************************************/
+
+/* Write command I2C */
+#define SSD1306_WRITECOMMAND(command)      	ssd1306_I2C_Write(SSD1306_I2C_ADDR, 0x00, (command))
+/* Write data I2C */
+#define SSD1306_WRITEDATA(data)            	ssd1306_I2C_Write(SSD1306_I2C_ADDR, 0x40, (data))
+
+/* Write command SPI */
+#define SSD1306_SPI_WRITE_CMD(command)								ssd1306_SPI_WriteCmd(command)
+
+/* Write data SPI */
+#define SSD1306_SPI_WRITE_DATA(data)									ssd1306_SPI_WriteDisp(data)
+
+
+/* Absolute value */
+#define ABS(x)   ((x) > 0 ? (x) : -(x))
+
+
 
 #define SSD1306_SPI_TIMEOUT														1000
 
@@ -85,59 +107,70 @@ void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16
 }
 
 uint8_t SSD1306_Init(void) {
-
-	/* Init I2C */
-	ssd1306_I2C_Init();
-	
-	/* Check if LCD connected to I2C */
-	if (HAL_I2C_IsDeviceReady(&I2c1_espComm, SSD1306_I2C_ADDR, 1, 20000) != HAL_OK) {
-		/* Return false */
+	/* Check that SPI peripheral is ready */
+	if (HAL_SPI_GetState(&Spi1_oledWrite) != HAL_SPI_STATE_READY)
+	{
 		return 0;
 	}
 	
-	/* A little delay */
-	uint32_t p = 2500;
-	while(p>0)
-		p--;
+	/* 1. Send display off command */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_DISP_OFF);
 	
-	/* Init LCD */
-	SSD1306_WRITECOMMAND(0xAE); //display off
-	SSD1306_WRITECOMMAND(0x20); //Set Memory Addressing Mode   
-	SSD1306_WRITECOMMAND(0x10); //00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing Mode (RESET);11,Invalid
-	SSD1306_WRITECOMMAND(0xB0); //Set Page Start Address for Page Addressing Mode,0-7
-	SSD1306_WRITECOMMAND(0xC8); //Set COM Output Scan Direction
-	SSD1306_WRITECOMMAND(0x00); //---set low column address
-	SSD1306_WRITECOMMAND(0x10); //---set high column address
-	SSD1306_WRITECOMMAND(0x40); //--set start line address
-	SSD1306_WRITECOMMAND(0x81); //--set contrast control register
-	SSD1306_WRITECOMMAND(0xFF);
-	SSD1306_WRITECOMMAND(0xA1); //--set segment re-map 0 to 127
-	SSD1306_WRITECOMMAND(0xA6); //--set normal display
-	SSD1306_WRITECOMMAND(0xA8); //--set multiplex ratio(1 to 64)
-	SSD1306_WRITECOMMAND(0x3F); //
-	SSD1306_WRITECOMMAND(0xA4); //0xa4,Output follows RAM content;0xa5,Output ignores RAM content
-	SSD1306_WRITECOMMAND(0xD3); //-set display offset
-	SSD1306_WRITECOMMAND(0x00); //-not offset
-	SSD1306_WRITECOMMAND(0xD5); //--set display clock divide ratio/oscillator frequency
-	SSD1306_WRITECOMMAND(0xF0); //--set divide ratio
-	SSD1306_WRITECOMMAND(0xD9); //--set pre-charge period
-	SSD1306_WRITECOMMAND(0x22); //
-	SSD1306_WRITECOMMAND(0xDA); //--set com pins hardware configuration
-	SSD1306_WRITECOMMAND(0x12);
-	SSD1306_WRITECOMMAND(0xDB); //--set vcomh
-	SSD1306_WRITECOMMAND(0x20); //0x20,0.77xVcc
-	SSD1306_WRITECOMMAND(0x8D); //--set DC-DC enable
-	SSD1306_WRITECOMMAND(0x14); //
-	SSD1306_WRITECOMMAND(0xAF); //--turn on SSD1306 panel
+	/* 2. Initialize display to desired operating mode */
 	
-
-	SSD1306_WRITECOMMAND(SSD1306_DEACTIVATE_SCROLL);
-
-	/* Clear screen */
+	/* 2a. Set MUX ratio */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_MUX_RATIO_SET);
+	SSD1306_SPI_WRITE_CMD(SSD1306_MUX_RATIO_VALUE);
+	
+	/* 2b. Set display offset */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_DISP_OFFSET_SET);
+	SSD1306_SPI_WRITE_CMD(SSD1306_DISP_OFFSET_VALUE);
+	
+	/* 2c. Set display start line */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_START_LINE);
+	
+	/* 2d. Set segment remap */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_SEG_REMAP);
+	
+	/* 2e. Set COM output scan direction */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_COM_SCAN_DIR);
+	
+	/* 2f. COM pins hardware configuration */
+	SSD1306_SPI_WRITE_CMD(SSD1306_COM_HW_CONFIG_SET);
+	SSD1306_SPI_WRITE_CMD(SSD1306_COM_HW_CONFIG_VALUE);
+	
+	/* 2g. Set contrast value */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_CONTRAST_CTRL);
+	SSD1306_SPI_WRITE_CMD(SSD1306_CONTRAST_VALUE);
+	
+	/* 2h. Load display from RAM */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_UPDATE);
+	
+	/* 2i. Set display normal mode (non-inverted colour) */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_NORM_DISP);
+	
+	/* 2j. Set oscillator frequency */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_SET);
+	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_MAX);
+	
+	/* 2k. Enable charge pump to power display */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_CHRG_PRD_SET);
+	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_CHRG_PRD_VALUE);
+	
+	/* 3. Clear the screen */
 	SSD1306_Fill(SSD1306_COLOR_BLACK);
-	
-	/* Update screen */
 	SSD1306_UpdateScreen();
+	
+	/* 4. Drive VBAT low -> gives power to display */
+	// TODO
+	
+	/* 5. Wait 100 ms */
+	HAL_Delay(100);
+	
+	/* 6. Send display-on command */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_DISP_ON);
+
+	/* 7. Initialize the SSD1306 struct */
 	
 	/* Set default values */
 	SSD1306.CurrentX = 0;
@@ -546,22 +579,6 @@ void SSD1306_OFF(void) {
 ****** SSD1306 Driver Functions API - Data Communication
 **************************************************************/
 
-/*
-* I2C communication drivers
-*/
-
-void ssd1306_I2C_Init() {
-	//MX_I2C1_Init();
-	uint32_t p = 250000;
-	while(p>0)
-		p--;
-	//HAL_I2C_DeInit(&I2c1_espComm);
-	//p = 250000;
-	//while(p>0)
-	//	p--;
-	//MX_I2C1_Init();
-}
-
 void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t* data, uint16_t count) {
 	uint8_t dt[256];
 	dt[0] = reg;
@@ -588,15 +605,15 @@ void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data) {
 */
 
 /* Blocking spi write function with 1 second timeout */
-void ssd1306_SPI_WriteCmd(SPI_HandleTypeDef* pSPI_periph, uint8_t* pTxBuffer, uint16_t len) 
+void ssd1306_SPI_WriteCmd(uint8_t command)
 {
-	HAL_SPI_Transmit(pSPI_periph, pTxBuffer, len, SSD1306_SPI_TIMEOUT);
+	HAL_SPI_Transmit(&Spi1_oledWrite, &command, 1, SSD1306_SPI_TIMEOUT);
 }
 
 
-void ssd1306_SPI_WriteDisp(SPI_HandleTypeDef* pSPI_periph, uint8_t* pTxBuffer)
+void ssd1306_SPI_WriteDisp(uint8_t* pTxBuffer)
 {
-	HAL_SPI_Transmit_DMA(pSPI_periph, pTxBuffer, sizeof(SSD1306_Buffer));
+	HAL_SPI_Transmit_DMA(&Spi1_oledWrite, pTxBuffer, sizeof(SSD1306_Buffer));
 }
 
 void SSD1306_ScrollRight(uint8_t start_row, uint8_t end_row)
