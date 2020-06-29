@@ -106,6 +106,13 @@ void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16
     }
 }
 
+/**
+ * @brief  Initializes SSD1306 OLED
+ * @param  None
+ * @retval Initialization status:
+ *           - 0: OLED was not detected on I2C port
+ *           - > 0: OLED initialized OK and ready to use
+ */
 uint8_t SSD1306_Init(void) {
 	/* Check that SPI peripheral is ready */
 	if (HAL_SPI_GetState(&Spi1_oledWrite) != HAL_SPI_STATE_READY)
@@ -118,42 +125,46 @@ uint8_t SSD1306_Init(void) {
 	
 	/* 2. Initialize display to desired operating mode */
 	
-	/* 2a. Set MUX ratio */
+	/* 2a. Set addressing mode (horizontal address mode) */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_ADDR_MODE_SET);
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_ADDR_MODE_HORZ);
+	
+	/* 2b. Set MUX ratio */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_MUX_RATIO_SET);
 	SSD1306_SPI_WRITE_CMD(SSD1306_MUX_RATIO_VALUE);
 	
-	/* 2b. Set display offset */
+	/* 2c. Set display offset */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_DISP_OFFSET_SET);
 	SSD1306_SPI_WRITE_CMD(SSD1306_DISP_OFFSET_VALUE);
 	
-	/* 2c. Set display start line */
+	/* 2d. Set display start line */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_START_LINE);
 	
-	/* 2d. Set segment remap */
+	/* 2e. Set segment remap */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_SEG_REMAP);
 	
-	/* 2e. Set COM output scan direction */
+	/* 2f. Set COM output scan direction */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_COM_SCAN_DIR);
 	
-	/* 2f. COM pins hardware configuration */
+	/* 2g. COM pins hardware configuration */
 	SSD1306_SPI_WRITE_CMD(SSD1306_COM_HW_CONFIG_SET);
 	SSD1306_SPI_WRITE_CMD(SSD1306_COM_HW_CONFIG_VALUE);
 	
-	/* 2g. Set contrast value */
+	/* 2h. Set contrast value */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_CONTRAST_CTRL);
 	SSD1306_SPI_WRITE_CMD(SSD1306_CONTRAST_VALUE);
 	
-	/* 2h. Load display from RAM */
+	/* 2i. Load display from RAM */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_UPDATE);
 	
-	/* 2i. Set display normal mode (non-inverted colour) */
+	/* 2j. Set display normal mode (non-inverted colour) */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_NORM_DISP);
 	
-	/* 2j. Set oscillator frequency */
+	/* 2k. Set oscillator frequency */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_SET);
 	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_MAX);
 	
-	/* 2k. Enable charge pump to power display */
+	/* 2l. Enable charge pump to power display */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_CHRG_PRD_SET);
 	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_CHRG_PRD_VALUE);
 	
@@ -183,19 +194,18 @@ uint8_t SSD1306_Init(void) {
 	return 1;
 }
 
+/** 
+ * @brief  Updates buffer from internal RAM to OLED with SSD1306 in horizontal addressing mode
+ * @note   This function must be called each time you do some changes to OLED, to update buffer from RAM to OLED
+ */
 void SSD1306_UpdateScreen(void) {
-	uint8_t m;
-	
-	for (m = 0; m < 8; m++) {
-		SSD1306_WRITECOMMAND(0xB0 + m);
-		SSD1306_WRITECOMMAND(0x00);
-		SSD1306_WRITECOMMAND(0x10);
-		
-		/* Write multi data */
-		ssd1306_I2C_WriteMulti(SSD1306_I2C_ADDR, 0x40, &SSD1306_Buffer[SSD1306_WIDTH * m], SSD1306_WIDTH);
-	}
+	SSD1306_SPI_WRITE_DATA(SSD1306_Buffer);
 }
 
+/**
+ * @brief  Toggles pixels invertion inside internal RAM
+ * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
+ */
 void SSD1306_ToggleInvert(void) {
 	uint16_t i;
 	
@@ -208,16 +218,25 @@ void SSD1306_ToggleInvert(void) {
 	}
 }
 
+/** 
+ * @brief  Fills entire OLED buffer with desired color
+ * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
+ * @param  Color: Color to be used for screen fill. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
+ */
 void SSD1306_Fill(SSD1306_COLOR_t color) {
 	/* Set memory */
 	memset(SSD1306_Buffer, (color == SSD1306_COLOR_BLACK) ? 0x00 : 0xFF, sizeof(SSD1306_Buffer));
 }
 
+/**
+ * @brief  Writes pixel value to the data buffer - configured to work with SSD1306 in horizontal or page addressing mode
+ * @note   @ref SSD1306_UpdateScreen() must called after that in order to see updated LCD screen
+ * @param  x: X location. This parameter can be a value between 0 and SSD1306_WIDTH - 1
+ * @param  y: Y location. This parameter can be a value between 0 and SSD1306_HEIGHT - 1
+ * @param  color: Color to be used for screen fill. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
+ */
 void SSD1306_DrawPixel(uint16_t x, uint16_t y, SSD1306_COLOR_t color) {
-	if (
-		x >= SSD1306_WIDTH ||
-		y >= SSD1306_HEIGHT
-	) {
+	if (x >= SSD1306_WIDTH ||	y >= SSD1306_HEIGHT) {
 		/* Error */
 		return;
 	}
@@ -235,12 +254,25 @@ void SSD1306_DrawPixel(uint16_t x, uint16_t y, SSD1306_COLOR_t color) {
 	}
 }
 
+/**
+ * @brief  Sets cursor pointer to desired location for strings
+ * @param  x: X location. This parameter can be a value between 0 and SSD1306_WIDTH - 1
+ * @param  y: Y location. This parameter can be a value between 0 and SSD1306_HEIGHT - 1
+ */
 void SSD1306_GotoXY(uint16_t x, uint16_t y) {
 	/* Set write pointers */
 	SSD1306.CurrentX = x;
 	SSD1306.CurrentY = y;
 }
 
+/**
+ * @brief  Puts character to internal RAM
+ * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
+ * @param  ch: Character to be written
+ * @param  *Font: Pointer to @ref FontDef_t structure with used font
+ * @param  color: Color used for drawing. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
+ * @retval Character written
+ */
 char SSD1306_Putc(char ch, FontDef_t* Font, SSD1306_COLOR_t color) {
 	uint32_t i, b, j;
 	
@@ -374,12 +406,19 @@ void SSD1306_DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, SSD130
 	}
 }
 
+
+/**
+ * @brief  Draws rectangle on OLED
+ * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
+ * @param  x: Top left X start point. Valid input is 0 to SSD1306_WIDTH - 1
+ * @param  y: Top left Y start point. Valid input is 0 to SSD1306_HEIGHT - 1
+ * @param  w: Rectangle width in units of pixels
+ * @param  h: Rectangle height in units of pixels
+ * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
+ */
 void SSD1306_DrawRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, SSD1306_COLOR_t c) {
 	/* Check input parameters */
-	if (
-		x >= SSD1306_WIDTH ||
-		y >= SSD1306_HEIGHT
-	) {
+	if (x >= SSD1306_WIDTH ||	y >= SSD1306_HEIGHT) {
 		/* Return error */
 		return;
 	}
@@ -399,6 +438,17 @@ void SSD1306_DrawRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, SSD13
 	SSD1306_DrawLine(x + w, y, x + w, y + h, c); /* Right line */
 }
 
+
+/**
+ * @brief  Draws filled rectangle on OLED
+ * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
+ * @param  x: Top left X start point. Valid input is 0 to SSD1306_WIDTH - 1
+ * @param  y: Top left Y start point. Valid input is 0 to SSD1306_HEIGHT - 1
+ * @param  w: Rectangle width in units of pixels
+ * @param  h: Rectangle height in units of pixels
+ * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
+ * @retval None
+ */
 void SSD1306_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, SSD1306_COLOR_t c) {
 	uint8_t i;
 	
@@ -426,6 +476,17 @@ void SSD1306_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h,
 	}
 }
 
+/**
+ * @brief  Draws triangle on LCD
+ * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
+ * @param  x1: First coordinate X location. Valid input is 0 to SSD1306_WIDTH - 1
+ * @param  y1: First coordinate Y location. Valid input is 0 to SSD1306_HEIGHT - 1
+ * @param  x2: Second coordinate X location. Valid input is 0 to SSD1306_WIDTH - 1
+ * @param  y2: Second coordinate Y location. Valid input is 0 to SSD1306_HEIGHT - 1
+ * @param  x3: Third coordinate X location. Valid input is 0 to SSD1306_WIDTH - 1
+ * @param  y3: Third coordinate Y location. Valid input is 0 to SSD1306_HEIGHT - 1
+ * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
+ */
 void SSD1306_DrawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, SSD1306_COLOR_t color) {
 	/* Draw lines */
 	SSD1306_DrawLine(x1, y1, x2, y2, color);
@@ -434,6 +495,17 @@ void SSD1306_DrawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, ui
 }
 
 
+/**
+ * @brief  Draws filled triangle on OLED
+ * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
+ * @param  x1: First coordinate X location. Valid input is 0 to SSD1306_WIDTH - 1
+ * @param  y1: First coordinate Y location. Valid input is 0 to SSD1306_HEIGHT - 1
+ * @param  x2: Second coordinate X location. Valid input is 0 to SSD1306_WIDTH - 1
+ * @param  y2: Second coordinate Y location. Valid input is 0 to SSD1306_HEIGHT - 1
+ * @param  x3: Third coordinate X location. Valid input is 0 to SSD1306_WIDTH - 1
+ * @param  y3: Third coordinate Y location. Valid input is 0 to SSD1306_HEIGHT - 1
+ * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
+ */
 void SSD1306_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, SSD1306_COLOR_t color) {
 	int16_t deltax = 0, deltay = 0, x = 0, y = 0, xinc1 = 0, xinc2 = 0, 
 	yinc1 = 0, yinc2 = 0, den = 0, num = 0, numadd = 0, numpixels = 0, 
@@ -490,6 +562,15 @@ void SSD1306_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t 
 	}
 }
 
+
+/**
+ * @brief  Draws circle to STM buffer
+ * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
+ * @param  x: X location for center of circle. Valid input is 0 to SSD1306_WIDTH - 1
+ * @param  y: Y location for center of circle. Valid input is 0 to SSD1306_HEIGHT - 1
+ * @param  r: Circle radius in units of pixels
+ * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
+ */
 void SSD1306_DrawCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t c) {
 	int16_t f = 1 - r;
 	int16_t ddF_x = 1;
@@ -524,6 +605,15 @@ void SSD1306_DrawCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t c) {
     }
 }
 
+
+/**
+ * @brief  Draws filled circle to STM buffer
+ * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
+ * @param  x: X location for center of circle. Valid input is 0 to SSD1306_WIDTH - 1
+ * @param  y: Y location for center of circle. Valid input is 0 to SSD1306_HEIGHT - 1
+ * @param  r: Circle radius in units of pixels
+ * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
+ */
 void SSD1306_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t c) {
 	int16_t f = 1 - r;
 	int16_t ddF_x = 1;
