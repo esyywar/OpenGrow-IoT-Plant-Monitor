@@ -39,16 +39,21 @@ extern C {
  *
  * Default pinout
  *
-SSD1306    |STM32F10x    |DESCRIPTION
-
-VCC        |3.3V         |
-GND        |GND          |
-SCK        |PA5          |Serial clock line
-MOSI       |PA7          |Data line (stm32 -> SSD1306)
-CS         |PA4          |Chip select (active low)
+ * SSD1306    |STM32F10x    |DESCRIPTION
+ *
+ * VCC        |3.3V         |
+ * GND        |GND          |
+ * SCK        |PA5          |Serial clock line
+ * MOSI       |PA7          |Data line (stm32 -> SSD1306)
+ * CS         |PA4          |Chip select (active low)
+ * D/C        |PC8          |Data/Command buffer access select
+ * VDDC       |PC6          |Power to OLED logic - active low
+ * VBATC      |PC5          |Power to OLED display - active low
  */
 
 #include "stm32f4xx_hal.h"
+#include "stm32f4xx_hal_gpio.h"
+#include "stm32f4xx_hal_spi.h"
 
 #include "fonts.h"
 
@@ -76,12 +81,41 @@ CS         |PA4          |Chip select (active low)
 
 
 /*******************************************************
+********** Digilent PMOS OLED VBATC, VDDC Controls
+*******************************************************/
+
+/*
+* D/C -------- GPIO Port C, Pin 8
+* VDDC ------- GPIO Port C, Pin 6
+* VBATC ------ GPIO Port C, Pin 5
+*/
+
+/* Must toggle to access OLED command or data buffer */
+#define SSD1306_CMD_ACCESS()						HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_RESET)
+#define SSD1306_DISP_ACCESS()						HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_SET)
+
+/* Toggling power to the logic of OLED */
+#define SSD1306_LOGIC_POWER_EN()				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_RESET)
+#define SSD1306_LOGIC_POWER_DI()				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_SET)
+
+/* Toggling power to display of OLED */
+#define SSD1306_DISP_POWER_EN()					HAL_GPIO_WritePin(GPIOC, GPIO_PIN_5, GPIO_PIN_RESET)
+#define SSD1306_DISP_POWER_DI()					HAL_GPIO_WritePin(GPIOC, GPIO_PIN_5, GPIO_PIN_SET)
+
+
+/*******************************************************
 ********** SSD1306 Command Macros
 *******************************************************/
 
 /*
 * Fundamental commands
 */
+#define SSD1306_DISABLE									0
+#define SSD1306_ENABLE									1
+
+#define SSD1306_INIT_FAILED							0
+#define SSD1306_INIT_SUCCESS						1
+
 #define SSD1306_CMD_CONTRAST_CTRL				0x81
 #define SSD1306_CMD_UPDATE							0xA4
 #define SSD1306_CMD_ALL_ON							0xA5
@@ -95,6 +129,7 @@ CS         |PA4          |Chip select (active low)
 */
 #define SSD1306_CMD_CHRG_PUMP_SET				0x8D
 #define SSD1306_CMD_CHRG_PUMP_EN				0x14
+#define SSD1306_CMD_CHRG_PUMP_DI				0x10
 
 /* 
 * Addressing mode 
@@ -124,6 +159,20 @@ CS         |PA4          |Chip select (active low)
 * Power management 
 */
 #define SSD1306_CLK_VCOM_SET						0xDB
+
+
+/*******************************************************
+********** SSD1306 Command Macros
+*******************************************************/
+
+#define SSD1306_DEACTIVATE_SCROLL                    	0x2E
+#define SSD1306_ACTIVATE_SCROLL                      	0x2F
+
+#define SSD1306_RIGHT_HORIZONTAL_SCROLL              	0x26
+#define SSD1306_LEFT_HORIZONTAL_SCROLL               	0x27
+#define SSD1306_VERTICAL_AND_RIGHT_HORIZONTAL_SCROLL 	0x29
+#define SSD1306_VERTICAL_AND_LEFT_HORIZONTAL_SCROLL  	0x2A
+#define SSD1306_SET_VERTICAL_SCROLL_AREA             	0xA3
 
 
 /*******************************************************
@@ -157,7 +206,7 @@ CS         |PA4          |Chip select (active low)
 
 
 /*******************************************************
-********** SSD1306 Config Macros (User set)
+********** SSD1306 Config Structures
 *******************************************************/
 
 /**
@@ -349,7 +398,6 @@ void SSD1306_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t
 
 /**
  * @brief  Initializes SSD1306 LCD
- * @param  None
  * @retval Initialization status:
  *           - 0: LCD was not detected on I2C port
  *           - > 0: LCD initialized OK and ready to use
@@ -362,7 +410,6 @@ void ssd1306_I2C_Init(void);
  * @param  address: 7 bit slave address, left aligned, bits 7:1 are used, LSB bit is not used
  * @param  reg: register to write to
  * @param  data: data to be written
- * @retval None
  */
 void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data);
 
@@ -373,7 +420,6 @@ void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data);
  * @param  reg: register to write to
  * @param  *data: pointer to data array to write it to slave
  * @param  count: how many bytes will be written
- * @retval None
  */
 void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t *data, uint16_t count);
 
@@ -388,7 +434,7 @@ void ssd1306_SPI_WriteCmd(uint8_t command);
  * @brief  Fills the display data buffer with new screen using DMA to transfer (length is size of SSD1306 buffer defined in ssd1306.c)
  * @param  uint8_t* pTxBuffer - pointer to the data buffer
  */
-void ssd1306_SPI_WriteDisp(uint8_t* pTxBuffer);
+uint8_t ssd1306_SPI_WriteDisp(uint8_t* pTxBuffer);
 
 
 /**
@@ -421,7 +467,8 @@ void SSD1306_Stopscroll(void);
 /*************************************************************
 ****** SSD1306 Driver Functions API - Colour Inversion
 **************************************************************/
-void SSD1306_InvertDisplay (int i);
+
+void SSD1306_InvertDisplay (uint8_t EnOrDi);
 
 
 /* C++ detection */

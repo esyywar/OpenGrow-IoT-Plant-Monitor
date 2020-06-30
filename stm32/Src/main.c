@@ -40,6 +40,9 @@ DMA_HandleTypeDef DMA2_adc_pipe, DMA2_oled_pipe;
 /* Private variables */
 uint16_t moisture_sensors;
 
+/* Structure for SSD1306 handle */
+SSD1306_t SSD1306_OledDisp;
+
 /* Definitions for Update_OLED */
 osThreadId_t Update_OLEDHandle;
 const osThreadAttr_t Update_OLED_attributes = {
@@ -117,6 +120,12 @@ int main(void)
   MX_I2C1_Init();
 
 	DMA2_Init();
+	
+	/* Initialize OLED display */
+	if (SSD1306_Init() != SSD1306_INIT_SUCCESS)
+  {
+    Error_Handler();
+  }
 
   /* Init scheduler */
   osKernelInitialize();
@@ -537,10 +546,11 @@ static void DMA2_ADC1_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe)
 }
 
 static void DMA2_OLED_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_oled_pipe) {
-		// Implement oled finish transfer code
+	// Implement oled finish transfer code
+	SSD1306_OledDisp.state = SSD1306_STATE_READY;
 	
-		// TODO
-		// Release mutex / binary semaphore here
+	// TODO
+	// Release mutex / binary semaphore here
 }
 
 

@@ -32,21 +32,16 @@ extern I2C_HandleTypeDef I2c1_espComm;
 /* Handle for SPI communication peripheral */
 extern SPI_HandleTypeDef Spi1_oledWrite;
 
+/* This variable should be defined in main */
+extern SSD1306_t SSD1306_OledDisp;
+
 /* SSD1306 data buffer */
 static uint8_t SSD1306_Buffer[SSD1306_WIDTH * SSD1306_HEIGHT / 8];
-
-/* Private variable */
-static SSD1306_t SSD1306;
 
 
 /*******************************************************
 ********** Macros
 *******************************************************/
-
-/* Write command I2C */
-#define SSD1306_WRITECOMMAND(command)      	ssd1306_I2C_Write(SSD1306_I2C_ADDR, 0x00, (command))
-/* Write data I2C */
-#define SSD1306_WRITEDATA(data)            	ssd1306_I2C_Write(SSD1306_I2C_ADDR, 0x40, (data))
 
 /* Write command SPI */
 #define SSD1306_SPI_WRITE_CMD(command)								ssd1306_SPI_WriteCmd(command)
@@ -54,24 +49,10 @@ static SSD1306_t SSD1306;
 /* Write data SPI */
 #define SSD1306_SPI_WRITE_DATA(data)									ssd1306_SPI_WriteDisp(data)
 
+#define SSD1306_SPI_TIMEOUT														1000
 
 /* Absolute value */
 #define ABS(x)   ((x) > 0 ? (x) : -(x))
-
-
-
-#define SSD1306_SPI_TIMEOUT														1000
-
-#define SSD1306_RIGHT_HORIZONTAL_SCROLL              	0x26
-#define SSD1306_LEFT_HORIZONTAL_SCROLL               	0x27
-#define SSD1306_VERTICAL_AND_RIGHT_HORIZONTAL_SCROLL 	0x29
-#define SSD1306_VERTICAL_AND_LEFT_HORIZONTAL_SCROLL  	0x2A
-#define SSD1306_DEACTIVATE_SCROLL                    	0x2E // Stop scroll
-#define SSD1306_ACTIVATE_SCROLL                      	0x2F // Start scroll
-#define SSD1306_SET_VERTICAL_SCROLL_AREA             	0xA3 // Set scroll range
-
-#define SSD1306_NORMALDISPLAY       0xA6
-#define SSD1306_INVERTDISPLAY       0xA7
 
 
 /*********************************************************
@@ -117,89 +98,96 @@ uint8_t SSD1306_Init(void) {
 	/* Check that SPI peripheral is ready */
 	if (HAL_SPI_GetState(&Spi1_oledWrite) != HAL_SPI_STATE_READY)
 	{
-		return 0;
+		return SSD1306_INIT_FAILED;
 	}
 	
-	/* 1. Send display off command */
+	/* 1. Drive VDDC low to give power to logic control */
+	SSD1306_LOGIC_POWER_EN();
+	
+	/* 2. Send display off command */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_DISP_OFF);
 	
-	/* 2. Initialize display to desired operating mode */
+	/* 3. Initialize display to desired operating mode */
 	
-	/* 2a. Set addressing mode (horizontal address mode) */
+	/* 3a. Set addressing mode (horizontal address mode) */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_ADDR_MODE_SET);
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_ADDR_MODE_HORZ);
 	
-	/* 2b. Set MUX ratio */
+	/* 3b. Set MUX ratio */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_MUX_RATIO_SET);
 	SSD1306_SPI_WRITE_CMD(SSD1306_MUX_RATIO_VALUE);
 	
-	/* 2c. Set display offset */
+	/* 3c. Set display offset */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_DISP_OFFSET_SET);
 	SSD1306_SPI_WRITE_CMD(SSD1306_DISP_OFFSET_VALUE);
 	
-	/* 2d. Set display start line */
+	/* 3d. Set display start line */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_START_LINE);
 	
-	/* 2e. Set segment remap */
+	/* 3e. Set segment remap */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_SEG_REMAP);
 	
-	/* 2f. Set COM output scan direction */
+	/* 3f. Set COM output scan direction */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_COM_SCAN_DIR);
 	
-	/* 2g. COM pins hardware configuration */
+	/* 3g. COM pins hardware configuration */
 	SSD1306_SPI_WRITE_CMD(SSD1306_COM_HW_CONFIG_SET);
 	SSD1306_SPI_WRITE_CMD(SSD1306_COM_HW_CONFIG_VALUE);
 	
-	/* 2h. Set contrast value */
+	/* 3h. Set contrast value */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_CONTRAST_CTRL);
 	SSD1306_SPI_WRITE_CMD(SSD1306_CONTRAST_VALUE);
 	
-	/* 2i. Load display from RAM */
+	/* 3i. Load display from RAM */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_UPDATE);
 	
-	/* 2j. Set display normal mode (non-inverted colour) */
+	/* 3j. Set display normal mode (non-inverted colour) */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_NORM_DISP);
 	
-	/* 2k. Set oscillator frequency */
+	/* 3k. Set oscillator frequency */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_SET);
 	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_MAX);
 	
-	/* 2l. Enable charge pump to power display */
+	/* 3l. Enable charge pump to power display */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_CHRG_PRD_SET);
 	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_CHRG_PRD_VALUE);
 	
-	/* 3. Clear the screen */
+	/* 3m. Deactivate scrolling */
+		SSD1306_SPI_WRITE_CMD(SSD1306_DEACTIVATE_SCROLL);
+	
+	/* 4. Clear the screen */
 	SSD1306_Fill(SSD1306_COLOR_BLACK);
 	SSD1306_UpdateScreen();
 	
-	/* 4. Drive VBAT low -> gives power to display */
-	// TODO
+	/* 5. Drive VBAT low to give power to display */
+	SSD1306_DISP_POWER_EN();
 	
-	/* 5. Wait 100 ms */
+	/* 6. Wait 100 ms */
 	HAL_Delay(100);
 	
-	/* 6. Send display-on command */
+	/* 7. Send display-on command */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_DISP_ON);
 
-	/* 7. Initialize the SSD1306 struct */
+	/* 8. Initialize the SSD1306 struct */
 	
 	/* Set default values */
-	SSD1306.CurrentX = 0;
-	SSD1306.CurrentY = 0;
+	SSD1306_OledDisp.CurrentX = 0;
+	SSD1306_OledDisp.CurrentY = 0;
 	
 	/* Initialized OK */
-	SSD1306.Initialized = 1;
+	SSD1306_OledDisp.Initialized = 1;
 	
 	/* Return OK */
-	return 1;
+	return SSD1306_INIT_SUCCESS;
 }
 
 /** 
  * @brief  Updates buffer from internal RAM to OLED with SSD1306 in horizontal addressing mode
  * @note   This function must be called each time you do some changes to OLED, to update buffer from RAM to OLED
  */
-void SSD1306_UpdateScreen(void) {
-	SSD1306_SPI_WRITE_DATA(SSD1306_Buffer);
+void SSD1306_UpdateScreen(void) {	
+	/* Writing data to display buffer - non-blocking function with SPI and DMA */
+	while (SSD1306_SPI_WRITE_DATA(SSD1306_Buffer) != SSD1306_STATE_READY);
 }
 
 /**
@@ -210,7 +198,7 @@ void SSD1306_ToggleInvert(void) {
 	uint16_t i;
 	
 	/* Toggle invert */
-	SSD1306.Inverted = !SSD1306.Inverted;
+	SSD1306_OledDisp.Inverted = !SSD1306_OledDisp.Inverted;
 	
 	/* Do memory toggle */
 	for (i = 0; i < sizeof(SSD1306_Buffer); i++) {
@@ -242,7 +230,7 @@ void SSD1306_DrawPixel(uint16_t x, uint16_t y, SSD1306_COLOR_t color) {
 	}
 	
 	/* Check if pixels are inverted */
-	if (SSD1306.Inverted) {
+	if (SSD1306_OledDisp.Inverted) {
 		color = (SSD1306_COLOR_t)!color;
 	}
 	
@@ -261,8 +249,8 @@ void SSD1306_DrawPixel(uint16_t x, uint16_t y, SSD1306_COLOR_t color) {
  */
 void SSD1306_GotoXY(uint16_t x, uint16_t y) {
 	/* Set write pointers */
-	SSD1306.CurrentX = x;
-	SSD1306.CurrentY = y;
+	SSD1306_OledDisp.CurrentX = x;
+	SSD1306_OledDisp.CurrentY = y;
 }
 
 /**
@@ -278,8 +266,8 @@ char SSD1306_Putc(char ch, FontDef_t* Font, SSD1306_COLOR_t color) {
 	
 	/* Check available space in LCD */
 	if (
-		SSD1306_WIDTH <= (SSD1306.CurrentX + Font->FontWidth) ||
-		SSD1306_HEIGHT <= (SSD1306.CurrentY + Font->FontHeight)
+		SSD1306_WIDTH <= (SSD1306_OledDisp.CurrentX + Font->FontWidth) ||
+		SSD1306_HEIGHT <= (SSD1306_OledDisp.CurrentY + Font->FontHeight)
 	) {
 		/* Error */
 		return 0;
@@ -290,15 +278,15 @@ char SSD1306_Putc(char ch, FontDef_t* Font, SSD1306_COLOR_t color) {
 		b = Font->data[(ch - 32) * Font->FontHeight + i];
 		for (j = 0; j < Font->FontWidth; j++) {
 			if ((b << j) & 0x8000) {
-				SSD1306_DrawPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), (SSD1306_COLOR_t) color);
+				SSD1306_DrawPixel(SSD1306_OledDisp.CurrentX + j, (SSD1306_OledDisp.CurrentY + i), (SSD1306_COLOR_t) color);
 			} else {
-				SSD1306_DrawPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), (SSD1306_COLOR_t)!color);
+				SSD1306_DrawPixel(SSD1306_OledDisp.CurrentX + j, (SSD1306_OledDisp.CurrentY + i), (SSD1306_COLOR_t)!color);
 			}
 		}
 	}
 	
 	/* Increase pointer */
-	SSD1306.CurrentX += Font->FontWidth;
+	SSD1306_OledDisp.CurrentX += Font->FontWidth;
 	
 	/* Return character written */
 	return ch;
@@ -453,10 +441,7 @@ void SSD1306_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h,
 	uint8_t i;
 	
 	/* Check input parameters */
-	if (
-		x >= SSD1306_WIDTH ||
-		y >= SSD1306_HEIGHT
-	) {
+	if (x >= SSD1306_WIDTH ||	y >= SSD1306_HEIGHT) {
 		/* Return error */
 		return;
 	}
@@ -621,47 +606,40 @@ void SSD1306_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t
 	int16_t x = 0;
 	int16_t y = r;
 
-    SSD1306_DrawPixel(x0, y0 + r, c);
-    SSD1306_DrawPixel(x0, y0 - r, c);
-    SSD1306_DrawPixel(x0 + r, y0, c);
-    SSD1306_DrawPixel(x0 - r, y0, c);
-    SSD1306_DrawLine(x0 - r, y0, x0 + r, y0, c);
+	SSD1306_DrawPixel(x0, y0 + r, c);
+	SSD1306_DrawPixel(x0, y0 - r, c);
+	SSD1306_DrawPixel(x0 + r, y0, c);
+	SSD1306_DrawPixel(x0 - r, y0, c);
+	SSD1306_DrawLine(x0 - r, y0, x0 + r, y0, c);
 
-    while (x < y) {
-        if (f >= 0) {
-            y--;
-            ddF_y += 2;
-            f += ddF_y;
-        }
-        x++;
-        ddF_x += 2;
-        f += ddF_x;
+	while (x < y) {
+		if (f >= 0) {
+			y--;
+			ddF_y += 2;
+			f += ddF_y;
+		}
+		
+		x++;
+		ddF_x += 2;
+		f += ddF_x;
 
-        SSD1306_DrawLine(x0 - x, y0 + y, x0 + x, y0 + y, c);
-        SSD1306_DrawLine(x0 + x, y0 - y, x0 - x, y0 - y, c);
+		SSD1306_DrawLine(x0 - x, y0 + y, x0 + x, y0 + y, c);
+		SSD1306_DrawLine(x0 + x, y0 - y, x0 - x, y0 - y, c);
 
-        SSD1306_DrawLine(x0 + y, y0 + x, x0 - y, y0 + x, c);
-        SSD1306_DrawLine(x0 + y, y0 - x, x0 - y, y0 - x, c);
-    }
+		SSD1306_DrawLine(x0 + y, y0 + x, x0 - y, y0 + x, c);
+		SSD1306_DrawLine(x0 + y, y0 - x, x0 - y, y0 - x, c);
+	}
 }
  
 
-
+/** 
+ * @brief  Clears the screen
+ */
 void SSD1306_Clear (void)
 {
-	SSD1306_COLOR_t empty = SSD1306_COLOR_BLACK;
-	SSD1306_Fill (empty);
+	SSD1306_COLOR_t blank = SSD1306_COLOR_BLACK;
+	SSD1306_Fill(blank);
   SSD1306_UpdateScreen();
-}
-void SSD1306_ON(void) {
-	SSD1306_WRITECOMMAND(0x8D);  
-	SSD1306_WRITECOMMAND(0x14);  
-	SSD1306_WRITECOMMAND(0xAF);  
-}
-void SSD1306_OFF(void) {
-	SSD1306_WRITECOMMAND(0x8D);  
-	SSD1306_WRITECOMMAND(0x10);
-	SSD1306_WRITECOMMAND(0xAE);  
 }
 
 
@@ -669,112 +647,133 @@ void SSD1306_OFF(void) {
 ****** SSD1306 Driver Functions API - Data Communication
 **************************************************************/
 
-void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t* data, uint16_t count) {
-	uint8_t dt[256];
-	dt[0] = reg;
-	uint8_t i;
-	
-	for(i = 0; i < count; i++)
-	{
-		dt[i+1] = data[i];
-		HAL_I2C_Master_Transmit(&I2c1_espComm, address, dt, count+1, 10);
-	}
-}
-
-
-void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data) {
-	uint8_t dt[2];
-	dt[0] = reg;
-	dt[1] = data;
-	HAL_I2C_Master_Transmit(&I2c1_espComm, address, dt, 2, 10);
-}
-
-
 /*
 * SPI communication drivers 
 */
 
-/* Blocking spi write function with 1 second timeout */
+/**
+ * @brief  Writes a 8-bit command to the ssd1306 - this function blocks while sending data
+ * @param  uint8_t* pTxBuffer - pointer to the data buffer
+ * @param  uint8_t len - length of data to be sent
+ */
 void ssd1306_SPI_WriteCmd(uint8_t command)
 {
+	SSD1306_CMD_ACCESS();
 	HAL_SPI_Transmit(&Spi1_oledWrite, &command, 1, SSD1306_SPI_TIMEOUT);
 }
 
-
-void ssd1306_SPI_WriteDisp(uint8_t* pTxBuffer)
+/**
+ * @brief  Fills the display data buffer with new screen using DMA to transfer (length is size of SSD1306 buffer defined in ssd1306.c)
+ * @param  uint8_t* pTxBuffer - pointer to the data buffer
+ */
+uint8_t ssd1306_SPI_WriteDisp(uint8_t* pTxBuffer)
 {
-	HAL_SPI_Transmit_DMA(&Spi1_oledWrite, pTxBuffer, sizeof(SSD1306_Buffer));
+	uint8_t state = SSD1306_OledDisp.state;
+	
+	if (state == SSD1306_STATE_READY)
+	{
+		/* Set state to busy */
+		SSD1306_OledDisp.state = SSD1306_STATE_BUSY;
+		
+		/* Set D/C high for data buffer access */
+		SSD1306_DISP_ACCESS();
+	
+		/* DMA enabled send with SPI - callback function run when complete */
+		HAL_SPI_Transmit_DMA(&Spi1_oledWrite, pTxBuffer, sizeof(SSD1306_Buffer));
+	}
+	
+	return state;
 }
+
+
+/* Invert display by writing command to SSD1306 */
+void SSD1306_InvertDisplay (uint8_t EnOrDi)
+{
+	SSD1306_CMD_ACCESS();
+	
+  if (EnOrDi == SSD1306_ENABLE) {
+		SSD1306_SPI_WRITE_CMD(SSD1306_CMD_INVERT_DISP);
+	}		
+	else {
+		SSD1306_SPI_WRITE_CMD(SSD1306_CMD_NORM_DISP);
+	}
+}
+
+
+/*************************************************************
+****** SSD1306 Driver Functions API - Scrolling functions
+**************************************************************/
 
 void SSD1306_ScrollRight(uint8_t start_row, uint8_t end_row)
 {
-  SSD1306_WRITECOMMAND (SSD1306_RIGHT_HORIZONTAL_SCROLL);  // send 0x26
-  SSD1306_WRITECOMMAND (0x00);  // send dummy
-  SSD1306_WRITECOMMAND(start_row);  // start page address
-  SSD1306_WRITECOMMAND(0X00);  // time interval 5 frames
-  SSD1306_WRITECOMMAND(end_row);  // end page address
-  SSD1306_WRITECOMMAND(0X00);
-  SSD1306_WRITECOMMAND(0XFF);
-  SSD1306_WRITECOMMAND (SSD1306_ACTIVATE_SCROLL); // start scroll
+	SSD1306_CMD_ACCESS();
+	
+  SSD1306_SPI_WRITE_CMD (SSD1306_RIGHT_HORIZONTAL_SCROLL);  // send 0x26
+  SSD1306_SPI_WRITE_CMD (0x00);  // send dummy
+  SSD1306_SPI_WRITE_CMD(start_row);  // start page address
+  SSD1306_SPI_WRITE_CMD(0X00);  // time interval 5 frames
+  SSD1306_SPI_WRITE_CMD(end_row);  // end page address
+  SSD1306_SPI_WRITE_CMD(0X00);
+  SSD1306_SPI_WRITE_CMD(0XFF);
+  SSD1306_SPI_WRITE_CMD (SSD1306_ACTIVATE_SCROLL); // start scroll
 }
 
 
 void SSD1306_ScrollLeft(uint8_t start_row, uint8_t end_row)
 {
-  SSD1306_WRITECOMMAND (SSD1306_LEFT_HORIZONTAL_SCROLL);  // send 0x26
-  SSD1306_WRITECOMMAND (0x00);  // send dummy
-  SSD1306_WRITECOMMAND(start_row);  // start page address
-  SSD1306_WRITECOMMAND(0X00);  // time interval 5 frames
-  SSD1306_WRITECOMMAND(end_row);  // end page address
-  SSD1306_WRITECOMMAND(0X00);
-  SSD1306_WRITECOMMAND(0XFF);
-  SSD1306_WRITECOMMAND (SSD1306_ACTIVATE_SCROLL); // start scroll
+	SSD1306_CMD_ACCESS();
+	
+  SSD1306_SPI_WRITE_CMD (SSD1306_LEFT_HORIZONTAL_SCROLL);  // send 0x26
+  SSD1306_SPI_WRITE_CMD (0x00);  // send dummy
+  SSD1306_SPI_WRITE_CMD(start_row);  // start page address
+  SSD1306_SPI_WRITE_CMD(0X00);  // time interval 5 frames
+  SSD1306_SPI_WRITE_CMD(end_row);  // end page address
+  SSD1306_SPI_WRITE_CMD(0X00);
+  SSD1306_SPI_WRITE_CMD(0XFF);
+  SSD1306_SPI_WRITE_CMD (SSD1306_ACTIVATE_SCROLL); // start scroll
 }
 
 
 void SSD1306_Scrolldiagright(uint8_t start_row, uint8_t end_row)
 {
-  SSD1306_WRITECOMMAND(SSD1306_SET_VERTICAL_SCROLL_AREA);  // sect the area
-  SSD1306_WRITECOMMAND (0x00);   // write dummy
-  SSD1306_WRITECOMMAND(SSD1306_HEIGHT);
+	SSD1306_CMD_ACCESS();
+	
+  SSD1306_SPI_WRITE_CMD(SSD1306_SET_VERTICAL_SCROLL_AREA);  // sect the area
+  SSD1306_SPI_WRITE_CMD (0x00);   // write dummy
+  SSD1306_SPI_WRITE_CMD(SSD1306_HEIGHT);
 
-  SSD1306_WRITECOMMAND(SSD1306_VERTICAL_AND_RIGHT_HORIZONTAL_SCROLL);
-  SSD1306_WRITECOMMAND (0x00);
-  SSD1306_WRITECOMMAND(start_row);
-  SSD1306_WRITECOMMAND(0X00);
-  SSD1306_WRITECOMMAND(end_row);
-  SSD1306_WRITECOMMAND (0x01);
-  SSD1306_WRITECOMMAND (SSD1306_ACTIVATE_SCROLL);
+  SSD1306_SPI_WRITE_CMD(SSD1306_VERTICAL_AND_RIGHT_HORIZONTAL_SCROLL);
+  SSD1306_SPI_WRITE_CMD (0x00);
+  SSD1306_SPI_WRITE_CMD(start_row);
+  SSD1306_SPI_WRITE_CMD(0X00);
+  SSD1306_SPI_WRITE_CMD(end_row);
+  SSD1306_SPI_WRITE_CMD (0x01);
+  SSD1306_SPI_WRITE_CMD (SSD1306_ACTIVATE_SCROLL);
 }
 
 
 void SSD1306_Scrolldiagleft(uint8_t start_row, uint8_t end_row)
 {
-  SSD1306_WRITECOMMAND(SSD1306_SET_VERTICAL_SCROLL_AREA);  // sect the area
-  SSD1306_WRITECOMMAND (0x00);   // write dummy
-  SSD1306_WRITECOMMAND(SSD1306_HEIGHT);
+	SSD1306_CMD_ACCESS();
+	
+  SSD1306_SPI_WRITE_CMD(SSD1306_SET_VERTICAL_SCROLL_AREA);  // sect the area
+  SSD1306_SPI_WRITE_CMD (0x00);   // write dummy
+  SSD1306_SPI_WRITE_CMD(SSD1306_HEIGHT);
 
-  SSD1306_WRITECOMMAND(SSD1306_VERTICAL_AND_LEFT_HORIZONTAL_SCROLL);
-  SSD1306_WRITECOMMAND (0x00);
-  SSD1306_WRITECOMMAND(start_row);
-  SSD1306_WRITECOMMAND(0X00);
-  SSD1306_WRITECOMMAND(end_row);
-  SSD1306_WRITECOMMAND (0x01);
-  SSD1306_WRITECOMMAND (SSD1306_ACTIVATE_SCROLL);
+  SSD1306_SPI_WRITE_CMD(SSD1306_VERTICAL_AND_LEFT_HORIZONTAL_SCROLL);
+  SSD1306_SPI_WRITE_CMD (0x00);
+  SSD1306_SPI_WRITE_CMD(start_row);
+  SSD1306_SPI_WRITE_CMD(0X00);
+  SSD1306_SPI_WRITE_CMD(end_row);
+  SSD1306_SPI_WRITE_CMD (0x01);
+  SSD1306_SPI_WRITE_CMD (SSD1306_ACTIVATE_SCROLL);
 }
 
 
 void SSD1306_Stopscroll(void)
 {
-	SSD1306_WRITECOMMAND(SSD1306_DEACTIVATE_SCROLL);
+	SSD1306_CMD_ACCESS();
+	
+	SSD1306_SPI_WRITE_CMD(SSD1306_DEACTIVATE_SCROLL);
 }
 
-
-
-void SSD1306_InvertDisplay (int i)
-{
-  if (i) SSD1306_WRITECOMMAND (SSD1306_INVERTDISPLAY);
-
-  else SSD1306_WRITECOMMAND (SSD1306_NORMALDISPLAY);
-
-}
