@@ -27,7 +27,7 @@
 *******************************************************/
 
 /* Handle for SPI communication peripheral */
-extern SPI_HandleTypeDef Spi1_oledWrite;
+extern SPI_HandleTypeDef Spi2_oledWrite;
 
 /* This variable should be defined in main */
 extern SSD1306_t SSD1306_OledDisp;
@@ -93,7 +93,7 @@ void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16
  */
 uint8_t SSD1306_Init(void) {
 	/* Check that SPI peripheral is ready */
-	if (HAL_SPI_GetState(&Spi1_oledWrite) != HAL_SPI_STATE_READY)
+	if (HAL_SPI_GetState(&Spi2_oledWrite) != HAL_SPI_STATE_READY)
 	{
 		return SSD1306_INIT_FAILED;
 	}
@@ -669,7 +669,7 @@ void SSD1306_Clear (void)
 void ssd1306_SPI_WriteCmd(uint8_t command)
 {
 	SSD1306_CMD_ACCESS();
-	HAL_SPI_Transmit(&Spi1_oledWrite, &command, 1, SSD1306_SPI_TIMEOUT);
+	HAL_SPI_Transmit(&Spi2_oledWrite, &command, 1, SSD1306_SPI_TIMEOUT);
 }
 
 /**
@@ -689,7 +689,7 @@ uint8_t ssd1306_SPI_WriteDisp(uint8_t* pTxBuffer)
 		SSD1306_DISP_ACCESS();
 	
 		/* DMA enabled send with SPI - callback function run when complete */
-		HAL_SPI_Transmit_DMA(&Spi1_oledWrite, pTxBuffer, (uint16_t)sizeof(SSD1306_Buffer));
+		HAL_SPI_Transmit_DMA(&Spi2_oledWrite, pTxBuffer, (uint16_t)sizeof(SSD1306_Buffer));
 	}
 	
 	return state;

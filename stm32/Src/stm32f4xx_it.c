@@ -60,10 +60,10 @@
 
 /* External variables --------------------------------------------------------*/
 extern I2C_HandleTypeDef I2c1_espComm;
-extern SPI_HandleTypeDef Spi1_oledWrite;
+extern SPI_HandleTypeDef Spi2_oledWrite;
 extern UART_HandleTypeDef Uart2_debug;
+extern DMA_HandleTypeDef DMA1_oled_pipe;
 extern DMA_HandleTypeDef DMA2_adc_pipe;
-extern DMA_HandleTypeDef DMA2_oled_pipe;
 extern TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN EV */
@@ -170,8 +170,8 @@ void DMA2_Stream0_IRQHandler(void) {
 }
 
 /* Calling HAL DMA interrupt handler for DMA2_Stream 0 */
-void DMA2_Stream3_IRQHandler(void) {
-	HAL_DMA_IRQHandler(&DMA2_oled_pipe);
+void DMA1_Stream4_IRQHandler(void) {
+	HAL_DMA_IRQHandler(&DMA1_oled_pipe);
 }
 
 /**
@@ -193,9 +193,9 @@ void I2C1_ER_IRQHandler(void)
 /**
   * @brief This function handles SPI1 global interrupt.
   */
-void SPI1_IRQHandler(void)
+void SPI2_IRQHandler(void)
 {
-  HAL_SPI_IRQHandler(&Spi1_oledWrite);
+  HAL_SPI_IRQHandler(&Spi2_oledWrite);
 }
 
 /**

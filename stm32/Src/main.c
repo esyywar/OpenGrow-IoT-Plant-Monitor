@@ -33,9 +33,9 @@
 /* Peripheral handle variables ---------------------------------------------------------*/
 ADC_HandleTypeDef Adc1_sensorsRead;
 I2C_HandleTypeDef I2c1_espComm;
-SPI_HandleTypeDef Spi1_oledWrite;
+SPI_HandleTypeDef Spi2_oledWrite;
 UART_HandleTypeDef Uart2_debug;
-DMA_HandleTypeDef DMA2_adc_pipe, DMA2_oled_pipe;
+DMA_HandleTypeDef DMA2_adc_pipe, DMA1_oled_pipe;
 
 /* Private variables */
 uint16_t moisture_sensors;
@@ -79,10 +79,14 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
-static void MX_SPI1_Init(void);
+static void MX_SPI2_Init(void);
 static void MX_I2C1_Init(void);
 
 /* DMA functions */
+static void DMA1_Init(void);
+static void DMA1_OLED_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA1_oled_pipe);
+
+
 static void DMA2_Init(void);
 static void DMA2_ADC1_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe);
 
@@ -115,20 +119,21 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_ADC1_Init();
-  MX_SPI1_Init();
+  MX_SPI2_Init();
   MX_I2C1_Init();
 
+	DMA1_Init();
 	DMA2_Init();
 	
 	/* Initialize OLED display */
-	if (SSD1306_Init() != SSD1306_INIT_SUCCESS)
-  {
-    Error_Handler();
-  }
+	//if (SSD1306_Init() != SSD1306_INIT_SUCCESS)
+  //{
+  //  Error_Handler();
+  //}
 	
 	/* Make screen display all lit up */
-	SSD1306_Fill(SSD1306_PX_CLR_WHITE);
-	SSD1306_UpdateScreen();
+	//SSD1306_Fill(SSD1306_PX_CLR_WHITE);
+	//SSD1306_UpdateScreen();
 
   /* Init scheduler */
   osKernelInitialize();
@@ -318,30 +323,29 @@ static void MX_I2C1_Init(void)
 }
 
 /**
-  * @brief SPI1 Initialization Function
+  * @brief SPI2 Initialization Function
   * @param None
   * @retval None
   */
-static void MX_SPI1_Init(void)
+static void MX_SPI2_Init(void)
 {
-  /* SPI1 parameter configuration*/
-  Spi1_oledWrite.Instance = SPI1;
-  Spi1_oledWrite.Init.Mode = SPI_MODE_MASTER;
-  Spi1_oledWrite.Init.Direction = SPI_DIRECTION_1LINE;
-  Spi1_oledWrite.Init.DataSize = SPI_DATASIZE_8BIT;
-  Spi1_oledWrite.Init.CLKPolarity = SPI_POLARITY_LOW;
-  Spi1_oledWrite.Init.CLKPhase = SPI_PHASE_1EDGE;
-  Spi1_oledWrite.Init.NSS = SPI_NSS_HARD_OUTPUT;
-  Spi1_oledWrite.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
-  Spi1_oledWrite.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  Spi1_oledWrite.Init.TIMode = SPI_TIMODE_DISABLE;
-  Spi1_oledWrite.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-  Spi1_oledWrite.Init.CRCPolynomial = 10;
+  /* SPI2 parameter configuration*/
+  Spi2_oledWrite.Instance = SPI2;
+  Spi2_oledWrite.Init.Mode = SPI_MODE_MASTER;
+  Spi2_oledWrite.Init.Direction = SPI_DIRECTION_1LINE;
+  Spi2_oledWrite.Init.DataSize = SPI_DATASIZE_8BIT;
+  Spi2_oledWrite.Init.CLKPolarity = SPI_POLARITY_LOW;
+  Spi2_oledWrite.Init.CLKPhase = SPI_PHASE_1EDGE;
+  Spi2_oledWrite.Init.NSS = SPI_NSS_HARD_OUTPUT;
+  Spi2_oledWrite.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
+  Spi2_oledWrite.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  Spi2_oledWrite.Init.TIMode = SPI_TIMODE_DISABLE;
+  Spi2_oledWrite.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
 	
 	/* Associate DMA */
-	Spi1_oledWrite.hdmatx = &DMA2_oled_pipe;
+	Spi2_oledWrite.hdmatx = &DMA1_oled_pipe;
 	
-  if (HAL_SPI_Init(&Spi1_oledWrite) != HAL_OK)
+  if (HAL_SPI_Init(&Spi2_oledWrite) != HAL_OK)
   {
     Error_Handler();
   }
@@ -377,6 +381,43 @@ static void MX_USART2_UART_Init(void)
   }
 }
 
+
+/**
+  * @brief DMA1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void DMA1_Init() {
+	__HAL_RCC_DMA1_CLK_ENABLE();
+	
+	/*
+	* Stream 4, channel 0 used to transfer SSD1306 buffer data to SPI1 TxBuffer
+	*/
+	DMA1_oled_pipe.Instance = DMA1_Stream4;
+	DMA1_oled_pipe.Init.Channel = DMA_CHANNEL_0;
+	DMA1_oled_pipe.Init.Direction = DMA_MEMORY_TO_PERIPH;
+	DMA1_oled_pipe.Init.Mode = DMA_NORMAL;
+	DMA1_oled_pipe.Init.PeriphInc = DMA_PINC_DISABLE;
+	DMA1_oled_pipe.Init.MemInc = DMA_MINC_ENABLE;
+	DMA1_oled_pipe.Init.MemBurst = DMA_MBURST_SINGLE;
+	DMA1_oled_pipe.Init.PeriphBurst = DMA_PBURST_SINGLE;
+	DMA1_oled_pipe.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+	DMA1_oled_pipe.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+	DMA1_oled_pipe.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+	DMA1_oled_pipe.Init.Priority = DMA_PRIORITY_VERY_HIGH;
+	DMA1_oled_pipe.XferCpltCallback = &DMA1_OLED_Transfer_Cmplt_Callback;
+	
+	if (HAL_DMA_Init(&DMA1_oled_pipe) != HAL_OK)
+  {
+    Error_Handler();
+  }
+	
+	/* DMA1 stream 4 interrupt config */
+	HAL_NVIC_SetPriority(DMA1_Stream4_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream4_IRQn);
+}
+
+
 /**
   * @brief DMA2 Initialization Function
   * @param None
@@ -406,36 +447,12 @@ static void DMA2_Init(void) {
   {
     Error_Handler();
   }
-	
-	/*
-	* Stream 3, channel 3 used to transfer SSD1306 buffer data to SPI1 TxBuffer
-	*/
-	DMA2_oled_pipe.Instance = DMA2_Stream3;
-	DMA2_oled_pipe.Init.Channel = DMA_CHANNEL_3;
-	DMA2_oled_pipe.Init.Direction = DMA_MEMORY_TO_PERIPH;
-	DMA2_oled_pipe.Init.Mode = DMA_NORMAL;
-	DMA2_oled_pipe.Init.PeriphInc = DMA_PINC_DISABLE;
-	DMA2_oled_pipe.Init.MemInc = DMA_MINC_ENABLE;
-	DMA2_oled_pipe.Init.MemBurst = DMA_MBURST_SINGLE;
-	DMA2_oled_pipe.Init.PeriphBurst = DMA_PBURST_SINGLE;
-	DMA2_oled_pipe.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
-	DMA2_oled_pipe.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
-	DMA2_oled_pipe.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-	DMA2_oled_pipe.Init.Priority = DMA_PRIORITY_VERY_HIGH;
-	
-	if (HAL_DMA_Init(&DMA2_oled_pipe) != HAL_OK)
-  {
-    Error_Handler();
-  }
-	
+
 	/* DMA2 stream 0 interrupt config */
   HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
-	
-	/* DMA2 stream 3 interrupt config */
-	HAL_NVIC_SetPriority(DMA2_Stream3_IRQn, 5, 0);
-  HAL_NVIC_EnableIRQ(DMA2_Stream3_IRQn);
 }
+
 
 /**
   * @brief GPIO Initialization Function
@@ -512,7 +529,16 @@ void Blinky_03(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
+		HAL_SPI_DeInit(&Spi2_oledWrite);
+		HAL_SPI_Init(&Spi2_oledWrite);
+		
+    char output[] = "Whats up bruv";
+		uint8_t len = strlen(output);
+		
+		while (HAL_SPI_Transmit_IT(&Spi2_oledWrite, (uint8_t*)&len, (uint16_t)1) != HAL_OK);
+		
+		while (HAL_SPI_Transmit_DMA(&Spi2_oledWrite, (uint8_t*)output, (uint16_t)strlen(output)) != HAL_OK);
+				
     osDelay(1000);
   }
   /* USER CODE END Blinky_03 */
@@ -557,12 +583,16 @@ static void DMA2_ADC1_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe)
 	HAL_UART_Transmit_IT(&Uart2_debug, (uint8_t*)output, strlen(output));
 }
 
-static void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* pSpi1_oledWrite) {
+static void DMA1_OLED_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA1_oled_pipe) {
 	// Implement oled finish transfer code
 	SSD1306_OledDisp.state = SSD1306_STATE_READY;
 	
 	// TODO
 	// Release mutex / binary semaphore here
+}
+
+void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* pSpi2_oledWrite) {
+	
 }
 
 
