@@ -85,7 +85,6 @@ static void MX_I2C1_Init(void);
 /* DMA functions */
 static void DMA2_Init(void);
 static void DMA2_ADC1_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe);
-static void DMA2_OLED_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_oled_pipe);
 
 /* Thread functions */
 void OLED_Write(void *argument);
@@ -126,6 +125,10 @@ int main(void)
   {
     Error_Handler();
   }
+	
+	/* Make screen display all lit up */
+	SSD1306_Fill(SSD1306_PX_CLR_WHITE);
+	SSD1306_UpdateScreen();
 
   /* Init scheduler */
   osKernelInitialize();
@@ -203,6 +206,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 2;
   RCC_OscInitStruct.PLL.PLLR = 2;
+	
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -334,6 +338,9 @@ static void MX_SPI1_Init(void)
   Spi1_oledWrite.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
   Spi1_oledWrite.Init.CRCPolynomial = 10;
 	
+	/* Associate DMA */
+	Spi1_oledWrite.hdmatx = &DMA2_oled_pipe;
+	
   if (HAL_SPI_Init(&Spi1_oledWrite) != HAL_OK)
   {
     Error_Handler();
@@ -403,7 +410,8 @@ static void DMA2_Init(void) {
 	/*
 	* Stream 3, channel 3 used to transfer SSD1306 buffer data to SPI1 TxBuffer
 	*/
-	DMA2_oled_pipe.Init.Channel = DMA_CHANNEL_0;
+	DMA2_oled_pipe.Instance = DMA2_Stream3;
+	DMA2_oled_pipe.Init.Channel = DMA_CHANNEL_3;
 	DMA2_oled_pipe.Init.Direction = DMA_MEMORY_TO_PERIPH;
 	DMA2_oled_pipe.Init.Mode = DMA_NORMAL;
 	DMA2_oled_pipe.Init.PeriphInc = DMA_PINC_DISABLE;
@@ -414,7 +422,11 @@ static void DMA2_Init(void) {
 	DMA2_oled_pipe.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
 	DMA2_oled_pipe.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
 	DMA2_oled_pipe.Init.Priority = DMA_PRIORITY_VERY_HIGH;
-	DMA2_oled_pipe.XferCpltCallback = &DMA2_OLED_Transfer_Cmplt_Callback;
+	
+	if (HAL_DMA_Init(&DMA2_oled_pipe) != HAL_OK)
+  {
+    Error_Handler();
+  }
 	
 	/* DMA2 stream 0 interrupt config */
   HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 5, 0);
@@ -440,10 +452,10 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_8, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PC5 PC6 PC8 */
-  GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_8;
+  /*Configure GPIO pins : PC5 PC6 PC7 PC8 */
+  GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -545,7 +557,7 @@ static void DMA2_ADC1_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe)
 	HAL_UART_Transmit_IT(&Uart2_debug, (uint8_t*)output, strlen(output));
 }
 
-static void DMA2_OLED_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_oled_pipe) {
+static void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* pSpi1_oledWrite) {
 	// Implement oled finish transfer code
 	SSD1306_OledDisp.state = SSD1306_STATE_READY;
 	

@@ -47,6 +47,7 @@ extern C {
  * MOSI       |PA7          |Data line (stm32 -> SSD1306)
  * CS         |PA4          |Chip select (active low)
  * D/C        |PC8          |Data/Command buffer access select
+ * RESET			|PC7					|Reset (held high, go low to reset)
  * VDDC       |PC6          |Power to OLED logic - active low
  * VBATC      |PC5          |Power to OLED display - active low
  */
@@ -93,6 +94,10 @@ extern C {
 /* Must toggle to access OLED command or data buffer */
 #define SSD1306_CMD_ACCESS()						HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_RESET)
 #define SSD1306_DISP_ACCESS()						HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_SET)
+
+/* Reset pin control */
+#define SSD1306_RESET_HIGH()						HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET)
+#define SSD1306_RESET_LOW()							HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_RESET)
 
 /* Toggling power to the logic of OLED */
 #define SSD1306_LOGIC_POWER_EN()				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_RESET)
@@ -209,14 +214,6 @@ extern C {
 ********** SSD1306 Config Structures
 *******************************************************/
 
-/**
- * @brief  SSD1306 color enumeration
- */
-typedef enum {
-	SSD1306_COLOR_BLACK = 0x00, /*!< Black color, no pixel */
-	SSD1306_COLOR_WHITE = 0x01  /*!< Pixel is set. Color depends on LCD */
-} SSD1306_COLOR_t;
-
 /* Private SSD1306 structure */
 typedef struct {
 	uint16_t CurrentX;
@@ -245,6 +242,11 @@ typedef struct {
 uint8_t SSD1306_Init(void);
 
 /** 
+ * @brief  Reset the OLED display
+ */
+void SS1306_Reset(void);
+
+/** 
  * @brief  Updates buffer from internal RAM to OLED
  * @note   This function must be called each time you do some changes to OLED, to update buffer from RAM to OLED
  */
@@ -266,7 +268,7 @@ void SSD1306_ToggleInvert(void);
  * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
  * @param  Color: Color to be used for screen fill. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  */
-void SSD1306_Fill(SSD1306_COLOR_t Color);
+void SSD1306_Fill(uint8_t colour);
 
 /**
  * @brief  Writes pixel value to the data buffer - configured to work with SSD1306 in horizontal or page addressing mode
@@ -275,7 +277,7 @@ void SSD1306_Fill(SSD1306_COLOR_t Color);
  * @param  y: Y location. This parameter can be a value between 0 and SSD1306_HEIGHT - 1
  * @param  color: Color to be used for screen fill. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  */
-void SSD1306_DrawPixel(uint16_t x, uint16_t y, SSD1306_COLOR_t color);
+void SSD1306_DrawPixel(uint16_t x, uint16_t y, uint8_t colour);
 
 /**
  * @brief  Sets cursor pointer to desired location for strings
@@ -292,7 +294,7 @@ void SSD1306_GotoXY(uint16_t x, uint16_t y);
  * @param  color: Color used for drawing. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  * @retval Character written
  */
-char SSD1306_Putc(char ch, FontDef_t* Font, SSD1306_COLOR_t color);
+char SSD1306_Putc(char ch, FontDef_t* Font, uint8_t colour);
 
 /**
  * @brief  Puts string to internal RAM
@@ -302,7 +304,7 @@ char SSD1306_Putc(char ch, FontDef_t* Font, SSD1306_COLOR_t color);
  * @param  color: Color used for drawing. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  * @retval Zero on success or character value when function failed
  */
-char SSD1306_Puts(char* str, FontDef_t* Font, SSD1306_COLOR_t color);
+char SSD1306_Puts(char* str, FontDef_t* Font, uint8_t colour);
 
 /**
  * @brief  Draws line on LCD
@@ -314,7 +316,7 @@ char SSD1306_Puts(char* str, FontDef_t* Font, SSD1306_COLOR_t color);
  * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  * @retval None
  */
-void SSD1306_DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, SSD1306_COLOR_t c);
+void SSD1306_DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint8_t colour);
 
 /**
  * @brief  Draws rectangle on OLED
@@ -325,7 +327,7 @@ void SSD1306_DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, SSD130
  * @param  h: Rectangle height in units of pixels
  * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  */
-void SSD1306_DrawRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, SSD1306_COLOR_t c);
+void SSD1306_DrawRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint8_t colour);
 
 /**
  * @brief  Draws filled rectangle on OLED
@@ -337,7 +339,7 @@ void SSD1306_DrawRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, SSD13
  * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  * @retval None
  */
-void SSD1306_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, SSD1306_COLOR_t c);
+void SSD1306_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint8_t colour);
 
 /**
  * @brief  Draws triangle on OLED
@@ -350,7 +352,7 @@ void SSD1306_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h,
  * @param  y3: Third coordinate Y location. Valid input is 0 to SSD1306_HEIGHT - 1
  * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  */
-void SSD1306_DrawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, SSD1306_COLOR_t color);
+void SSD1306_DrawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint8_t colour);
 
 /**
  * @brief  Draws filled triangle on OLED
@@ -363,7 +365,7 @@ void SSD1306_DrawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, ui
  * @param  y3: Third coordinate Y location. Valid input is 0 to SSD1306_HEIGHT - 1
  * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  */
-void SSD1306_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, SSD1306_COLOR_t color);
+void SSD1306_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint8_t colour);
 
 /**
  * @brief  Draws circle to STM buffer
@@ -373,7 +375,7 @@ void SSD1306_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t 
  * @param  r: Circle radius in units of pixels
  * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  */
-void SSD1306_DrawCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t c);
+void SSD1306_DrawCircle(int16_t x0, int16_t y0, int16_t r, uint8_t colour);
 
 /**
  * @brief  Draws filled circle to STM buffer
@@ -383,7 +385,7 @@ void SSD1306_DrawCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t c);
  * @param  r: Circle radius in units of pixels
  * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  */
-void SSD1306_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t c);
+void SSD1306_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, uint8_t colour);
 
 
 
@@ -395,33 +397,6 @@ void SSD1306_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t
 /*************************************************************
 ****** SSD1306 Driver Functions API - Data Communication
 **************************************************************/
-
-/**
- * @brief  Initializes SSD1306 LCD
- * @retval Initialization status:
- *           - 0: LCD was not detected on I2C port
- *           - > 0: LCD initialized OK and ready to use
- */
-void ssd1306_I2C_Init(void);
-
-/**
- * @brief  Writes single byte to slave
- * @param  *I2Cx: I2C used
- * @param  address: 7 bit slave address, left aligned, bits 7:1 are used, LSB bit is not used
- * @param  reg: register to write to
- * @param  data: data to be written
- */
-void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data);
-
-/**
- * @brief  Writes multi bytes to slave
- * @param  *I2Cx: I2C used
- * @param  address: 7 bit slave address, left aligned, bits 7:1 are used, LSB bit is not used
- * @param  reg: register to write to
- * @param  *data: pointer to data array to write it to slave
- * @param  count: how many bytes will be written
- */
-void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t *data, uint16_t count);
 
 /**
  * @brief  Writes a 8-bit command to the ssd1306 - this function blocks while sending data
@@ -446,7 +421,7 @@ uint8_t ssd1306_SPI_WriteDisp(uint8_t* pTxBuffer);
  * @param  H : Height of the image
  * @param  color : 1-> white/blue, 0-> black
  */
-void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16_t w, int16_t h, SSD1306_COLOR_t color);
+void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16_t w, int16_t h, uint8_t color);
 
 
 /*************************************************************

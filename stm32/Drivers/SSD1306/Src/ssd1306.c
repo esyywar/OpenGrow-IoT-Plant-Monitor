@@ -26,9 +26,6 @@
 ********** Private variables
 *******************************************************/
 
-/* Handle for comm perpipheral */
-extern I2C_HandleTypeDef I2c1_espComm;
-
 /* Handle for SPI communication peripheral */
 extern SPI_HandleTypeDef Spi1_oledWrite;
 
@@ -47,7 +44,7 @@ static uint8_t SSD1306_Buffer[SSD1306_WIDTH * SSD1306_HEIGHT / 8];
 #define SSD1306_SPI_WRITE_CMD(command)								ssd1306_SPI_WriteCmd(command)
 
 /* Write data SPI */
-#define SSD1306_SPI_WRITE_DATA(data)									ssd1306_SPI_WriteDisp(data)
+#define SSD1306_SPI_WRITE_DATA()											ssd1306_SPI_WriteDisp(SSD1306_Buffer)
 
 #define SSD1306_SPI_TIMEOUT														1000
 
@@ -60,7 +57,7 @@ static uint8_t SSD1306_Buffer[SSD1306_WIDTH * SSD1306_HEIGHT / 8];
 *********************************************************/
 
 
-void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16_t w, int16_t h, SSD1306_COLOR_t color)
+void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16_t w, int16_t h, uint8_t colour)
 {
 
     int16_t byteWidth = (w + 7) / 8; // Bitmap scanline pad = whole byte
@@ -81,7 +78,7 @@ void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16
 						
             if(byte & 0x80) 
 						{
-							SSD1306_DrawPixel(x+i, y, color);
+							SSD1306_DrawPixel(x+i, y, colour);
 						}
         }
     }
@@ -101,7 +98,8 @@ uint8_t SSD1306_Init(void) {
 		return SSD1306_INIT_FAILED;
 	}
 	
-	/* 1. Drive VDDC low to give power to logic control */
+	/* 1. Drive VDDC low to give power to logic control and put reset pin high */
+	SSD1306_RESET_HIGH();
 	SSD1306_LOGIC_POWER_EN();
 	
 	/* 2. Send display off command */
@@ -153,11 +151,14 @@ uint8_t SSD1306_Init(void) {
 	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_CHRG_PRD_VALUE);
 	
 	/* 3m. Deactivate scrolling */
-		SSD1306_SPI_WRITE_CMD(SSD1306_DEACTIVATE_SCROLL);
+	SSD1306_SPI_WRITE_CMD(SSD1306_DEACTIVATE_SCROLL);
 	
 	/* 4. Clear the screen */
-	SSD1306_Fill(SSD1306_COLOR_BLACK);
+	SSD1306_Fill(SSD1306_PX_CLR_BLACK);
 	SSD1306_UpdateScreen();
+	
+	/* Hang until screen has been updated */
+	while(SSD1306_OledDisp.state != SSD1306_STATE_READY);
 	
 	/* 5. Drive VBAT low to give power to display */
 	SSD1306_DISP_POWER_EN();
@@ -176,9 +177,19 @@ uint8_t SSD1306_Init(void) {
 	
 	/* Initialized OK */
 	SSD1306_OledDisp.Initialized = 1;
+	SSD1306_OledDisp.state = SSD1306_STATE_READY;
 	
 	/* Return OK */
 	return SSD1306_INIT_SUCCESS;
+}
+
+/** 
+ * @brief  Reset the OLED display
+ */
+void SSD1306_Reset(void) {
+	SSD1306_RESET_LOW();
+	HAL_Delay(1);
+	SSD1306_RESET_HIGH();
 }
 
 /** 
@@ -187,7 +198,7 @@ uint8_t SSD1306_Init(void) {
  */
 void SSD1306_UpdateScreen(void) {	
 	/* Writing data to display buffer - non-blocking function with SPI and DMA */
-	while (SSD1306_SPI_WRITE_DATA(SSD1306_Buffer) != SSD1306_STATE_READY);
+	while (SSD1306_SPI_WRITE_DATA() != SSD1306_STATE_READY);
 }
 
 /**
@@ -211,9 +222,9 @@ void SSD1306_ToggleInvert(void) {
  * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
  * @param  Color: Color to be used for screen fill. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  */
-void SSD1306_Fill(SSD1306_COLOR_t color) {
+void SSD1306_Fill(uint8_t colour) {
 	/* Set memory */
-	memset(SSD1306_Buffer, (color == SSD1306_COLOR_BLACK) ? 0x00 : 0xFF, sizeof(SSD1306_Buffer));
+	memset(SSD1306_Buffer, (colour == SSD1306_PX_CLR_BLACK) ? 0x00 : 0xFF, sizeof(SSD1306_Buffer));
 }
 
 /**
@@ -223,7 +234,7 @@ void SSD1306_Fill(SSD1306_COLOR_t color) {
  * @param  y: Y location. This parameter can be a value between 0 and SSD1306_HEIGHT - 1
  * @param  color: Color to be used for screen fill. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  */
-void SSD1306_DrawPixel(uint16_t x, uint16_t y, SSD1306_COLOR_t color) {
+void SSD1306_DrawPixel(uint16_t x, uint16_t y, uint8_t colour) {
 	if (x >= SSD1306_WIDTH ||	y >= SSD1306_HEIGHT) {
 		/* Error */
 		return;
@@ -231,11 +242,11 @@ void SSD1306_DrawPixel(uint16_t x, uint16_t y, SSD1306_COLOR_t color) {
 	
 	/* Check if pixels are inverted */
 	if (SSD1306_OledDisp.Inverted) {
-		color = (SSD1306_COLOR_t)!color;
+		colour = !colour;
 	}
 	
 	/* Set color */
-	if (color == SSD1306_COLOR_WHITE) {
+	if (colour == SSD1306_PX_CLR_WHITE) {
 		SSD1306_Buffer[x + (y / 8) * SSD1306_WIDTH] |= 1 << (y % 8);
 	} else {
 		SSD1306_Buffer[x + (y / 8) * SSD1306_WIDTH] &= ~(1 << (y % 8));
@@ -261,7 +272,7 @@ void SSD1306_GotoXY(uint16_t x, uint16_t y) {
  * @param  color: Color used for drawing. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  * @retval Character written
  */
-char SSD1306_Putc(char ch, FontDef_t* Font, SSD1306_COLOR_t color) {
+char SSD1306_Putc(char ch, FontDef_t* Font, uint8_t colour) {
 	uint32_t i, b, j;
 	
 	/* Check available space in LCD */
@@ -278,9 +289,9 @@ char SSD1306_Putc(char ch, FontDef_t* Font, SSD1306_COLOR_t color) {
 		b = Font->data[(ch - 32) * Font->FontHeight + i];
 		for (j = 0; j < Font->FontWidth; j++) {
 			if ((b << j) & 0x8000) {
-				SSD1306_DrawPixel(SSD1306_OledDisp.CurrentX + j, (SSD1306_OledDisp.CurrentY + i), (SSD1306_COLOR_t) color);
+				SSD1306_DrawPixel(SSD1306_OledDisp.CurrentX + j, (SSD1306_OledDisp.CurrentY + i), colour);
 			} else {
-				SSD1306_DrawPixel(SSD1306_OledDisp.CurrentX + j, (SSD1306_OledDisp.CurrentY + i), (SSD1306_COLOR_t)!color);
+				SSD1306_DrawPixel(SSD1306_OledDisp.CurrentX + j, (SSD1306_OledDisp.CurrentY + i), colour);
 			}
 		}
 	}
@@ -292,11 +303,11 @@ char SSD1306_Putc(char ch, FontDef_t* Font, SSD1306_COLOR_t color) {
 	return ch;
 }
 
-char SSD1306_Puts(char* str, FontDef_t* Font, SSD1306_COLOR_t color) {
+char SSD1306_Puts(char* str, FontDef_t* Font, uint8_t colour) {
 	/* Write characters */
 	while (*str) {
 		/* Write character by character */
-		if (SSD1306_Putc(*str, Font, color) != *str) {
+		if (SSD1306_Putc(*str, Font, colour) != *str) {
 			/* Return error */
 			return *str;
 		}
@@ -310,7 +321,7 @@ char SSD1306_Puts(char* str, FontDef_t* Font, SSD1306_COLOR_t color) {
 }
  
 
-void SSD1306_DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, SSD1306_COLOR_t c) {
+void SSD1306_DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint8_t colour) {
 	int16_t dx, dy, sx, sy, err, e2, i, tmp; 
 	
 	/* Check for overflow */
@@ -348,7 +359,7 @@ void SSD1306_DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, SSD130
 		
 		/* Vertical line */
 		for (i = y0; i <= y1; i++) {
-			SSD1306_DrawPixel(x0, i, c);
+			SSD1306_DrawPixel(x0, i, colour);
 		}
 		
 		/* Return from function */
@@ -370,7 +381,7 @@ void SSD1306_DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, SSD130
 		
 		/* Horizontal line */
 		for (i = x0; i <= x1; i++) {
-			SSD1306_DrawPixel(i, y0, c);
+			SSD1306_DrawPixel(i, y0, colour);
 		}
 		
 		/* Return from function */
@@ -378,7 +389,7 @@ void SSD1306_DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, SSD130
 	}
 	
 	while (1) {
-		SSD1306_DrawPixel(x0, y0, c);
+		SSD1306_DrawPixel(x0, y0, colour);
 		if (x0 == x1 && y0 == y1) {
 			break;
 		}
@@ -404,7 +415,7 @@ void SSD1306_DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, SSD130
  * @param  h: Rectangle height in units of pixels
  * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  */
-void SSD1306_DrawRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, SSD1306_COLOR_t c) {
+void SSD1306_DrawRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint8_t colour) {
 	/* Check input parameters */
 	if (x >= SSD1306_WIDTH ||	y >= SSD1306_HEIGHT) {
 		/* Return error */
@@ -420,10 +431,10 @@ void SSD1306_DrawRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, SSD13
 	}
 	
 	/* Draw 4 lines */
-	SSD1306_DrawLine(x, y, x + w, y, c);         /* Top line */
-	SSD1306_DrawLine(x, y + h, x + w, y + h, c); /* Bottom line */
-	SSD1306_DrawLine(x, y, x, y + h, c);         /* Left line */
-	SSD1306_DrawLine(x + w, y, x + w, y + h, c); /* Right line */
+	SSD1306_DrawLine(x, y, x + w, y, colour);         /* Top line */
+	SSD1306_DrawLine(x, y + h, x + w, y + h, colour); /* Bottom line */
+	SSD1306_DrawLine(x, y, x, y + h, colour);         /* Left line */
+	SSD1306_DrawLine(x + w, y, x + w, y + h, colour); /* Right line */
 }
 
 
@@ -437,7 +448,7 @@ void SSD1306_DrawRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, SSD13
  * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  * @retval None
  */
-void SSD1306_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, SSD1306_COLOR_t c) {
+void SSD1306_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint8_t colour) {
 	uint8_t i;
 	
 	/* Check input parameters */
@@ -457,7 +468,7 @@ void SSD1306_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h,
 	/* Draw lines */
 	for (i = 0; i <= h; i++) {
 		/* Draw lines */
-		SSD1306_DrawLine(x, y + i, x + w, y + i, c);
+		SSD1306_DrawLine(x, y + i, x + w, y + i, colour);
 	}
 }
 
@@ -472,11 +483,11 @@ void SSD1306_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h,
  * @param  y3: Third coordinate Y location. Valid input is 0 to SSD1306_HEIGHT - 1
  * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  */
-void SSD1306_DrawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, SSD1306_COLOR_t color) {
+void SSD1306_DrawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint8_t colour) {
 	/* Draw lines */
-	SSD1306_DrawLine(x1, y1, x2, y2, color);
-	SSD1306_DrawLine(x2, y2, x3, y3, color);
-	SSD1306_DrawLine(x3, y3, x1, y1, color);
+	SSD1306_DrawLine(x1, y1, x2, y2, colour);
+	SSD1306_DrawLine(x2, y2, x3, y3, colour);
+	SSD1306_DrawLine(x3, y3, x1, y1, colour);
 }
 
 
@@ -491,7 +502,7 @@ void SSD1306_DrawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, ui
  * @param  y3: Third coordinate Y location. Valid input is 0 to SSD1306_HEIGHT - 1
  * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  */
-void SSD1306_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, SSD1306_COLOR_t color) {
+void SSD1306_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint8_t colour) {
 	int16_t deltax = 0, deltay = 0, x = 0, y = 0, xinc1 = 0, xinc2 = 0, 
 	yinc1 = 0, yinc2 = 0, den = 0, num = 0, numadd = 0, numpixels = 0, 
 	curpixel = 0;
@@ -534,7 +545,7 @@ void SSD1306_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t 
 	}
 
 	for (curpixel = 0; curpixel <= numpixels; curpixel++) {
-		SSD1306_DrawLine(x, y, x3, y3, color);
+		SSD1306_DrawLine(x, y, x3, y3, colour);
 
 		num += numadd;
 		if (num >= den) {
@@ -556,17 +567,17 @@ void SSD1306_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t 
  * @param  r: Circle radius in units of pixels
  * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  */
-void SSD1306_DrawCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t c) {
+void SSD1306_DrawCircle(int16_t x0, int16_t y0, int16_t r, uint8_t colour) {
 	int16_t f = 1 - r;
 	int16_t ddF_x = 1;
 	int16_t ddF_y = -2 * r;
 	int16_t x = 0;
 	int16_t y = r;
 
-    SSD1306_DrawPixel(x0, y0 + r, c);
-    SSD1306_DrawPixel(x0, y0 - r, c);
-    SSD1306_DrawPixel(x0 + r, y0, c);
-    SSD1306_DrawPixel(x0 - r, y0, c);
+    SSD1306_DrawPixel(x0, y0 + r, colour);
+    SSD1306_DrawPixel(x0, y0 - r, colour);
+    SSD1306_DrawPixel(x0 + r, y0, colour);
+    SSD1306_DrawPixel(x0 - r, y0, colour);
 
     while (x < y) {
         if (f >= 0) {
@@ -578,15 +589,15 @@ void SSD1306_DrawCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t c) {
         ddF_x += 2;
         f += ddF_x;
 
-        SSD1306_DrawPixel(x0 + x, y0 + y, c);
-        SSD1306_DrawPixel(x0 - x, y0 + y, c);
-        SSD1306_DrawPixel(x0 + x, y0 - y, c);
-        SSD1306_DrawPixel(x0 - x, y0 - y, c);
+        SSD1306_DrawPixel(x0 + x, y0 + y, colour);
+        SSD1306_DrawPixel(x0 - x, y0 + y, colour);
+        SSD1306_DrawPixel(x0 + x, y0 - y, colour);
+        SSD1306_DrawPixel(x0 - x, y0 - y, colour);
 
-        SSD1306_DrawPixel(x0 + y, y0 + x, c);
-        SSD1306_DrawPixel(x0 - y, y0 + x, c);
-        SSD1306_DrawPixel(x0 + y, y0 - x, c);
-        SSD1306_DrawPixel(x0 - y, y0 - x, c);
+        SSD1306_DrawPixel(x0 + y, y0 + x, colour);
+        SSD1306_DrawPixel(x0 - y, y0 + x, colour);
+        SSD1306_DrawPixel(x0 + y, y0 - x, colour);
+        SSD1306_DrawPixel(x0 - y, y0 - x, colour);
     }
 }
 
@@ -599,18 +610,18 @@ void SSD1306_DrawCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t c) {
  * @param  r: Circle radius in units of pixels
  * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  */
-void SSD1306_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t c) {
+void SSD1306_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, uint8_t colour) {
 	int16_t f = 1 - r;
 	int16_t ddF_x = 1;
 	int16_t ddF_y = -2 * r;
 	int16_t x = 0;
 	int16_t y = r;
 
-	SSD1306_DrawPixel(x0, y0 + r, c);
-	SSD1306_DrawPixel(x0, y0 - r, c);
-	SSD1306_DrawPixel(x0 + r, y0, c);
-	SSD1306_DrawPixel(x0 - r, y0, c);
-	SSD1306_DrawLine(x0 - r, y0, x0 + r, y0, c);
+	SSD1306_DrawPixel(x0, y0 + r, colour);
+	SSD1306_DrawPixel(x0, y0 - r, colour);
+	SSD1306_DrawPixel(x0 + r, y0, colour);
+	SSD1306_DrawPixel(x0 - r, y0, colour);
+	SSD1306_DrawLine(x0 - r, y0, x0 + r, y0, colour);
 
 	while (x < y) {
 		if (f >= 0) {
@@ -623,11 +634,11 @@ void SSD1306_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t
 		ddF_x += 2;
 		f += ddF_x;
 
-		SSD1306_DrawLine(x0 - x, y0 + y, x0 + x, y0 + y, c);
-		SSD1306_DrawLine(x0 + x, y0 - y, x0 - x, y0 - y, c);
+		SSD1306_DrawLine(x0 - x, y0 + y, x0 + x, y0 + y, colour);
+		SSD1306_DrawLine(x0 + x, y0 - y, x0 - x, y0 - y, colour);
 
-		SSD1306_DrawLine(x0 + y, y0 + x, x0 - y, y0 + x, c);
-		SSD1306_DrawLine(x0 + y, y0 - x, x0 - y, y0 - x, c);
+		SSD1306_DrawLine(x0 + y, y0 + x, x0 - y, y0 + x, colour);
+		SSD1306_DrawLine(x0 + y, y0 - x, x0 - y, y0 - x, colour);
 	}
 }
  
@@ -637,8 +648,7 @@ void SSD1306_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_COLOR_t
  */
 void SSD1306_Clear (void)
 {
-	SSD1306_COLOR_t blank = SSD1306_COLOR_BLACK;
-	SSD1306_Fill(blank);
+	SSD1306_Fill(SSD1306_PX_CLR_BLACK);
   SSD1306_UpdateScreen();
 }
 
@@ -679,7 +689,7 @@ uint8_t ssd1306_SPI_WriteDisp(uint8_t* pTxBuffer)
 		SSD1306_DISP_ACCESS();
 	
 		/* DMA enabled send with SPI - callback function run when complete */
-		HAL_SPI_Transmit_DMA(&Spi1_oledWrite, pTxBuffer, sizeof(SSD1306_Buffer));
+		HAL_SPI_Transmit_DMA(&Spi1_oledWrite, pTxBuffer, (uint16_t)sizeof(SSD1306_Buffer));
 	}
 	
 	return state;
