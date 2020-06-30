@@ -124,14 +124,20 @@ int main(void)
 	DMA2_Init();
 	
 	/* Initialize OLED display */
-	//if (SSD1306_Init() != SSD1306_INIT_SUCCESS)
-  //{
-  //  Error_Handler();
-  //}
+	if (SSD1306_Init() != SSD1306_INIT_SUCCESS)
+  {
+    Error_Handler();
+  }
 	
 	/* Make screen display all lit up */
-	//SSD1306_Fill(SSD1306_PX_CLR_WHITE);
-	//SSD1306_UpdateScreen();
+	SSD1306_Fill(SSD1306_PX_CLR_WHITE);
+	SSD1306_UpdateScreen();
+	
+	/* Hang till screen is ready for update */
+	while (SSD1306_OledDisp.state != SSD1306_STATE_READY);
+	
+	SSD1306_Fill(SSD1306_PX_CLR_BLACK);
+	SSD1306_UpdateScreen();
 
   /* Init scheduler */
   osKernelInitialize();
@@ -184,6 +190,7 @@ int main(void)
   /* USER CODE END 3 */
 }
 
+
 /**
   * @brief System Clock Configuration
   * @retval None
@@ -235,6 +242,7 @@ void SystemClock_Config(void)
   }
 }
 
+
 /**
   * @brief ADC1 Initialization Function
   * @param None
@@ -280,11 +288,8 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN ADC1_Init 2 */
-
-  /* USER CODE END ADC1_Init 2 */
-
 }
+
 
 /**
   * @brief I2C1 Initialization Function
@@ -320,6 +325,7 @@ static void MX_I2C1_Init(void)
 
 }
 
+
 /**
   * @brief SPI2 Initialization Function
   * @param None
@@ -349,6 +355,7 @@ static void MX_SPI2_Init(void)
   }
 }
 
+
 /**
   * @brief USART2 Initialization Function
   * @param None
@@ -356,14 +363,6 @@ static void MX_SPI2_Init(void)
   */
 static void MX_USART2_UART_Init(void)
 {
-
-  /* USER CODE BEGIN USART2_Init 0 */
-
-  /* USER CODE END USART2_Init 0 */
-
-  /* USER CODE BEGIN USART2_Init 1 */
-
-  /* USER CODE END USART2_Init 1 */
   Uart2_debug.Instance = USART2;
   Uart2_debug.Init.BaudRate = 14400;
   Uart2_debug.Init.WordLength = UART_WORDLENGTH_8B;
@@ -510,8 +509,7 @@ void Blinky_02(void *argument)
   /* Infinite loop */
   for(;;)
   {
-		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_5);
-    osDelay(250);
+    osDelay(1);
   }
   /* USER CODE END Blinky_02 */
 }
@@ -528,15 +526,8 @@ void Blinky_03(void *argument)
   /* USER CODE BEGIN Blinky_03 */
   /* Infinite loop */
   for(;;)
-  {		
-    char output[] = "Whats up bruv";
-		uint8_t len = strlen(output);
-		
-		while (HAL_SPI_Transmit_IT(&Spi2_oledWrite, (uint8_t*)&len, (uint16_t)1) != HAL_OK);
-		
-		while (HAL_SPI_Transmit_DMA(&Spi2_oledWrite, (uint8_t*)output, (uint16_t)strlen(output)) != HAL_OK);
-				
-    osDelay(1000);
+  {				
+    osDelay(1);
   }
   /* USER CODE END Blinky_03 */
 }
@@ -580,10 +571,11 @@ static void DMA2_ADC1_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe)
 	HAL_UART_Transmit_IT(&Uart2_debug, (uint8_t*)output, strlen(output));
 }
 
+/* SPI transmission callback - called when UpdateScreen() completes to update OLED display from buffer */
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* pSpi2_oledWrite) {
 	SSD1306_OledDisp.state = SSD1306_STATE_READY;
 	
-	/* Error in HAL's SPI callback - cannot find the SPI handle */
+	/* Release mutex held on OLED buffer */
 }
 
 

@@ -43,9 +43,6 @@ static uint8_t SSD1306_Buffer[SSD1306_WIDTH * SSD1306_HEIGHT / 8];
 /* Write command SPI */
 #define SSD1306_SPI_WRITE_CMD(command)								ssd1306_SPI_WriteCmd(command)
 
-/* Write data SPI */
-#define SSD1306_SPI_WRITE_DATA()											ssd1306_SPI_WriteDisp(SSD1306_Buffer)
-
 #define SSD1306_SPI_TIMEOUT														1000
 
 /* Absolute value */
@@ -84,6 +81,74 @@ void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16
     }
 }
 
+uint8_t SSD1306_Init(void) {
+	/* Check that SPI peripheral is ready */
+	if (HAL_SPI_GetState(&Spi2_oledWrite) != HAL_SPI_STATE_READY)
+	{
+		return SSD1306_INIT_FAILED;
+	}
+	
+	/* Prepare to send command bits */
+	SSD1306_CMD_ACCESS();
+	
+	/* Turn VDD (logic power) on and wait to come on */
+	SSD1306_LOGIC_POWER_EN();
+	HAL_Delay(1);
+	
+	/* Display off command */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_DISP_OFF);
+	
+	/* Reset the screen */
+	SSD1306_Reset();
+	
+	/* Set up charge pump */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_CHRG_PUMP_SET);
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_CHRG_PUMP_EN);
+	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_CHRG_PRD_SET);
+	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_CHRG_PRD_VALUE);
+	
+	/* Give power to display and wait to come on */
+	SSD1306_DISP_POWER_EN();
+	HAL_Delay(100);
+	
+	/* Set display contrast */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_CONTRAST_CTRL);
+	SSD1306_SPI_WRITE_CMD(SSD1306_CONTRAST_VALUE);
+	
+	/* Multiplex ratio */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_MUX_RATIO_SET);
+	SSD1306_SPI_WRITE_CMD(SSD1306_MUX_RATIO_VALUE);
+	
+	/* Set addressing mode (horizontal address mode) */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_ADDR_MODE_SET);
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_ADDR_MODE_HORZ);
+	
+	/* Invert rows and columns */
+	SSD1306_SPI_WRITE_CMD(SSD1306_REMAP_COL127_SEG0);
+	SSD1306_SPI_WRITE_CMD(SSD1306_REMAP_ROW_DEC);
+	
+	/* COM pins hardware configuration */
+	SSD1306_SPI_WRITE_CMD(SSD1306_COM_HW_CONFIG_SET);
+	SSD1306_SPI_WRITE_CMD(SSD1306_COM_HW_CONFIG_VALUE);
+	
+	/* Display on */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_DISP_ON);
+	
+	/* Clear screen and update */
+	SSD1306_Fill(SSD1306_PX_CLR_BLACK);
+	SSD1306_UpdateScreen();
+
+	/* Initialize structure values */
+	SSD1306_OledDisp.CurrentX = 0;
+	SSD1306_OledDisp.CurrentY = 0;
+	
+	/* Initialized OK */
+	SSD1306_OledDisp.Initialized = 1;
+	SSD1306_OledDisp.state = SSD1306_STATE_READY;
+	
+	/* Return OK */
+	return SSD1306_INIT_SUCCESS;
+}
 /**
  * @brief  Initializes SSD1306 OLED
  * @param  None
@@ -91,7 +156,7 @@ void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16
  *           - 0: OLED was not detected on I2C port
  *           - > 0: OLED initialized OK and ready to use
  */
-uint8_t SSD1306_Init(void) {
+uint8_t SSD1306_Init_Settings(void) {
 	/* Check that SPI peripheral is ready */
 	if (HAL_SPI_GetState(&Spi2_oledWrite) != HAL_SPI_STATE_READY)
 	{
@@ -101,9 +166,11 @@ uint8_t SSD1306_Init(void) {
 	/* 1. Drive VDDC low to give power to logic control and put reset pin high */
 	SSD1306_RESET_HIGH();
 	SSD1306_LOGIC_POWER_EN();
+	HAL_Delay(1);
 	
 	/* 2. Send display off command */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_DISP_OFF);
+	SSD1306_Reset();
 	
 	/* 3. Initialize display to desired operating mode */
 	
@@ -198,7 +265,7 @@ void SSD1306_Reset(void) {
  */
 void SSD1306_UpdateScreen(void) {	
 	/* Writing data to display buffer - non-blocking function with SPI and DMA */
-	while (SSD1306_SPI_WRITE_DATA() != SSD1306_STATE_READY);
+	while (ssd1306_SPI_WriteDisp(SSD1306_Buffer) != SSD1306_STATE_READY);
 }
 
 /**
@@ -689,7 +756,7 @@ uint8_t ssd1306_SPI_WriteDisp(uint8_t* pTxBuffer)
 		SSD1306_DISP_ACCESS();
 	
 		/* DMA enabled send with SPI - callback function run when complete */
-		HAL_SPI_Transmit_DMA(&Spi2_oledWrite, pTxBuffer, (uint16_t)sizeof(SSD1306_Buffer));
+		while (HAL_SPI_Transmit_DMA(&Spi2_oledWrite, pTxBuffer, (uint16_t)sizeof(SSD1306_Buffer)) != HAL_OK);
 	}
 	
 	return state;

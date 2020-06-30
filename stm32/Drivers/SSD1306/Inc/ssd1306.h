@@ -43,13 +43,13 @@ extern C {
  *
  * VCC        |3.3V         |
  * GND        |GND          |
- * SCK        |PA5          |Serial clock line
- * MOSI       |PA7          |Data line (stm32 -> SSD1306)
- * CS         |PA4          |Chip select (active low)
+ * SCK        |PB13         |Serial clock line
+ * MOSI       |PB15         |Data line (stm32 -> SSD1306)
+ * CS         |PB12         |Chip select (active low)
  * D/C        |PC8          |Data/Command buffer access select
  * RESET			|PC7					|Reset (held high, go low to reset)
- * VDDC       |PC6          |Power to OLED logic - active low
- * VBATC      |PC5          |Power to OLED display - active low
+ * VBATC      |PC6          |Power to OLED display - active low
+ * VDDC       |PC5          |Power to OLED logic - active low
  */
 
 #include "stm32f4xx_hal.h"
@@ -99,13 +99,13 @@ extern C {
 #define SSD1306_RESET_HIGH()						HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET)
 #define SSD1306_RESET_LOW()							HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_RESET)
 
-/* Toggling power to the logic of OLED */
-#define SSD1306_LOGIC_POWER_EN()				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_RESET)
-#define SSD1306_LOGIC_POWER_DI()				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_SET)
-
 /* Toggling power to display of OLED */
-#define SSD1306_DISP_POWER_EN()					HAL_GPIO_WritePin(GPIOC, GPIO_PIN_5, GPIO_PIN_RESET)
-#define SSD1306_DISP_POWER_DI()					HAL_GPIO_WritePin(GPIOC, GPIO_PIN_5, GPIO_PIN_SET)
+#define SSD1306_DISP_POWER_EN()					HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_RESET)
+#define SSD1306_DISP_POWER_DI()					HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_SET)
+
+/* Toggling power to the logic of OLED */
+#define SSD1306_LOGIC_POWER_EN()				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_5, GPIO_PIN_RESET)
+#define SSD1306_LOGIC_POWER_DI()				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_5, GPIO_PIN_SET)
 
 
 /*******************************************************
@@ -136,6 +136,9 @@ extern C {
 #define SSD1306_CMD_CHRG_PUMP_EN				0x14
 #define SSD1306_CMD_CHRG_PUMP_DI				0x10
 
+#define SSD1306_CLK_CHRG_PRD_SET				0xD9
+
+
 /* 
 * Addressing mode 
 */
@@ -158,7 +161,6 @@ extern C {
 * Clock configuration
 */
 #define SSD1306_CLK_SET									0xD5
-#define SSD1306_CLK_CHRG_PRD_SET				0xD9
 
 /*
 * Power management 
@@ -187,27 +189,27 @@ extern C {
 /*
 * Hardware configurations
 */
-#define SSD1306_CONTRAST_VALUE					0x7F
+#define SSD1306_CONTRAST_VALUE					0x0F
 #define SSD1306_MUX_RATIO_VALUE					0x3F
 #define SSD1306_DISP_OFFSET_VALUE				0x00
-#define SSD1306_COM_HW_CONFIG_VALUE			0x12
+#define SSD1306_COM_HW_CONFIG_VALUE			0x20
+
+/* Column remap */
+#define SSD1306_REMAP_COL0_SEG0					0xA0
+#define SSD1306_REMAP_COL127_SEG0				0xA1
+#define SSD1306_REMAP_ROW_INC						0xC0
+#define SSD1306_REMAP_ROW_DEC						0xC8
 
 /*
 * Clock configuration
 */
 #define SSD1306_CLK_MAX									0xF0
-#define SSD1306_CLK_CHRG_PRD_VALUE			0x22
+#define SSD1306_CLK_CHRG_PRD_VALUE			0xF1
 
 /*
 * Power management
 */
 #define SSD1306_CLK_VCOM_VALUE					0x20
-
-
-/* I2C address */
-#ifndef SSD1306_I2C_ADDR
-#define SSD1306_I2C_ADDR         				0x78
-#endif
 
 
 /*******************************************************
@@ -241,10 +243,12 @@ typedef struct {
  */
 uint8_t SSD1306_Init(void);
 
+uint8_t SSD1306_Init_Settings(void);
+
 /** 
  * @brief  Reset the OLED display
  */
-void SS1306_Reset(void);
+void SSD1306_Reset(void);
 
 /** 
  * @brief  Updates buffer from internal RAM to OLED
