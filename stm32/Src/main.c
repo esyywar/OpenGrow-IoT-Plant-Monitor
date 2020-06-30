@@ -84,8 +84,6 @@ static void MX_I2C1_Init(void);
 
 /* DMA functions */
 static void DMA1_Init(void);
-static void DMA1_OLED_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA1_oled_pipe);
-
 
 static void DMA2_Init(void);
 static void DMA2_ADC1_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe);
@@ -405,7 +403,9 @@ static void DMA1_Init() {
 	DMA1_oled_pipe.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
 	DMA1_oled_pipe.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
 	DMA1_oled_pipe.Init.Priority = DMA_PRIORITY_VERY_HIGH;
-	DMA1_oled_pipe.XferCpltCallback = &DMA1_OLED_Transfer_Cmplt_Callback;
+
+	/* Associate the SPI parent */
+	DMA1_oled_pipe.Parent = &Spi2_oledWrite;
 	
 	if (HAL_DMA_Init(&DMA1_oled_pipe) != HAL_OK)
   {
@@ -528,10 +528,7 @@ void Blinky_03(void *argument)
   /* USER CODE BEGIN Blinky_03 */
   /* Infinite loop */
   for(;;)
-  {
-		HAL_SPI_DeInit(&Spi2_oledWrite);
-		HAL_SPI_Init(&Spi2_oledWrite);
-		
+  {		
     char output[] = "Whats up bruv";
 		uint8_t len = strlen(output);
 		
@@ -583,16 +580,10 @@ static void DMA2_ADC1_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe)
 	HAL_UART_Transmit_IT(&Uart2_debug, (uint8_t*)output, strlen(output));
 }
 
-static void DMA1_OLED_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA1_oled_pipe) {
-	// Implement oled finish transfer code
+void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* pSpi2_oledWrite) {
 	SSD1306_OledDisp.state = SSD1306_STATE_READY;
 	
-	// TODO
-	// Release mutex / binary semaphore here
-}
-
-void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* pSpi2_oledWrite) {
-	
+	/* Error in HAL's SPI callback - cannot find the SPI handle */
 }
 
 

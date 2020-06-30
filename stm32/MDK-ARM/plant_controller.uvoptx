@@ -152,25 +152,25 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>174</LineNumber>
+          <LineNumber>2674</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134219546</Address>
+          <Address>134233828</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Src/stm32f4xx_it.c</Filename>
+          <Filename>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\plant_controller_build\../Src/stm32f4xx_it.c\174</Expression>
+          <Expression>\\plant_controller_build\../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c\2674</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
           <LineNumber>587</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134219532</Address>
+          <Address>134228436</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -184,18 +184,18 @@
         <Bp>
           <Number>2</Number>
           <Type>0</Type>
-          <LineNumber>537</LineNumber>
+          <LineNumber>174</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134219342</Address>
+          <Address>134219546</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Src/main.c</Filename>
+          <Filename>../Src/stm32f4xx_it.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\plant_controller_build\../Src/main.c\537</Expression>
+          <Expression>\\plant_controller_build\../Src/stm32f4xx_it.c\174</Expression>
         </Bp>
         <Bp>
           <Number>3</Number>
@@ -218,7 +218,7 @@
           <Type>0</Type>
           <LineNumber>1649</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134227638</Address>
+          <Address>134228154</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -264,7 +264,7 @@
         <Bp>
           <Number>7</Number>
           <Type>0</Type>
-          <LineNumber>129</LineNumber>
+          <LineNumber>127</LineNumber>
           <EnabledFlag>0</EnabledFlag>
           <Address>0</Address>
           <ByteObject>0</ByteObject>
@@ -280,7 +280,7 @@
         <Bp>
           <Number>8</Number>
           <Type>0</Type>
-          <LineNumber>136</LineNumber>
+          <LineNumber>134</LineNumber>
           <EnabledFlag>0</EnabledFlag>
           <Address>0</Address>
           <ByteObject>0</ByteObject>
