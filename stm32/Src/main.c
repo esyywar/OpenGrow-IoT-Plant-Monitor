@@ -128,9 +128,6 @@ int main(void)
   {
     Error_Handler();
   }
-	
-	SSD1306_Fill(SSD1306_PX_CLR_WHITE);
-	SSD1306_UpdateScreen();
 
   /* Init scheduler */
   osKernelInitialize();
@@ -495,7 +492,21 @@ void OLED_Write(void *argument)
   /* Infinite loop */
   for(;;)
   {
-		osDelay(1000);
+		static uint8_t xPosCirc = 20, xPosRect = 107;
+		SSD1306_Clear();
+		SSD1306_DrawFilledCircle(++xPosCirc, 20, 10, SSD1306_PX_CLR_WHITE);
+		SSD1306_DrawRectangle(--xPosRect, 5, 20, 10, SSD1306_PX_CLR_WHITE);
+		SSD1306_UpdateScreen();
+		
+		if (xPosCirc == 127) {
+			xPosCirc = 20;
+		}
+		
+		if (xPosRect == 0) {
+			xPosRect = 118;
+		}
+		
+		osDelay(50);
   }
   /* USER CODE END 5 */ 
 }

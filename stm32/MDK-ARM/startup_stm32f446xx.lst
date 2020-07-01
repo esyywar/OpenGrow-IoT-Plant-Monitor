@@ -871,10 +871,9 @@ interwork --depend=.\plant_controller_build\startup_stm32f446xx.d -o.\plant_con
 troller_build\startup_stm32f446xx.o -I..\Inc -I.\RTE\_plant_controller -IC:\Use
 rs\rahul\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include -IC:\Users\
 rahul\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST
-\STM32F4xx\Include --predefine="__EVAL SETA 1" --predefine="__MICROLIB SETA 1" 
---predefine="__UVISION_VERSION SETA 530" --predefine="_RTE_ SETA 1" --predefine
-="STM32F446xx SETA 1" --predefine="_RTE_ SETA 1" --list=startup_stm32f446xx.lst
- startup_stm32f446xx.s
+\STM32F4xx\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSI
+ON SETA 530" --predefine="_RTE_ SETA 1" --predefine="STM32F446xx SETA 1" --pred
+efine="_RTE_ SETA 1" --list=startup_stm32f446xx.lst startup_stm32f446xx.s
 
 
 
@@ -2006,4 +2005,4 @@ Symbol: __main
       At line 188 in file startup_stm32f446xx.s
 Comment: __main used once
 2 symbols
-451 symbols in table
+450 symbols in table

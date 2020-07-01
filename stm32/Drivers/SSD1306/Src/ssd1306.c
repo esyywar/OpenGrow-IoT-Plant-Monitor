@@ -145,6 +145,9 @@ uint8_t SSD1306_Init(void) {
 	SSD1306_SPI_WRITE_CMD(SSD1306_COM_HW_CONFIG_SET);
 	SSD1306_SPI_WRITE_CMD(SSD1306_COM_HW_CONFIG_VALUE);
 	
+	/* Display colours in normal mode */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_NORM_DISP);
+	
 	/* Deactivate scrolling */
 	SSD1306_SPI_WRITE_CMD(SSD1306_DEACTIVATE_SCROLL);
 	
@@ -473,8 +476,7 @@ void SSD1306_DrawRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint8
  * @param  y: Top left Y start point. Valid input is 0 to SSD1306_HEIGHT - 1
  * @param  w: Rectangle width in units of pixels
  * @param  h: Rectangle height in units of pixels
- * @param  c: Color to be used. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
- * @retval None
+ * @param  c: Color to be used.
  */
 void SSD1306_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint8_t colour) {
 	uint8_t i;

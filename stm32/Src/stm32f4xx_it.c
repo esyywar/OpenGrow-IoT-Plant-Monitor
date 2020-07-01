@@ -218,7 +218,7 @@ void USART2_IRQHandler(void)
 void EXTI15_10_IRQHandler(void)
 {
 	/* Prevent button debouncing */
-	HAL_Delay(100);
+	HAL_Delay(200);
 	
 	/* If PC13 then toggle OLED power */
 	if(__HAL_GPIO_EXTI_GET_FLAG(GPIO_PIN_13)){
