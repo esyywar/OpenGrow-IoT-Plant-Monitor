@@ -118,8 +118,8 @@ extern C {
 #define SSD1306_DISABLE									0
 #define SSD1306_ENABLE									1
 
-#define SSD1306_INIT_FAILED							0
-#define SSD1306_INIT_SUCCESS						1
+#define SSD1306_FAILED									0
+#define SSD1306_OK											1
 
 #define SSD1306_CMD_CONTRAST_CTRL				0x81
 #define SSD1306_CMD_UPDATE							0xA4
@@ -236,19 +236,26 @@ typedef struct {
 
 /**
  * @brief  Initializes SSD1306 OLED
- * @param  None
  * @retval Initialization status:
- *           - 0: OLED was not detected on I2C port
- *           - > 0: OLED initialized OK and ready to use
+ *           - 0: SPI port has not been configured
+ *           - 1: OLED initialized OK and ready to use
  */
 uint8_t SSD1306_Init(void);
 
-uint8_t SSD1306_Init_Settings(void);
+/**
+ * @brief  DeInitialize and power down SSD1306 OLED
+ */
+uint8_t SSD1306_DeInit(void);
 
 /** 
  * @brief  Reset the OLED display
  */
 void SSD1306_Reset(void);
+
+/** 
+ * @brief  Toggle the display on and off
+ */
+void SSD1306_Switch(void);
 
 /** 
  * @brief  Updates buffer from internal RAM to OLED

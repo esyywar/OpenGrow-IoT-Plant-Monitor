@@ -53,7 +53,6 @@ static uint8_t SSD1306_Buffer[SSD1306_WIDTH * SSD1306_HEIGHT / 8];
 ********** SSD1306 Driver Functions API - Display Ctrl
 *********************************************************/
 
-
 void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16_t w, int16_t h, uint8_t colour)
 {
 
@@ -81,11 +80,19 @@ void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16
     }
 }
 
+
+/**
+ * @brief  Initializes SSD1306 OLED
+ * @param  None
+ * @retval Initialization status:
+ *           - 0: OLED was not detected on I2C port
+ *           - > 0: OLED initialized OK and ready to use
+ */
 uint8_t SSD1306_Init(void) {
 	/* Check that SPI peripheral is ready */
 	if (HAL_SPI_GetState(&Spi2_oledWrite) != HAL_SPI_STATE_READY)
 	{
-		return SSD1306_INIT_FAILED;
+		return SSD1306_FAILED;
 	}
 	
 	/* Prepare to send command bits */
@@ -107,9 +114,16 @@ uint8_t SSD1306_Init(void) {
 	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_CHRG_PRD_SET);
 	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_CHRG_PRD_VALUE);
 	
+	/* Clear screen and update */
+	SSD1306_Clear();
+	
 	/* Give power to display and wait to come on */
 	SSD1306_DISP_POWER_EN();
 	HAL_Delay(100);
+	
+	/* Set oscillator frequency */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_SET);
+	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_MAX);
 	
 	/* Set display contrast */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_CONTRAST_CTRL);
@@ -131,12 +145,11 @@ uint8_t SSD1306_Init(void) {
 	SSD1306_SPI_WRITE_CMD(SSD1306_COM_HW_CONFIG_SET);
 	SSD1306_SPI_WRITE_CMD(SSD1306_COM_HW_CONFIG_VALUE);
 	
+	/* Deactivate scrolling */
+	SSD1306_SPI_WRITE_CMD(SSD1306_DEACTIVATE_SCROLL);
+	
 	/* Display on */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_DISP_ON);
-	
-	/* Clear screen and update */
-	SSD1306_Fill(SSD1306_PX_CLR_BLACK);
-	SSD1306_UpdateScreen();
 
 	/* Initialize structure values */
 	SSD1306_OledDisp.CurrentX = 0;
@@ -146,109 +159,44 @@ uint8_t SSD1306_Init(void) {
 	SSD1306_OledDisp.Initialized = 1;
 	SSD1306_OledDisp.state = SSD1306_STATE_READY;
 	
-	/* Return OK */
-	return SSD1306_INIT_SUCCESS;
-}
-/**
- * @brief  Initializes SSD1306 OLED
- * @param  None
- * @retval Initialization status:
- *           - 0: OLED was not detected on I2C port
- *           - > 0: OLED initialized OK and ready to use
- */
-uint8_t SSD1306_Init_Settings(void) {
-	/* Check that SPI peripheral is ready */
-	if (HAL_SPI_GetState(&Spi2_oledWrite) != HAL_SPI_STATE_READY)
-	{
-		return SSD1306_INIT_FAILED;
-	}
-	
-	/* 1. Drive VDDC low to give power to logic control and put reset pin high */
-	SSD1306_RESET_HIGH();
-	SSD1306_LOGIC_POWER_EN();
-	HAL_Delay(1);
-	
-	/* 2. Send display off command */
-	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_DISP_OFF);
-	SSD1306_Reset();
-	
-	/* 3. Initialize display to desired operating mode */
-	
-	/* 3a. Set addressing mode (horizontal address mode) */
-	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_ADDR_MODE_SET);
-	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_ADDR_MODE_HORZ);
-	
-	/* 3b. Set MUX ratio */
-	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_MUX_RATIO_SET);
-	SSD1306_SPI_WRITE_CMD(SSD1306_MUX_RATIO_VALUE);
-	
-	/* 3c. Set display offset */
-	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_DISP_OFFSET_SET);
-	SSD1306_SPI_WRITE_CMD(SSD1306_DISP_OFFSET_VALUE);
-	
-	/* 3d. Set display start line */
-	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_START_LINE);
-	
-	/* 3e. Set segment remap */
-	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_SEG_REMAP);
-	
-	/* 3f. Set COM output scan direction */
-	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_COM_SCAN_DIR);
-	
-	/* 3g. COM pins hardware configuration */
-	SSD1306_SPI_WRITE_CMD(SSD1306_COM_HW_CONFIG_SET);
-	SSD1306_SPI_WRITE_CMD(SSD1306_COM_HW_CONFIG_VALUE);
-	
-	/* 3h. Set contrast value */
-	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_CONTRAST_CTRL);
-	SSD1306_SPI_WRITE_CMD(SSD1306_CONTRAST_VALUE);
-	
-	/* 3i. Load display from RAM */
-	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_UPDATE);
-	
-	/* 3j. Set display normal mode (non-inverted colour) */
-	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_NORM_DISP);
-	
-	/* 3k. Set oscillator frequency */
-	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_SET);
-	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_MAX);
-	
-	/* 3l. Enable charge pump to power display */
-	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_CHRG_PRD_SET);
-	SSD1306_SPI_WRITE_CMD(SSD1306_CLK_CHRG_PRD_VALUE);
-	
-	/* 3m. Deactivate scrolling */
-	SSD1306_SPI_WRITE_CMD(SSD1306_DEACTIVATE_SCROLL);
-	
-	/* 4. Clear the screen */
-	SSD1306_Fill(SSD1306_PX_CLR_BLACK);
-	SSD1306_UpdateScreen();
-	
 	/* Hang until screen has been updated */
 	while(SSD1306_OledDisp.state != SSD1306_STATE_READY);
 	
-	/* 5. Drive VBAT low to give power to display */
-	SSD1306_DISP_POWER_EN();
+	/* Return OK */
+	return SSD1306_OK;
+}
+
+
+/**
+ * @brief  DeInitialize and power down SSD1306 OLED
+ */
+uint8_t SSD1306_DeInit(void) {
+	/* Check that display is in initialized state */
+	if (!SSD1306_OledDisp.Initialized) {
+		return SSD1306_FAILED;
+	}
 	
-	/* 6. Wait 100 ms */
+	/* Prepare to send command bits */
+	SSD1306_CMD_ACCESS();
+	
+	/* Display off command */
+	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_DISP_OFF);
+	
+	/* VBAT off - cut power to display */
+	SSD1306_DISP_POWER_DI();
+	
+		/* 100 ms delay */
 	HAL_Delay(100);
 	
-	/* 7. Send display-on command */
-	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_DISP_ON);
+	/* VDD off - cut power to logic */
+	SSD1306_LOGIC_POWER_DI();
 
-	/* 8. Initialize the SSD1306 struct */
+	/* Set structure values */
+	SSD1306_OledDisp.Initialized = 0;
 	
-	/* Set default values */
-	SSD1306_OledDisp.CurrentX = 0;
-	SSD1306_OledDisp.CurrentY = 0;
-	
-	/* Initialized OK */
-	SSD1306_OledDisp.Initialized = 1;
-	SSD1306_OledDisp.state = SSD1306_STATE_READY;
-	
-	/* Return OK */
-	return SSD1306_INIT_SUCCESS;
+	return SSD1306_OK;
 }
+
 
 /** 
  * @brief  Reset the OLED display
@@ -259,8 +207,21 @@ void SSD1306_Reset(void) {
 	SSD1306_RESET_HIGH();
 }
 
+
 /** 
- * @brief  Updates buffer from internal RAM to OLED with SSD1306 in horizontal addressing mode
+ * @brief  Toggle the display on and off
+ */
+void SSD1306_Switch(void) {
+	if (SSD1306_OledDisp.Initialized) {
+		SSD1306_DeInit();
+	}
+	else {
+		SSD1306_Init();
+	}
+}
+
+/** 
+ * @brief  Updates buffer from internal RAM to OLED with SSD1306 in horizontal addressing mode (blocks until interrupt function initialized)
  * @note   This function must be called each time you do some changes to OLED, to update buffer from RAM to OLED
  */
 void SSD1306_UpdateScreen(void) {	
@@ -713,7 +674,7 @@ void SSD1306_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, uint8_t colour)
 /** 
  * @brief  Clears the screen
  */
-void SSD1306_Clear (void)
+void SSD1306_Clear(void)
 {
 	SSD1306_Fill(SSD1306_PX_CLR_BLACK);
   SSD1306_UpdateScreen();
@@ -754,6 +715,9 @@ uint8_t ssd1306_SPI_WriteDisp(uint8_t* pTxBuffer)
 		
 		/* Set D/C high for data buffer access */
 		SSD1306_DISP_ACCESS();
+		
+		/* Reset the DMA transfer */
+		HAL_SPI_DMAStop(&Spi2_oledWrite);
 	
 		/* DMA enabled send with SPI - callback function run when complete */
 		while (HAL_SPI_Transmit_DMA(&Spi2_oledWrite, pTxBuffer, (uint16_t)sizeof(SSD1306_Buffer)) != HAL_OK);

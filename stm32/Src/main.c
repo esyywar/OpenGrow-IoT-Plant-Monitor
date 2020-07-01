@@ -47,7 +47,7 @@ SSD1306_t SSD1306_OledDisp;
 osThreadId_t Update_OLEDHandle;
 const osThreadAttr_t Update_OLED_attributes = {
   .name = "Update_OLED",
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityBelowNormal5,
   .stack_size = 128 * 4
 };
 /* Definitions for BlinkLED_02 */
@@ -124,19 +124,12 @@ int main(void)
 	DMA2_Init();
 	
 	/* Initialize OLED display */
-	if (SSD1306_Init() != SSD1306_INIT_SUCCESS)
+	if (SSD1306_Init() != SSD1306_OK)
   {
     Error_Handler();
   }
 	
-	/* Make screen display all lit up */
 	SSD1306_Fill(SSD1306_PX_CLR_WHITE);
-	SSD1306_UpdateScreen();
-	
-	/* Hang till screen is ready for update */
-	while (SSD1306_OledDisp.state != SSD1306_STATE_READY);
-	
-	SSD1306_Fill(SSD1306_PX_CLR_BLACK);
 	SSD1306_UpdateScreen();
 
   /* Init scheduler */
@@ -476,6 +469,17 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+	
+	/* Configure PC13 as falling edge interrupt - triggered by on-board button press */
+	GPIO_InitStruct.Pin = GPIO_PIN_13;
+	GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+	
+	/* EXTI interrupt for PC13 */
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 }
 
 
@@ -491,7 +495,7 @@ void OLED_Write(void *argument)
   /* Infinite loop */
   for(;;)
   {
-		osDelay(1);
+		osDelay(1000);
   }
   /* USER CODE END 5 */ 
 }
@@ -509,7 +513,7 @@ void Blinky_02(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osDelay(1000);
   }
   /* USER CODE END Blinky_02 */
 }
@@ -527,7 +531,7 @@ void Blinky_03(void *argument)
   /* Infinite loop */
   for(;;)
   {				
-    osDelay(1);
+    osDelay(1000);
   }
   /* USER CODE END Blinky_03 */
 }

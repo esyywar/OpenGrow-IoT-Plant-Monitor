@@ -24,6 +24,8 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
+#include "ssd1306.h"
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -164,12 +166,16 @@ void DebugMon_Handler(void)
 /* DMA2 Stream 0, DMA2 Stream 3, I2C EV, I2C ER, SPI1, USART2, TIM6           */
 /******************************************************************************/
 
-/* Calling HAL DMA interrupt handler for DMA2_Stream 0 */
+/**
+  * @brief  Calling HAL DMA interrupt handler for DMA2_Stream 0.
+  */
 void DMA2_Stream0_IRQHandler(void) {
 	HAL_DMA_IRQHandler(&DMA2_adc_pipe);
 }
 
-/* Calling HAL DMA interrupt handler for DMA2_Stream 0 */
+/**
+  * @brief  Calling HAL DMA interrupt handler for DMA2_Stream 0.
+  */
 void DMA1_Stream4_IRQHandler(void) {
 	HAL_DMA_IRQHandler(&DMA1_oled_pipe);
 }
@@ -204,6 +210,22 @@ void SPI2_IRQHandler(void)
 void USART2_IRQHandler(void)
 {
   HAL_UART_IRQHandler(&Uart2_debug);
+}
+
+/**
+  * @brief Interrupt handler used for PC13 falling edge -> on-board button press
+  */
+void EXTI15_10_IRQHandler(void)
+{
+	/* Prevent button debouncing */
+	HAL_Delay(100);
+	
+	/* If PC13 then toggle OLED power */
+	if(__HAL_GPIO_EXTI_GET_FLAG(GPIO_PIN_13)){
+		SSD1306_Switch();
+	} 
+
+	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_13);
 }
 
 /**

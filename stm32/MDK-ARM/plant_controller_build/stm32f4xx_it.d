@@ -46,3 +46,7 @@
 .\plant_controller_build\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
 .\plant_controller_build\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 .\plant_controller_build\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+.\plant_controller_build\stm32f4xx_it.o: ..\Drivers\SSD1306\Inc\ssd1306.h
+.\plant_controller_build\stm32f4xx_it.o: ..\Drivers\SSD1306\Inc\fonts.h
+.\plant_controller_build\stm32f4xx_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\plant_controller_build\stm32f4xx_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
