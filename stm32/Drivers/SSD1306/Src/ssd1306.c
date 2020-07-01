@@ -322,7 +322,7 @@ char SSD1306_Putc(char ch, FontDef_t* Font, uint8_t colour) {
 			if ((b << j) & 0x8000) {
 				SSD1306_DrawPixel(SSD1306_OledDisp.CurrentX + j, (SSD1306_OledDisp.CurrentY + i), colour);
 			} else {
-				SSD1306_DrawPixel(SSD1306_OledDisp.CurrentX + j, (SSD1306_OledDisp.CurrentY + i), colour);
+				SSD1306_DrawPixel(SSD1306_OledDisp.CurrentX + j, (SSD1306_OledDisp.CurrentY + i), !colour);
 			}
 		}
 	}

@@ -331,7 +331,7 @@ static void MX_SPI2_Init(void)
   Spi2_oledWrite.Init.CLKPolarity = SPI_POLARITY_LOW;
   Spi2_oledWrite.Init.CLKPhase = SPI_PHASE_1EDGE;
   Spi2_oledWrite.Init.NSS = SPI_NSS_HARD_OUTPUT;
-  Spi2_oledWrite.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
+  Spi2_oledWrite.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
   Spi2_oledWrite.Init.FirstBit = SPI_FIRSTBIT_MSB;
   Spi2_oledWrite.Init.TIMode = SPI_TIMODE_DISABLE;
   Spi2_oledWrite.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -492,18 +492,16 @@ void OLED_Write(void *argument)
   /* Infinite loop */
   for(;;)
   {
-		static uint8_t xPosCirc = 20, xPosRect = 107;
+		static uint8_t xPos = 0;
+		
 		SSD1306_Clear();
-		SSD1306_DrawFilledCircle(++xPosCirc, 20, 10, SSD1306_PX_CLR_WHITE);
-		SSD1306_DrawRectangle(--xPosRect, 5, 20, 10, SSD1306_PX_CLR_WHITE);
+		SSD1306_GotoXY(xPos++, 20);
+		SSD1306_Puts("Hello Rahul", &Font_7x10, SSD1306_PX_CLR_WHITE);
 		SSD1306_UpdateScreen();
 		
-		if (xPosCirc == 127) {
-			xPosCirc = 20;
-		}
-		
-		if (xPosRect == 0) {
-			xPosRect = 118;
+		/* Reset x when reaches end of the display */
+		if (xPos >= 127) {
+			xPos = 0;
 		}
 		
 		osDelay(50);
