@@ -55,7 +55,6 @@ static uint8_t SSD1306_Buffer[SSD1306_WIDTH * SSD1306_HEIGHT / 8];
 
 void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16_t w, int16_t h, uint8_t colour)
 {
-
     int16_t byteWidth = (w + 7) / 8; // Bitmap scanline pad = whole byte
     uint8_t byte = 0;
 
@@ -71,11 +70,7 @@ void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16
             {
                byte = (*(const unsigned char *)(&bitmap[j * byteWidth + i / 8]));
             }
-						
-            if(byte & 0x80) 
-						{
-							SSD1306_DrawPixel(x+i, y, colour);
-						}
+            if(byte & 0x80) SSD1306_DrawPixel(x+i, y, colour);
         }
     }
 }
@@ -85,8 +80,8 @@ void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16
  * @brief  Initializes SSD1306 OLED
  * @param  None
  * @retval Initialization status:
- *           - 0: OLED was not detected on I2C port
- *           - > 0: OLED initialized OK and ready to use
+ *           - 0: SPI peripheral not initialized
+ *           - 1: OLED initialized OK and ready to use
  */
 uint8_t SSD1306_Init(void) {
 	/* Check that SPI peripheral is ready */

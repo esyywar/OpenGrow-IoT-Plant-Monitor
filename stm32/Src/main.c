@@ -29,6 +29,9 @@
 #include "ssd1306.h"
 #include "fonts.h"
 
+/* Plant bitmap for OLED display */
+#include "bitmap.h"
+
 
 /* Peripheral handle variables ---------------------------------------------------------*/
 ADC_HandleTypeDef Adc1_sensorsRead;
@@ -492,16 +495,22 @@ void OLED_Write(void *argument)
   /* Infinite loop */
   for(;;)
   {
-		static uint8_t xPos = 0;
+		static uint8_t xPosText = 50;
 		
 		SSD1306_Clear();
-		SSD1306_GotoXY(xPos++, 20);
-		SSD1306_Puts("Hello Rahul", &Font_7x10, SSD1306_PX_CLR_WHITE);
+		
+		SSD1306_DrawBitmap(0, 0, treeBitmap, 32, 32, SSD1306_PX_CLR_WHITE);
+		
+		SSD1306_GotoXY(xPosText++, 10);
+		SSD1306_Puts("Hello", &Font_7x10, SSD1306_PX_CLR_WHITE);
+		SSD1306_GotoXY(xPosText++, 21);
+		SSD1306_Puts("Rahul", &Font_7x10, SSD1306_PX_CLR_WHITE);
+
 		SSD1306_UpdateScreen();
 		
 		/* Reset x when reaches end of the display */
-		if (xPos >= 127) {
-			xPos = 0;
+		if (xPosText >= 127) {
+			xPosText = 50;
 		}
 		
 		osDelay(50);
