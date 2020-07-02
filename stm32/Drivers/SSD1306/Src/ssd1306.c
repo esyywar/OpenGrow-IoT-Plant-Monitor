@@ -95,7 +95,7 @@ uint8_t SSD1306_Init(void) {
 	
 	/* Turn VDD (logic power) on and wait to come on */
 	SSD1306_LOGIC_POWER_EN();
-	HAL_Delay(1);
+	HAL_Delay(10);
 	
 	/* Display off command */
 	SSD1306_SPI_WRITE_CMD(SSD1306_CMD_DISP_OFF);

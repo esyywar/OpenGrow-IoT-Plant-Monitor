@@ -497,21 +497,15 @@ void OLED_Write(void *argument)
   {
 		static uint8_t xPosText = 50;
 		
-		SSD1306_Clear();
-		
+		SSD1306_Fill(SSD1306_PX_CLR_BLACK);		
 		SSD1306_DrawBitmap(0, 0, treeBitmap, 32, 32, SSD1306_PX_CLR_WHITE);
 		
-		SSD1306_GotoXY(xPosText++, 10);
+		SSD1306_GotoXY(xPosText, 10);
 		SSD1306_Puts("Hello", &Font_7x10, SSD1306_PX_CLR_WHITE);
-		SSD1306_GotoXY(xPosText++, 21);
+		SSD1306_GotoXY(xPosText, 21);
 		SSD1306_Puts("Rahul", &Font_7x10, SSD1306_PX_CLR_WHITE);
 
 		SSD1306_UpdateScreen();
-		
-		/* Reset x when reaches end of the display */
-		if (xPosText >= 127) {
-			xPosText = 50;
-		}
 		
 		osDelay(50);
   }

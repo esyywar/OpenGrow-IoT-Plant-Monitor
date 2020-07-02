@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\plant_controller_build\plant_controller_build.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\plant_controller_build\plant_controller_build.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Wed Jul 01 23:36:15 2020
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Jul 02 00:04:09 2020
 <BR><P>
 <H3>Maximum Stack Usage =        256 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -444,9 +444,9 @@ Global Symbols
 <P><STRONG><a name="[159]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
 
 <P><STRONG><a name="[7c]"></a>__aeabi_memset</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, memseta.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;memset
+<BR><BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Fill
+<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;memset
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr
-<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Fill
 <LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prvInitialiseNewTask
 </UL>
 
@@ -1149,15 +1149,15 @@ Global Symbols
 <P><STRONG><a name="[1]"></a>NMI_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f4xx_it.o(i.NMI_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f446xx.o(RESET)
 </UL>
-<P><STRONG><a name="[6e]"></a>OLED_Write</STRONG> (Thumb, 110 bytes, Stack size 16 bytes, main.o(i.OLED_Write))
-<BR><BR>[Stack]<UL><LI>Max Depth = 116<LI>Call Chain = OLED_Write &rArr; SSD1306_Clear &rArr; SSD1306_UpdateScreen &rArr; ssd1306_SPI_WriteDisp &rArr; HAL_SPI_Transmit_DMA &rArr; HAL_DMA_Start_IT &rArr; DMA_SetConfig
+<P><STRONG><a name="[6e]"></a>OLED_Write</STRONG> (Thumb, 82 bytes, Stack size 16 bytes, main.o(i.OLED_Write))
+<BR><BR>[Stack]<UL><LI>Max Depth = 108<LI>Call Chain = OLED_Write &rArr; SSD1306_UpdateScreen &rArr; ssd1306_SPI_WriteDisp &rArr; HAL_SPI_Transmit_DMA &rArr; HAL_DMA_Start_IT &rArr; DMA_SetConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 <LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_UpdateScreen
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Puts
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_GotoXY
+<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Fill
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_DrawBitmap
-<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Clear
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(i.main)
 </UL>
@@ -1168,14 +1168,13 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f446xx.o(RESET)
 </UL>
-<P><STRONG><a name="[f2]"></a>SSD1306_Clear</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, ssd1306.o(i.SSD1306_Clear))
+<P><STRONG><a name="[fa]"></a>SSD1306_Clear</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, ssd1306.o(i.SSD1306_Clear))
 <BR><BR>[Stack]<UL><LI>Max Depth = 100<LI>Call Chain = SSD1306_Clear &rArr; SSD1306_UpdateScreen &rArr; ssd1306_SPI_WriteDisp &rArr; HAL_SPI_Transmit_DMA &rArr; HAL_DMA_Start_IT &rArr; DMA_SetConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_UpdateScreen
-<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Fill
+<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Fill
 </UL>
 <BR>[Called By]<UL><LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Init
-<LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Write
 </UL>
 
 <P><STRONG><a name="[fb]"></a>SSD1306_DeInit</STRONG> (Thumb, 66 bytes, Stack size 8 bytes, ssd1306.o(i.SSD1306_DeInit))
@@ -1203,12 +1202,13 @@ Global Symbols
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Putc
 </UL>
 
-<P><STRONG><a name="[fa]"></a>SSD1306_Fill</STRONG> (Thumb, 26 bytes, Stack size 8 bytes, ssd1306.o(i.SSD1306_Fill))
+<P><STRONG><a name="[f2]"></a>SSD1306_Fill</STRONG> (Thumb, 26 bytes, Stack size 8 bytes, ssd1306.o(i.SSD1306_Fill))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = SSD1306_Fill
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Clear
+<BR>[Called By]<UL><LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Write
+<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Clear
 </UL>
 
 <P><STRONG><a name="[f4]"></a>SSD1306_GotoXY</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, ssd1306.o(i.SSD1306_GotoXY))
@@ -1219,11 +1219,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 108<LI>Call Chain = SSD1306_Init &rArr; SSD1306_Clear &rArr; SSD1306_UpdateScreen &rArr; ssd1306_SPI_WriteDisp &rArr; HAL_SPI_Transmit_DMA &rArr; HAL_DMA_Start_IT &rArr; DMA_SetConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Clear
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_GetState
 <LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_SPI_WriteCmd
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Reset
+<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Clear
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Switch
 <LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -1268,8 +1268,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_SPI_WriteDisp
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Clear
-<LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Write
+<BR>[Called By]<UL><LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Write
+<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSD1306_Clear
 </UL>
 
 <P><STRONG><a name="[71]"></a>SensorRead</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, main.o(i.SensorRead))
