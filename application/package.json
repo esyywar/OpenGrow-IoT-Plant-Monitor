@@ -4,7 +4,8 @@
   "description": "Mqtt broker and web application for IoT plant controller",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"node broker\" \"node pub\" \"node sub\""
   },
   "author": "Rahul Eswar",
   "license": "MIT",
@@ -13,5 +14,8 @@
     "express": "^4.17.1",
     "mongoose": "^5.9.20",
     "mqtt": "^4.1.0"
+  },
+  "devDependencies": {
+    "concurrently": "^5.2.0"
   }
 }
