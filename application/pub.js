@@ -12,8 +12,8 @@ client.on("connect", () => {
   console.log("Publisher connected!")
 
   setInterval(() => {
-    client.publish(topic, message)
-  }, 2000)
+    client.publish(topic, message, { qos: 1 })
+  }, 7000)
 
   client.on("error", (error) => {
     console.log(error)

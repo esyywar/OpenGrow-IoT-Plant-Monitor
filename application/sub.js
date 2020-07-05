@@ -10,15 +10,16 @@ const topic = "soilMoisture"
 client.on("connect", () => {
   console.log("Subscriber connected!")
 
-  client.subscribe(topic, (error) => {
+  client.subscribe(topic, { qos: 1 }, (error) => {
     if (!error) {
-      console.log("Sub -> Subscribed to topic!")
+      client.end()
     }
   })
 
   /* Client action on topic */
   client.on("message", (topic, payload) => {
     payload = payload.toString()
-    console.log(`MQTT Subscriber Message.  Topic: ${topic}.  Message: ${payload.toString()}`)
+
+    /* TODO action on receving data */
   })
 })
