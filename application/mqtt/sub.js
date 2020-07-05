@@ -10,8 +10,8 @@ const topic = "soilMoisture"
 client.on("connect", () => {
   console.log("Subscriber connected!")
 
-  client.subscribe(topic, { qos: 1 }, (error) => {
-    if (!error) {
+  client.subscribe(topic, { qos: 2 }, (error) => {
+    if (error) {
       client.end()
     }
   })
@@ -19,6 +19,7 @@ client.on("connect", () => {
   /* Client action on topic */
   client.on("message", (topic, payload) => {
     payload = payload.toString()
+    console.log(`Received ${payload} for topic ${topic}`)
 
     /* TODO action on receving data */
   })

@@ -5,14 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"node broker\" \"node pub\" \"node sub\""
+    "dev": "concurrently \"node mqtt/broker\" \"node mqtt/pub\" \"node mqtt/sub\""
   },
   "author": "Rahul Eswar",
   "license": "MIT",
   "dependencies": {
     "aedes": "^0.42.4",
+    "config": "^3.3.1",
     "express": "^4.17.1",
-    "mongoose": "^5.9.20",
+    "mongoose": "^5.9.21",
     "mqtt": "^4.1.0"
   },
   "devDependencies": {

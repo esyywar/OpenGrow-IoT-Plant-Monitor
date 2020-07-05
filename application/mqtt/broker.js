@@ -26,13 +26,31 @@ aedes.on("clientReady", (client) => {
   console.log(`Client ${client.id} has connected!`)
 })
 
-/* Fire when message has been published to the broker */
+/* Publish message reaches to the broker */
 aedes.on("publish", (publish, client) => {
-  console.log(`Published message ${publish.messageId} to ${publish.topic} with QoS ${publish.qos}`)
-  client && console.log(`Published to ${client.id}`)
+  if (client) {
+    console.log(`Published message ${publish.messageId} of topic ${publish.topic} to ${client.id}`)
+  }
 })
 
-/* On acknowledge from QOS 1 or 2 */
+/* Client subscribes to a topic */
+aedes.on("subscribe", (subscriptions, client) => {
+  subscriptions.forEach((topic) => {
+    console.log(`Client ${client.id} has subscribed to ${topic.topic} with QoS ${topic.qos}`)
+  })
+})
+
+/* Client unsubscribes to a topic */
+aedes.on("unsubscribe", (unsubscriptions, client) => {
+  console.log(`Client ${client.id} has unsubscribed from ${unsubscriptions}`)
+})
+
+/* Connection acknowledgement sent from  server to client */
+aedes.on("connackSent", (connack, client) => {
+  console.log(`Ack sent to ${client.id} with return code ${connack.returnCode}`)
+})
+
+/* For QOS 1 or 2  - Packet successfully delivered to client */
 aedes.on("ack", (message, client) => {
-  console.log(`${message} ack\'d from ${client.id}`)
+  console.log(`Message ack\'d from ${client.id}`)
 })
