@@ -1,3 +1,7 @@
+const connectDB = require("../config/db")
+
+const PlantMetrics = require("../models/PlantMetrics")
+
 /* Setup MQTT broker */
 const aedesOptions = { concurrency: 200, connectTimeout: 5000 }
 const aedes = require("aedes")(aedesOptions)
@@ -8,6 +12,9 @@ const aedes = require("aedes")(aedesOptions)
 
 /* Check for server port or run on local port 1883 */
 const PORT = process.env.PORT || 1883
+
+/* Connect to mongoDB */
+connectDB()
 
 /* Create MQTT client */
 const server = require("net").createServer(aedes.handle)
@@ -51,6 +58,17 @@ aedes.on("connackSent", (connack, client) => {
 })
 
 /* For QOS 1 or 2  - Packet successfully delivered to client */
-aedes.on("ack", (message, client) => {
+aedes.on("ack", async (message, client) => {
   console.log(`Message ack\'d from ${client.id}`)
+
+  /* Make dummy entry in database */
+  const dummyMetrics = {
+    topic: "dfnjwkqg212",
+    soilMoisture: 400,
+    lightLevel: 42,
+  }
+
+  metrics = new PlantMetrics(dummyMetrics)
+
+  await metrics.save()
 })
