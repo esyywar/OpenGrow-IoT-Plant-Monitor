@@ -1,26 +1,37 @@
 /* MQTT subscriber */
-const mqtt = require("mqtt")
+const mqtt = require('mqtt')
 
-const client = mqtt.connect("mqtt://localhost:1883")
+/* Connecting to broker */
+const config = require('config')
+
+const mqttQoS = config.get('mqttQoS')
+
+const connectOptions = {
+	username: config.get('mqttBrokerUsername'),
+	password: config.get('mqttBrokerPassword'),
+	reconnectPeriod: 5000,
+}
+
+const client = mqtt.connect('mqtt://localhost:1883', connectOptions)
 
 /* Plant moisture level topic */
-const topic = "soilMoisture"
+const topic = 'soilMoisture'
 
 /* Subscribe to topic */
-client.on("connect", () => {
-  console.log("Subscriber connected!")
+client.on('connect', () => {
+	console.log('Subscriber connected!')
 
-  client.subscribe(topic, { qos: 2 }, (error) => {
-    if (error) {
-      client.end()
-    }
-  })
+	client.subscribe(topic, { qos: mqttQoS }, (error) => {
+		if (error) {
+			client.end()
+		}
+	})
 
-  /* Client action on topic */
-  client.on("message", (topic, payload) => {
-    payload = payload.toString()
-    console.log(`Received ${payload} for topic ${topic}`)
+	/* Client action on topic */
+	client.on('message', (topic, payload) => {
+		payload = payload.toString()
+		console.log(`Received ${payload} for topic ${topic}`)
 
-    /* TODO action on receving data */
-  })
+		/* TODO action on receving data */
+	})
 })
