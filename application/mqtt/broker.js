@@ -1,6 +1,6 @@
 const connectDB = require('../config/db')
 
-const PlantMetrics = require('../models/PlantMetrics')
+const PlantData = require('../models/PlantData')
 const config = require('config')
 
 /* Setup MQTT broker */
@@ -11,11 +11,11 @@ const aedes = require('aedes')(aedesOptions)
  ****************** Initialize Broker ******************
  ******************************************************/
 
-/* Check for server port or run on local port 1883 */
-const PORT = process.env.PORT || 1883
-
 /* Connect to mongoDB */
 connectDB()
+
+/* Check for server port or run on local port 1883 */
+const PORT = process.env.PORT || 1883
 
 /* Create MQTT client */
 const server = require('net').createServer(aedes.handle)
@@ -53,10 +53,27 @@ aedes.on('clientReady', (client) => {
 })
 
 /* Publish message reaches to the broker */
-aedes.on('publish', (publish, client) => {
-	if (client) {
-		console.log(`Published message ${publish.messageId} of topic ${publish.topic} to ${client.id}`)
+aedes.on('publish', async (publish, client) => {
+	/* If not from an authenticated and connected client */
+	if (!client) {
+		return
 	}
+
+	/* If topic does not exist in database, create entry in database */
+	try {
+		const isPlantReg = await PlantData.findOne({ topic: publish.topic })
+
+		if (!isPlantReg) {
+			console.log('New plant! Registering him now...')
+			newPlant = new PlantData({ topic: publish.topic })
+
+			await newPlant.save()
+		}
+	} catch (error) {
+		console.log(error.message)
+	}
+
+	console.log(`Published message ${publish.messageId} of topic ${publish.topic} to ${client.id}`)
 })
 
 /* Client subscribes to a topic */
@@ -73,25 +90,13 @@ aedes.on('unsubscribe', (unsubscriptions, client) => {
 
 /* Connection acknowledgement sent from  server to client */
 aedes.on('connackSent', (connack, client) => {
+	if (connack.returnCode == 4) {
+		return console.log('Auth error.')
+	}
 	console.log(`Ack sent to ${client.id} with return code ${connack.returnCode}`)
 })
 
 /* For QOS 1 or 2  - Packet successfully delivered to client */
-aedes.on('ack', async (message, client) => {
+aedes.on('ack', async (packet, client) => {
 	console.log(`Message ack\'d from ${client.id}`)
-
-	/* Make dummy entry in database */
-	const dummyMetrics = {
-		topic: 'dfnjwkqg212',
-		soilMoisture: 400,
-		lightLevel: 42,
-	}
-
-	metrics = new PlantMetrics(dummyMetrics)
-
-	try {
-		await metrics.save()
-	} catch (error) {
-		console.log(error.message)
-	}
 })

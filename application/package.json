@@ -1,23 +1,24 @@
 {
-  "name": "application",
-  "version": "1.0.0",
-  "description": "Mqtt broker and web application for IoT plant controller",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"node mqtt/broker\" \"node mqtt/pub\" \"node mqtt/sub\""
-  },
-  "author": "Rahul Eswar",
-  "license": "MIT",
-  "dependencies": {
-    "aedes": "^0.42.4",
-    "config": "^3.3.1",
-    "express": "^4.17.1",
-    "mongoose": "^5.9.21",
-    "mqtt": "^4.1.0",
-    "uuid": "^8.2.0"
-  },
-  "devDependencies": {
-    "concurrently": "^5.2.0"
-  }
+	"name": "application",
+	"version": "1.0.0",
+	"description": "Mqtt broker and web application for IoT plant controller",
+	"main": "index.js",
+	"scripts": {
+		"mqtt": "concurrently \"node mqtt/broker\" \"node mqtt/pub\" \"node mqtt/sub\""
+	},
+	"author": "Rahul Eswar",
+	"license": "MIT",
+	"dependencies": {
+		"aedes": "^0.42.4",
+		"config": "^3.3.1",
+		"express": "^4.17.1",
+		"express-validator": "^6.6.0",
+		"mongoose": "^5.9.21",
+		"mqtt": "^4.1.0",
+		"mqtt-packet": "^6.3.2",
+		"uuid": "^8.2.0"
+	},
+	"devDependencies": {
+		"concurrently": "^5.2.0"
+	}
 }

@@ -15,7 +15,7 @@ const connectOptions = {
 const client = mqtt.connect('mqtt://localhost:1883', connectOptions)
 
 /* Plant moisture level topic */
-const topic = 'soilMoisture'
+const topic = 'plant_1234'
 
 /* Subscribe to topic */
 client.on('connect', () => {
@@ -29,8 +29,10 @@ client.on('connect', () => {
 
 	/* Client action on topic */
 	client.on('message', (topic, payload) => {
-		payload = payload.toString()
-		console.log(`Received ${payload} for topic ${topic}`)
+		payload = JSON.parse(payload)
+		console.log(
+			`Received soilMoisture: ${payload.soilMoisture}, light level: ${payload.lightLevel}`
+		)
 
 		/* TODO action on receving data */
 	})
