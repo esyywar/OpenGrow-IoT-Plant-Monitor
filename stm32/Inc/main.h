@@ -31,9 +31,8 @@ extern "C" {
 #include "stm32f4xx_hal.h"
 
 /* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
 
-/* USER CODE END Includes */
+#define ESP8266_I2C_ADDR			0x68
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */

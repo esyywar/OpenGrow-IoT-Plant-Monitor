@@ -38,10 +38,10 @@ ADC_HandleTypeDef Adc1_sensorsRead;
 I2C_HandleTypeDef I2c1_espComm;
 SPI_HandleTypeDef Spi2_oledWrite;
 UART_HandleTypeDef Uart2_debug;
-DMA_HandleTypeDef DMA2_adc_pipe, DMA1_oled_pipe;
+DMA_HandleTypeDef DMA2_adc_pipe, DMA1_oled_pipe, DMA1_esp8266_pipe;
 
 /* Private variables */
-uint16_t moisture_sensors;
+uint16_t plant_sensors[2];
 
 /* Structure for SSD1306 handle */
 SSD1306_t SSD1306_OledDisp;
@@ -54,9 +54,9 @@ const osThreadAttr_t Update_OLED_attributes = {
   .stack_size = 128 * 4
 };
 /* Definitions for BlinkLED_02 */
-osThreadId_t BlinkLED_02Handle;
-const osThreadAttr_t BlinkLED_02_attributes = {
-  .name = "BlinkLED_02",
+osThreadId_t Publish_ESP8266Handle;
+const osThreadAttr_t Publish_ESP8266Handle_attributes = {
+  .name = "Publish_ESP8266",
   .priority = (osPriority_t) osPriorityBelowNormal7,
   .stack_size = 128 * 4
 };
@@ -86,14 +86,17 @@ static void MX_SPI2_Init(void);
 static void MX_I2C1_Init(void);
 
 /* DMA functions */
-static void DMA1_Init(void);
 
-static void DMA2_Init(void);
+static void DMA1_Stream4_Init(void);
+
+static void DMA1_Stream6_Init(void);
+
+static void DMA2_Stream0_Init(void);
 static void DMA2_ADC1_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe);
 
 /* Thread functions */
 void OLED_Write(void *argument);
-void Blinky_02(void *argument);
+void Publish_ESP8266(void *argument);
 void Blinky_03(void *argument);
 void SensorRead(void *argument);
 
@@ -123,8 +126,9 @@ int main(void)
   MX_SPI2_Init();
   MX_I2C1_Init();
 
-	DMA1_Init();
-	DMA2_Init();
+	DMA1_Stream4_Init();
+	DMA1_Stream6_Init();
+	DMA2_Stream0_Init();
 	
 	/* Initialize OLED display */
 	if (SSD1306_Init() != SSD1306_OK)
@@ -156,7 +160,7 @@ int main(void)
   Update_OLEDHandle = osThreadNew(OLED_Write, NULL, &Update_OLED_attributes);
 
   /* creation of BlinkLED_02 */
-  BlinkLED_02Handle = osThreadNew(Blinky_02, NULL, &BlinkLED_02_attributes);
+  Publish_ESP8266Handle = osThreadNew(Publish_ESP8266, NULL, &Publish_ESP8266Handle_attributes);
 
   /* creation of BlinkLED_03 */
   BlinkLED_03Handle = osThreadNew(Blinky_03, NULL, &BlinkLED_03_attributes);
@@ -264,17 +268,31 @@ static void MX_ADC1_Init(void)
   Adc1_sensorsRead.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   Adc1_sensorsRead.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   Adc1_sensorsRead.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  Adc1_sensorsRead.Init.NbrOfConversion = 1;
+  Adc1_sensorsRead.Init.NbrOfConversion = 2;
   Adc1_sensorsRead.Init.DMAContinuousRequests = ENABLE;
   Adc1_sensorsRead.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+	
+	/* Try associating the DMA with next line! Will then need to change the callback function */
+	// Adc1_sensorsRead.DMA_Handle = &DMA2_adc_pipe;
 	
   if (HAL_ADC_Init(&Adc1_sensorsRead) != HAL_OK)
   {
     Error_Handler();
   }
-  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. */
+	
+  /** First read soil moisture level from PA0 */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = 1;
+  sConfig.SamplingTime = ADC_SAMPLETIME_112CYCLES;
+	
+  if (HAL_ADC_ConfigChannel(&Adc1_sensorsRead, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+	
+	/** Read light level from photoresistor circuit at PA1 */
+  sConfig.Channel = ADC_CHANNEL_1;
+  sConfig.Rank = 2;
   sConfig.SamplingTime = ADC_SAMPLETIME_112CYCLES;
 	
   if (HAL_ADC_ConfigChannel(&Adc1_sensorsRead, &sConfig) != HAL_OK)
@@ -308,14 +326,11 @@ static void MX_I2C1_Init(void)
   I2c1_espComm.Init.OwnAddress2 = 0;
   I2c1_espComm.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
   I2c1_espComm.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+	
   if (HAL_I2C_Init(&I2c1_espComm) != HAL_OK)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN I2C1_Init 2 */
-
-  /* USER CODE END I2C1_Init 2 */
-
 }
 
 
@@ -339,7 +354,7 @@ static void MX_SPI2_Init(void)
   Spi2_oledWrite.Init.TIMode = SPI_TIMODE_DISABLE;
   Spi2_oledWrite.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
 	
-	/* Associate DMA */
+	/* Associate DMA1 Stream 4 */
 	Spi2_oledWrite.hdmatx = &DMA1_oled_pipe;
 	
   if (HAL_SPI_Init(&Spi2_oledWrite) != HAL_OK)
@@ -373,11 +388,11 @@ static void MX_USART2_UART_Init(void)
 
 
 /**
-  * @brief DMA1 Initialization Function
+  * @brief DMA1 Stream 4 for transferring SSD1306 OLED buffer data to SPI1 Tx
   * @param None
   * @retval None
   */
-static void DMA1_Init() {
+static void DMA1_Stream4_Init() {
 	__HAL_RCC_DMA1_CLK_ENABLE();
 	
 	/*
@@ -411,11 +426,46 @@ static void DMA1_Init() {
 
 
 /**
-  * @brief DMA2 Initialization Function
+  * @brief DMA1 Stream 6 for transferring plant sensor data to ESP8266 via I2C1
   * @param None
   * @retval None
   */
-static void DMA2_Init(void) {
+static void DMA1_Stream6_Init() {
+	__HAL_RCC_DMA1_CLK_ENABLE();
+	
+	/*
+	* Stream 4, channel 0 used to transfer SSD1306 buffer data to SPI1 TxBuffer
+	*/
+	DMA1_esp8266_pipe.Instance = DMA1_Stream6;
+	DMA1_esp8266_pipe.Init.Channel = DMA_CHANNEL_1;
+	DMA1_esp8266_pipe.Init.Direction = DMA_MEMORY_TO_PERIPH;
+	DMA1_esp8266_pipe.Init.Mode = DMA_NORMAL;
+	DMA1_esp8266_pipe.Init.PeriphInc = DMA_PINC_DISABLE;
+	DMA1_esp8266_pipe.Init.MemInc = DMA_MINC_ENABLE;
+	DMA1_esp8266_pipe.Init.MemBurst = DMA_MBURST_SINGLE;
+	DMA1_esp8266_pipe.Init.PeriphBurst = DMA_PBURST_SINGLE;
+	DMA1_esp8266_pipe.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+	DMA1_esp8266_pipe.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+	DMA1_esp8266_pipe.Init.PeriphDataAlignment = DMA_MDATAALIGN_HALFWORD;
+	DMA1_esp8266_pipe.Init.Priority = DMA_PRIORITY_VERY_HIGH;
+	
+	if (HAL_DMA_Init(&DMA1_esp8266_pipe) != HAL_OK)
+  {
+    Error_Handler();
+  }
+	
+	/* DMA1 stream 4 interrupt config */
+	HAL_NVIC_SetPriority(DMA1_Stream6_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream6_IRQn);
+}
+
+
+/**
+  * @brief DMA2 Stream 0 to transfer data from ADC DR to sensor data variable
+  * @param None
+  * @retval None
+  */
+static void DMA2_Stream0_Init(void) {
 	__HAL_RCC_DMA2_CLK_ENABLE();
 	
 	/*
@@ -434,6 +484,9 @@ static void DMA2_Init(void) {
 	DMA2_adc_pipe.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
 	DMA2_adc_pipe.Init.Priority = DMA_PRIORITY_MEDIUM;
 	DMA2_adc_pipe.XferCpltCallback = &DMA2_ADC1_Transfer_Cmplt_Callback;
+	
+	/* Associate the ADC1 parent */
+	DMA2_adc_pipe.Parent = &Adc1_sensorsRead;
 	
 	if (HAL_DMA_Init(&DMA2_adc_pipe) != HAL_OK)
   {
@@ -500,12 +553,16 @@ void OLED_Write(void *argument)
 		SSD1306_Fill(SSD1306_PX_CLR_BLACK);		
 		SSD1306_DrawBitmap(0, 0, treeBitmap, 32, 32, SSD1306_PX_CLR_WHITE);
 		
-		SSD1306_GotoXY(xPosText, 10);
+		SSD1306_GotoXY(xPosText++, 10);
 		SSD1306_Puts("Hello", &Font_7x10, SSD1306_PX_CLR_WHITE);
-		SSD1306_GotoXY(xPosText, 21);
+		SSD1306_GotoXY(xPosText++, 21);
 		SSD1306_Puts("Rahul", &Font_7x10, SSD1306_PX_CLR_WHITE);
 
 		SSD1306_UpdateScreen();
+		
+		if (xPosText >= 127) {
+			xPosText = 0;
+		}
 		
 		osDelay(50);
   }
@@ -514,20 +571,27 @@ void OLED_Write(void *argument)
 
 
 /**
-* @brief Function implementing the BlinkLED_02 thread.
+* @brief Function implementing the Publish_ESP8266 thread.
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_Blinky_02 */
-void Blinky_02(void *argument)
+/* USER CODE END Publish_ESP8266 */
+void Publish_ESP8266(void *argument)
 {
-  /* USER CODE BEGIN Blinky_02 */
+  /* USER CODE BEGIN Publish_ESP8266 */
   /* Infinite loop */
   for(;;)
   {
+		/* Writing to ESP8266 via I2C1 */
+		char msg[30] = "I am working!\n";
+		
+		HAL_I2C_Master_Transmit(&I2c1_espComm, ESP8266_I2C_ADDR, (uint8_t*)msg, strlen(msg), 1000);		
+		
+		/* Non-blocking I2C transfer with interrupts and DMA */
+		
     osDelay(1000);
   }
-  /* USER CODE END Blinky_02 */
+  /* USER CODE END Publish_ESP8266 */
 }
 
 
@@ -550,7 +614,7 @@ void Blinky_03(void *argument)
 
 
 /**
-* @brief Function implementing the Get_Sensor_Data thread.
+* @brief Take analog readings from capacitive soil moisture sensor and photoresistor circuit.
 * @param argument: Not used
 * @retval None
 */
@@ -562,10 +626,10 @@ void SensorRead(void *argument)
   for(;;)
   {
 		/* Set DMA to transfer from ADC to data buffer */
-		HAL_DMA_Start_IT(&DMA2_adc_pipe, (uint32_t)&(ADC1->DR), (uint32_t)&moisture_sensors, 1);
+		HAL_DMA_Start_IT(&DMA2_adc_pipe, (uint32_t)&(ADC1->DR), (uint32_t)plant_sensors, 2);
 		
 		/* Read value from ADC1 at pin GPIO A0 */
-		HAL_ADC_Start_DMA(&Adc1_sensorsRead, (uint32_t*)&moisture_sensors, 1);
+		HAL_ADC_Start_DMA(&Adc1_sensorsRead, (uint32_t*)plant_sensors, 2);
 		
     osDelay(1000);
   }
@@ -582,7 +646,7 @@ static void DMA2_ADC1_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe)
 	
 	/* Write data out from UART2 (for debug purposes) */
 	char output[50];
-	sprintf(output, "%i\r\n", moisture_sensors);
+	sprintf(output, "%i, %i\r\n", plant_sensors[0], plant_sensors[1]);
 	
 	HAL_UART_Transmit_IT(&Uart2_debug, (uint8_t*)output, strlen(output));
 }

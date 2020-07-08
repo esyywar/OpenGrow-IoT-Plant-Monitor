@@ -712,9 +712,6 @@ uint8_t ssd1306_SPI_WriteDisp(uint8_t* pTxBuffer)
 		
 		/* Set D/C high for data buffer access */
 		SSD1306_DISP_ACCESS();
-		
-		/* Reset the DMA transfer */
-		HAL_SPI_DMAStop(&Spi2_oledWrite);
 	
 		/* DMA enabled send with SPI - callback function run when complete */
 		while (HAL_SPI_Transmit_DMA(&Spi2_oledWrite, pTxBuffer, (uint16_t)sizeof(SSD1306_Buffer)) != HAL_OK);

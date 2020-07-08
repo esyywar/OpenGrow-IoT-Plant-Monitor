@@ -163,7 +163,7 @@ void DebugMon_Handler(void)
 
 /******************************************************************************/
 /* STM32F4xx Peripheral Interrupt Handlers                                    */
-/* DMA2 Stream 0, DMA2 Stream 3, I2C EV, I2C ER, SPI1, USART2, TIM6           */
+/* DMA2 Stream 0, DMA1 Stream 4, I2C EV, I2C ER, SPI1, USART2, TIM6           */
 /******************************************************************************/
 
 /**
@@ -174,7 +174,7 @@ void DMA2_Stream0_IRQHandler(void) {
 }
 
 /**
-  * @brief  Calling HAL DMA interrupt handler for DMA2_Stream 0.
+  * @brief  Calling HAL DMA interrupt handler for DMA1_Stream 4.
   */
 void DMA1_Stream4_IRQHandler(void) {
 	HAL_DMA_IRQHandler(&DMA1_oled_pipe);
