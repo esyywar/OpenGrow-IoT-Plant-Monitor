@@ -32,9 +32,11 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 
-/* I2C device addresses */
-#define STM32_I2C_ADDR						0x68
-#define ESP8266_I2C_ADDR					0x5C
+/* I2C device addresses 
+*	 Note: Hal driver shifts the address right -> compensate by left shift
+*/
+#define STM32_I2C_ADDR						0x68 << 1		
+#define ESP8266_I2C_ADDR					0x5C << 1
 
 /* I2C commands */
 
