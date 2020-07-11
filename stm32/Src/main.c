@@ -112,7 +112,6 @@ static void DMA1_Stream4_Init(void);
 static void DMA1_Stream6_Init(void);
 
 static void DMA2_Stream0_Init(void);
-static void DMA2_ADC1_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe);
 
 /* Thread functions */
 void OLED_Write(void *argument);
@@ -288,7 +287,7 @@ static void MX_ADC1_Init(void)
   Adc1_sensorsRead.Instance = ADC1;
   Adc1_sensorsRead.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
   Adc1_sensorsRead.Init.Resolution = ADC_RESOLUTION_12B;
-  Adc1_sensorsRead.Init.ScanConvMode = DISABLE;
+  Adc1_sensorsRead.Init.ScanConvMode = ENABLE;
   Adc1_sensorsRead.Init.ContinuousConvMode = DISABLE;
   Adc1_sensorsRead.Init.DiscontinuousConvMode = DISABLE;
   Adc1_sensorsRead.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
@@ -298,8 +297,8 @@ static void MX_ADC1_Init(void)
   Adc1_sensorsRead.Init.DMAContinuousRequests = ENABLE;
   Adc1_sensorsRead.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
 	
-	/* Try associating the DMA with next line! Will then need to change the callback function */
-	// Adc1_sensorsRead.DMA_Handle = &DMA2_adc_pipe;
+	/* Associate DMA with ADC */
+	Adc1_sensorsRead.DMA_Handle = &DMA2_adc_pipe;
 	
   if (HAL_ADC_Init(&Adc1_sensorsRead) != HAL_OK)
   {
@@ -502,14 +501,13 @@ static void DMA2_Stream0_Init(void) {
 	DMA2_adc_pipe.Init.Direction = DMA_PERIPH_TO_MEMORY;
 	DMA2_adc_pipe.Init.Mode = DMA_NORMAL;
 	DMA2_adc_pipe.Init.PeriphInc = DMA_PINC_DISABLE;
-	DMA2_adc_pipe.Init.MemInc = DMA_MINC_DISABLE;
+	DMA2_adc_pipe.Init.MemInc = DMA_MINC_ENABLE;
 	DMA2_adc_pipe.Init.MemBurst = DMA_MBURST_SINGLE;
 	DMA2_adc_pipe.Init.PeriphBurst = DMA_PBURST_SINGLE;
 	DMA2_adc_pipe.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
 	DMA2_adc_pipe.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
 	DMA2_adc_pipe.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
 	DMA2_adc_pipe.Init.Priority = DMA_PRIORITY_MEDIUM;
-	DMA2_adc_pipe.XferCpltCallback = &DMA2_ADC1_Transfer_Cmplt_Callback;
 	
 	/* Associate the ADC1 parent */
 	DMA2_adc_pipe.Parent = &Adc1_sensorsRead;
@@ -622,7 +620,7 @@ void Publish_ESP8266(void *argument)
 
 
 /**
-* @brief Function implementing the Load_Setpoints thread.
+* @brief Load values from setpoint shadow registers into the setpoint variables.
 * @param argument: Not used
 * @retval None
 */
@@ -634,16 +632,13 @@ void Load_Setpoints(void *argument)
   for(;;)
   {				
 		if( osSemaphoreAcquire( setpointsBinarySem_Handle, ( TickType_t ) 10 ) == osOK )
-        {
-            // We were able to obtain the semaphore and can now access the
-            // shared resource.
-
-            // ...
-
-            // We have finished accessing the shared resource.  Release the
-            // semaphore.
-            osSemaphoreRelease( setpointsBinarySem_Handle );
-        }
+			{
+				/* Load setpoints from shadow registers where ESP8266 updates */
+				moistureLimLow = moistureLimLowShd;
+				moistureLimHigh = moistureLimHighShd;
+				
+				osSemaphoreRelease( setpointsBinarySem_Handle );
+			}
     osDelay(1000);
   }
   /* USER CODE END Load_Setpoints */
@@ -661,10 +656,7 @@ void SensorRead(void *argument)
   /* USER CODE BEGIN SensorRead */
   /* Infinite loop */
   for(;;)
-  {
-		/* Set DMA to transfer from ADC to data buffer */
-		HAL_DMA_Start_IT(&DMA2_adc_pipe, (uint32_t)&(ADC1->DR), (uint32_t)plant_sensors, 2);
-		
+  {		
 		/* Read value from ADC1 at pin GPIO A0 */
 		HAL_ADC_Start_DMA(&Adc1_sensorsRead, (uint32_t*)plant_sensors, 2);
 		
@@ -678,12 +670,10 @@ void SensorRead(void *argument)
 /********************** Interrupt routine callbacks *****************************/
 
 /* DMA transfer compelte callback - Now send data by USART2 */
-static void DMA2_ADC1_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe) {
-	HAL_ADC_Stop_DMA(&Adc1_sensorsRead);
-	
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* Adc1_sensorsRead) {
 	/* Write data out from UART2 (for debug purposes) */
-	char output[50];
-	sprintf(output, "%i, %i\r\n", plant_sensors[0], plant_sensors[1]);
+	char output[100];
+	sprintf(output, "[%i][%i]\n", plant_sensors[0], plant_sensors[1]);
 	
 	HAL_UART_Transmit_IT(&Uart2_debug, (uint8_t*)output, strlen(output));
 }
