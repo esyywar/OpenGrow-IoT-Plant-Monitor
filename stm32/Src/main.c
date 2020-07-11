@@ -81,6 +81,20 @@ const osThreadAttr_t Get_Sensor_Data_attributes = {
   .stack_size = 128 * 4
 };
 
+/******************* Semaphores *********************/
+
+/* Definitions for sensorValueBinarySem */
+osSemaphoreId_t sensorValueBinarySem_Handle;
+const osSemaphoreAttr_t sensorValueBinarySem_attributes = {
+  .name = "sensorValueBinarySem"
+};
+
+/* Definitions for setpointsBinarySem */
+osSemaphoreId_t setpointsBinarySem_Handle;
+const osSemaphoreAttr_t setpointsBinarySem_attributes = {
+  .name = "setpointsBinarySem"
+};
+
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
@@ -150,7 +164,13 @@ int main(void)
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
+	
+	/* creation of sensorValueBinarySem */
+	sensorValueBinarySem_Handle = osSemaphoreNew(1, 1, &sensorValueBinarySem_attributes);
+
+  /* creation of setpointsBinarySem */
+  setpointsBinarySem_Handle = osSemaphoreNew(1, 1, &setpointsBinarySem_attributes);
+	
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
@@ -613,6 +633,17 @@ void Load_Setpoints(void *argument)
   /* Infinite loop */
   for(;;)
   {				
+		if( osSemaphoreAcquire( setpointsBinarySem_Handle, ( TickType_t ) 10 ) == osOK )
+        {
+            // We were able to obtain the semaphore and can now access the
+            // shared resource.
+
+            // ...
+
+            // We have finished accessing the shared resource.  Release the
+            // semaphore.
+            osSemaphoreRelease( setpointsBinarySem_Handle );
+        }
     osDelay(1000);
   }
   /* USER CODE END Load_Setpoints */

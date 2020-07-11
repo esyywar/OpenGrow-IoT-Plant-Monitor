@@ -8,6 +8,8 @@
 .\plant_controller_build\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
 .\plant_controller_build\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
 .\plant_controller_build\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+.\plant_controller_build\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
+.\plant_controller_build\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 .\plant_controller_build\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 .\plant_controller_build\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 .\plant_controller_build\freertos.o: ../Inc/main.h
