@@ -45,7 +45,8 @@ extern "C" {
 #define SEND_DATA_CMD							0x52
 
 #define ESP_REQ_SENSOR_DATA				0x42
-#define ESP_REQ_SETPOINT_UPDATE		0x44
+#define ESP_SEND_SETPOINT_LOW			0x44
+#define ESP_SEND_SETPOINT_HIGH		0x46
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */

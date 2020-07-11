@@ -45,9 +45,6 @@ uint16_t plant_sensors[2];
 /* Moisture level setpoints */
 uint16_t moistureLimLow, moistureLimHigh;
 
-/* Moisture level setpoint shadow registers */
-uint16_t moistureLimLowShd, moistureLimHighShd;
-
 /* Data buffers for I2C from ESP8266 */
 uint8_t espCmdCode;
 
@@ -69,13 +66,6 @@ osThreadId_t Publish_ESP8266Handle;
 const osThreadAttr_t Publish_ESP8266Handle_attributes = {
   .name = "Publish_ESP8266",
   .priority = (osPriority_t) osPriorityBelowNormal7,
-  .stack_size = 128 * 4
-};
-/* Definitions for Load_Setpoints */
-osThreadId_t Load_SetpointsHandle;
-const osThreadAttr_t Load_Setpoints_attributes = {
-  .name = "Load_Setpoints",
-  .priority = (osPriority_t) osPriorityBelowNormal6,
   .stack_size = 128 * 4
 };
 /* Definitions for Get_Sensor_Data */
@@ -121,7 +111,6 @@ static void DMA2_Stream0_Init(void);
 /* Thread functions */
 void OLED_Write(void *argument);
 void Publish_ESP8266(void *argument);
-void Load_Setpoints(void *argument);
 void SensorRead(void *argument);
 
 
@@ -186,9 +175,6 @@ int main(void)
 
   /* creation of BlinkLED_02 */
   Publish_ESP8266Handle = osThreadNew(Publish_ESP8266, NULL, &Publish_ESP8266Handle_attributes);
-
-  /* creation of BlinkLED_03 */
-  Load_SetpointsHandle = osThreadNew(Load_Setpoints, NULL, &Load_Setpoints_attributes);
 
   /* creation of Get_Sensor_Data */
   Get_Sensor_DataHandle = osThreadNew(SensorRead, NULL, &Get_Sensor_Data_attributes);
@@ -617,32 +603,6 @@ void Publish_ESP8266(void *argument)
 
 
 /**
-* @brief Load values from setpoint shadow registers into the setpoint variables.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Load_Setpoints */
-void Load_Setpoints(void *argument)
-{
-  /* USER CODE BEGIN Load_Setpoints */
-  /* Infinite loop */
-  for(;;)
-  {				
-		if( osSemaphoreAcquire( setpointsBinarySem_Handle, ( TickType_t ) 10 ) == osOK )
-			{
-				/* Load setpoints from shadow registers where ESP8266 updates */
-				moistureLimLow = moistureLimLowShd;
-				moistureLimHigh = moistureLimHighShd;
-				
-				osSemaphoreRelease( setpointsBinarySem_Handle );
-			}
-    osDelay(1000);
-  }
-  /* USER CODE END Load_Setpoints */
-}
-
-
-/**
 * @brief Take analog readings from capacitive soil moisture sensor and photoresistor circuit.
 * @param argument: Not used
 * @retval None
@@ -654,8 +614,12 @@ void SensorRead(void *argument)
   /* Infinite loop */
   for(;;)
   {		
-		/* Read value from ADC1 at pin GPIO A0 */
-		HAL_ADC_Start_DMA(&Adc1_sensorsRead, (uint32_t*)plant_sensors, 2);
+		/* Read value from ADCs into sensor value variables */
+		if( osSemaphoreAcquire( sensorValueBinarySem_Handle, ( TickType_t ) 10 ) == osOK )
+		{
+			/* Read value from ADC1 at pin GPIO A0 */
+			HAL_ADC_Start_DMA(&Adc1_sensorsRead, (uint32_t*)plant_sensors, 2);
+		}
 		
     osDelay(1000);
   }
@@ -672,6 +636,8 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* Adc1_sensorsRead) {
 	char output[100];
 	sprintf(output, "[%i][%i]\n", plant_sensors[0], plant_sensors[1]);
 	
+	osSemaphoreRelease(sensorValueBinarySem_Handle);
+	
 	HAL_UART_Transmit_IT(&Uart2_debug, (uint8_t*)output, strlen(output));
 }
 
@@ -684,14 +650,25 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* pSpi2_oledWrite) {
 
 /* Received data from ESP8266 Master */
 void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
-	/* Check command code sent */
-	if (espCmdCode == SEND_LENGTH_CMD) {
-		uint8_t dataLen = strlen(myStory);
-		HAL_I2C_Slave_Transmit(I2c1_espComm, &dataLen, 1, 2000);
+	/* Check command code sent */	
+	if (espCmdCode == ESP_REQ_SENSOR_DATA) {
+		/* Send soil moisture and light sensor data to ESP8266 (4 bytes) */
+		HAL_I2C_Slave_Transmit(I2c1_espComm, (uint8_t*)plant_sensors, sizeof(plant_sensors)/sizeof(uint8_t), 2000);
 	}
-	else if (espCmdCode == SEND_DATA_CMD) {
-		HAL_I2C_Slave_Transmit(I2c1_espComm, (uint8_t*)myStory, strlen(myStory), 2000);
+	else if (espCmdCode == ESP_SEND_SETPOINT_LOW || espCmdCode == ESP_SEND_SETPOINT_HIGH) {
+		/* Data buffer of setpoint to update */
+		uint8_t* updateBuffer = (uint8_t*)((espCmdCode == ESP_SEND_SETPOINT_LOW) ? &moistureLimLow : &moistureLimHigh);
+		
+		/* Take semaphore to update setpoint shadow registers */
+		if( osSemaphoreAcquire( setpointsBinarySem_Handle, ( TickType_t ) 10 ) == osOK )
+		{
+			/* Load setpoints from shadow registers where ESP8266 updates */
+			HAL_I2C_Slave_Receive(I2c1_espComm, updateBuffer, 2, 2000);
+			
+			osSemaphoreRelease( setpointsBinarySem_Handle );
+		}
 	}
+	
 	/* Keep in slave receive mode - should always be listening for commands from ESP8266 */
 	HAL_I2C_Slave_Receive_IT(I2c1_espComm, &espCmdCode, 1);
 }
