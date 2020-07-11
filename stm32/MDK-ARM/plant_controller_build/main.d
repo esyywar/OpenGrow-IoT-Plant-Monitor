@@ -36,7 +36,6 @@
 .\plant_controller_build\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 .\plant_controller_build\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 .\plant_controller_build\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-.\plant_controller_build\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 .\plant_controller_build\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 .\plant_controller_build\main.o: ../Inc/FreeRTOSConfig.h
 .\plant_controller_build\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
@@ -46,7 +45,10 @@
 .\plant_controller_build\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
 .\plant_controller_build\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 .\plant_controller_build\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
-.\plant_controller_build\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
+.\plant_controller_build\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
+.\plant_controller_build\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
+.\plant_controller_build\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+.\plant_controller_build\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 .\plant_controller_build\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\plant_controller_build\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\plant_controller_build\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

@@ -20,7 +20,16 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "cmsis_os.h"
+
+/* Import freeRTOS */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "timers.h"
+#include "semphr.h"
+#include "queue.h"
+#include "event_groups.h"
+
+/* Standard libraries */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -32,7 +41,10 @@
 /* Plant bitmap for OLED display */
 #include "bitmap.h"
 
-/* Peripheral handle variables ---------------------------------------------------------*/
+/*******************************************************
+********** Peripheral handles **************************
+*******************************************************/
+
 ADC_HandleTypeDef Adc1_sensorsRead;
 I2C_HandleTypeDef I2c1_espComm;
 SPI_HandleTypeDef Spi2_oledWrite;
@@ -48,50 +60,19 @@ uint16_t moistureLimLow, moistureLimHigh;
 /* Data buffers for I2C from ESP8266 */
 uint8_t espCmdCode;
 
-/* Test message for I2C */
-char myStory[] = "Kale is a subpar food";
-
 /* Structure for SSD1306 handle */
 SSD1306_t SSD1306_OledDisp;
 
-/* Definitions for Update_OLED */
-osThreadId_t Update_OLEDHandle;
-const osThreadAttr_t Update_OLED_attributes = {
-  .name = "Update_OLED",
-  .priority = (osPriority_t) osPriorityBelowNormal5,
-  .stack_size = 128 * 4
-};
-/* Definitions for BlinkLED_02 */
-osThreadId_t Publish_ESP8266Handle;
-const osThreadAttr_t Publish_ESP8266Handle_attributes = {
-  .name = "Publish_ESP8266",
-  .priority = (osPriority_t) osPriorityBelowNormal7,
-  .stack_size = 128 * 4
-};
-/* Definitions for Get_Sensor_Data */
-osThreadId_t Get_Sensor_DataHandle;
-const osThreadAttr_t Get_Sensor_Data_attributes = {
-  .name = "Get_Sensor_Data",
-  .priority = (osPriority_t) osPriorityAboveNormal1,
-  .stack_size = 128 * 4
-};
-
-/******************* Semaphores *********************/
-
-/* Definitions for sensorValueBinarySem */
-osSemaphoreId_t sensorValueBinarySem_Handle;
-const osSemaphoreAttr_t sensorValueBinarySem_attributes = {
-  .name = "sensorValueBinarySem"
-};
-
-/* Definitions for setpointsBinarySem */
-osSemaphoreId_t setpointsBinarySem_Handle;
-const osSemaphoreAttr_t setpointsBinarySem_attributes = {
-  .name = "setpointsBinarySem"
-};
-
+/* Create semaphores */
+SemaphoreHandle_t sensorBinSem_Handle;	
+SemaphoreHandle_t setpointBinSem_Handle;
 
 /* Private function prototypes -----------------------------------------------*/
+
+/*******************************************************
+********** Initialization functions ********************
+*******************************************************/
+
 void SystemClock_Config(void);
 
 static void MX_GPIO_Init(void);
@@ -100,18 +81,22 @@ static void MX_ADC1_Init(void);
 static void MX_SPI2_Init(void);
 static void MX_I2C1_Init(void);
 
-/* DMA functions */
+/*******************************************************
+********** DMA functions *******************************
+*******************************************************/
 
 static void DMA1_Stream4_Init(void);
-
 static void DMA1_Stream6_Init(void);
-
 static void DMA2_Stream0_Init(void);
 
-/* Thread functions */
-void OLED_Write(void *argument);
-void Publish_ESP8266(void *argument);
-void SensorRead(void *argument);
+/*******************************************************
+********** Thread functions ****************************
+*******************************************************/
+
+void OLED_Write(void *pvParameters);
+void Water_Plant(void *pvParameters);
+void Publish_ESP8266(void *pvParameters);
+void SensorRead(void *pvParameters);
 
 
 /**
@@ -152,39 +137,36 @@ int main(void)
 	/* Listen for commands from ESP I2C master */
 	HAL_I2C_Slave_Receive_IT(&I2c1_espComm, &espCmdCode, 1);
 
-  /* Init scheduler */
-  osKernelInitialize();
-
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
 	
-	/* creation of sensorValueBinarySem */
-	sensorValueBinarySem_Handle = osSemaphoreNew(1, 1, &sensorValueBinarySem_attributes);
+	sensorBinSem_Handle = xSemaphoreCreateBinary();	
+	setpointBinSem_Handle = xSemaphoreCreateBinary();
 
-  /* creation of setpointsBinarySem */
-  setpointsBinarySem_Handle = osSemaphoreNew(1, 1, &setpointsBinarySem_attributes);
+	configASSERT(sensorBinSem_Handle && setpointBinSem_Handle);
+	
+	xSemaphoreGive(sensorBinSem_Handle);
+	xSemaphoreGive(setpointBinSem_Handle);
 	
   /* USER CODE END RTOS_SEMAPHORES */
 
-  /* Create the thread(s) */
-  /* creation of Update_OLED */
-  Update_OLEDHandle = osThreadNew(OLED_Write, NULL, &Update_OLED_attributes);
-
-  /* creation of BlinkLED_02 */
-  Publish_ESP8266Handle = osThreadNew(Publish_ESP8266, NULL, &Publish_ESP8266Handle_attributes);
-
-  /* creation of Get_Sensor_Data */
-  Get_Sensor_DataHandle = osThreadNew(SensorRead, NULL, &Get_Sensor_Data_attributes);
-
-  /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
-  /* USER CODE END RTOS_THREADS */
+  /*******************************************************
+	********** Thread functions ****************************
+	*******************************************************/
+	
+	/* Task handlers */
+	TaskHandle_t OLED_Write_TaskHandle, Publish_ESP8266_TaskHandle, SensorRead_TaskHandle;
+	
+  /* Register tasks (each with 128 byte stack size) */
+	xTaskCreate(OLED_Write, "OLED_Write_Task", 32, NULL, 1, &OLED_Write_TaskHandle);
+	xTaskCreate(Publish_ESP8266, "Water_Plant_Task", 32, NULL, 2, &Publish_ESP8266_TaskHandle);
+	xTaskCreate(SensorRead, "Sensor_Read_Task", 32, NULL, 3, &SensorRead_TaskHandle);	
 
   /* Start scheduler */
-  osKernelStart();
+	vTaskStartScheduler();
  
   /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
@@ -552,7 +534,7 @@ static void MX_GPIO_Init(void)
   * @retval None
   */
 /* USER CODE END Header_OLED_Write */
-void OLED_Write(void *argument)
+void OLED_Write(void *pvParameters)
 {
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
@@ -574,7 +556,7 @@ void OLED_Write(void *argument)
 			xPosText = 0;
 		}
 		
-		osDelay(50);
+		vTaskDelay(50);
   }
   /* USER CODE END 5 */ 
 }
@@ -586,7 +568,7 @@ void OLED_Write(void *argument)
 * @retval None
 */
 /* USER CODE END Publish_ESP8266 */
-void Publish_ESP8266(void *argument)
+void Publish_ESP8266(void *pvParameters)
 {
   /* USER CODE BEGIN Publish_ESP8266 */
   /* Infinite loop */
@@ -596,7 +578,7 @@ void Publish_ESP8266(void *argument)
 		
 		/* Activate water pump */
 		
-    osDelay(1000);
+    vTaskDelay(1000);
   }
   /* USER CODE END Publish_ESP8266 */
 }
@@ -608,27 +590,28 @@ void Publish_ESP8266(void *argument)
 * @retval None
 */
 /* USER CODE END Header_SensorRead */
-void SensorRead(void *argument)
+void SensorRead(void *pvParameters)
 {
   /* USER CODE BEGIN SensorRead */
   /* Infinite loop */
   for(;;)
   {		
 		/* Read value from ADCs into sensor value variables */
-		if( osSemaphoreAcquire( sensorValueBinarySem_Handle, ( TickType_t ) 10 ) == osOK )
+		if( xSemaphoreTake( sensorBinSem_Handle, ( TickType_t ) 10 ) == pdTRUE  )
 		{
 			/* Read value from ADC1 at pin GPIO A0 */
 			HAL_ADC_Start_DMA(&Adc1_sensorsRead, (uint32_t*)plant_sensors, 2);
 		}
 		
-    osDelay(1000);
+    vTaskDelay(1000);
   }
   /* USER CODE END SensorRead */
 }
 
 
-
-/********************** Interrupt routine callbacks *****************************/
+/******************************************************************
+**************** Interrupt routine callbacks **********************
+*******************************************************************/
 
 /* DMA transfer compelte callback - Now send data by USART2 */
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* Adc1_sensorsRead) {
@@ -636,7 +619,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* Adc1_sensorsRead) {
 	char output[100];
 	sprintf(output, "[%i][%i]\n", plant_sensors[0], plant_sensors[1]);
 	
-	osSemaphoreRelease(sensorValueBinarySem_Handle);
+	xSemaphoreGiveFromISR(sensorBinSem_Handle, NULL);
 	
 	HAL_UART_Transmit_IT(&Uart2_debug, (uint8_t*)output, strlen(output));
 }
@@ -660,12 +643,12 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
 		uint8_t* updateBuffer = (uint8_t*)((espCmdCode == ESP_SEND_SETPOINT_LOW) ? &moistureLimLow : &moistureLimHigh);
 		
 		/* Take semaphore to update setpoint shadow registers */
-		if( osSemaphoreAcquire( setpointsBinarySem_Handle, ( TickType_t ) 10 ) == osOK )
+		if( xSemaphoreTake( setpointBinSem_Handle, ( TickType_t ) 1 ) == pdTRUE )
 		{
 			/* Load setpoints from shadow registers where ESP8266 updates */
 			HAL_I2C_Slave_Receive(I2c1_espComm, updateBuffer, 2, 2000);
 			
-			osSemaphoreRelease( setpointsBinarySem_Handle );
+			xSemaphoreGive( setpointBinSem_Handle );  
 		}
 	}
 	
