@@ -43,6 +43,12 @@ DMA_HandleTypeDef DMA2_adc_pipe, DMA1_oled_pipe, DMA1_esp8266_pipe;
 /* Private variables */
 uint16_t plant_sensors[2];
 
+/* Moisture level setpoints */
+uint16_t moistureLimLow, moistureLimHigh;
+
+/* Moisture level setpoint shadow registers */
+uint16_t moistureLimLowShd, moistureLimHighShd;
+
 /* Structure for SSD1306 handle */
 SSD1306_t SSD1306_OledDisp;
 
@@ -60,10 +66,10 @@ const osThreadAttr_t Publish_ESP8266Handle_attributes = {
   .priority = (osPriority_t) osPriorityBelowNormal7,
   .stack_size = 128 * 4
 };
-/* Definitions for BlinkLED_03 */
-osThreadId_t BlinkLED_03Handle;
-const osThreadAttr_t BlinkLED_03_attributes = {
-  .name = "BlinkLED_03",
+/* Definitions for Load_Setpoints */
+osThreadId_t Load_SetpointsHandle;
+const osThreadAttr_t Load_Setpoints_attributes = {
+  .name = "Load_Setpoints",
   .priority = (osPriority_t) osPriorityBelowNormal6,
   .stack_size = 128 * 4
 };
@@ -97,7 +103,7 @@ static void DMA2_ADC1_Transfer_Cmplt_Callback(DMA_HandleTypeDef* pDMA2_adc_pipe)
 /* Thread functions */
 void OLED_Write(void *argument);
 void Publish_ESP8266(void *argument);
-void Blinky_03(void *argument);
+void Load_Setpoints(void *argument);
 void SensorRead(void *argument);
 
 
@@ -163,7 +169,7 @@ int main(void)
   Publish_ESP8266Handle = osThreadNew(Publish_ESP8266, NULL, &Publish_ESP8266Handle_attributes);
 
   /* creation of BlinkLED_03 */
-  BlinkLED_03Handle = osThreadNew(Blinky_03, NULL, &BlinkLED_03_attributes);
+  Load_SetpointsHandle = osThreadNew(Load_Setpoints, NULL, &Load_Setpoints_attributes);
 
   /* creation of Get_Sensor_Data */
   Get_Sensor_DataHandle = osThreadNew(SensorRead, NULL, &Get_Sensor_Data_attributes);
@@ -596,20 +602,20 @@ void Publish_ESP8266(void *argument)
 
 
 /**
-* @brief Function implementing the BlinkLED_03 thread.
+* @brief Function implementing the Load_Setpoints thread.
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_Blinky_03 */
-void Blinky_03(void *argument)
+/* USER CODE END Load_Setpoints */
+void Load_Setpoints(void *argument)
 {
-  /* USER CODE BEGIN Blinky_03 */
+  /* USER CODE BEGIN Load_Setpoints */
   /* Infinite loop */
   for(;;)
   {				
     osDelay(1000);
   }
-  /* USER CODE END Blinky_03 */
+  /* USER CODE END Load_Setpoints */
 }
 
 
