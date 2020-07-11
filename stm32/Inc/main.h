@@ -32,7 +32,18 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 
-#define ESP8266_I2C_ADDR			0x68
+/* I2C device addresses */
+#define STM32_I2C_ADDR						0x68
+#define ESP8266_I2C_ADDR					0x5C
+
+/* I2C commands */
+
+/* For Arduino I2C tests */
+#define SEND_LENGTH_CMD						0x51
+#define SEND_DATA_CMD							0x52
+
+#define ESP_REQ_SENSOR_DATA				0x42
+#define ESP_REQ_SETPOINT_UPDATE		0x44
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */

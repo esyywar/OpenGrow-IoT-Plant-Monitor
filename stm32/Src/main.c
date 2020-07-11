@@ -32,7 +32,6 @@
 /* Plant bitmap for OLED display */
 #include "bitmap.h"
 
-
 /* Peripheral handle variables ---------------------------------------------------------*/
 ADC_HandleTypeDef Adc1_sensorsRead;
 I2C_HandleTypeDef I2c1_espComm;
@@ -48,6 +47,9 @@ uint16_t moistureLimLow, moistureLimHigh;
 
 /* Moisture level setpoint shadow registers */
 uint16_t moistureLimLowShd, moistureLimHighShd;
+
+/* Data buffers for I2C from ESP8266 */
+uint8_t espCmdCode;
 
 /* Structure for SSD1306 handle */
 SSD1306_t SSD1306_OledDisp;
@@ -154,6 +156,9 @@ int main(void)
   {
     Error_Handler();
   }
+	
+	/* Listen for commands from ESP I2C master */
+	HAL_I2C_Slave_Receive_IT(&I2c1_espComm, &espCmdCode, 1);
 
   /* Init scheduler */
   osKernelInitialize();
@@ -171,14 +176,6 @@ int main(void)
   setpointsBinarySem_Handle = osSemaphoreNew(1, 1, &setpointsBinarySem_attributes);
 	
   /* USER CODE END RTOS_SEMAPHORES */
-
-  /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
-  /* USER CODE END RTOS_TIMERS */
-
-  /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
-  /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
   /* creation of Update_OLED */
@@ -345,7 +342,7 @@ static void MX_I2C1_Init(void)
   I2c1_espComm.Instance = I2C1;
   I2c1_espComm.Init.ClockSpeed = 100000;
   I2c1_espComm.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  I2c1_espComm.Init.OwnAddress1 = 0;
+  I2c1_espComm.Init.OwnAddress1 = STM32_I2C_ADDR;
   I2c1_espComm.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   I2c1_espComm.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
   I2c1_espComm.Init.OwnAddress2 = 0;
@@ -606,12 +603,9 @@ void Publish_ESP8266(void *argument)
   /* Infinite loop */
   for(;;)
   {
-		/* Writing to ESP8266 via I2C1 */
-		char msg[30] = "I am working!\n";
+		/* Compare sensor values to setpoints */
 		
-		HAL_I2C_Master_Transmit(&I2c1_espComm, ESP8266_I2C_ADDR, (uint8_t*)msg, strlen(msg), 1000);		
-		
-		/* Non-blocking I2C transfer with interrupts and DMA */
+		/* Activate water pump */
 		
     osDelay(1000);
   }
@@ -683,6 +677,13 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* pSpi2_oledWrite) {
 	SSD1306_OledDisp.state = SSD1306_STATE_READY;
 	
 	/* Release mutex held on OLED buffer */
+}
+
+/* Received data from ESP8266 Master */
+void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
+	
+	/* Keep in slave receive mode - should always be listening for commands from ESP8266 */
+	HAL_I2C_Slave_Receive_IT(I2c1_espComm, &espCmdCode, 1);
 }
 
 
