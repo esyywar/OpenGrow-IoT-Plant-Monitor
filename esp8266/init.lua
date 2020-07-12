@@ -1,15 +1,27 @@
-light=0
-pin=4
-gpio.mode(pin,gpio.OUTPUT)
+-- Print some welcome message
+print('Hello from init.lua file!')
 
-tmr.create():alarm(5000, tmr.ALARM_AUTO, function()
-        if light==0 then
-            light=1
-            gpio.write(pin,gpio.HIGH)
-        else
-            light=0
-            gpio.write(pin,gpio.LOW)
-            io.write('Light OFF')
-        end
+-- Blue LED is connected to pin #2
+local BLUE_LED = 0
+
+-- Configure BLUE_LED pin
+gpio.mode(BLUE_LED, gpio.OUTPUT, gpio.FLOAT)
+
+-- Turn off LED on startup
+gpio.write(BLUE_LED, gpio.LOW)
+
+-- Create a timer
+local timer = tmr.create()
+
+-- Register auto-repeating 1000 ms (1 sec) timer
+timer:register(1000, tmr.ALARM_AUTO, function()
+    -- Invert the state of BLUE_LED pin
+    if gpio.read(BLUE_LED) == 1 then
+        gpio.write(BLUE_LED, gpio.LOW)
+    else
+        gpio.write(BLUE_LED, gpio.HIGH)
     end
-)
+end)
+
+-- Start timer
+timer:start()
