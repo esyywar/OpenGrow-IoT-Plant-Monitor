@@ -8,7 +8,7 @@ local BLUE_LED = 0
 gpio.mode(BLUE_LED, gpio.OUTPUT, gpio.FLOAT)
 
 -- Turn off LED on startup
-gpio.write(BLUE_LED, gpio.LOW)
+gpio.write(BLUE_LED, gpio.HIGH)
 
 -- Create a timer
 local timer = tmr.create()
