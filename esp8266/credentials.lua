@@ -1,2 +1,6 @@
-local SSID = 'Ballislife-5G'
-local PASSWORD = 'Lebronjames'
+local wifi_creds = {
+    SSID = 'Ballislife',
+    PASSWORD = 'Lebronjames'
+}
+
+return wifi_creds

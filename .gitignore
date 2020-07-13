@@ -1,2 +1,3 @@
 /application/node_modules
 /application/config/default.json
+/esp8266/credentials.lua
