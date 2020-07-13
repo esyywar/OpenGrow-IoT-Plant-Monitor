@@ -27,7 +27,7 @@ client.on('connect', () => {
 
 	setInterval(() => {
 		client.publish(topic, JSON.stringify(message), { qos: mqttQoS })
-	}, 7000)
+	}, 15000)
 
 	client.on('error', (error) => {
 		console.log(error)

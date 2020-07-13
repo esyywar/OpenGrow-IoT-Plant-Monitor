@@ -15,7 +15,7 @@ const aedes = require('aedes')(aedesOptions)
 connectDB()
 
 /* Check for server port or run on local port 1883 */
-const PORT = process.env.PORT || 1883
+const PORT = process.env.PORT || 3000
 
 /* Create MQTT client */
 const server = require('net').createServer(aedes.handle)
