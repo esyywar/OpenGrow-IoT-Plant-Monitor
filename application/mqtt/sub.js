@@ -6,8 +6,6 @@ const config = require('config')
 
 const mqttQoS = config.get('mqttQoS')
 
-const url = require('url')
-
 const connectOptions = {
 	username: config.get('mqttBrokerUsername'),
 	password: config.get('mqttBrokerPassword'),
@@ -18,8 +16,6 @@ const client = mqtt.connect('mqtt://localhost:1883', connectOptions)
 
 /* Plant moisture level topic */
 const topic = 'plant_1234'
-
-console.log(url.parse('0.0.0.0:3000'))
 
 /* Subscribe to topic */
 client.on('connect', () => {

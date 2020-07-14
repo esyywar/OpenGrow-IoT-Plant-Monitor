@@ -15,13 +15,13 @@ const aedes = require('aedes')(aedesOptions)
 connectDB()
 
 /* Check for server port or run on local port 1883 */
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 1883
 
 /* Create MQTT client */
 const server = require('net').createServer(aedes.handle)
 
 /* Connect broker to port */
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
 	console.log('Server is listening on port ' + PORT)
 })
 

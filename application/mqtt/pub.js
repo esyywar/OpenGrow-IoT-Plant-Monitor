@@ -12,7 +12,7 @@ const connectOptions = {
 	reconnectPeriod: 5000,
 }
 
-const client = mqtt.connect('mqtt://localhost:1883', connectOptions)
+const client = mqtt.connect('mqtt://localhost:1885', connectOptions)
 
 /* Plant moisture level topic */
 const topic = 'plant_1234'
