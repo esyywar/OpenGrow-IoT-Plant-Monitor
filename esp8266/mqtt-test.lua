@@ -12,14 +12,18 @@ station_cfg.auto = false
 wifi.setmode(wifi.STATION, true)
 wifi.sta.config(station_cfg)
 
--- create mqtt client
-client = mqtt.Client("ESP8266_Client", 120, "plantMonitorBroker96", "securePassword123")
+-- import mqtt credentials
+local mqtt_creds = require 'mqtt_credentials'
 
 -- Mqtt connect configuration
+local clientId = "ESP8266_Client"
 local topic = 'esp8266_plant'
 local qos = 1
 local mqtt_host = '192.168.0.23'
 local mqtt_port = 1883
+
+-- create mqtt client
+client = mqtt.Client(clientId, 120, mqtt_creds.USERNAME, mqtt_creds.PASSWORD)
 
 -- timer to post network info when available
 local netinfo_timer = tmr.create()
@@ -62,3 +66,11 @@ function mqtt_data_connect()
         end, 
         handle_mqtt_conn_error)
 end
+
+-- if go offline, call connection error
+client:on("offline", handle_mqtt_conn_error)
+
+
+
+
+

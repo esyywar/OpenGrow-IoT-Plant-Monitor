@@ -30,15 +30,23 @@ server.listen(PORT, '0.0.0.0', () => {
  ******************************************************/
 
 aedes.authenticate = (client, username, password, callback) => {
-	if (
-		username.toString() === config.get('mqttBrokerUsername') &&
-		password.toString() === config.get('mqttBrokerPassword')
-	) {
-		console.log(`Client ${client.id} has been authenticated!`)
-		callback(null, true)
-	} else {
+	try {
+		if (
+			username.toString() === config.get('mqttBrokerUsername') &&
+			password.toString() === config.get('mqttBrokerPassword')
+		) {
+			console.log(`Client ${client.id} has been authenticated!`)
+			callback(null, true)
+		} else {
+			/* Incorrect username + password */
+			var error = new Error('Auth error')
+			error.returnCode = 4
+			callback(error, null)
+		}
+	} catch (error) {
+		/* Username and/or password not provided */
 		var error = new Error('Auth error')
-		error.returnCode = 4
+		error.returnCode = 3
 		callback(error, null)
 	}
 }
@@ -99,4 +107,9 @@ aedes.on('connackSent', (connack, client) => {
 /* For QOS 1 or 2  - Packet successfully delivered to client */
 aedes.on('ack', async (packet, client) => {
 	console.log(`Message ack\'d from ${client.id}`)
+})
+
+/* On client disconnect */
+aedes.on('clientDisconnect', (client) => {
+	console.log(`Client ${client} has disconnected`)
 })
