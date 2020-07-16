@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose'
 
 export interface IPlant extends Document {
+	name: string
 	pubTopic: string
 	soilMoisture: [{ measurement: number; date: Date }]
 	lightLevel: [{ measurement: number; date: Date }]
@@ -8,6 +9,11 @@ export interface IPlant extends Document {
 }
 
 const plantSchema: Schema = new Schema({
+	name: {
+		type: String,
+		required: true,
+		default: 'My Plant',
+	},
 	pubTopic: {
 		type: String,
 		required: true,
