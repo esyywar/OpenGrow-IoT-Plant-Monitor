@@ -5,10 +5,12 @@ import config from 'config'
 import bcrypt from 'bcryptjs'
 import { check, validationResult } from 'express-validator'
 
-import User, { IUser } from '../../models/User'
-
 import jwt from 'jsonwebtoken'
-import { userInfo } from 'os'
+
+import User, { IUser } from '../../models/User'
+import Plant, { IPlant } from '../../models/Plant'
+
+import auth from '../../middleware/auth'
 
 const router = express.Router()
 
@@ -20,17 +22,20 @@ const router = express.Router()
  ******************** POST Requests *********************
  ******************************************************/
 
-/* Registering a new user */
+/*
+ *	Brief: Registering a new user
+ *	Path: /api/user
+ */
 router.post(
 	'/',
 	[
-		check('username', 'Username is required').notEmpty(),
+		check('username', 'Username is required.').notEmpty(),
 		check('email', 'Please include a valid email.').isEmail(),
 		check('password')
 			.isLength({ min: 6 })
-			.withMessage('Password must be at least 6 characters long')
+			.withMessage('Password must be at least 6 characters long.')
 			.matches(/\d/)
-			.withMessage('Password must contain a number'),
+			.withMessage('Password must contain a number.'),
 	],
 	async (req: Request, res: Response) => {
 		const errors = validationResult(req)
@@ -76,17 +81,20 @@ router.post(
 				}
 			)
 		} catch (error) {
-			res.status(500).json({ errors: [{ msg: 'Server error' }] })
+			res.status(500).json({ errors: [{ msg: 'Server error.' }] })
 		}
 	}
 )
 
-/* User log in */
+/*
+ *	Brief: User log in
+ *	Path: /api/user/login
+ */
 router.post(
 	'/login',
 	[
-		check('email', 'Email is required').notEmpty(),
-		check('password', 'Password is required').notEmpty(),
+		check('email', 'Email is required.').notEmpty(),
+		check('password', 'Password is required.').notEmpty(),
 	],
 	async (req: Request, res: Response) => {
 		const errors = validationResult(req)
@@ -98,38 +106,77 @@ router.post(
 
 		const { email, password } = req.body
 
-		const user: IUser | null = await User.findOne({ email })
+		try {
+			const user: IUser | null = await User.findOne({ email })
 
-		/* Checking if user exists */
-		if (!user) {
-			return res.status(400).json({ errors: [{ msg: 'Invalid login credentials' }] })
-		}
-
-		let isValid = bcrypt.compare(password, user.password)
-
-		if (!isValid) {
-			return res.status(400).json({ errors: [{ msg: 'Invalid login credentials' }] })
-		}
-
-		const payload = {
-			user: {
-				id: user.id,
-			},
-		}
-
-		jwt.sign(
-			payload,
-			config.get('jwt.jwtSecret'),
-			{ expiresIn: config.get('jwt.expiresIn') },
-			(err, token) => {
-				if (err) {
-					throw err
-				}
-
-				res.json({ token, user: user.id, msg: `Welcome back, ${user.username}!` })
+			/* Checking if user exists */
+			if (!user) {
+				return res.status(400).json({ errors: [{ msg: 'Invalid login credentials' }] })
 			}
-		)
+
+			let isValid = bcrypt.compare(password, user.password)
+
+			if (!isValid) {
+				return res.status(400).json({ errors: [{ msg: 'Invalid login credentials.' }] })
+			}
+
+			const payload = {
+				user: {
+					id: user.id,
+				},
+			}
+
+			jwt.sign(
+				payload,
+				config.get('jwt.jwtSecret'),
+				{ expiresIn: config.get('jwt.expiresIn') },
+				(err, token) => {
+					if (err) {
+						throw err
+					}
+
+					res.json({ token, user: user.id, msg: `Welcome back, ${user.username}!` })
+				}
+			)
+		} catch (error) {
+			res.status(500).json({ errors: [{ msg: 'Server error.' }] })
+		}
 	}
 )
+
+/*
+ *	Brief: Add a plant to user's profile (maximum 10 per user)
+ *	Path: /api/user/plant/:id
+ */
+router.get('/plant/:plantId', auth, async (req: Request, res: Response) => {
+	const plantId = req.params.plantId
+
+	try {
+		/* Verify that plant exists */
+		const plant: IPlant | null = await Plant.findById(plantId)
+
+		if (!plant) {
+			return res
+				.status(400)
+				.json({ errors: [{ msg: 'Plant not found. Please check the ID is entered correctly.' }] })
+		}
+
+		/* Get user */
+		const user: IUser | null = await User.findById(req.body.user)
+
+		if (user?.plants.length > 10) {
+			res.status(400).json({ errors: [{ msg: 'You already have 10 plants on your account!' }] })
+		}
+
+		/* Push plant ID to user's profile */
+		const plantList = user?.plants.unshift({ plant: plantId })
+
+		await user?.populate('plants').save()
+
+		res.json({ plants: plantList })
+	} catch (error) {
+		res.status(500).json({ errors: [{ msg: 'Server error.' }] })
+	}
+})
 
 export = router

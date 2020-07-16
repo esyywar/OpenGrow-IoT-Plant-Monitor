@@ -4,7 +4,7 @@ import connectDB from './database/db'
 
 const server: Application = express()
 
-/* Middleware for parsing PUT and POST requests */
+/* Middleware for parsing */
 server.use(express.json())
 
 /* Get port */
