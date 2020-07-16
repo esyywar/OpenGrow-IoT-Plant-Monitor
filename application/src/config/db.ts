@@ -1,7 +1,7 @@
-const mongoose = require('mongoose')
-const config = require('config')
+import mongoose from 'mongoose'
+import config from 'config'
 
-const db = config.get('mongoUri')
+const db: string = config.get('mongoUri')
 
 /* Connecting to MongoDB */
 async function connectDB() {
@@ -19,4 +19,4 @@ async function connectDB() {
 	}
 }
 
-module.exports = connectDB
+export default connectDB

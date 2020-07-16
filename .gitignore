@@ -1,3 +1,4 @@
 /application/node_modules
-/application/config/default.json
+/application/dist
+/application/src/config/default.json
 /esp8266/credentials

@@ -1,7 +1,8 @@
-const connectDB = require('../config/db')
+import connectDB from '../config/db'
 
-const PlantData = require('../models/PlantData')
-const config = require('config')
+import Plant from '../models/Plant'
+
+import config from 'config'
 
 /* Setup MQTT broker */
 const aedesOptions = { concurrency: 200, connectTimeout: 5000 }
@@ -29,7 +30,7 @@ server.listen(PORT, '0.0.0.0', () => {
  *************** Broker Authentication *****************
  ******************************************************/
 
-aedes.authenticate = (client, username, password, callback) => {
+aedes.authenticate = (client: any, username: string, password: string, callback: any) => {
 	try {
 		if (
 			username.toString() === config.get('mqttBrokerUsername') &&
@@ -39,13 +40,13 @@ aedes.authenticate = (client, username, password, callback) => {
 			callback(null, true)
 		} else {
 			/* Incorrect username + password */
-			var error = new Error('Auth error')
+			var error: any = new Error('Auth error')
 			error.returnCode = 4
 			callback(error, null)
 		}
 	} catch (error) {
 		/* Username and/or password not provided */
-		var error = new Error('Auth error')
+		var error: any = new Error('Auth error')
 		error.returnCode = 3
 		callback(error, null)
 	}
@@ -56,12 +57,12 @@ aedes.authenticate = (client, username, password, callback) => {
  ******************************************************/
 
 /* Fire when broker connected */
-aedes.on('clientReady', (client) => {
+aedes.on('clientReady', (client: any) => {
 	console.log(`Client ${client.id} has connected!`)
 })
 
 /* Publish message reaches to the broker */
-aedes.on('publish', async (publish, client) => {
+aedes.on('publish', async (publish: any, client: any) => {
 	/* If not from an authenticated and connected client */
 	if (!client) {
 		return
@@ -69,11 +70,11 @@ aedes.on('publish', async (publish, client) => {
 
 	/* If topic does not exist in database, create entry in database */
 	try {
-		const isPlantReg = await PlantData.findOne({ topic: publish.topic })
+		const isPlantReg = await Plant.findOne({ topic: publish.topic })
 
 		if (!isPlantReg) {
 			console.log('New plant! Registering him now...')
-			newPlant = new PlantData({ topic: publish.topic })
+			const newPlant = new Plant({ topic: publish.topic })
 
 			await newPlant.save()
 		}
@@ -85,19 +86,19 @@ aedes.on('publish', async (publish, client) => {
 })
 
 /* Client subscribes to a topic */
-aedes.on('subscribe', (subscriptions, client) => {
-	subscriptions.forEach((topic) => {
+aedes.on('subscribe', (subscriptions: any, client: any) => {
+	subscriptions.forEach((topic: any) => {
 		console.log(`Client ${client.id} has subscribed to ${topic.topic} with QoS ${topic.qos}`)
 	})
 })
 
 /* Client unsubscribes to a topic */
-aedes.on('unsubscribe', (unsubscriptions, client) => {
+aedes.on('unsubscribe', (unsubscriptions: any, client: any) => {
 	console.log(`Client ${client.id} has unsubscribed from ${unsubscriptions}`)
 })
 
 /* Connection acknowledgement sent from  server to client */
-aedes.on('connackSent', (connack, client) => {
+aedes.on('connackSent', (connack: any, client: any) => {
 	if (connack.returnCode == 4) {
 		return console.log('Auth error.')
 	}
@@ -105,11 +106,11 @@ aedes.on('connackSent', (connack, client) => {
 })
 
 /* For QOS 1 or 2  - Packet successfully delivered to client */
-aedes.on('ack', async (packet, client) => {
+aedes.on('ack', async (packet: any, client: any) => {
 	console.log(`Message ack\'d from ${client.id}`)
 })
 
 /* On client disconnect */
-aedes.on('clientDisconnect', (client) => {
+aedes.on('clientDisconnect', (client: any) => {
 	console.log(`Client ${client} has disconnected`)
 })

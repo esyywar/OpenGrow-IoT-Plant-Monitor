@@ -1,12 +1,12 @@
 /* MQTT subscriber */
-const mqtt = require('mqtt')
+import mqtt, { QoS } from 'mqtt'
 
 /* Connecting to broker */
-const config = require('config')
+import config from 'config'
 
-const mqttQoS = config.get('mqttQoS')
+const mqttQoS: QoS = config.get('mqttQoS')
 
-const connectOptions = {
+const connectOptions: object = {
 	username: config.get('mqttBrokerUsername'),
 	password: config.get('mqttBrokerPassword'),
 	reconnectPeriod: 5000,
@@ -36,7 +36,7 @@ client.on('connect', () => {
 	})
 
 	/* Client action on topic */
-	client.on('message', (topic, payload) => {
+	client.on('message', (topic, payload: any) => {
 		payload = JSON.parse(payload)
 		console.log(
 			`Received soilMoisture: ${payload.soilMoisture}, light level: ${payload.lightLevel}`

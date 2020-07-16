@@ -1,21 +1,21 @@
 /* MQTT publisher */
-const mqtt = require('mqtt')
+import mqtt from 'mqtt'
 
 /* Connecting to broker */
-const config = require('config')
+import config from 'config'
 
 const mqttQoS = config.get('mqttQoS')
 
-const connectOptions = {
+const connectOptions: object = {
 	username: config.get('mqttBrokerUsername'),
 	password: config.get('mqttBrokerPassword'),
 	reconnectPeriod: 5000,
 }
 
-const client = mqtt.connect('mqtt://localhost:1885', connectOptions)
+const client: any = mqtt.connect('mqtt://localhost:1885', connectOptions)
 
 /* Plant moisture level topic */
-const topic = 'plant_1234'
+const topic: string = 'plant_1234'
 
 const message = {
 	soilMoisture: 400,
@@ -29,7 +29,7 @@ client.on('connect', () => {
 		client.publish(topic, JSON.stringify(message), { qos: mqttQoS })
 	}, 15000)
 
-	client.on('error', (error) => {
+	client.on('error', (error: object) => {
 		console.log(error)
 	})
 })
