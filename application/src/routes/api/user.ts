@@ -11,12 +11,18 @@ import User, { IUser } from '../../models/User'
 import Plant, { IPlant } from '../../models/Plant'
 
 import auth from '../../middleware/auth'
+import { stringify } from 'querystring'
 
 const router = express.Router()
 
 /*******************************************************
  ******************** GET Requests *********************
  ******************************************************/
+
+/*
+ *	Brief: Get plants associated with user
+ *	Path: /api/user
+ */
 
 /*******************************************************
  ******************** POST Requests ********************
@@ -167,8 +173,9 @@ router.put('/plant/:plantId', auth, async (req: Request, res: Response) => {
 
 		/* Get user */
 		const user: IUser | null = await User.findById(req.body.user.id)
+		const plants: Array<{ name?: string; plant: string }> | undefined = user?.plants
 
-		if (user?.plants.length > 10) {
+		if (plants && plants.length > 10) {
 			return res
 				.status(400)
 				.json({ errors: [{ msg: 'You already have 10 plants on your account!' }] })
@@ -217,7 +224,7 @@ router.delete('/plant/:plantId', auth, async (req: Request, res: Response) => {
 		const user: IUser | null = await User.findById(req.body.user.id)
 
 		/* Remove plant ID from user's profile */
-		const removeIndex = user?.plants.map((plant: any) => plant.plant).indexOf(plantId)
+		const removeIndex: any = user?.plants.map((plant: any) => plant.plant).indexOf(plantId)
 		user?.plants.splice(removeIndex, 1)
 
 		await user?.save()

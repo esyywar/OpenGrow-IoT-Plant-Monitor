@@ -1,13 +1,11 @@
 import mongoose, { Schema, Document } from 'mongoose'
 
-import { IPlant } from './Plant'
-
 export interface IUser extends Document {
 	email: string
 	username: string
 	password: string
 	date: Date
-	plants: IPlant['_id']
+	plants: [{ name?: string; plant: string }]
 }
 
 const userSchema: Schema = new Schema({
@@ -30,6 +28,11 @@ const userSchema: Schema = new Schema({
 	},
 	plants: [
 		{
+			name: {
+				type: String,
+				required: true,
+				default: 'My_Plant',
+			},
 			plant: {
 				type: mongoose.Schema.Types.ObjectId,
 				ref: 'Plant',
