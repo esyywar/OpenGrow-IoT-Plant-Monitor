@@ -1,9 +1,13 @@
 import express, { Request, Response } from 'express'
 
+import config from 'config'
+
 import bcrypt from 'bcryptjs'
 import { check, validationResult } from 'express-validator'
 
 import User, { IUser } from '../../models/User'
+
+import jwt from 'jsonwebtoken'
 
 const router = express.Router()
 
@@ -40,13 +44,13 @@ router.post(
 
 		try {
 			/* Check if user is already registered */
-			let user: IUser | null = await User.findOne({ email })
+			const isUser: IUser | null = await User.findOne({ email })
 
-			if (user) {
+			if (isUser) {
 				return res.status(400).json({ errors: [{ msg: 'User already exists.' }] })
 			}
 
-			user = new User({ email, username })
+			let user: IUser = new User({ email, username })
 
 			let hashPassword = bcrypt.hashSync(password, 10)
 			user.password = hashPassword
@@ -54,8 +58,25 @@ router.post(
 			/* Save new user in the databse */
 			await user.save()
 
-			/* Return the user's id if successful */
-			res.json({ user: user.id })
+			const payload = {
+				user: {
+					id: user.id,
+				},
+			}
+
+			/* Generate and return JWT */
+			jwt.sign(
+				payload,
+				config.get('jwt.jwtSecret'),
+				{ expiresIn: config.get('jwt.expiresIn') },
+				(err, token) => {
+					console.log(err)
+					if (err) {
+						throw err
+					}
+					res.json({ token, user: user.id })
+				}
+			)
 		} catch (error) {
 			res.status(500).json({ errors: [{ msg: 'Server error' }] })
 		}
