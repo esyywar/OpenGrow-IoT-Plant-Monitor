@@ -1,6 +1,6 @@
 import express, { Application, Request, Response, NextFunction } from 'express'
 
-import connectDB from './config/db'
+import connectDB from './database/db'
 
 const server: Application = express()
 
@@ -20,3 +20,7 @@ server.get('/', (req: Request, res: Response, next: NextFunction) => {
 })
 
 connectDB()
+
+/* Routes to api */
+server.use('/api/plant', require('./routes/api/plant'))
+server.use('/api/user', require('./routes/api/user'))

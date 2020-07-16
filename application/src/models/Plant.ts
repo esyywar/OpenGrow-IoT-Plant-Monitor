@@ -41,4 +41,4 @@ const plantSchema: Schema = new Schema({
 	},
 })
 
-export default mongoose.model('Plant', plantSchema)
+export default mongoose.model<IPlant>('Plant', plantSchema)

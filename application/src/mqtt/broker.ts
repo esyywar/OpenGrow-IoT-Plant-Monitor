@@ -1,4 +1,4 @@
-import connectDB from '../config/db'
+import connectDB from '../database/db'
 
 import Plant from '../models/Plant'
 

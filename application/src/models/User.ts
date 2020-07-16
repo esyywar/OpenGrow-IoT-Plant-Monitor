@@ -4,6 +4,7 @@ import { IPlant } from './Plant'
 
 export interface IUser extends Document {
 	email: string
+	username: string
 	password: string
 	date: Date
 	plants: IPlant['_id']
@@ -14,6 +15,10 @@ const userSchema: Schema = new Schema({
 		type: String,
 		required: true,
 		unique: true,
+	},
+	username: {
+		type: String,
+		required: true,
 	},
 	password: {
 		type: String,
@@ -33,4 +38,4 @@ const userSchema: Schema = new Schema({
 	],
 })
 
-export default mongoose.model('User', userSchema)
+export default mongoose.model<IUser>('User', userSchema)

@@ -4,18 +4,22 @@
 	"description": "Mqtt broker and web application for IoT plant controller",
 	"main": "index.js",
 	"scripts": {
-		"mqtt": "concurrently \"node mqtt/broker\" \"node mqtt/pub\" \"node mqtt/sub\"",
+		"mqtt": "concurrently \"node dist/mqtt/broker\" \"node dist/mqtt/pub\" \"node dist/mqtt/sub\"",
 		"dev": "nodemon src/server.ts",
 		"build": "tsc -p ."
 	},
 	"author": "Rahul Eswar",
 	"license": "MIT",
 	"dependencies": {
+		"@types/bcryptjs": "^2.4.2",
 		"@types/uuid": "^8.0.0",
 		"aedes": "^0.42.4",
+		"bcryptjs": "^2.4.3",
 		"config": "^3.3.1",
 		"express": "^4.17.1",
 		"express-validator": "^6.6.0",
+		"jsonwebtoken": "^8.5.1",
+		"lodash.update": "^4.10.2",
 		"mongoose": "^5.9.21",
 		"mqtt": "^4.1.0",
 		"mqtt-packet": "^6.3.2",
@@ -24,6 +28,8 @@
 	"devDependencies": {
 		"@types/config": "0.0.36",
 		"@types/express": "^4.17.7",
+		"@types/express-validator": "^3.0.0",
+		"@types/jsonwebtoken": "^8.5.0",
 		"@types/mongoose": "^5.7.32",
 		"@types/mqtt": "^2.5.0",
 		"@types/node": "^14.0.23",
