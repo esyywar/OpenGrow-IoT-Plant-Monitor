@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from 'express'
+import { Request, Response, NextFunction } from 'express'
 
 import config from 'config'
 
@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken'
  ************* Authentication Middleware ***************
  ******************************************************/
 
+/* For regular users */
 const auth = (req: Request, res: Response, next: NextFunction) => {
 	const token = req.header('x-auth-token')
 

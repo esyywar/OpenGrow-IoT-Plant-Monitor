@@ -19,7 +19,7 @@ const router = express.Router()
  ******************************************************/
 
 /*******************************************************
- ******************** POST Requests *********************
+ ******************** POST Requests ********************
  ******************************************************/
 
 /*
@@ -144,11 +144,15 @@ router.post(
 	}
 )
 
+/*******************************************************
+ ********************* PUT Requests ********************
+ ******************************************************/
+
 /*
  *	Brief: Add a plant to user's profile (maximum 10 per user)
  *	Path: /api/user/plant/:id
  */
-router.get('/plant/:plantId', auth, async (req: Request, res: Response) => {
+router.put('/plant/:plantId', auth, async (req: Request, res: Response) => {
 	const plantId = req.params.plantId
 
 	try {
@@ -162,18 +166,63 @@ router.get('/plant/:plantId', auth, async (req: Request, res: Response) => {
 		}
 
 		/* Get user */
-		const user: IUser | null = await User.findById(req.body.user)
+		const user: IUser | null = await User.findById(req.body.user.id)
 
 		if (user?.plants.length > 10) {
-			res.status(400).json({ errors: [{ msg: 'You already have 10 plants on your account!' }] })
+			return res
+				.status(400)
+				.json({ errors: [{ msg: 'You already have 10 plants on your account!' }] })
 		}
 
-		/* Push plant ID to user's profile */
-		const plantList = user?.plants.unshift({ plant: plantId })
+		/* Check if user already has this plant added */
+		if (user?.plants.some((element: any) => element.plant.toString() === plantId.toString())) {
+			return res
+				.status(400)
+				.json({ errors: [{ msg: 'This plant is already associated with your account!' }] })
+		}
 
-		await user?.populate('plants').save()
+		/* Add new plant to user's plant list */
+		user?.plants.unshift({ plant: plantId })
 
-		res.json({ plants: plantList })
+		await user?.save()
+
+		res.json({ plants: user?.plants })
+	} catch (error) {
+		res.status(500).json({ errors: [{ msg: 'Server error.' }] })
+	}
+})
+
+/*******************************************************
+ ******************* DELETE Requests *******************
+ ******************************************************/
+
+/*
+ *	Brief: Remove plant to user's profile
+ *	Path: /api/user/plant/:id
+ */
+router.delete('/plant/:plantId', auth, async (req: Request, res: Response) => {
+	const plantId = req.params.plantId
+
+	try {
+		/* Verify that plant exists */
+		const plant: IPlant | null = await Plant.findById(plantId)
+
+		if (!plant) {
+			return res
+				.status(400)
+				.json({ errors: [{ msg: 'Plant not found. Please check the ID is entered correctly.' }] })
+		}
+
+		/* Get user */
+		const user: IUser | null = await User.findById(req.body.user.id)
+
+		/* Remove plant ID from user's profile */
+		const removeIndex = user?.plants.map((plant: any) => plant.plant).indexOf(plantId)
+		user?.plants.splice(removeIndex, 1)
+
+		await user?.save()
+
+		res.json({ plants: user?.plants })
 	} catch (error) {
 		res.status(500).json({ errors: [{ msg: 'Server error.' }] })
 	}
