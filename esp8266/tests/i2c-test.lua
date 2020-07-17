@@ -2,9 +2,8 @@
 local STM32_ADDR = 0x6D
 
 -- commands to get data from stm
-local STR_LEN_CMD = 0x5C
-local STR_SEND_CMD = 0x5E
-
+local STR_LEN_CMD = 0x51
+local STR_SEND_CMD = 0x52
 -- i2c configurations
 i2c0 = {
     id = 0,
@@ -16,14 +15,22 @@ i2c0 = {
 -- set up i2c
 local isSpeed = i2c.setup(i2c0.id, i2c0.sda, i2c0.scl, i2c0.speed)
 
--- if initialization success...
+-- if initialization succeeds then start timer to perform i2c transfer
 if (isSpeed == i2c0.speed) then 
-    local len = i2c_getLen(i2c0.id, STM32_ADDR)
-    print('Got msg length: ' ... len)
-
-    local msg = i2c_getData(i2c0.id, STM32_ADDR, len)
-    print('Got msg: ' ... msg)
+    i2c_timer:start()
 end
+
+-- tiemr to send commands and get string
+local i2c_timer = tmr.create()
+
+timer:register(5000, tmr.ALARM_AUTO, function()
+        local len = i2c_getLen(i2c0.id, STM32_ADDR)
+        print('Got msg length: ' ... len)
+
+        local msg = i2c_getData(i2c0.id, STM32_ADDR, len)
+        print('Got msg: ' ... msg)
+    end
+)
 
 -- get length of string to be sent
 function i2c_getLen(id, addr) 

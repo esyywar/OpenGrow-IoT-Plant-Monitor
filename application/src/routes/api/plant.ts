@@ -1,11 +1,31 @@
 import express, { Request, Response } from 'express'
 
+import { check, validationResult } from 'express-validator'
+
 import Plant, { IPlant } from '../../models/Plant'
 
 import auth from '../../middleware/auth'
 import adminAuth from '../../middleware/adminAuth'
 
 const router = express.Router()
+
+/*******************************************************
+ ******************** POST Requests ********************
+ ******************************************************/
+
+/*
+ *	Brief: Change upper soil moisture setpoints for plant
+ *	Path: /api/plant/setpoint/
+ */
+router.post(
+	'/setpoint/:plantId',
+	[
+		check('lowerLimit', 'Lower limit is required.').isNumeric(),
+		check('upperLimit', 'Upper limit is required.').isNumeric(),
+		auth,
+	],
+	async (req: Request, res: Response) => {}
+)
 
 /*******************************************************
  ******************** PUT Requests *********************

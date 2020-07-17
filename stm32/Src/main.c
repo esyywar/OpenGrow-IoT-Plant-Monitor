@@ -60,6 +60,9 @@ uint16_t moistureLimLow, moistureLimHigh;
 /* Data buffers for I2C from ESP8266 */
 uint8_t espCmdCode;
 
+/* Test message for I2C */
+char myStory[] = "Kale is a subpar food";
+
 /* Structure for SSD1306 handle */
 SSD1306_t SSD1306_OledDisp;
 
@@ -633,24 +636,34 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* pSpi2_oledWrite) {
 
 /* Received data from ESP8266 Master */
 void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
-	/* Check command code sent */	
+	
+		/* Check command code sent */
+	if (espCmdCode == SEND_LENGTH_CMD) {
+		uint8_t dataLen = strlen(myStory);
+		HAL_I2C_Slave_Transmit(I2c1_espComm, &dataLen, 1, 2000);
+	}
+	else if (espCmdCode == SEND_DATA_CMD) {
+		HAL_I2C_Slave_Transmit(I2c1_espComm, (uint8_t*)myStory, strlen(myStory), 2000);
+	}
+	
+	/* Check command code sent 	
 	if (espCmdCode == ESP_REQ_SENSOR_DATA) {
-		/* Send soil moisture and light sensor data to ESP8266 (4 bytes) */
+		// Send soil moisture and light sensor data to ESP8266 (4 bytes) 
 		HAL_I2C_Slave_Transmit(I2c1_espComm, (uint8_t*)plant_sensors, sizeof(plant_sensors)/sizeof(uint8_t), 2000);
 	}
 	else if (espCmdCode == ESP_SEND_SETPOINT_LOW || espCmdCode == ESP_SEND_SETPOINT_HIGH) {
-		/* Data buffer of setpoint to update */
+		// Data buffer of setpoint to update
 		uint8_t* updateBuffer = (uint8_t*)((espCmdCode == ESP_SEND_SETPOINT_LOW) ? &moistureLimLow : &moistureLimHigh);
 		
-		/* Take semaphore to update setpoint shadow registers */
+		// Take semaphore to update setpoint shadow registers 
 		if( xSemaphoreTake( setpointBinSem_Handle, ( TickType_t ) 1 ) == pdTRUE )
 		{
-			/* Load setpoints from shadow registers where ESP8266 updates */
+			// Load setpoints from shadow registers where ESP8266 updates 
 			HAL_I2C_Slave_Receive(I2c1_espComm, updateBuffer, 2, 2000);
 			
 			xSemaphoreGive( setpointBinSem_Handle );  
 		}
-	}
+	}*/
 	
 	/* Keep in slave receive mode - should always be listening for commands from ESP8266 */
 	HAL_I2C_Slave_Receive_IT(I2c1_espComm, &espCmdCode, 1);
