@@ -24,7 +24,31 @@ router.post(
 		check('upperLimit', 'Upper limit is required.').isNumeric(),
 		auth,
 	],
-	async (req: Request, res: Response) => {}
+	async (req: Request, res: Response) => {
+		const plantId = req.params.plantId
+		const { upperLim, lowerLim } = req.body
+
+		try {
+			const plant: IPlant | null = await Plant.findById(plantId)
+
+			if (!plant) {
+				return res.status(401).json({ msg: 'Plant not found.' })
+			}
+
+			if (lowerLim < 0 || upperLim < 0) {
+				res.status(401).json({ msg: 'Setpoints must be positive values.' })
+			}
+
+			plant.setpoints.soilMoisture.lowerLimit = lowerLim
+			plant.setpoints.soilMoisture.upperLimit = upperLim
+
+			await plant.save()
+
+			res.json({ plant })
+		} catch (error) {
+			res.status(500).json({ msg: 'Server error.' })
+		}
+	}
 )
 
 /*******************************************************
