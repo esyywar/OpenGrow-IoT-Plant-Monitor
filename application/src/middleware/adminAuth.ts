@@ -15,6 +15,7 @@ const adminAuth = async (req: Request, res: Response, next: NextFunction) => {
 			return res.status(401).json({ msg: 'This route requires administrator level access.' })
 		}
 
+		/* User is in admin database so continue */
 		next()
 	} catch (error) {
 		res.status(401).json({ msg: 'Token is not valid.' })

@@ -4,6 +4,7 @@ export interface IPlant extends Document {
 	pubTopic: string
 	soilMoisture: [{ measurement: number; date: Date }]
 	lightLevel: [{ measurement: number; date: Date }]
+	isAssociated: boolean
 	date: Date
 }
 
@@ -35,6 +36,11 @@ const plantSchema: Schema = new Schema({
 			},
 		},
 	],
+	isAssociated: {
+		type: Boolean,
+		required: true,
+		default: false,
+	},
 	date: {
 		type: Date,
 		default: Date.now(),

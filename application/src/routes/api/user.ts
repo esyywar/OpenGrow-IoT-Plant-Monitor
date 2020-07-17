@@ -220,12 +220,19 @@ router.put('/plant/:plantId', auth, async (req: Request, res: Response) => {
 
 	try {
 		/* Verify that plant exists */
-		const plant: IPlant | null = await Plant.findById(plantId)
+		let plant: IPlant | null = await Plant.findById(plantId)
 
 		if (!plant) {
 			return res
 				.status(400)
 				.json({ errors: [{ msg: 'Plant not found. Please check the ID is entered correctly.' }] })
+		}
+
+		/* Verify that plant not associated to another user's account */
+		if (plant.isAssociated) {
+			return res
+				.status(400)
+				.json({ errors: [{ msg: "Plant is associated with another user's account." }] })
 		}
 
 		/* Get user */
@@ -248,7 +255,11 @@ router.put('/plant/:plantId', auth, async (req: Request, res: Response) => {
 		/* Add new plant to user's plant list */
 		user?.plants.unshift({ plant: plantId })
 
+		/* Associate plant with user's profile */
+		plant.isAssociated = true
+
 		await user?.save()
+		await plant.save()
 
 		res.json({ plants: user?.plants })
 	} catch (error) {
@@ -261,7 +272,7 @@ router.put('/plant/:plantId', auth, async (req: Request, res: Response) => {
  ******************************************************/
 
 /*
- *	Brief: Remove plant to user's profile
+ *	Brief: Remove plant from user's profile
  *	Path: /api/user/plant/:id
  */
 router.delete('/plant/:plantId', auth, async (req: Request, res: Response) => {
@@ -269,7 +280,7 @@ router.delete('/plant/:plantId', auth, async (req: Request, res: Response) => {
 
 	try {
 		/* Verify that plant exists */
-		const plant: IPlant | null = await Plant.findById(plantId)
+		let plant: IPlant | null = await Plant.findById(plantId)
 
 		if (!plant) {
 			return res
@@ -284,7 +295,11 @@ router.delete('/plant/:plantId', auth, async (req: Request, res: Response) => {
 		const removeIndex: any = user?.plants.map((plant: any) => plant.plant).indexOf(plantId)
 		user?.plants.splice(removeIndex, 1)
 
+		/* Make plant unoassociated */
+		plant.isAssociated = false
+
 		await user?.save()
+		await plant.save()
 
 		res.json({ plants: user?.plants })
 	} catch (error) {
