@@ -11,7 +11,6 @@ import User, { IUser } from '../../models/User'
 import Plant, { IPlant } from '../../models/Plant'
 
 import auth from '../../middleware/auth'
-import { stringify } from 'querystring'
 
 const router = express.Router()
 
@@ -21,8 +20,17 @@ const router = express.Router()
 
 /*
  *	Brief: Get plants associated with user
- *	Path: /api/user
+ *	Path: /api/user/plants
  */
+router.get('/plants', auth, async (req: Request, res: Response) => {
+	try {
+		const user: IUser | null = await User.findById(req.body.user.id)
+
+		res.json({ plants: user?.plants })
+	} catch (error) {
+		res.status(500).json({ errors: [{ msg: 'Server error.' }] })
+	}
+})
 
 /*******************************************************
  ******************** POST Requests ********************
@@ -144,6 +152,55 @@ router.post(
 					res.json({ token, user: user.id, msg: `Welcome back, ${user.username}!` })
 				}
 			)
+		} catch (error) {
+			res.status(500).json({ errors: [{ msg: 'Server error.' }] })
+		}
+	}
+)
+
+/*
+ *	Brief: Name plant on a user's profile
+ *	Path: /api/user/plant/name/:plantId
+ */
+router.post(
+	'/plant/name/:plantId',
+	[check('name', 'Plant name is required.').notEmpty(), auth],
+	async (req: Request, res: Response) => {
+		const plantId = req.params.plantId
+		let { name } = req.body
+
+		try {
+			let user: IUser | null = await User.findById(req.body.user.id)
+
+			/* Check if plant is associated with user */
+			if (!user?.plants.some((plant: any) => plant.id.toString() === plantId)) {
+				return res
+					.status(401)
+					.json({ errors: [{ msg: 'Plant is not associated with this account.' }] })
+			}
+
+			/* If repeating a name, add incrementing digit to end */
+			if (user.plants.some((plant: any) => plant.name === name)) {
+				const lastChar = name.slice(-1)
+
+				if (isNaN(parseInt(lastChar))) {
+					name = name.concat('2')
+				} else {
+					name = name.substring(0, name.length - 1) + (parseInt(lastChar) + 1)
+				}
+			}
+
+			/* Rename the indicated plant */
+			const plantList = user?.plants.map((plant: any) => {
+				if (plant.id.toString() === plantId) {
+					plant.name = name
+				}
+				return plant
+			})
+
+			await user.save()
+
+			res.json({ plants: plantList })
 		} catch (error) {
 			res.status(500).json({ errors: [{ msg: 'Server error.' }] })
 		}
