@@ -104,7 +104,8 @@ void OLED_Update(void *pvParameters);
 void OLED_Write(void *pvParameters);
 void Water_Plant(void *pvParameters);
 void Publish_ESP8266(void *pvParameters);
-void SensorRead(void *pvParameters);
+void Sensor_Read(void *pvParameters);
+void Plant_Water(void *pvParameters);
 
 
 /**
@@ -170,13 +171,14 @@ int main(void)
 	*******************************************************/
 	
 	/* Task handlers */
-	TaskHandle_t OLED_Update_TaskHandle, OLED_Write_TaskHandle, Publish_ESP8266_TaskHandle, SensorRead_TaskHandle;
+	TaskHandle_t OLED_Update_TaskHandle, OLED_Write_TaskHandle, Publish_ESP8266_TaskHandle, Sensor_Read_TaskHandle, Plant_Water_TaskHandle;
 	
   /* Register tasks (each with 128 byte stack size) */
 	xTaskCreate(OLED_Update, "OLED_Update_Disp", 32, NULL, 1, &OLED_Update_TaskHandle);
 	xTaskCreate(OLED_Write, "OLED_Write_Task", 32, NULL, 2, &OLED_Write_TaskHandle);
 	xTaskCreate(Publish_ESP8266, "Water_Plant_Task", 32, NULL, 3, &Publish_ESP8266_TaskHandle);
-	xTaskCreate(SensorRead, "Sensor_Read_Task", 32, NULL, 4, &SensorRead_TaskHandle);	
+	xTaskCreate(Sensor_Read, "Sensor_Read_Task", 32, NULL, 4, &Sensor_Read_TaskHandle);	
+	xTaskCreate(Plant_Water, "Plant_Water_Task", 32, NULL, 5, &Plant_Water_TaskHandle);
 
   /* Start scheduler */
 	vTaskStartScheduler();
@@ -554,7 +556,7 @@ void OLED_Update(void *pvParameters)
 		xSemaphoreTake(Oled_Buffer_Sema_Handle, 0);
 		SSD1306_UpdateScreen();
 
-		vTaskDelay(500);
+		vTaskDelay(RTOS_UPDATE_OLED_DISP);
 	}
 }
 
@@ -591,7 +593,7 @@ void OLED_Write(void *pvParameters)
 			xSemaphoreGive(Oled_Buffer_Sema_Handle);
 		}
 
-		vTaskDelay(200);
+		vTaskDelay(RTOS_OLED_WRITE_DISP);
   }
   /* USER CODE END 5 */ 
 }
@@ -613,7 +615,7 @@ void Publish_ESP8266(void *pvParameters)
 		
 		/* Activate water pump */
 		
-    vTaskDelay(1000);
+    vTaskDelay(RTOS_SEND_ESP_DATA);
   }
   /* USER CODE END Publish_ESP8266 */
 }
@@ -624,10 +626,10 @@ void Publish_ESP8266(void *pvParameters)
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_SensorRead */
-void SensorRead(void *pvParameters)
+/* USER CODE END Header_Sensor_Read */
+void Sensor_Read(void *pvParameters)
 {
-  /* USER CODE BEGIN SensorRead */
+  /* USER CODE BEGIN Sensor_Read */
   /* Infinite loop */
   for(;;)
   {		
@@ -638,9 +640,24 @@ void SensorRead(void *pvParameters)
 			HAL_ADC_Start_DMA(&Adc1_sensorsRead, (uint32_t*)plant_sensors, 2);
 		}
 		
-    vTaskDelay(1000);
+    vTaskDelay(RTOS_GET_SENSOR_DATA);
   }
-  /* USER CODE END SensorRead */
+  /* USER CODE END Sensor_Read */
+}
+
+
+/**
+* @brief Compare soil moisture readings to setpoints and water plant if necessary.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_Plant_Water */
+void Plant_Water(void *pvParameters)
+{
+	for(;;)
+	{
+		vTaskDelay(1000);
+	}
 }
 
 
