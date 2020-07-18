@@ -32,7 +32,8 @@
 /* Standard libraries */
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <string.h> 
+#include <stdbool.h>
 
 /* SSD1306 SPI Drivers */
 #include "ssd1306.h"
@@ -40,6 +41,8 @@
 
 /* Plant bitmap for OLED display */
 #include "bitmap.h"
+#include "sudo_bitmap_1.h"
+#include "sudo_bitmap_2.h"
 
 /*******************************************************
 ********** Peripheral handles **************************
@@ -67,8 +70,9 @@ char myStory[] = "Kale is a subpar food";
 SSD1306_t SSD1306_OledDisp;
 
 /* Create semaphores */
-SemaphoreHandle_t sensorBinSem_Handle;	
-SemaphoreHandle_t setpointBinSem_Handle;
+SemaphoreHandle_t Oled_Buffer_Sema_Handle;
+SemaphoreHandle_t Sensor_Sema_Handle;	
+SemaphoreHandle_t Setpoint_Sema_Handle;
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -96,6 +100,7 @@ static void DMA2_Stream0_Init(void);
 ********** Thread functions ****************************
 *******************************************************/
 
+void OLED_Update(void *pvParameters);
 void OLED_Write(void *pvParameters);
 void Water_Plant(void *pvParameters);
 void Publish_ESP8266(void *pvParameters);
@@ -130,6 +135,26 @@ int main(void)
 	DMA1_Stream4_Init();
 	DMA1_Stream6_Init();
 	DMA2_Stream0_Init();
+
+  /* USER CODE BEGIN RTOS_MUTEX */
+  /* add mutexes, ... */
+  /* USER CODE END RTOS_MUTEX */
+
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
+	
+	Sensor_Sema_Handle = xSemaphoreCreateBinary();	
+	Setpoint_Sema_Handle = xSemaphoreCreateBinary();
+	Oled_Buffer_Sema_Handle = xSemaphoreCreateBinary();
+
+	/* Assert correct initialization of semaphores */
+	configASSERT(Sensor_Sema_Handle && Setpoint_Sema_Handle && Oled_Buffer_Sema_Handle);
+	
+	/* Initialize semaphore by giving */
+	xSemaphoreGive(Sensor_Sema_Handle);
+	xSemaphoreGive(Setpoint_Sema_Handle);
+	xSemaphoreGive(Oled_Buffer_Sema_Handle);
+	
+  /* USER CODE END RTOS_SEMAPHORES */
 	
 	/* Initialize OLED display */
 	if (SSD1306_Init() != SSD1306_OK)
@@ -140,33 +165,18 @@ int main(void)
 	/* Listen for commands from ESP I2C master */
 	HAL_I2C_Slave_Receive_IT(&I2c1_espComm, &espCmdCode, 1);
 
-  /* USER CODE BEGIN RTOS_MUTEX */
-  /* add mutexes, ... */
-  /* USER CODE END RTOS_MUTEX */
-
-  /* USER CODE BEGIN RTOS_SEMAPHORES */
-	
-	sensorBinSem_Handle = xSemaphoreCreateBinary();	
-	setpointBinSem_Handle = xSemaphoreCreateBinary();
-
-	configASSERT(sensorBinSem_Handle && setpointBinSem_Handle);
-	
-	xSemaphoreGive(sensorBinSem_Handle);
-	xSemaphoreGive(setpointBinSem_Handle);
-	
-  /* USER CODE END RTOS_SEMAPHORES */
-
   /*******************************************************
 	********** Thread functions ****************************
 	*******************************************************/
 	
 	/* Task handlers */
-	TaskHandle_t OLED_Write_TaskHandle, Publish_ESP8266_TaskHandle, SensorRead_TaskHandle;
+	TaskHandle_t OLED_Update_TaskHandle, OLED_Write_TaskHandle, Publish_ESP8266_TaskHandle, SensorRead_TaskHandle;
 	
   /* Register tasks (each with 128 byte stack size) */
-	xTaskCreate(OLED_Write, "OLED_Write_Task", 32, NULL, 1, &OLED_Write_TaskHandle);
-	xTaskCreate(Publish_ESP8266, "Water_Plant_Task", 32, NULL, 2, &Publish_ESP8266_TaskHandle);
-	xTaskCreate(SensorRead, "Sensor_Read_Task", 32, NULL, 3, &SensorRead_TaskHandle);	
+	xTaskCreate(OLED_Update, "OLED_Update_Disp", 32, NULL, 1, &OLED_Update_TaskHandle);
+	xTaskCreate(OLED_Write, "OLED_Write_Task", 32, NULL, 2, &OLED_Write_TaskHandle);
+	xTaskCreate(Publish_ESP8266, "Water_Plant_Task", 32, NULL, 3, &Publish_ESP8266_TaskHandle);
+	xTaskCreate(SensorRead, "Sensor_Read_Task", 32, NULL, 4, &SensorRead_TaskHandle);	
 
   /* Start scheduler */
 	vTaskStartScheduler();
@@ -532,6 +542,24 @@ static void MX_GPIO_Init(void)
 
 
 /**
+  * @brief  Update the OLED screen by writing contents of the buffer.
+  * @param  argument: Not used 
+  * @retval None
+  */
+/* USER CODE END Header_OLED_Write */
+void OLED_Update(void *pvParameters)
+{
+	for(;;)
+	{
+		xSemaphoreTake(Oled_Buffer_Sema_Handle, 0);
+		SSD1306_UpdateScreen();
+
+		vTaskDelay(500);
+	}
+}
+
+
+/**
   * @brief  Function implementing the Update_OLED thread.
   * @param  argument: Not used 
   * @retval None
@@ -542,24 +570,29 @@ void OLED_Write(void *pvParameters)
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
   for(;;)
-  {
-		static uint8_t xPosText = 50;
+  {		
+		static uint8_t xPos = 50;	
+		static bool sudoFlip = true;
 		
-		SSD1306_Fill(SSD1306_PX_CLR_BLACK);		
-		SSD1306_DrawBitmap(0, 0, treeBitmap, 32, 32, SSD1306_PX_CLR_WHITE);
-		
-		SSD1306_GotoXY(xPosText++, 10);
-		SSD1306_Puts("Hello", &Font_7x10, SSD1306_PX_CLR_WHITE);
-		SSD1306_GotoXY(xPosText++, 21);
-		SSD1306_Puts("Rahul", &Font_7x10, SSD1306_PX_CLR_WHITE);
-
-		SSD1306_UpdateScreen();
-		
-		if (xPosText >= 127) {
-			xPosText = 0;
+		if (xSemaphoreTake(Oled_Buffer_Sema_Handle, 10) == pdTRUE)
+		{
+			SSD1306_Fill(SSD1306_PX_CLR_BLACK);
+			SSD1306_UpdateScreen();
+			
+			SSD1306_DrawBitmap(0, 0, sudoFlip ? sudowoodopose1 : sudowoodopose2, 32, 32, SSD1306_PX_CLR_WHITE);
+			
+			SSD1306_GotoXY(xPos, 10);
+			SSD1306_Puts("Hello", &Font_7x10, SSD1306_PX_CLR_WHITE);
+			SSD1306_GotoXY(xPos++, 21);
+			SSD1306_Puts("Rahul", &Font_7x10, SSD1306_PX_CLR_WHITE);
+					
+			sudoFlip = !sudoFlip;
+			if (xPos == 90) { xPos = 50; }
+			
+			xSemaphoreGive(Oled_Buffer_Sema_Handle);
 		}
-		
-		vTaskDelay(50);
+
+		vTaskDelay(750);
   }
   /* USER CODE END 5 */ 
 }
@@ -600,7 +633,7 @@ void SensorRead(void *pvParameters)
   for(;;)
   {		
 		/* Read value from ADCs into sensor value variables */
-		if( xSemaphoreTake( sensorBinSem_Handle, ( TickType_t ) 10 ) == pdTRUE  )
+		if( xSemaphoreTake( Sensor_Sema_Handle, ( TickType_t ) 10 ) == pdTRUE  )
 		{
 			/* Read value from ADC1 at pin GPIO A0 */
 			HAL_ADC_Start_DMA(&Adc1_sensorsRead, (uint32_t*)plant_sensors, 2);
@@ -622,7 +655,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* Adc1_sensorsRead) {
 	char output[100];
 	sprintf(output, "[%i][%i]\n", plant_sensors[0], plant_sensors[1]);
 	
-	xSemaphoreGiveFromISR(sensorBinSem_Handle, NULL);
+	xSemaphoreGiveFromISR(Sensor_Sema_Handle, NULL);
 	
 	HAL_UART_Transmit_IT(&Uart2_debug, (uint8_t*)output, strlen(output));
 }
@@ -631,7 +664,8 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* Adc1_sensorsRead) {
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* pSpi2_oledWrite) {
 	SSD1306_OledDisp.state = SSD1306_STATE_READY;
 	
-	/* Release mutex held on OLED buffer */
+	/* Give semaphore held on OLED buffer */
+	xSemaphoreGiveFromISR(Oled_Buffer_Sema_Handle, NULL);
 }
 
 /* Received data from ESP8266 Master */
@@ -656,12 +690,12 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
 		uint8_t* updateBuffer = (uint8_t*)((espCmdCode == ESP_SEND_SETPOINT_LOW) ? &moistureLimLow : &moistureLimHigh);
 		
 		// Take semaphore to update setpoint shadow registers 
-		if( xSemaphoreTake( setpointBinSem_Handle, ( TickType_t ) 1 ) == pdTRUE )
+		if( xSemaphoreTake( Setpoint_Sema_Handle, ( TickType_t ) 1 ) == pdTRUE )
 		{
 			// Load setpoints from shadow registers where ESP8266 updates 
 			HAL_I2C_Slave_Receive(I2c1_espComm, updateBuffer, 2, 2000);
 			
-			xSemaphoreGive( setpointBinSem_Handle );  
+			xSemaphoreGive( Setpoint_Sema_Handle );  
 		}
 	}*/
 	

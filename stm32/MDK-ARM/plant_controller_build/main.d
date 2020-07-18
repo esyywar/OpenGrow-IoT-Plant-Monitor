@@ -52,6 +52,9 @@
 .\plant_controller_build\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\plant_controller_build\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\plant_controller_build\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\plant_controller_build\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\plant_controller_build\main.o: ..\Drivers\SSD1306\Inc\ssd1306.h
 .\plant_controller_build\main.o: ..\Drivers\SSD1306\Inc\fonts.h
 .\plant_controller_build\main.o: ..\Drivers\SSD1306\Inc\bitmap.h
+.\plant_controller_build\main.o: ..\Drivers\SSD1306\Inc\sudo_bitmap_1.h
+.\plant_controller_build\main.o: ..\Drivers\SSD1306\Inc\sudo_bitmap_2.h
