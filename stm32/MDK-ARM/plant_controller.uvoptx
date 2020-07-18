@@ -152,25 +152,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>579</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134234110</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Src/main.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\plant_controller_build\../Src/main.c\579</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
           <LineNumber>2674</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134234512</Address>
+          <Address>134234524</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -182,7 +166,7 @@
           <Expression>\\plant_controller_build\../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c\2674</Expression>
         </Bp>
         <Bp>
-          <Number>2</Number>
+          <Number>1</Number>
           <Type>0</Type>
           <LineNumber>180</LineNumber>
           <EnabledFlag>0</EnabledFlag>
@@ -198,7 +182,7 @@
           <Expression>\\plant_controller_build\../Src/stm32f4xx_it.c\180</Expression>
         </Bp>
         <Bp>
-          <Number>3</Number>
+          <Number>2</Number>
           <Type>0</Type>
           <LineNumber>174</LineNumber>
           <EnabledFlag>0</EnabledFlag>
@@ -212,22 +196,6 @@
           <Filename>../Src/stm32f4xx_it.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\plant_controller_build\../Src/stm32f4xx_it.c\174</Expression>
-        </Bp>
-        <Bp>
-          <Number>4</Number>
-          <Type>0</Type>
-          <LineNumber>554</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134234062</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Src/main.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\plant_controller_build\../Src/main.c\554</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>

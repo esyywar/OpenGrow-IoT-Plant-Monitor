@@ -577,7 +577,6 @@ void OLED_Write(void *pvParameters)
 		if (xSemaphoreTake(Oled_Buffer_Sema_Handle, 10) == pdTRUE)
 		{
 			SSD1306_Fill(SSD1306_PX_CLR_BLACK);
-			SSD1306_UpdateScreen();
 			
 			SSD1306_DrawBitmap(0, 0, sudoFlip ? sudowoodopose1 : sudowoodopose2, 32, 32, SSD1306_PX_CLR_WHITE);
 			
@@ -592,7 +591,7 @@ void OLED_Write(void *pvParameters)
 			xSemaphoreGive(Oled_Buffer_Sema_Handle);
 		}
 
-		vTaskDelay(750);
+		vTaskDelay(200);
   }
   /* USER CODE END 5 */ 
 }
