@@ -49,7 +49,8 @@ extern "C" {
 #define ESP_SEND_SETPOINT_HIGH		0x46
 
 /* Timing configurations */
-#define RTOS_UPDATE_OLED_DISP			100U		
+#define RTOS_UPDATE_OLED_DISP			100U	
+#define RTOS_OLED_BITMAP_FLIP			1000U
 #define RTOS_OLED_WRITE_DISP			200U
 #define RTOS_SEND_ESP_DATA				1000U
 #define RTOS_GET_SENSOR_DATA			1000U

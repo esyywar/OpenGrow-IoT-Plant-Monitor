@@ -70,7 +70,15 @@ void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16
             {
                byte = (*(const unsigned char *)(&bitmap[j * byteWidth + i / 8]));
             }
-            if(byte & 0x80) SSD1306_DrawPixel(x+i, y, colour);
+						
+            if (byte & 0x80) 
+						{
+							SSD1306_DrawPixel(x+i, y, colour);
+						}
+						else 
+						{
+							SSD1306_DrawPixel(x+i, y, !colour);
+						}
         }
     }
 }
@@ -251,6 +259,30 @@ void SSD1306_ToggleInvert(void) {
 void SSD1306_Fill(uint8_t colour) {
 	/* Set memory */
 	memset(SSD1306_Buffer, (colour == SSD1306_PX_CLR_BLACK) ? 0x00 : 0xFF, sizeof(SSD1306_Buffer));
+}
+
+/** 
+ * @brief  Fills OLED with desired colour to right of indicated column (for horizontal and page addressing modes)
+ * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
+ * @param  Color: Color to be used for screen fill. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
+ */
+void SSD1306_Fill_ToRight(uint8_t startCol, uint8_t colour) {
+	for (uint8_t i = 0; i < SSD1306_PAGES; i++)
+	{
+		memset(SSD1306_Buffer + startCol + (i * SSD1306_WIDTH), (colour == SSD1306_PX_CLR_BLACK) ? 0x00 : 0xFF, SSD1306_WIDTH - startCol);
+	}
+}
+
+/** 
+ * @brief  Fills OLED with desired colour to left of indicated column (for horizontal and page addressing modes)
+ * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
+ * @param  Color: Color to be used for screen fill. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
+ */
+void SSD1306_Fill_ToLeft(uint8_t startCol, uint8_t colour) {
+	for (uint8_t i = 0; i < SSD1306_PAGES; i++)
+	{
+		memset(SSD1306_Buffer + (i * SSD1306_WIDTH), (colour == SSD1306_PX_CLR_BLACK) ? 0x00 : 0xFF, startCol);
+	}
 }
 
 /**

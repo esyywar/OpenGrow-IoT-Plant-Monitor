@@ -67,14 +67,13 @@ extern C {
 *******************************************************/
 
 /* SSD1306 width in pixels */
-#ifndef SSD1306_WIDTH
 #define SSD1306_WIDTH            				128
-#endif
 
-/* SSD1306 LCD height in pixels */
-#ifndef SSD1306_HEIGHT
+/* SSD1306 OLED height in pixels */
 #define SSD1306_HEIGHT           				32
-#endif
+
+/* Number of pages on OLED display */
+#define SSD1306_PAGES										SSD1306_HEIGHT / 8
 
 /* Pixel colours */
 #define SSD1306_PX_CLR_BLACK						0
@@ -275,11 +274,25 @@ void SSD1306_Clear (void);
 void SSD1306_ToggleInvert(void);
 
 /** 
- * @brief  Fills entire LCD with desired color
+ * @brief  Fills entire OLED with desired color
  * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
  * @param  Color: Color to be used for screen fill. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
  */
 void SSD1306_Fill(uint8_t colour);
+
+/** 
+ * @brief  Fills OLED with desired colour to right of indicated column (for horizontal and page addressing modes)
+ * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
+ * @param  Color: Color to be used for screen fill. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
+ */
+void SSD1306_Fill_ToRight(uint8_t startCol, uint8_t colour);
+
+/** 
+ * @brief  Fills OLED with desired colour to left of indicated column (for horizontal and page addressing modes)
+ * @note   @ref SSD1306_UpdateScreen() must be called after that in order to see updated LCD screen
+ * @param  Color: Color to be used for screen fill. This parameter can be a value of @ref SSD1306_COLOR_t enumeration
+ */
+void SSD1306_Fill_ToLeft(uint8_t startCol, uint8_t colour);
 
 /**
  * @brief  Writes pixel value to the data buffer - configured to work with SSD1306 in horizontal or page addressing mode

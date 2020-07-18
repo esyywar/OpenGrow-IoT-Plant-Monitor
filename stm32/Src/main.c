@@ -41,8 +41,6 @@
 
 /* Plant bitmap for OLED display */
 #include "bitmap.h"
-#include "sudo_bitmap_1.h"
-#include "sudo_bitmap_2.h"
 
 /*******************************************************
 ********** Peripheral handles **************************
@@ -101,6 +99,7 @@ static void DMA2_Stream0_Init(void);
 *******************************************************/
 
 void OLED_Update(void *pvParameters);
+void OLED_Bitmap_Flip(void *pvParameters);
 void OLED_Write(void *pvParameters);
 void Water_Plant(void *pvParameters);
 void Publish_ESP8266(void *pvParameters);
@@ -171,14 +170,15 @@ int main(void)
 	*******************************************************/
 	
 	/* Task handlers */
-	TaskHandle_t OLED_Update_TaskHandle, OLED_Write_TaskHandle, Publish_ESP8266_TaskHandle, Sensor_Read_TaskHandle, Plant_Water_TaskHandle;
+	TaskHandle_t OLED_Update_TaskHandle, OLED_Bitmap_Flip_TaskHandle, OLED_Write_TaskHandle, Publish_ESP8266_TaskHandle, Sensor_Read_TaskHandle, Plant_Water_TaskHandle;
 	
   /* Register tasks (each with 128 byte stack size) */
 	xTaskCreate(OLED_Update, "OLED_Update_Disp", 32, NULL, 1, &OLED_Update_TaskHandle);
-	xTaskCreate(OLED_Write, "OLED_Write_Task", 32, NULL, 2, &OLED_Write_TaskHandle);
-	xTaskCreate(Publish_ESP8266, "Water_Plant_Task", 32, NULL, 3, &Publish_ESP8266_TaskHandle);
-	xTaskCreate(Sensor_Read, "Sensor_Read_Task", 32, NULL, 4, &Sensor_Read_TaskHandle);	
-	xTaskCreate(Plant_Water, "Plant_Water_Task", 32, NULL, 5, &Plant_Water_TaskHandle);
+	xTaskCreate(OLED_Bitmap_Flip, "OLED_Bitmap_Flip", 32, NULL, 2, &OLED_Bitmap_Flip_TaskHandle);
+	xTaskCreate(OLED_Write, "OLED_Write_Task", 32, NULL, 3, &OLED_Write_TaskHandle);
+	xTaskCreate(Publish_ESP8266, "Water_Plant_Task", 32, NULL, 4, &Publish_ESP8266_TaskHandle);
+	xTaskCreate(Sensor_Read, "Sensor_Read_Task", 32, NULL, 5, &Sensor_Read_TaskHandle);	
+	xTaskCreate(Plant_Water, "Plant_Water_Task", 32, NULL, 6, &Plant_Water_TaskHandle);
 
   /* Start scheduler */
 	vTaskStartScheduler();
@@ -574,20 +574,16 @@ void OLED_Write(void *pvParameters)
   for(;;)
   {		
 		static uint8_t xPos = 50;	
-		static bool sudoFlip = true;
 		
 		if (xSemaphoreTake(Oled_Buffer_Sema_Handle, 10) == pdTRUE)
 		{
-			SSD1306_Fill(SSD1306_PX_CLR_BLACK);
-			
-			SSD1306_DrawBitmap(0, 0, sudoFlip ? sudowoodopose1 : sudowoodopose2, 32, 32, SSD1306_PX_CLR_WHITE);
-			
+			SSD1306_Fill_ToRight(xPos, SSD1306_PX_CLR_BLACK);
+						
 			SSD1306_GotoXY(xPos, 10);
 			SSD1306_Puts("Hello", &Font_7x10, SSD1306_PX_CLR_WHITE);
 			SSD1306_GotoXY(xPos++, 21);
 			SSD1306_Puts("Rahul", &Font_7x10, SSD1306_PX_CLR_WHITE);
 					
-			sudoFlip = !sudoFlip;
 			if (xPos == 90) { xPos = 50; }
 			
 			xSemaphoreGive(Oled_Buffer_Sema_Handle);
@@ -596,6 +592,33 @@ void OLED_Write(void *pvParameters)
 		vTaskDelay(RTOS_OLED_WRITE_DISP);
   }
   /* USER CODE END 5 */ 
+}
+
+
+/**
+  * @brief  Switch between the 2 bitmaps on OLED display.
+  * @param  argument: Not used 
+  * @retval None
+  */
+/* USER CODE END Header_OLED_Write */
+void OLED_Bitmap_Flip(void *pvParameters)
+{
+	for(;;)
+	{
+		static bool sudoFlip = true;
+		
+		if (xSemaphoreTake(Oled_Buffer_Sema_Handle, 10) == pdTRUE)
+		{
+			SSD1306_DrawBitmap(0, 0, sudoFlip ? sudowoodopose1 : sudowoodopose2, 32, 32, SSD1306_PX_CLR_WHITE);
+					
+			sudoFlip = !sudoFlip;
+
+			xSemaphoreGive(Oled_Buffer_Sema_Handle);
+		}
+		
+		vTaskDelay(RTOS_OLED_BITMAP_FLIP);
+	}
+
 }
 
 
