@@ -186,7 +186,7 @@
           <Type>0</Type>
           <LineNumber>2674</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134234592</Address>
+          <Address>134234612</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -202,7 +202,7 @@
           <Type>0</Type>
           <LineNumber>199</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134229942</Address>
+          <Address>134229962</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -228,12 +228,12 @@
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>test</ItemText>
+          <ItemText>sizeof(plant_sensors)</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>SSD1306_OledDisp</ItemText>
+          <ItemText>plant_sensors</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>

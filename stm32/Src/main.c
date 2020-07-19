@@ -34,6 +34,7 @@
 #include <stdlib.h>
 #include <string.h> 
 #include <stdbool.h>
+#include <math.h>
 
 /* SSD1306 SPI Drivers */
 #include "ssd1306.h"
@@ -62,7 +63,7 @@ uint16_t moistureLimLow, moistureLimHigh;
 uint8_t espCmdCode;
 
 /* Test message for I2C */
-char myStory[] = "Kale is a subpar food";
+char myStory[] = "Kal3 is a subpar f00d";
 
 /* Structure for SSD1306 handle */
 SSD1306_t SSD1306_OledDisp;
@@ -712,8 +713,8 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
 	
 		/* Check command code sent */
 	if (espCmdCode == SEND_LENGTH_CMD) {
-		uint16_t dataLen = strlen(myStory);
-		HAL_I2C_Slave_Transmit(I2c1_espComm, (uint8_t*)&dataLen, 2, 2000);
+		uint8_t len = strlen(myStory);
+		HAL_I2C_Slave_Transmit(I2c1_espComm, &len, 1, 2000);
 	}
 	else if (espCmdCode == SEND_DATA_CMD) {
 		HAL_I2C_Slave_Transmit(I2c1_espComm, (uint8_t*)myStory, strlen(myStory), 2000);
