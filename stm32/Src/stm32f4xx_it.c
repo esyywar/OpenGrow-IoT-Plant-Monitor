@@ -68,6 +68,9 @@ extern DMA_HandleTypeDef DMA1_oled_pipe;
 extern DMA_HandleTypeDef DMA2_adc_pipe;
 extern TIM_HandleTypeDef htim6;
 
+/* i2c command code variable */
+extern uint8_t espCmdCode;
+
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -194,6 +197,7 @@ void I2C1_EV_IRQHandler(void)
 void I2C1_ER_IRQHandler(void)
 {
   HAL_I2C_ER_IRQHandler(&I2c1_espComm);
+	HAL_I2C_Slave_Receive_IT(&I2c1_espComm, &espCmdCode, 1);
 }
 
 /**

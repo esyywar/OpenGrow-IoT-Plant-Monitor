@@ -712,18 +712,19 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
 	
 		/* Check command code sent */
 	if (espCmdCode == SEND_LENGTH_CMD) {
-		uint8_t dataLen = strlen(myStory);
-		HAL_I2C_Slave_Transmit(I2c1_espComm, &dataLen, 1, 2000);
+		uint16_t dataLen = strlen(myStory);
+		HAL_I2C_Slave_Transmit(I2c1_espComm, (uint8_t*)&dataLen, 2, 2000);
 	}
 	else if (espCmdCode == SEND_DATA_CMD) {
 		HAL_I2C_Slave_Transmit(I2c1_espComm, (uint8_t*)myStory, strlen(myStory), 2000);
 	}
 	
-	/* Check command code sent 	
+	/* Check command code sent */	
 	if (espCmdCode == ESP_REQ_SENSOR_DATA) {
 		// Send soil moisture and light sensor data to ESP8266 (4 bytes) 
 		HAL_I2C_Slave_Transmit(I2c1_espComm, (uint8_t*)plant_sensors, sizeof(plant_sensors)/sizeof(uint8_t), 2000);
 	}
+	/*
 	else if (espCmdCode == ESP_SEND_SETPOINT_LOW || espCmdCode == ESP_SEND_SETPOINT_HIGH) {
 		// Data buffer of setpoint to update
 		uint8_t* updateBuffer = (uint8_t*)((espCmdCode == ESP_SEND_SETPOINT_LOW) ? &moistureLimLow : &moistureLimHigh);
