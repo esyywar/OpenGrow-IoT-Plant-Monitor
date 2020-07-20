@@ -1,24 +1,18 @@
 import mongoose, { Schema, Document } from 'mongoose'
 
 export interface IPlant extends Document {
-	pubTopic: string
 	setpoints: {
 		soilMoisture: { lowerLimit: number; upperLimit: number }
 	}
 	data: {
-		soilMoisture: [{ measurement: number; date: Date }]
-		lightLevel: [{ measurement: number; date: Date }]
+		soilMoisture: [{ measurement: number; date?: Date }]
+		lightLevel: [{ measurement: number; date?: Date }]
 	}
 	isAssociated: boolean
-	date: Date
+	date?: Date
 }
 
 const plantSchema: Schema = new Schema({
-	pubTopic: {
-		type: String,
-		required: true,
-		unique: true,
-	},
 	setpoints: {
 		soilMoisture: {
 			lowerLimit: {
@@ -34,9 +28,11 @@ const plantSchema: Schema = new Schema({
 			{
 				measurement: {
 					type: Number,
+					required: true,
 				},
 				date: {
 					type: Date,
+					required: true,
 					default: Date.now(),
 				},
 			},
@@ -45,9 +41,11 @@ const plantSchema: Schema = new Schema({
 			{
 				measurement: {
 					type: Number,
+					required: true,
 				},
 				date: {
 					type: Date,
+					required: true,
 					default: Date.now(),
 				},
 			},
@@ -60,6 +58,7 @@ const plantSchema: Schema = new Schema({
 	},
 	date: {
 		type: Date,
+		required: true,
 		default: Date.now(),
 	},
 })

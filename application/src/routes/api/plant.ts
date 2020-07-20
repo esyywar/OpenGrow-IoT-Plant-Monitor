@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express'
 
+import config from 'config'
+
 import { check, validationResult } from 'express-validator'
 
 import Plant, { IPlant } from '../../models/Plant'
@@ -25,6 +27,13 @@ router.post(
 		auth,
 	],
 	async (req: Request, res: Response) => {
+		const errors = validationResult(req)
+
+		/* If errors in validation, throw response */
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() })
+		}
+
 		const plantId = req.params.plantId
 		const { upperLim, lowerLim } = req.body
 
@@ -59,15 +68,15 @@ router.post(
  *	Brief: Create a new blank plant entry and return ID
  *	Path: /api/plant/create
  */
-router.put('/create', [auth, adminAuth], async (req: Request, res: Response) => {
+router.put('/create', async (req: Request, res: Response) => {
 	const newPlant: IPlant = new Plant()
-
-	newPlant.pubTopic = newPlant.id.concat('_setpoint')
 
 	try {
 		/* Save in db - return number of plants and id */
 		await newPlant.save()
-		let numPlants: number = await Plant.countDocuments()
+
+		const numPlants: number = await Plant.countDocuments()
+
 		res.json({ numPlants, msg: `Plant ${newPlant.id} has been created.` })
 	} catch (error) {
 		res.status(500).json({ msg: 'Server error.' })

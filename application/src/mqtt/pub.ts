@@ -4,18 +4,18 @@ import mqtt from 'mqtt'
 /* Connecting to broker */
 import config from 'config'
 
-const mqttQoS = config.get('mqttQoS')
+const mqttQoS = config.get('mqtt.qos')
 
 const connectOptions: object = {
-	username: config.get('mqttBrokerUsername'),
-	password: config.get('mqttBrokerPassword'),
+	username: config.get('mqtt.brokerUsername'),
+	password: config.get('mqtt.brokerPassword'),
 	reconnectPeriod: 5000,
 }
 
-const client: any = mqtt.connect('mqtt://localhost:1885', connectOptions)
+const client: any = mqtt.connect(config.get('mqtt.brokerUrl'), connectOptions)
 
 /* Plant moisture level topic */
-const topic: string = 'plant_1234'
+const topic: string = 'testId/plant_1234'
 
 const message = {
 	soilMoisture: 400,

@@ -1,7 +1,3 @@
-import connectDB from '../database/db'
-
-import Plant from '../models/Plant'
-
 import config from 'config'
 
 /* Setup MQTT broker */
@@ -11,9 +7,6 @@ const aedes = require('aedes')(aedesOptions)
 /*******************************************************
  ****************** Initialize Broker ******************
  ******************************************************/
-
-/* Connect to mongoDB */
-connectDB()
 
 /* Check for server port or run on local port 1883 */
 const PORT = process.env.PORT || 1883
@@ -33,8 +26,8 @@ server.listen(PORT, '0.0.0.0', () => {
 aedes.authenticate = (client: any, username: string, password: string, callback: any) => {
 	try {
 		if (
-			username.toString() === config.get('mqttBrokerUsername') &&
-			password.toString() === config.get('mqttBrokerPassword')
+			username.toString() === config.get('mqtt.brokerUsername') &&
+			password.toString() === config.get('mqtt.brokerPassword')
 		) {
 			console.log(`Client ${client.id} has been authenticated!`)
 			callback(null, true)
@@ -68,20 +61,6 @@ aedes.on('publish', async (publish: any, client: any) => {
 		return
 	}
 
-	/* If topic does not exist in database, create entry in database */
-	try {
-		const isPlantReg = await Plant.findOne({ topic: publish.topic })
-
-		if (!isPlantReg) {
-			console.log('New plant! Registering him now...')
-			const newPlant = new Plant({ topic: publish.topic })
-
-			await newPlant.save()
-		}
-	} catch (error) {
-		console.log(error.message)
-	}
-
 	console.log(`Published message ${publish.messageId} of topic ${publish.topic} to ${client.id}`)
 })
 
@@ -112,5 +91,5 @@ aedes.on('ack', async (packet: any, client: any) => {
 
 /* On client disconnect */
 aedes.on('clientDisconnect', (client: any) => {
-	console.log(`Client ${client} has disconnected`)
+	console.log(`Client ${client.id} has disconnected`)
 })
