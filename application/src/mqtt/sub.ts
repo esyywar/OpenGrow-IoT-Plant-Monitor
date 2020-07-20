@@ -37,9 +37,7 @@ client.on('connect', async () => {
 		const activePlants = await Plant.find({ isAssociated: true })
 
 		/* For each plant associated with a user, subscribe to topics */
-		let subTopics = activePlants
-			.map((plant: IPlant) => `${plant.id}/data/soilmoisture`)
-			.concat(activePlants.map((plant: IPlant) => `${plant.id}/data/light`))
+		let subTopics = activePlants.map((plant: IPlant) => `${plant.id}/data`)
 
 		/* Broker subscribes to messages from ESP8266 connected plants */
 		client.subscribe(subTopics, { qos: mqttQoS }, (error) => {
@@ -49,29 +47,25 @@ client.on('connect', async () => {
 		})
 
 		/*	Client action on topic
-		 *	Brief: topic is of the form: ${plantId}/data/${plantMetric}
+		 *	Brief: topic is of the form: ${plantId}/data
 		 */
 		client.on('message', async (topic, payload: any) => {
 			payload = JSON.parse(payload)
-
-			console.log(
-				`Received soilMoisture: ${payload.soilMoisture}, light level: ${payload.lightLevel}`
-			)
 
 			/* Get the plant's id in database from topic root */
 			const plantId: string = getPlantIdFromTopic(topic)
 
 			let plant: IPlant | null = await Plant.findById(plantId)
 
-			/* Verify plant is found in db and topic is giving data */
-			if (!plant || getMsgTypeFromTopic(topic) !== 'data') {
+			/* Verify plant is found in db */
+			if (!plant) {
 				return
 			}
 
 			/* Publish data in db */
 			const plantVar = getPlantVarFromTopic(topic)
 
-			switch (plantVar) {
+			switch (Object.keys(payload)[0]) {
 				case plantVarEnum.soilMoisture:
 					plant.data.soilMoisture.push({ measurement: payload.soilMoisture })
 					await plant.save()
