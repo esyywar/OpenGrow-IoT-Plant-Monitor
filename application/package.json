@@ -12,6 +12,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"@types/bcryptjs": "^2.4.2",
+		"@types/jest": "^26.0.5",
 		"@types/uuid": "^8.0.0",
 		"aedes": "^0.42.4",
 		"bcryptjs": "^2.4.3",
