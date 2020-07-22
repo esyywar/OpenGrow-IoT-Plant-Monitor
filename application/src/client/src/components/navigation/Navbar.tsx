@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { Link } from 'react-router-dom'
+
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
+import { AppBar, Toolbar, Typography, Button, IconButton } from '@material-ui/core/'
 import MenuIcon from '@material-ui/icons/Menu'
+
+import '../../css/navbar.css'
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -35,7 +35,11 @@ export default function Navbar() {
 					<Typography variant="h6" className={classes.title}>
 						Ottogrow
 					</Typography>
-					<Button color="inherit">Login</Button>
+					<Button color="inherit">
+						<Link to="/login" className="nav-link">
+							Login
+						</Link>
+					</Button>
 				</Toolbar>
 			</AppBar>
 		</div>

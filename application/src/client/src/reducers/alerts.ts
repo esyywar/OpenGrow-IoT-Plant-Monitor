@@ -18,7 +18,7 @@ export const alerts = (state: IAlertState = initialState, action: setAction | re
 		case SET_ALERT:
 			return { ...state, alerts: [...state.alerts, action.payload] }
 		case RESET_ALERT:
-			return state.alerts.filter((alert) => alert.id != action.payload)
+			return state.alerts.filter((alert) => alert.id !== action.payload)
 		default:
 			return state
 	}
