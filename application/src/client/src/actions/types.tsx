@@ -11,7 +11,7 @@ export const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
 export const REGISTER_FAILED = 'REGISTER_FAILED'
 export const LOGOUT_USER = 'LOGOUT_USER'
 
-/******************* INTERFACES *********************/
+/******************* STATE INTERFACES *********************/
 
 export interface AlertState {
 	alerts: Array<{
@@ -19,4 +19,14 @@ export interface AlertState {
 		message: string
 		type: string
 	}>
+}
+
+export interface UserAuthState {
+	auth: {
+		userId: string | null
+		username: string | null
+		token: string | null
+		isLoading: boolean
+		isAuthenticated: boolean
+	}
 }

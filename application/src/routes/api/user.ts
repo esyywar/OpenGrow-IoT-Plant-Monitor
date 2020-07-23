@@ -38,10 +38,10 @@ router.get('/plants', auth, async (req: Request, res: Response) => {
 
 /*
  *	Brief: Registering a new user
- *	Path: /api/user
+ *	Path: /api/user/register
  */
 router.post(
-	'/',
+	'/register',
 	[
 		check('username', 'Username is required.').notEmpty(),
 		check('email', 'Please include a valid email.').isEmail(),
