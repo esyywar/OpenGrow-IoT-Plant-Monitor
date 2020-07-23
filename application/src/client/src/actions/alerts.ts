@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 /************************ INTERFACES & TYPES ***************************/
 
-export type setAction = {
+export type setActionType = {
 	type: 'SET_ALERT'
 	payload: {
 		id: string
@@ -13,20 +13,22 @@ export type setAction = {
 	}
 }
 
-export type resetAction = {
+export type resetActionType = {
 	type: 'RESET_ALERT'
 	payload: string
 }
 
 /**************************** ACTIONS ********************************/
 
-export const setAlert = (msg: string, type: string, timeout: number = 3000) => (
+export const setAlert = (msg: string, type: string, timeout: number = 4000) => (
 	dispatch: Function
 ) => {
-	const action: setAction = {
+	const id: string = uuidv4()
+
+	const action: setActionType = {
 		type: SET_ALERT,
 		payload: {
-			id: uuidv4(),
+			id,
 			message: msg,
 			type,
 		},
@@ -35,8 +37,8 @@ export const setAlert = (msg: string, type: string, timeout: number = 3000) => (
 	dispatch(action)
 
 	/* Automatically reset alert after timeout elapses */
-	setTimeout((dispatch, id) => {
-		const action: resetAction = {
+	setTimeout(() => {
+		const action: resetActionType = {
 			type: RESET_ALERT,
 			payload: id,
 		}
@@ -45,7 +47,7 @@ export const setAlert = (msg: string, type: string, timeout: number = 3000) => (
 }
 
 export const resetAlert = (id: string) => (dispatch: Function) => {
-	const action: resetAction = {
+	const action: resetActionType = {
 		type: 'RESET_ALERT',
 		payload: id,
 	}

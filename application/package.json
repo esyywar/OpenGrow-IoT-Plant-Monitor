@@ -5,7 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"mqtt": "concurrently \"node dist/mqtt/broker\" \"node dist/mqtt/pub\" \"node dist/mqtt/sub\"",
-		"dev": "nodemon src/server.ts",
+		"client": "npm start --prefix src/client",
+		"dev": "concurrently \"npm run client\" \"nodemon src/server.ts\"",
 		"build": "tsc -p ."
 	},
 	"author": "Rahul Eswar",

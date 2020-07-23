@@ -19,25 +19,6 @@ const useStyles = makeStyles((theme: Theme) =>
 		title: {
 			flexGrow: 1,
 		},
-		linkContainerStyle: {
-			display: 'flexbox',
-			flexDirection: 'row',
-			alignItems: 'center',
-			justifyContent: 'flex-end',
-		},
-		logoBgStyle: {
-			backgroundColor: 'whitesmoke',
-			padding: '5px 8px',
-			borderRadius: '35px',
-		},
-		logoHalfOne: {
-			color: theme.palette.primary.main,
-			fontWeight: 500,
-		},
-		logoHalfTwo: {
-			color: theme.palette.secondary.main,
-			fontWeight: 500,
-		},
 	})
 )
 
@@ -53,19 +34,19 @@ export default function Navbar() {
 						<MenuIcon />
 					</IconButton>
 					<Typography variant="h6">
-						<Link to="/" className="nav-link">
-							<div className={classes.logoBgStyle}>
-								<span className={classes.logoHalfOne}>Otto</span>
-								<span className={classes.logoHalfTwo}>Grow</span>
+						<Link to="/" className="link-style">
+							<div className="logo">
+								<span style={{ color: theme.palette.primary.main }}>Otto</span>
+								<span style={{ color: theme.palette.secondary.main }}>Grow</span>
 							</div>
 						</Link>
 					</Typography>
-					<Container maxWidth="xl" className={classes.linkContainerStyle}>
-						<Button color="inherit" style={{ float: 'right' }}>
-							<Link to="/login" className="nav-link">
+					<Container maxWidth="xl" className="link-container">
+						<Link to="/login" className="link-style">
+							<Button color="inherit" className="nav-link">
 								Login
-							</Link>
-						</Button>
+							</Button>
+						</Link>
 					</Container>
 				</Toolbar>
 			</AppBar>

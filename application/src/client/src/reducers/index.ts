@@ -1,9 +1,19 @@
 import { combineReducers } from 'redux'
 
-import { alerts } from './alerts'
+import { useSelector, TypedUseSelectorHook } from 'react-redux'
+
+import { alertState } from './alertState'
+
+import { AlertState } from '../actions/types'
 
 const rootReducer = combineReducers({
-	alerts,
+	alertState,
 })
+
+interface RootState {
+	alertState: AlertState
+}
+
+export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector
 
 export default rootReducer

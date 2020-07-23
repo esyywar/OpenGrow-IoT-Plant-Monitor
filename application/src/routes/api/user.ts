@@ -91,7 +91,7 @@ router.post(
 					if (err) {
 						throw err
 					}
-					res.json({ token, user: user.id, msg: `You are signed up, ${user.username}!` })
+					res.json({ token, userId: user.id, username: user.username })
 				}
 			)
 		} catch (error) {
@@ -149,7 +149,7 @@ router.post(
 						throw err
 					}
 
-					res.json({ token, user: user.id, msg: `Welcome back, ${user.username}!` })
+					res.json({ token, userId: user.id, username: user.username })
 				}
 			)
 		} catch (error) {
