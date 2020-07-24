@@ -43,12 +43,21 @@ extern "C" {
 #define ESP_SEND_SETPOINT_LOW			0x44
 #define ESP_SEND_SETPOINT_HIGH		0x46
 
-/* Timing configurations */
+/* RTOS thread timing settings */
 #define RTOS_UPDATE_OLED_DISP			100U	
 #define RTOS_OLED_BITMAP_FLIP			1000U
 #define RTOS_OLED_WRITE_DISP			200U
 #define RTOS_SEND_ESP_DATA				1000U
 #define RTOS_GET_SENSOR_DATA			1000U
+#define RTOS_PLANT_WATER					600000U
+
+/* Plant water pump water settings */
+#define PID_P_DEFAULT							8
+#define PID_I_DEFAULT							0.2
+#define PID_D_DEFAULT							10	
+
+/* On-time required for pump to bring water to plant */
+#define PUMP_MINIMUM_TIME_ON			3000U
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */

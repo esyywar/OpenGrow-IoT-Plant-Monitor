@@ -53,11 +53,22 @@ SPI_HandleTypeDef Spi2_oledWrite;
 UART_HandleTypeDef Uart2_debug;
 DMA_HandleTypeDef DMA2_adc_pipe, DMA1_oled_pipe, DMA1_esp8266_pipe;
 
-/* Private variables */
+/*******************************************************
+*********** Private variables **************************
+*******************************************************/
+
 uint16_t plant_sensors[2];
 
-/* Moisture level setpoints */
-uint16_t moistureLimLow, moistureLimHigh;
+/* Moisture level setpoint */
+uint16_t moistureSetpoint;
+
+/* Sum of moisture used to calculate PID response values */
+int32_t moistureErrorSum = 0;
+
+/* PID controller coefficients (initalized to default values) */
+float proportionCoeff = PID_P_DEFAULT;
+float integralCoeff = PID_I_DEFAULT;
+float derivativeCoeff = PID_D_DEFAULT;
 
 /* Data buffers for I2C from ESP8266 */
 uint8_t espCmdCode;
@@ -69,6 +80,7 @@ SSD1306_t SSD1306_OledDisp;
 SemaphoreHandle_t Oled_Buffer_Sema_Handle;
 SemaphoreHandle_t Sensor_Sema_Handle;	
 SemaphoreHandle_t Setpoint_Sema_Handle;
+SemaphoreHandle_t Pid_Moisture_Err_Sum_Handle;
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -143,14 +155,16 @@ int main(void)
 	Sensor_Sema_Handle = xSemaphoreCreateBinary();	
 	Setpoint_Sema_Handle = xSemaphoreCreateBinary();
 	Oled_Buffer_Sema_Handle = xSemaphoreCreateBinary();
+	Pid_Moisture_Err_Sum_Handle = xSemaphoreCreateBinary();
 
 	/* Assert correct initialization of semaphores */
-	configASSERT(Sensor_Sema_Handle && Setpoint_Sema_Handle && Oled_Buffer_Sema_Handle);
+	configASSERT(Sensor_Sema_Handle && Setpoint_Sema_Handle && Oled_Buffer_Sema_Handle && Pid_Moisture_Err_Sum_Handle);
 	
 	/* Initialize semaphore by giving */
 	xSemaphoreGive(Sensor_Sema_Handle);
 	xSemaphoreGive(Setpoint_Sema_Handle);
 	xSemaphoreGive(Oled_Buffer_Sema_Handle);
+	xSemaphoreGive(Pid_Moisture_Err_Sum_Handle);
 	
   /* USER CODE END RTOS_SEMAPHORES */
 	
@@ -684,7 +698,31 @@ void Plant_Water(void *pvParameters)
 {
 	for(;;)
 	{
-		vTaskDelay(1000);
+		int16_t moistureError = 0, moistureDerError = 0;
+		int32_t moistureIntError = 0;
+		
+		/* PID calculation for how long to turn on water pump */ 
+		if( xSemaphoreTake(Pid_Moisture_Err_Sum_Handle, portMAX_DELAY) == pdTRUE && xSemaphoreTake(Sensor_Sema_Handle, portMAX_DELAY))
+		{
+			moistureError = plant_sensors[0] - moistureSetpoint;
+			moistureIntError = moistureErrorSum;
+			moistureDerError = moistureErrorSum / RTOS_PLANT_WATER;
+			
+			/* Reset the integral error accumulator */
+			moistureErrorSum = 0;
+			
+			xSemaphoreGive(Pid_Moisture_Err_Sum_Handle);
+			xSemaphoreGive(Sensor_Sema_Handle);
+		}
+		
+		/* Calculate time for pump to be on */
+		int32_t plantPumpOnTime = ( proportionCoeff * moistureError) + (integralCoeff * moistureIntError) + (derivativeCoeff * moistureDerError);
+		
+		/* Turn the pump on */
+		/* vTaskDelay(plantPumpOnTime) */
+		/* Turn the pump off */
+		
+		vTaskDelay(RTOS_PLANT_WATER);
 	}
 }
 
@@ -692,6 +730,23 @@ void Plant_Water(void *pvParameters)
 /******************************************************************
 **************** Interrupt routine callbacks **********************
 *******************************************************************/
+
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* pAdc1_sensorsRead) {
+	static BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+	/* Accumulate setpoint error sum for later PID calculations */
+	if (xSemaphoreTakeFromISR(Pid_Moisture_Err_Sum_Handle, NULL) == pdTRUE)
+	{
+		moistureErrorSum += (plant_sensors[0] - moistureSetpoint);
+		
+		xSemaphoreGiveFromISR(Pid_Moisture_Err_Sum_Handle, &xHigherPriorityTaskWoken);	
+	}
+	
+	xSemaphoreGiveFromISR(Sensor_Sema_Handle, NULL);
+	
+	portYIELD_FROM_ISR(xHigherPriorityTaskWoken); ;
+}
+	
 
 /* SPI transmission callback - called when UpdateScreen() completes to update OLED display from buffer */
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* pSpi2_oledWrite) {
@@ -714,15 +769,12 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
 			xSemaphoreGive( Sensor_Sema_Handle );
 		}
 	}
-	else if (espCmdCode == ESP_SEND_SETPOINT_LOW || espCmdCode == ESP_SEND_SETPOINT_HIGH) {
-		// Data buffer of setpoint to update
-		uint8_t* pSetpointBuffer = (uint8_t*)((espCmdCode == ESP_SEND_SETPOINT_LOW) ? &moistureLimLow : &moistureLimHigh);
-		
+	else if (espCmdCode == ESP_SEND_SETPOINT_LOW || espCmdCode == ESP_SEND_SETPOINT_HIGH) {		
 		// Take semaphore to update setpoint shadow registers 
 		if( xSemaphoreTake( Setpoint_Sema_Handle, (TickType_t) 1 ) == pdTRUE )
 		{
 			// Load setpoints from shadow registers where ESP8266 updates 
-			HAL_I2C_Slave_Receive(I2c1_espComm, pSetpointBuffer, 2, 2000);
+			HAL_I2C_Slave_Receive(I2c1_espComm, (uint8_t*)&moistureSetpoint, 2, 2000);
 			
 			xSemaphoreGive( Setpoint_Sema_Handle );  
 		}

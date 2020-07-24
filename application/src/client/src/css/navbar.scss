@@ -1,0 +1,23 @@
+.link-style {
+	text-decoration: none;
+	color: white;
+}
+
+.logo {
+	background-color: whitesmoke;
+	border-radius: 35px;
+	padding: 5px 8px;
+	font-weight: 500;
+}
+
+.link-container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-end;
+
+	.nav-link {
+		float: right;
+		display: block;
+	}
+}

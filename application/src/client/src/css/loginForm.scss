@@ -1,0 +1,19 @@
+.login-form-container {
+	padding: 40px;
+
+	.login-form-title {
+		font-family: 'Mulish', sans-serif;
+		font-size: 28px;
+		text-align: center;
+		font-weight: 600;
+		text-transform: uppercase;
+		margin-bottom: 0.8em;
+	}
+
+	.login-form {
+		.input-field {
+			margin-bottom: 15px;
+			min-width: 250px;
+		}
+	}
+}

@@ -1,0 +1,57 @@
+.intro-card {
+	padding: 30px 20px;
+	width: 90%;
+	border-radius: 25px;
+
+	.card-title {
+		font-family: 'Mulish', sans-serif;
+		margin-bottom: 30px;
+		text-align: center;
+	}
+
+	.plant-image {
+		display: block;
+		margin: auto;
+		max-height: 500px;
+		width: auto;
+	}
+
+	.card-info-container {
+		width: 100%;
+		height: 100%;
+		padding: 15px;
+		border-radius: 35px;
+		background-color: whitesmoke;
+
+		.card-info-text {
+			font-family: 'Mulish', sans-serif;
+			font-size: 19px;
+			line-height: 35px;
+			text-align: center;
+			padding: 20px 5px;
+		}
+	}
+
+	.icons-container {
+		margin-top: 30px;
+
+		.icons-style {
+			display: block;
+			margin: auto;
+			font-size: 40px;
+
+			.water-icon {
+				color: lightblue;
+			}
+			.sun-icon {
+				color: yellow;
+			}
+			.wifi-icon {
+				color: blue;
+			}
+			.computer-icon {
+				color: gray;
+			}
+		}
+	}
+}
