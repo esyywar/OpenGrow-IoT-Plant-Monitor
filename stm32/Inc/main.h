@@ -39,11 +39,6 @@ extern "C" {
 #define ESP8266_I2C_ADDR					0x5C << 1
 
 /* I2C commands */
-
-/* For Arduino I2C tests */
-#define SEND_LENGTH_CMD						0x51
-#define SEND_DATA_CMD							0x52
-
 #define ESP_REQ_SENSOR_DATA				0x42
 #define ESP_SEND_SETPOINT_LOW			0x44
 #define ESP_SEND_SETPOINT_HIGH		0x46

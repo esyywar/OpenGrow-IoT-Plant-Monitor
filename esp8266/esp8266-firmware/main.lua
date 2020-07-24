@@ -1,12 +1,12 @@
 -------------------------------------------------------
-------- Get data from STM32 and send to broker --------
+------- Periodically get sensor data from STM32 -------
 -------------------------------------------------------
 
 dataPub_timer = tmr.create()
 
 -- every 5 min -> Call function to get data from stm32 and then publish to broker
 dataPub_timer:register(300000, tmr.ALARM_AUTO, function()
-    -- call function to 
+    -- call function to get data from stm32
 end)
 
 -------------------------------------------------------

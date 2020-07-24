@@ -62,9 +62,6 @@ uint16_t moistureLimLow, moistureLimHigh;
 /* Data buffers for I2C from ESP8266 */
 uint8_t espCmdCode;
 
-/* Test message for I2C */
-char myStory[] = "Kal3 is a subpar f00d";
-
 /* Structure for SSD1306 handle */
 SSD1306_t SSD1306_OledDisp;
 
@@ -573,19 +570,26 @@ void OLED_Write(void *pvParameters)
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
   for(;;)
-  {		
-		static uint8_t xPos = 50;	
+  {			
+		static char soilMoistureDisp[20] = "Soil: ";
+		static char lightLevelDisp[18] = "Light: ";
 		
-		if (xSemaphoreTake(Oled_Buffer_Sema_Handle, 10) == pdTRUE)
+		if (xSemaphoreTake(Sensor_Sema_Handle, (TickType_t) 10) == pdTRUE)
 		{
-			SSD1306_Fill_ToRight(xPos, SSD1306_PX_CLR_BLACK);
+			sprintf(soilMoistureDisp + 6, "%i", plant_sensors[0]);
+			sprintf(lightLevelDisp + 7, "%i", plant_sensors[1]);
+			
+			xSemaphoreGive(Sensor_Sema_Handle);
+		}
+		
+		if (xSemaphoreTake(Oled_Buffer_Sema_Handle, (TickType_t) 10) == pdTRUE)
+		{
+			SSD1306_Fill_ToRight(50, SSD1306_PX_CLR_BLACK);
 						
-			SSD1306_GotoXY(xPos, 10);
-			SSD1306_Puts("Hello", &Font_7x10, SSD1306_PX_CLR_WHITE);
-			SSD1306_GotoXY(xPos++, 21);
-			SSD1306_Puts("Rahul", &Font_7x10, SSD1306_PX_CLR_WHITE);
-					
-			if (xPos == 90) { xPos = 50; }
+			SSD1306_GotoXY(50, 5);
+			SSD1306_Puts(soilMoistureDisp, &Font_7x10, SSD1306_PX_CLR_WHITE);
+			SSD1306_GotoXY(50, 21);
+			SSD1306_Puts(lightLevelDisp, &Font_7x10, SSD1306_PX_CLR_WHITE);
 			
 			xSemaphoreGive(Oled_Buffer_Sema_Handle);
 		}
@@ -608,7 +612,7 @@ void OLED_Bitmap_Flip(void *pvParameters)
 	{
 		static bool sudoFlip = true;
 		
-		if (xSemaphoreTake(Oled_Buffer_Sema_Handle, 10) == pdTRUE)
+		if (xSemaphoreTake(Oled_Buffer_Sema_Handle, (TickType_t)10) == pdTRUE)
 		{
 			SSD1306_DrawBitmap(0, 0, sudoFlip ? sudowoodopose1 : sudowoodopose2, 32, 32, SSD1306_PX_CLR_WHITE);
 					
@@ -658,7 +662,7 @@ void Sensor_Read(void *pvParameters)
   for(;;)
   {		
 		/* Read value from ADCs into sensor value variables */
-		if( xSemaphoreTake( Sensor_Sema_Handle, ( TickType_t ) 10 ) == pdTRUE  )
+		if( xSemaphoreTake( Sensor_Sema_Handle, (TickType_t) 10 ) == pdTRUE  )
 		{
 			/* Read value from ADC1 at pin GPIO A0 */
 			HAL_ADC_Start_DMA(&Adc1_sensorsRead, (uint32_t*)plant_sensors, 2);
@@ -689,17 +693,6 @@ void Plant_Water(void *pvParameters)
 **************** Interrupt routine callbacks **********************
 *******************************************************************/
 
-/* DMA transfer compelte callback - Now send data by USART2 */
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* Adc1_sensorsRead) {
-	/* Write data out from UART2 (for debug purposes) */
-	char output[100];
-	sprintf(output, "[%i][%i]\n", plant_sensors[0], plant_sensors[1]);
-	
-	xSemaphoreGiveFromISR(Sensor_Sema_Handle, NULL);
-	
-	HAL_UART_Transmit_IT(&Uart2_debug, (uint8_t*)output, strlen(output));
-}
-
 /* SPI transmission callback - called when UpdateScreen() completes to update OLED display from buffer */
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* pSpi2_oledWrite) {
 	SSD1306_OledDisp.state = SSD1306_STATE_READY;
@@ -709,36 +702,31 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* pSpi2_oledWrite) {
 }
 
 /* Received data from ESP8266 Master */
-void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
-	
-		/* Check command code sent */
-	if (espCmdCode == SEND_LENGTH_CMD) {
-		uint8_t len = strlen(myStory);
-		HAL_I2C_Slave_Transmit(I2c1_espComm, &len, 1, 2000);
-	}
-	else if (espCmdCode == SEND_DATA_CMD) {
-		HAL_I2C_Slave_Transmit(I2c1_espComm, (uint8_t*)myStory, strlen(myStory), 2000);
-	}
-	
+void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {	
 	/* Check command code sent */	
 	if (espCmdCode == ESP_REQ_SENSOR_DATA) {
-		// Send soil moisture and light sensor data to ESP8266 (4 bytes) 
-		HAL_I2C_Slave_Transmit(I2c1_espComm, (uint8_t*)plant_sensors, sizeof(plant_sensors)/sizeof(uint8_t), 2000);
+		/* Send soil moisture and light sensor data to ESP8266 (4 bytes) */
+		if( xSemaphoreTake( Sensor_Sema_Handle, (TickType_t) 10 ) == pdTRUE  )
+		{
+			/* Read value from ADC1 at pin GPIO A0 */
+			HAL_I2C_Slave_Transmit(I2c1_espComm, (uint8_t*)plant_sensors, sizeof(plant_sensors)/sizeof(uint8_t), 2000);
+			
+			xSemaphoreGive( Sensor_Sema_Handle );
+		}
 	}
-	/*
 	else if (espCmdCode == ESP_SEND_SETPOINT_LOW || espCmdCode == ESP_SEND_SETPOINT_HIGH) {
 		// Data buffer of setpoint to update
-		uint8_t* updateBuffer = (uint8_t*)((espCmdCode == ESP_SEND_SETPOINT_LOW) ? &moistureLimLow : &moistureLimHigh);
+		uint8_t* pSetpointBuffer = (uint8_t*)((espCmdCode == ESP_SEND_SETPOINT_LOW) ? &moistureLimLow : &moistureLimHigh);
 		
 		// Take semaphore to update setpoint shadow registers 
-		if( xSemaphoreTake( Setpoint_Sema_Handle, ( TickType_t ) 1 ) == pdTRUE )
+		if( xSemaphoreTake( Setpoint_Sema_Handle, (TickType_t) 1 ) == pdTRUE )
 		{
 			// Load setpoints from shadow registers where ESP8266 updates 
-			HAL_I2C_Slave_Receive(I2c1_espComm, updateBuffer, 2, 2000);
+			HAL_I2C_Slave_Receive(I2c1_espComm, pSetpointBuffer, 2, 2000);
 			
 			xSemaphoreGive( Setpoint_Sema_Handle );  
 		}
-	}*/
+	}
 	
 	/* Keep in slave receive mode - should always be listening for commands from ESP8266 */
 	HAL_I2C_Slave_Receive_IT(I2c1_espComm, &espCmdCode, 1);
