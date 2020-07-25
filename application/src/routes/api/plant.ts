@@ -16,14 +16,14 @@ const router = express.Router()
  ******************************************************/
 
 /*
- *	Brief: Change upper soil moisture setpoints for plant
- *	Path: /api/plant/setpoint/
+ *	Brief: Change soil moisture setpoint and tolerance for a plant
+ *	Path: /api/plant/control/:plantId
  */
 router.post(
-	'/setpoint/:plantId',
+	'/control/:plantId',
 	[
-		check('lowerLimit', 'Lower limit is required.').isNumeric(),
-		check('upperLimit', 'Upper limit is required.').isNumeric(),
+		check('setpoint', 'Setpoint is required.').isNumeric(),
+		check('tolerance', 'Tolerance value is required.').isNumeric(),
 		auth,
 	],
 	async (req: Request, res: Response) => {
@@ -35,7 +35,7 @@ router.post(
 		}
 
 		const plantId = req.params.plantId
-		const { upperLim, lowerLim } = req.body
+		const { setpoint, tolerance } = req.body
 
 		try {
 			const plant: IPlant | null = await Plant.findById(plantId)
@@ -44,12 +44,92 @@ router.post(
 				return res.status(401).json({ msg: 'Plant not found.' })
 			}
 
-			if (lowerLim < 0 || upperLim < 0) {
+			if (setpoint < 0 || tolerance < 0) {
 				res.status(401).json({ msg: 'Setpoints must be positive values.' })
 			}
 
-			plant.setpoints.soilMoisture.lowerLimit = lowerLim
-			plant.setpoints.soilMoisture.upperLimit = upperLim
+			plant.control.soilMoisture.setpoint = setpoint
+			plant.control.soilMoisture.tolerance = tolerance
+
+			await plant.save()
+
+			res.json({ plant })
+		} catch (error) {
+			res.status(500).json({ msg: 'Server error.' })
+		}
+	}
+)
+
+/*
+ *	Brief: Change soil moisture setpoint for a plant
+ *	Path: /api/plant/setpoint/:plantId
+ */
+router.post(
+	'/setpoint/:plantId',
+	[check('setpoint', 'Setpoint is required.').isNumeric(), auth],
+	async (req: Request, res: Response) => {
+		const errors = validationResult(req)
+
+		/* If errors in validation, throw response */
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() })
+		}
+
+		const plantId = req.params.plantId
+		const setpoint = req.body.setpoint
+
+		try {
+			const plant: IPlant | null = await Plant.findById(plantId)
+
+			if (!plant) {
+				return res.status(401).json({ msg: 'Plant not found.' })
+			}
+
+			if (setpoint < 0) {
+				res.status(401).json({ msg: 'Setpoints must be positive values.' })
+			}
+
+			plant.control.soilMoisture.setpoint = setpoint
+
+			await plant.save()
+
+			res.json({ plant })
+		} catch (error) {
+			res.status(500).json({ msg: 'Server error.' })
+		}
+	}
+)
+
+/*
+ *	Brief: Change soil moisture tolerance for a plant
+ *	Path: /api/plant/tolerance/:plantId
+ */
+router.post(
+	'/tolerance/:plantId',
+	[check('tolerance', 'Tolerance value is required.').isNumeric(), auth],
+	async (req: Request, res: Response) => {
+		const errors = validationResult(req)
+
+		/* If errors in validation, throw response */
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() })
+		}
+
+		const plantId = req.params.plantId
+		const tolerance = req.body.tolerance
+
+		try {
+			const plant: IPlant | null = await Plant.findById(plantId)
+
+			if (!plant) {
+				return res.status(401).json({ msg: 'Plant not found.' })
+			}
+
+			if (tolerance < 0) {
+				res.status(401).json({ msg: 'Setpoints must be positive values.' })
+			}
+
+			plant.control.soilMoisture.tolerance = tolerance
 
 			await plant.save()
 
