@@ -61,7 +61,7 @@ DMA_HandleTypeDef DMA2_adc_pipe, DMA1_oled_pipe, DMA1_esp8266_pipe;
 *		Index 0 -> capacitive soil moisture
 *		Index 1 -> Photoresistor voltage divider
 */
-uint16_t plant_sensors[2] = {0, 0};
+uint16_t plant_sensors[2];
 
 /* Moisture control variables */
 uint16_t moistureSetpoint;
@@ -73,9 +73,9 @@ int32_t moistureErrorSum = 0;
 uint16_t moistureTolerance = PID_TOLERANCE_DEFAULT;
 
 /* PID controller coefficients (initalized to default values) */
-float proportionCoeff = PID_P_DEFAULT;
-float integralCoeff = (int16_t)PID_I_DEFAULT;
-float derivativeCoeff = PID_D_DEFAULT;
+int16_t proportionCoeff = PID_P_DEFAULT;
+int16_t integralCoeff = (int16_t)PID_I_DEFAULT;
+int16_t derivativeCoeff = PID_D_DEFAULT;
 
 /* Data buffers for I2C from ESP8266 */
 uint8_t espCmdCode;
@@ -87,7 +87,6 @@ SSD1306_t SSD1306_OledDisp;
 SemaphoreHandle_t Oled_Buffer_Sema_Handle;
 SemaphoreHandle_t Sensor_Sema_Handle;	
 SemaphoreHandle_t Setpoint_Sema_Handle;
-SemaphoreHandle_t Pid_Moisture_Err_Sum_Handle;
 SemaphoreHandle_t Pid_Moisture_Toler_Handle;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -161,18 +160,16 @@ int main(void)
 	Sensor_Sema_Handle = xSemaphoreCreateBinary();	
 	Setpoint_Sema_Handle = xSemaphoreCreateBinary();
 	Oled_Buffer_Sema_Handle = xSemaphoreCreateBinary();
-	Pid_Moisture_Err_Sum_Handle = xSemaphoreCreateBinary();
 	Pid_Moisture_Toler_Handle = xSemaphoreCreateBinary();
 	
 
 	/* Assert correct initialization of semaphores */
-	configASSERT(Sensor_Sema_Handle && Setpoint_Sema_Handle && Oled_Buffer_Sema_Handle && Pid_Moisture_Err_Sum_Handle);
+	configASSERT(Sensor_Sema_Handle && Setpoint_Sema_Handle && Oled_Buffer_Sema_Handle);
 	
 	/* Initialize semaphore by giving */
 	xSemaphoreGive(Sensor_Sema_Handle);
 	xSemaphoreGive(Setpoint_Sema_Handle);
 	xSemaphoreGive(Oled_Buffer_Sema_Handle);
-	xSemaphoreGive(Pid_Moisture_Err_Sum_Handle);
 	xSemaphoreGive(Pid_Moisture_Toler_Handle);
 	
   /* USER CODE END RTOS_SEMAPHORES */
@@ -659,7 +656,7 @@ void Sensor_Read(void *pvParameters)
   /* USER CODE BEGIN Sensor_Read */
   /* Infinite loop */
   for(;;)
-  {		
+  {				
 		/* Read value from ADCs into sensor value variables */
 		if( xSemaphoreTake( Sensor_Sema_Handle, (TickType_t) 10 ) == pdTRUE  )
 		{
@@ -682,30 +679,27 @@ void Sensor_Read(void *pvParameters)
 void Plant_Water(void *pvParameters)
 {
 	for(;;) {
-		uint8_t number = 2;
-		//int16_t moistureError = 0, moistureDerError = 0;
-		//int32_t moistureIntError = 0;
+		int16_t moistureError = 0;
+		int32_t PID_p, PID_i, PID_d;
 		
-		/* PID calculation for how long to turn on water pump  
-		if( (xSemaphoreTake(Pid_Moisture_Err_Sum_Handle, (TickType_t) 10) == pdTRUE) && (xSemaphoreTake(Sensor_Sema_Handle, (TickType_t) 10) == pdTRUE))
+		/* PID calculation for how long to turn on water pump */
+		if(xSemaphoreTake(Sensor_Sema_Handle, (TickType_t) 10) == pdTRUE)
 		{
 			moistureError = plant_sensors[0] - moistureSetpoint;
-			moistureIntError = moistureErrorSum;
-			moistureDerError = moistureErrorSum / RTOS_PLANT_WATER;
 			
-			moistureErrorSum = 0;
-			
-			xSemaphoreGive(Pid_Moisture_Err_Sum_Handle);
 			xSemaphoreGive(Sensor_Sema_Handle);
-		}*/
+		}
 		
-		/* Check if error is beyond threshold 
+		PID_p = moistureError * proportionCoeff;
+		PID_d = (moistureError / RTOS_PLANT_WATER) * derivativeCoeff;
+		PID_i = (moistureError > 50) ? (PID_i + moistureError * integralCoeff) : 0;
+		
 		if (moistureError > moistureTolerance)
 		{
-			int32_t plantPumpOnTime = ( proportionCoeff * moistureError) + (integralCoeff * moistureIntError) + (derivativeCoeff * moistureDerError);
-		}		*/
+			int32_t plantPumpOnTime = PID_p + PID_d + PID_i;
+		}
 
-		vTaskDelay(6000);
+		vTaskDelay(RTOS_PLANT_WATER);
 	}
 }
 
@@ -714,15 +708,7 @@ void Plant_Water(void *pvParameters)
 **************** Interrupt routine callbacks **********************
 *******************************************************************/
 
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* pAdc1_sensorsRead) {
-	/* Accumulate setpoint error sum for later PID calculations */
-	if (xSemaphoreTakeFromISR(Pid_Moisture_Err_Sum_Handle, NULL) == pdTRUE)
-	{
-		moistureErrorSum += plant_sensors[0] - moistureSetpoint;
-		
-		xSemaphoreGiveFromISR(Pid_Moisture_Err_Sum_Handle, NULL);	
-	}
-	
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* pAdc1_sensorsRead) {	
 	xSemaphoreGiveFromISR(Sensor_Sema_Handle, NULL);	
 }
 	
