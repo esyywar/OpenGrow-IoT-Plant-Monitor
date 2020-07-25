@@ -40,8 +40,8 @@ extern "C" {
 
 /* I2C commands */
 #define ESP_REQ_SENSOR_DATA				0x42
-#define ESP_SEND_SETPOINT_LOW			0x44
-#define ESP_SEND_SETPOINT_HIGH		0x46
+#define ESP_SEND_MOIS_SETPOINT		0x44
+#define ESP_SEND_MOIS_TOLERANCE		0x46
 
 /* RTOS thread timing settings */
 #define RTOS_UPDATE_OLED_DISP			100U	
@@ -51,12 +51,13 @@ extern "C" {
 #define RTOS_GET_SENSOR_DATA			1000U
 #define RTOS_PLANT_WATER					600000U
 
-/* Plant water pump water settings */
+/* Plant water pump water settings (default) */
 #define PID_P_DEFAULT							8
 #define PID_I_DEFAULT							0.2
 #define PID_D_DEFAULT							10	
 
-/* On-time required for pump to bring water to plant */
+/* On-time required for pump to bring water to plant (default) */
+#define PID_TOLERANCE_DEFAULT			40U
 #define PUMP_MINIMUM_TIME_ON			3000U
 
 /* Exported types ------------------------------------------------------------*/
