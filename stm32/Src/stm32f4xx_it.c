@@ -197,6 +197,8 @@ void I2C1_EV_IRQHandler(void)
 void I2C1_ER_IRQHandler(void)
 {
   HAL_I2C_ER_IRQHandler(&I2c1_espComm);
+	
+	/* Listen for next commands in case error occurs */
 	HAL_I2C_Slave_Receive_IT(&I2c1_espComm, &espCmdCode, 1);
 }
 
