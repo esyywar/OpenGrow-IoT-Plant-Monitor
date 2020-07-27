@@ -2,9 +2,15 @@ import React from 'react'
 
 import { Link } from 'react-router-dom'
 
+import { useTypedSelector } from '../../reducers'
+import { useDispatch } from 'react-redux'
+import { userLogout } from '../../actions/auth'
+
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles'
 import { AppBar, Toolbar, Typography, Button, IconButton, Container } from '@material-ui/core/'
 import MenuIcon from '@material-ui/icons/Menu'
+
+import { UserAuthState } from '../../actions/types'
 
 import '../../css/navbar.css'
 
@@ -26,6 +32,36 @@ export default function Navbar() {
 	const theme = useTheme()
 	const classes = useStyles()
 
+	const dispatch = useDispatch()
+
+	const authUser = useTypedSelector((state) => state.authState)
+
+	const loggedIn = (
+		<Container maxWidth="xl" className="link-container">
+			<Link to="/login" className="link-style">
+				<Button color="inherit" className="nav-link" onClick={() => dispatch(userLogout())}>
+					Logout
+				</Button>
+			</Link>
+		</Container>
+	)
+
+	const guestUser = (
+		<Container maxWidth="xl" className="link-container">
+			<Link to="/login" className="link-style">
+				<Button color="inherit" className="nav-link">
+					Login
+				</Button>
+			</Link>
+		</Container>
+	)
+
+	const getNavLinks = (authUser: UserAuthState) => {
+		const auth = authUser.auth
+
+		return !auth.isLoading && auth.isAuthenticated ? loggedIn : guestUser
+	}
+
 	return (
 		<div className={classes.root}>
 			<AppBar position="static">
@@ -41,13 +77,7 @@ export default function Navbar() {
 							</div>
 						</Link>
 					</Typography>
-					<Container maxWidth="xl" className="link-container">
-						<Link to="/login" className="link-style">
-							<Button color="inherit" className="nav-link">
-								Login
-							</Button>
-						</Link>
-					</Container>
+					{getNavLinks(authUser)}
 				</Toolbar>
 			</AppBar>
 		</div>

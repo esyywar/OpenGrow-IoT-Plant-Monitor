@@ -50,6 +50,7 @@ router.post(
 			.withMessage('Password must be at least 6 characters long.')
 			.matches(/\d/)
 			.withMessage('Password must contain a number.'),
+		check('passwordConfirm').notEmpty().withMessage('Must provide matching confirmation password.'),
 	],
 	async (req: Request, res: Response) => {
 		const errors = validationResult(req)
@@ -60,7 +61,11 @@ router.post(
 		}
 
 		/* Extract from reqest */
-		const { username, email, password } = req.body
+		const { username, email, password, passwordConfirm } = req.body
+
+		if (password !== passwordConfirm) {
+			return res.status(400).json({ errors: [{ msg: 'Passwords do not match.' }] })
+		}
 
 		try {
 			/* Check if user is already registered */

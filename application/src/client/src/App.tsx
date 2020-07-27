@@ -9,6 +9,8 @@ import Navbar from './components/navigation/Navbar'
 import Landing from './components/landing/Landing'
 import Login from './components/userForms/Login'
 
+import Dashboard from './components/dashboard/Dashboard'
+
 function App() {
 	return (
 		<Fragment>
@@ -21,6 +23,9 @@ function App() {
 					</Route>
 					<Route path="/login">
 						<Login />
+					</Route>
+					<Route path="/dashboard">
+						<Dashboard />
 					</Route>
 				</Router>
 			</Container>

@@ -21,6 +21,7 @@ export type registerCredsType = {
 	username: string
 	email: string
 	password: string
+	passwordConfirm: string
 }
 
 /************************ ACTION TYPES ***************************/
@@ -56,6 +57,8 @@ export const userLogin = (loginCreds: loginCredsType) => async (dispatch: Functi
 
 		dispatch(action)
 	} catch (error) {
+		dispatch({ type: LOGIN_FAILED })
+
 		const errors = error.response.data.errors
 
 		errors.forEach((error: any) => dispatch(setAlert(error.msg, 'error')))
@@ -74,18 +77,21 @@ export const registerUser = (registerCreds: registerCredsType) => async (dispatc
 		username: registerCreds.username,
 		email: registerCreds.email,
 		password: registerCreds.password,
+		passwordConfirm: registerCreds.passwordConfirm,
 	})
 
 	try {
 		const res = await axios.post('/api/user/register', body, config)
 
 		const action: authSuccessType = {
-			type: LOGIN_SUCCESS,
+			type: REGISTER_SUCCESS,
 			payload: res.data,
 		}
 
 		dispatch(action)
 	} catch (error) {
+		dispatch({ type: REGISTER_FAILED })
+
 		const errors = error.response.data.errors
 
 		errors.forEach((error: any) => dispatch(setAlert(error.msg, 'error')))
