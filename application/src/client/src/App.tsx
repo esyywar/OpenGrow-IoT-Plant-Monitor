@@ -8,7 +8,6 @@ import Alerts from './components/util/Alerts'
 import Navbar from './components/navigation/Navbar'
 import Landing from './components/landing/Landing'
 import Login from './components/userForms/Login'
-import Register from './components/userForms/Register'
 
 function App() {
 	return (
@@ -22,9 +21,6 @@ function App() {
 					</Route>
 					<Route path="/login">
 						<Login />
-					</Route>
-					<Route path="/register">
-						<Register />
 					</Route>
 				</Router>
 			</Container>

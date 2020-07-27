@@ -1,92 +1,21 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-import { useDispatch } from 'react-redux'
-import { userLogin } from '../../actions/auth'
+import { Container, Grid } from '@material-ui/core/'
 
-import { useTheme } from '@material-ui/core/styles'
-
-import { Paper, Container, Grid, Button, TextField } from '@material-ui/core/'
-import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-
-import '../../css/loginForm.css'
-
-type InputForm = {
-	email: string
-	password: string
-}
+import LoginForm from './LoginForm'
+import RegisterForm from './RegisterForm'
 
 export default function Login() {
-	const dispatch = useDispatch()
-
-	const theme = useTheme()
-
-	const initialState: InputForm = { email: '', password: '' }
-
-	const [formData, setFormData] = useState<InputForm>(initialState)
-
-	function handleInputChange(event: any) {
-		setFormData({ ...formData, [event.target.name]: event.target.value })
-	}
-
-	function handleSubmit(event: any) {
-		event.preventDefault()
-		dispatch(userLogin(formData))
-	}
-
 	return (
-		<Container maxWidth="sm" style={{ marginTop: '5%' }}>
-			<Paper
-				className="login-form-container"
-				style={{ backgroundColor: theme.palette.secondary.light }}
-			>
-				<Grid container direction="column" alignItems="center" justify="center">
-					<Grid item xs={12} className="login-form-title">
-						Login
-					</Grid>
-					<form className="login-form">
-						<Grid item xs={12}>
-							<TextField
-								required
-								id="Email"
-								type="text"
-								name="email"
-								autoFocus
-								placeholder="Email"
-								onChange={handleInputChange}
-								className="input-field"
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								required
-								id="Password"
-								type="password"
-								name="password"
-								placeholder="Password"
-								onChange={handleInputChange}
-								className="input-field"
-							/>
-						</Grid>
-						<Grid item container>
-							<Grid item xs={6}>
-								<Button
-									variant="contained"
-									color="primary"
-									endIcon={<AccountCircleIcon />}
-									onClick={handleSubmit}
-								>
-									Login
-								</Button>
-							</Grid>
-							<Grid item xs={6}>
-								<Button variant="contained" color="secondary">
-									Register
-								</Button>
-							</Grid>
-						</Grid>
-					</form>
+		<Container maxWidth="lg" style={{ marginTop: '5%' }}>
+			<Grid container direction="row" justify="space-around" alignItems="flex-start" spacing={10}>
+				<Grid item xs={12} sm={8} lg={6}>
+					<LoginForm />
 				</Grid>
-			</Paper>
+				<Grid item xs={12} sm={8} lg={6}>
+					<RegisterForm />
+				</Grid>
+			</Grid>
 		</Container>
 	)
 }

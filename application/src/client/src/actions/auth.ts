@@ -78,10 +78,17 @@ export const registerUser = (registerCreds: registerCredsType) => async (dispatc
 
 	try {
 		const res = await axios.post('/api/user/register', body, config)
+
+		const action: authSuccessType = {
+			type: LOGIN_SUCCESS,
+			payload: res.data,
+		}
+
+		dispatch(action)
 	} catch (error) {
 		const errors = error.response.data.errors
 
-		errors.forEach(dispatch(setAlert(error.msg, 'error')))
+		errors.forEach((error: any) => dispatch(setAlert(error.msg, 'error')))
 	}
 }
 
