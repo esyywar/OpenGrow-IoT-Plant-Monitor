@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import { Container } from '@material-ui/core'
 
+import PrivateRoute from './components/util/PrivateRoute'
+
 import Alerts from './components/util/Alerts'
 import Navbar from './components/navigation/Navbar'
 import Landing from './components/landing/Landing'
@@ -24,9 +26,9 @@ function App() {
 					<Route path="/login">
 						<Login />
 					</Route>
-					<Route path="/dashboard">
+					<PrivateRoute path="/dashboard">
 						<Dashboard />
-					</Route>
+					</PrivateRoute>
 				</Router>
 			</Container>
 		</Fragment>

@@ -70,6 +70,7 @@ export default function LoginForm() {
 						<Button
 							variant="contained"
 							color="primary"
+							type="submit"
 							endIcon={<AccountCircleIcon />}
 							onClick={handleSubmit}
 						>

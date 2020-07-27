@@ -91,6 +91,7 @@ export default function RegisterForm() {
 						<Button
 							variant="contained"
 							color="secondary"
+							type="submit"
 							endIcon={<CreateIcon />}
 							onClick={handleSubmit}
 						>

@@ -1,13 +1,22 @@
 import React from 'react'
 
-import PropTypes, { InferProps, any } from 'prop-types'
-
 import { useTypedSelector } from '../../reducers'
 
-import { Redirect, Route } from 'react-router-dom'
+import { Redirect, Route, RouteProps } from 'react-router-dom'
 
-function PrivateRoute({ children, ...rest }: InferProps<typeof PrivateRoute.propTypes>) {
+interface PrivateRouteProps extends RouteProps {
+	// tslint:disable-next-line:no-any
+	component?: any
+	// tslint:disable-next-line:no-any
+	children: any
+	// tslint:disable-next-line:no-any
+	path: any
+}
+
+function PrivateRoute(props: PrivateRouteProps) {
 	const authUser = useTypedSelector((state) => state.authState.auth)
+
+	const { component: Component, children, ...rest } = props
 
 	function canAccess() {
 		return authUser.isAuthenticated && !authUser.isLoading
@@ -19,10 +28,6 @@ function PrivateRoute({ children, ...rest }: InferProps<typeof PrivateRoute.prop
 			render={(routeProps) => (canAccess() ? children : <Redirect to="/login" />)}
 		></Route>
 	)
-}
-
-PrivateRoute.propTypes = {
-	children: PropTypes.any,
 }
 
 export default PrivateRoute

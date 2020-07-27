@@ -43,6 +43,11 @@ export default function Navbar() {
 					Logout
 				</Button>
 			</Link>
+			<Link to="/dashboard" className="link-style">
+				<Button color="inherit" className="nav-link">
+					Dashboard
+				</Button>
+			</Link>
 		</Container>
 	)
 
