@@ -89,6 +89,7 @@ export default function RegisterForm() {
 					</Grid>
 					<Grid item xs={6}>
 						<Button
+							style={{ marginTop: '8px' }}
 							variant="contained"
 							color="secondary"
 							type="submit"

@@ -21,6 +21,7 @@
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-swipeable-views": "^0.13.9",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "typescript": "^3.7.5",
@@ -51,6 +52,7 @@
     "@types/prop-types": "^15.7.3",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
+    "@types/react-swipeable-views": "^0.13.0",
     "@types/redux": "^3.6.0",
     "redux-devtools-extension": "^2.13.8"
   },

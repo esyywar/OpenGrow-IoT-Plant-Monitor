@@ -1,6 +1,8 @@
+/* Intro-card style */
 .intro-card {
   padding: 30px 20px;
-  width: 90%;
+  width: 100%;
+  max-width: 1000px;
   border-radius: 25px;
 }
 
@@ -57,5 +59,32 @@
 
 .intro-card .icons-container .icons-style .computer-icon {
   color: gray;
+}
+
+/* How it Works card style */
+.how-it-works-card {
+  width: 100%;
+  padding: 30px 40px;
+}
+
+.how-it-works-card .carousel-container {
+  margin-top: 15px;
+  padding: 15px;
+}
+
+.how-it-works-card .carousel-container .carousel-step-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column wrap;
+          flex-flow: column wrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 /*# sourceMappingURL=landing.css.map */

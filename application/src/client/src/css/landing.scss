@@ -1,6 +1,8 @@
+/* Intro-card style */
 .intro-card {
 	padding: 30px 20px;
-	width: 90%;
+	width: 100%;
+	max-width: 1000px;
 	border-radius: 25px;
 
 	.card-title {
@@ -52,6 +54,24 @@
 			.computer-icon {
 				color: gray;
 			}
+		}
+	}
+}
+
+/* How it Works card style */
+.how-it-works-card {
+	width: 100%;
+	padding: 30px 40px;
+
+	.carousel-container {
+		margin-top: 15px;
+		padding: 15px;
+
+		.carousel-step-item {
+			display: flex;
+			flex-flow: column wrap;
+			align-items: center;
+			justify-content: center;
 		}
 	}
 }

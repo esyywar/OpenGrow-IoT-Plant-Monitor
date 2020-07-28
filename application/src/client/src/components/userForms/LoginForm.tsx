@@ -68,6 +68,7 @@ export default function LoginForm() {
 					</Grid>
 					<Grid item xs={6}>
 						<Button
+							style={{ marginTop: '8px' }}
 							variant="contained"
 							color="primary"
 							type="submit"
