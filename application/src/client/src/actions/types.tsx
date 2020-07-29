@@ -16,6 +16,7 @@ export const LOGOUT_USER = 'LOGOUT_USER'
 export const LOAD_PLANTS = 'LOAD_PLANTS'
 export const ADD_PLANT = 'ADD_PLANT'
 export const REMOVE_PLANT = 'REMOVE_PLANT'
+export const CLEAR_PLANTS = 'CLEAR_PLANTS'
 
 /****************** ACTIVE PLANT (BELGONING TO AUTHENTICATED USER) ***************/
 
@@ -47,6 +48,6 @@ export interface UserPlantsState {
 	userPlants: Array<{
 		name: string
 		plantId: string
-		isLoading: boolean
 	}>
+	isLoading: boolean
 }

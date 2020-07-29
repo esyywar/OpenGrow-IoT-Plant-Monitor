@@ -233,13 +233,6 @@ router.put('/plant/:plantId', auth, async (req: Request, res: Response) => {
 				.json({ errors: [{ msg: 'Plant not found. Please check the ID is entered correctly.' }] })
 		}
 
-		/* Verify that plant not associated to another user's account */
-		if (plant.isAssociated) {
-			return res
-				.status(400)
-				.json({ errors: [{ msg: "Plant is associated with another user's account." }] })
-		}
-
 		/* Get user */
 		const user: IUser | null = await User.findById(req.body.user.id)
 		const plants: Array<{ name?: string; plant: string }> | undefined = user?.plants
@@ -255,6 +248,13 @@ router.put('/plant/:plantId', auth, async (req: Request, res: Response) => {
 			return res
 				.status(400)
 				.json({ errors: [{ msg: 'This plant is already associated with your account!' }] })
+		}
+
+		/* Verify that plant not associated to another user's account */
+		if (plant.isAssociated) {
+			return res
+				.status(400)
+				.json({ errors: [{ msg: "Plant is associated with another user's account." }] })
 		}
 
 		/* Add new plant to user's plant list */
