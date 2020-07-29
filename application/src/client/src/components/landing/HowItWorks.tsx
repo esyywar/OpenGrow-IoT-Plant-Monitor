@@ -15,6 +15,10 @@ export default function HowItWorks() {
 				<Grid item xs={12}>
 					<Typography component="div" align="center" variant="h4">
 						<h4 className="card-title">How it Works</h4>
+						<p className="card-caption">
+							Ottogrow is easy to set-up. Follow the 5 steps below and enjoy the convenience of
+							being able to monitor and take care of your plants from anywhere at anytime!
+						</p>
 					</Typography>
 					<StepsCarousel />
 				</Grid>

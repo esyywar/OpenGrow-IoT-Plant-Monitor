@@ -62,16 +62,54 @@
 .how-it-works-card {
 	width: 100%;
 	padding: 30px 40px;
+	font-family: 'Mulish', sans-serif;
+
+	.card-title {
+		font-family: 'Mulish', sans-serif;
+		margin-bottom: 16px;
+	}
+
+	.card-caption {
+		font-family: 'Mulish', sans-serif;
+		font-size: 19px;
+		line-height: 30px;
+		background-color: whitesmoke;
+		border-radius: 35px;
+		margin: 2em 0;
+		padding: 0.8em;
+	}
 
 	.carousel-container {
-		margin-top: 15px;
-		padding: 15px;
-
 		.carousel-step-item {
 			display: flex;
 			flex-flow: column wrap;
 			align-items: center;
 			justify-content: center;
+
+			.text-container {
+				margin: 10px 0;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				padding: 5px 10px;
+				width: 100%;
+
+				.step-number {
+					display: block;
+					padding: 7px 10px;
+					margin-right: 1em;
+					background-color: #3c4cdf;
+					color: white;
+					font-size: 19px;
+					border-radius: 50%;
+				}
+
+				.step-text {
+					font-family: 'Mulish', sans-serif;
+					color: black;
+					font-size: 19px;
+				}
+			}
 		}
 	}
 }

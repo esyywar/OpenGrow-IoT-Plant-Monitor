@@ -65,11 +65,22 @@
 .how-it-works-card {
   width: 100%;
   padding: 30px 40px;
+  font-family: 'Mulish', sans-serif;
 }
 
-.how-it-works-card .carousel-container {
-  margin-top: 15px;
-  padding: 15px;
+.how-it-works-card .card-title {
+  font-family: 'Mulish', sans-serif;
+  margin-bottom: 16px;
+}
+
+.how-it-works-card .card-caption {
+  font-family: 'Mulish', sans-serif;
+  font-size: 19px;
+  line-height: 30px;
+  background-color: whitesmoke;
+  border-radius: 35px;
+  margin: 2em 0;
+  padding: 0.8em;
 }
 
 .how-it-works-card .carousel-container .carousel-step-item {
@@ -86,5 +97,37 @@
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+}
+
+.how-it-works-card .carousel-container .carousel-step-item .text-container {
+  margin: 10px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 5px 10px;
+  width: 100%;
+}
+
+.how-it-works-card .carousel-container .carousel-step-item .text-container .step-number {
+  display: block;
+  padding: 7px 10px;
+  margin-right: 1em;
+  background-color: #3c4cdf;
+  color: white;
+  font-size: 19px;
+  border-radius: 50%;
+}
+
+.how-it-works-card .carousel-container .carousel-step-item .text-container .step-text {
+  font-family: 'Mulish', sans-serif;
+  color: black;
+  font-size: 19px;
 }
 /*# sourceMappingURL=landing.css.map */

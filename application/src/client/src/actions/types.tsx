@@ -11,6 +11,18 @@ export const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
 export const REGISTER_FAILED = 'REGISTER_FAILED'
 export const LOGOUT_USER = 'LOGOUT_USER'
 
+/******************** USER PLANTS *******************/
+
+export const LOAD_PLANTS = 'LOAD_PLANTS'
+export const ADD_PLANT = 'ADD_PLANT'
+export const REMOVE_PLANT = 'REMOVE_PLANT'
+
+/****************** ACTIVE PLANT (BELGONING TO AUTHENTICATED USER) ***************/
+
+export const PLANT_LOAD_DATA = 'PLANT_LOAD_DATA'
+export const PLANT_SETPOINT_CHANGE = 'PLANT_SETPOINT_CHANGE'
+export const PLANT_TOLERANCE_CHANGE = 'PLANT_TOLERANCE_CHANGE'
+
 /******************* STATE INTERFACES *********************/
 
 export interface AlertState {
@@ -29,4 +41,12 @@ export interface UserAuthState {
 		isLoading: boolean
 		isAuthenticated: boolean
 	}
+}
+
+export interface UserPlantsState {
+	userPlants: Array<{
+		name: string
+		plantId: string
+		isLoading: boolean
+	}>
 }

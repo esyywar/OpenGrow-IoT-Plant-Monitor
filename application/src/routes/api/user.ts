@@ -19,7 +19,7 @@ const router = express.Router()
  ******************************************************/
 
 /*
- *	Brief: Get plants associated with user
+ *	Brief: Get all plants associated with the user
  *	Path: /api/user/plants
  */
 router.get('/plants', auth, async (req: Request, res: Response) => {
