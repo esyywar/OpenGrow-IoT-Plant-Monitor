@@ -12,7 +12,7 @@ const initialState: UserAuthState = {
 	auth: {
 		userId: null,
 		username: null,
-		token: null,
+		token: localStorage.getItem('token'),
 		isLoading: true,
 		isAuthenticated: false,
 	},
@@ -22,6 +22,7 @@ export const authState = (state = initialState, action: any) => {
 	switch (action.type) {
 		case LOGIN_SUCCESS:
 		case REGISTER_SUCCESS:
+			localStorage.setItem('token', action.payload.token)
 			return {
 				...state,
 				auth: {

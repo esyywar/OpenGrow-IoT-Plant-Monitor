@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
 interface RootState {
 	alertState: AlertState
 	authState: UserAuthState
-	userPlansState: UserPlantsState
+	userPlantsState: UserPlantsState
 }
 
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector
