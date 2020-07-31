@@ -31,7 +31,7 @@ const userSchema: Schema = new Schema({
 			name: {
 				type: String,
 				required: true,
-				default: 'My_Plant',
+				default: 'My Plant',
 			},
 			plant: {
 				type: mongoose.Schema.Types.ObjectId,

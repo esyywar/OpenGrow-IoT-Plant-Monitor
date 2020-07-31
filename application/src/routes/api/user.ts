@@ -61,11 +61,15 @@ router.post(
 		}
 
 		/* Extract from reqest */
-		const { username, email, password, passwordConfirm } = req.body
+		const { email, password, passwordConfirm } = req.body
 
+		/* Check that passwords match */
 		if (password !== passwordConfirm) {
 			return res.status(400).json({ errors: [{ msg: 'Passwords do not match.' }] })
 		}
+
+		/* Capitalize first letter of username */
+		const username = req.body.username.charAt(0).toUpperCase() + req.body.username.slice(1)
 
 		try {
 			/* Check if user is already registered */
@@ -176,16 +180,22 @@ router.post(
 
 		try {
 			let user: IUser | null = await User.findById(req.body.user.id)
+			const plant: IPlant | null = await Plant.findById(plantId)
+
+			/* Check if plant exists */
+			if (!plant) {
+				return res.status(401).json({ errors: [{ msg: 'Invalid plant ID.' }] })
+			}
 
 			/* Check if plant is associated with user */
-			if (!user?.plants.some((plant: any) => plant.id.toString() === plantId)) {
+			if (!user?.plants.some((plant: any) => plant.plant.toString() === plantId)) {
 				return res
 					.status(401)
 					.json({ errors: [{ msg: 'Plant is not associated with this account.' }] })
 			}
 
 			/* If repeating a name, add incrementing digit to end */
-			if (user.plants.some((plant: any) => plant.name === name)) {
+			while (user.plants.some((plant: any) => plant.name === name)) {
 				const lastChar = name.slice(-1)
 
 				if (isNaN(parseInt(lastChar))) {
@@ -197,7 +207,7 @@ router.post(
 
 			/* Rename the indicated plant */
 			const plantList = user?.plants.map((plant: any) => {
-				if (plant.id.toString() === plantId) {
+				if (plant.plant.toString() === plantId) {
 					plant.name = name
 				}
 				return plant
@@ -237,6 +247,12 @@ router.put('/plant/:plantId', auth, async (req: Request, res: Response) => {
 		const user: IUser | null = await User.findById(req.body.user.id)
 		const plants: Array<{ name?: string; plant: string }> | undefined = user?.plants
 
+		/* Verify that the user exists */
+		if (!user) {
+			return res.status(401).json({ errors: [{ msg: 'User account not found.' }] })
+		}
+
+		/* Check that user has not exceeded max of 10 plants on account */
 		if (plants && plants.length > 10) {
 			return res
 				.status(400)
@@ -244,7 +260,7 @@ router.put('/plant/:plantId', auth, async (req: Request, res: Response) => {
 		}
 
 		/* Check if user already has this plant added */
-		if (user?.plants.some((element: any) => element.plant.toString() === plantId.toString())) {
+		if (user.plants.some((element: any) => element.plant.toString() === plantId.toString())) {
 			return res
 				.status(400)
 				.json({ errors: [{ msg: 'This plant is already associated with your account!' }] })
@@ -258,15 +274,15 @@ router.put('/plant/:plantId', auth, async (req: Request, res: Response) => {
 		}
 
 		/* Add new plant to user's plant list */
-		user?.plants.unshift({ plant: plantId })
+		user.plants.unshift({ plant: plantId })
 
 		/* Associate plant with user's profile */
 		plant.isAssociated = true
 
-		await user?.save()
+		await user.save()
 		await plant.save()
 
-		res.json({ plants: user?.plants })
+		res.json({ plants: user.plants })
 	} catch (error) {
 		res.status(500).json({ errors: [{ msg: 'Server error.' }] })
 	}
