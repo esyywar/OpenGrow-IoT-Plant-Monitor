@@ -1,0 +1,52 @@
+.dashboard {
+  margin-top: 75px !important;
+}
+
+.dashboard .dashboard-welcome {
+  background-color: #a4b3f7;
+  padding: 15px;
+}
+
+.dashboard .dashboard-welcome .welcome-text {
+  font-family: 'Mulish', sans-serif;
+  font-size: 30px;
+}
+
+.dashboard .dash-actions {
+  margin: 30px 0;
+}
+
+.dashboard .dash-actions .dash-action-container {
+  width: 100%;
+  padding: 20px;
+}
+
+.dashboard .dash-actions .dash-action-container .dash-action-title {
+  font-family: 'Mulish', sans-serif;
+  font-size: 25px;
+  margin: 10px 0 25px 0;
+}
+
+.dashboard .dash-actions .dash-action-container .dash-action-btn {
+  font-weight: 600;
+}
+
+.dashboard .user-plant-list .user-plant-list-title {
+  font-family: 'Mulish', sans-serif;
+  font-size: 35px;
+  margin: 10px 0 20px 0;
+}
+
+.dashboard .user-plant-list .plant-card {
+  min-height: 150px;
+  max-height: 250px;
+  width: 90%;
+  padding: 15px 30px;
+  margin: 2%;
+}
+
+.dashboard .user-plant-list .plant-card .plant-card-img-container .plant-card-avatar {
+  height: 100px;
+  width: auto;
+}
+/*# sourceMappingURL=dashboard.css.map */

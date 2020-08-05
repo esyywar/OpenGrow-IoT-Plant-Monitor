@@ -161,7 +161,6 @@ int main(void)
 	Setpoint_Sema_Handle = xSemaphoreCreateBinary();
 	Oled_Buffer_Sema_Handle = xSemaphoreCreateBinary();
 	Pid_Moisture_Toler_Handle = xSemaphoreCreateBinary();
-	
 
 	/* Assert correct initialization of semaphores */
 	configASSERT(Sensor_Sema_Handle && Setpoint_Sema_Handle && Oled_Buffer_Sema_Handle);

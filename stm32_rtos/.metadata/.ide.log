@@ -1,0 +1,1469 @@
+2020-08-04 16:43:50,755 [INFO] Activator:176 - 
+
+
+2020-08-04 16:43:50,757 [INFO] Activator:177 - !SESSION log4j initialized
+2020-08-04 16:43:53,744 [INFO] ApplicationProperties:181 - Using Application install path: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511
+2020-08-04 16:43:53,752 [INFO] DbMcusXml:69 - Set database path to: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/mcu/
+2020-08-04 16:43:53,755 [INFO] DbBoardsPdsc:54 - Set plugin database path to: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/plugins/boardmanager/
+2020-08-04 16:43:53,755 [INFO] DbMcus:264 - Set plugin images path to: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/plugins/mcufinder/images/
+2020-08-04 16:43:53,755 [INFO] DbBoards:232 - Set plugin images path to: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/plugins/mcufinder/images/
+2020-08-04 16:43:53,756 [INFO] APIGFXSelector:72 - Set database path to: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/plugins/mcufinder/mcu/
+2020-08-04 16:43:53,761 [INFO] DbMcusAds:72 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/
+2020-08-04 16:43:53,761 [INFO] DbMcusDocs:92 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/
+2020-08-04 16:43:53,762 [INFO] DbMcusJson:59 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/
+2020-08-04 16:43:53,763 [INFO] DbBoardsDocs:84 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/
+2020-08-04 16:43:53,764 [INFO] DbBoardsJson:51 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/
+2020-08-04 16:43:53,866 [INFO] CrossReferenceDbSqlite:197 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/cs/
+2020-08-04 16:43:53,945 [INFO] RulesReader:52 - Compatibility file has been processed (205 Rules)
+2020-08-04 16:43:54,004 [INFO] MicroXplorer:570 - Detected Java Version = 1.8.0_202
+2020-08-04 16:43:54,004 [INFO] DbMcusXml:69 - Set database path to: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/mcu/
+2020-08-04 16:43:54,004 [INFO] DbBoardsPdsc:54 - Set plugin database path to: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/plugins/boardmanager/
+2020-08-04 16:43:54,005 [INFO] DbMcus:264 - Set plugin images path to: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/plugins/mcufinder/images/
+2020-08-04 16:43:54,005 [INFO] DbBoards:232 - Set plugin images path to: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/plugins/mcufinder/images/
+2020-08-04 16:43:54,005 [INFO] APIGFXSelector:72 - Set database path to: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/plugins/mcufinder/mcu/
+2020-08-04 16:43:54,005 [WARN] DbFile:31 - Overriding database path with different value: C:\Users\rahul\.stmcufinder\plugins\mcufinder/ => C:\Users\rahul\.stmcufinder\plugins\mcufinder
+2020-08-04 16:43:54,005 [INFO] DbMcusAds:72 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/
+2020-08-04 16:43:54,005 [WARN] DbFile:31 - Overriding database path with different value: C:\Users\rahul\.stmcufinder\plugins\mcufinder/ => C:\Users\rahul\.stmcufinder\plugins\mcufinder
+2020-08-04 16:43:54,005 [INFO] DbMcusDocs:92 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/
+2020-08-04 16:43:54,005 [WARN] DbFile:31 - Overriding database path with different value: C:\Users\rahul\.stmcufinder\plugins\mcufinder/ => C:\Users\rahul\.stmcufinder\plugins\mcufinder
+2020-08-04 16:43:54,006 [INFO] DbMcusJson:59 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/
+2020-08-04 16:43:54,006 [WARN] DbFile:31 - Overriding database path with different value: C:\Users\rahul\.stmcufinder\plugins\mcufinder/ => C:\Users\rahul\.stmcufinder\plugins\mcufinder
+2020-08-04 16:43:54,006 [INFO] DbBoardsDocs:84 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/
+2020-08-04 16:43:54,006 [WARN] DbFile:31 - Overriding database path with different value: C:\Users\rahul\.stmcufinder\plugins\mcufinder/ => C:\Users\rahul\.stmcufinder\plugins\mcufinder
+2020-08-04 16:43:54,006 [INFO] DbBoardsJson:51 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/
+2020-08-04 16:43:54,006 [WARN] DbFile:31 - Overriding database path with different value: C:\Users\rahul\.stmcufinder\plugins\mcufinder/ => C:\Users\rahul\.stmcufinder\plugins\mcufinder
+2020-08-04 16:43:54,006 [WARN] DbFile:31 - Overriding database path with different value: C:\Users\rahul\.stmcufinder\plugins\mcufinder/ => C:\Users\rahul\.stmcufinder\plugins\mcufinder
+2020-08-04 16:43:54,006 [INFO] CrossReferenceDbSqlite:197 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/cs/
+2020-08-04 16:43:54,053 [INFO] MainPanel:180 - HeapMemory: 308281344
+2020-08-04 16:43:54,093 [INFO] DbMcusXml:69 - Set database path to: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/mcu/
+2020-08-04 16:43:54,093 [INFO] DbBoardsPdsc:54 - Set plugin database path to: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/plugins/boardmanager/
+2020-08-04 16:43:54,093 [INFO] DbMcus:264 - Set plugin images path to: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/plugins/mcufinder/images/
+2020-08-04 16:43:54,094 [INFO] DbBoards:232 - Set plugin images path to: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/plugins/mcufinder/images/
+2020-08-04 16:43:54,094 [INFO] APIGFXSelector:72 - Set database path to: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/plugins/mcufinder/mcu/
+2020-08-04 16:43:54,094 [WARN] DbFile:31 - Overriding database path with different value: C:\Users\rahul\.stmcufinder\plugins\mcufinder/ => C:\Users\rahul\.stmcufinder\plugins\mcufinder
+2020-08-04 16:43:54,094 [INFO] DbMcusAds:72 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/
+2020-08-04 16:43:54,094 [WARN] DbFile:31 - Overriding database path with different value: C:\Users\rahul\.stmcufinder\plugins\mcufinder/ => C:\Users\rahul\.stmcufinder\plugins\mcufinder
+2020-08-04 16:43:54,094 [INFO] DbMcusDocs:92 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/
+2020-08-04 16:43:54,094 [WARN] DbFile:31 - Overriding database path with different value: C:\Users\rahul\.stmcufinder\plugins\mcufinder/ => C:\Users\rahul\.stmcufinder\plugins\mcufinder
+2020-08-04 16:43:54,094 [INFO] DbMcusJson:59 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/
+2020-08-04 16:43:54,095 [WARN] DbFile:31 - Overriding database path with different value: C:\Users\rahul\.stmcufinder\plugins\mcufinder/ => C:\Users\rahul\.stmcufinder\plugins\mcufinder
+2020-08-04 16:43:54,095 [INFO] DbBoardsDocs:84 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/
+2020-08-04 16:43:54,095 [WARN] DbFile:31 - Overriding database path with different value: C:\Users\rahul\.stmcufinder\plugins\mcufinder/ => C:\Users\rahul\.stmcufinder\plugins\mcufinder
+2020-08-04 16:43:54,095 [INFO] DbBoardsJson:51 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/
+2020-08-04 16:43:54,095 [WARN] DbFile:31 - Overriding database path with different value: C:\Users\rahul\.stmcufinder\plugins\mcufinder/ => C:\Users\rahul\.stmcufinder\plugins\mcufinder
+2020-08-04 16:43:54,095 [WARN] DbFile:31 - Overriding database path with different value: C:\Users\rahul\.stmcufinder\plugins\mcufinder/ => C:\Users\rahul\.stmcufinder\plugins\mcufinder
+2020-08-04 16:43:54,095 [INFO] CrossReferenceDbSqlite:197 - Set database path to: C:\Users\rahul\.stmcufinder\plugins\mcufinder//mcu/cs/
+2020-08-04 16:43:54,107 [INFO] ApplicationProperties:181 - Using Application install path: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511
+2020-08-04 16:43:54,108 [INFO] PluginManage:178 - Search for loadable plugins [exclusion list=]
+2020-08-04 16:43:54,109 [INFO] PluginManage:292 - Check plugin analytics
+2020-08-04 16:43:54,113 [INFO] PluginManage:342 - Loaded plugin analytics (category:tool,tabindex:-1)
+2020-08-04 16:43:54,113 [INFO] PluginManage:292 - Check plugin clock
+2020-08-04 16:43:54,119 [INFO] PluginManage:342 - Loaded plugin clock (category:base,tabindex:2)
+2020-08-04 16:43:54,119 [INFO] PluginManage:292 - Check plugin ddr
+2020-08-04 16:43:54,121 [INFO] PluginManage:342 - Loaded plugin ddr (category:tool,tabindex:6)
+2020-08-04 16:43:54,121 [INFO] PluginManage:292 - Check plugin filemanager
+2020-08-04 16:43:54,191 [INFO] PluginManage:342 - Loaded plugin filemanager (category:base,tabindex:10)
+2020-08-04 16:43:54,191 [INFO] PluginManage:292 - Check plugin ipmanager
+2020-08-04 16:43:54,196 [INFO] PluginManage:342 - Loaded plugin ipmanager (category:base,tabindex:5)
+2020-08-04 16:43:54,197 [INFO] PluginManage:292 - Check plugin pinoutandconfiguration
+2020-08-04 16:43:54,203 [INFO] PluginManage:342 - Loaded plugin pinoutandconfiguration (category:base,tabindex:1)
+2020-08-04 16:43:54,203 [INFO] PluginManage:292 - Check plugin pinoutconfig
+2020-08-04 16:43:54,216 [INFO] PluginManage:342 - Loaded plugin pinoutconfig (category:base,tabindex:0)
+2020-08-04 16:43:54,216 [INFO] PluginManage:292 - Check plugin power
+2020-08-04 16:43:54,222 [INFO] PluginManage:342 - Loaded plugin power (category:power,tabindex:4)
+2020-08-04 16:43:54,222 [INFO] PluginManage:292 - Check plugin projectmanager
+2020-08-04 16:43:54,231 [INFO] PluginManage:342 - Loaded plugin projectmanager (category:projectmanager,tabindex:3)
+2020-08-04 16:43:54,231 [INFO] PluginManage:292 - Check plugin thirdparty
+2020-08-04 16:43:54,278 [INFO] ThirdPartyDb:295 - Open Third Party DataBase File (C:/Users/rahul/.stm32cubemx/plugins/thirdparty/db/thirdparties_db.xml) : 26 ms. number of Sw pack : 23
+2020-08-04 16:43:54,291 [INFO] PluginManage:342 - Loaded plugin thirdparty (category:base,tabindex:-1)
+2020-08-04 16:43:54,291 [INFO] PluginManage:292 - Check plugin tools
+2020-08-04 16:43:54,292 [INFO] PluginManage:342 - Loaded plugin tools (category:base,tabindex:7)
+2020-08-04 16:43:54,292 [INFO] PluginManage:292 - Check plugin updater
+2020-08-04 16:43:54,303 [INFO] PluginManage:342 - Loaded plugin updater (category:base,tabindex:12)
+2020-08-04 16:43:54,303 [INFO] PluginManage:265 - PluginManage : Loaded plugins [12]
+2020-08-04 16:43:54,407 [INFO] PinOutPanel:1399 - setPackage(No Configuration,No Configuration)
+2020-08-04 16:43:54,485 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,485 [INFO] PluginManager:200 - loadIPPluginJar : add adc
+2020-08-04 16:43:54,487 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,487 [INFO] PluginManager:200 - loadIPPluginJar : add aes
+2020-08-04 16:43:54,489 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,490 [INFO] PluginManager:200 - loadIPPluginJar : add can
+2020-08-04 16:43:54,491 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,491 [INFO] PluginManager:200 - loadIPPluginJar : add comp
+2020-08-04 16:43:54,493 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,493 [INFO] PluginManager:200 - loadIPPluginJar : add cryp
+2020-08-04 16:43:54,495 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,495 [INFO] PluginManager:200 - loadIPPluginJar : add dfsdm
+2020-08-04 16:43:54,499 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,500 [INFO] PluginManager:200 - loadIPPluginJar : add dma
+2020-08-04 16:43:54,501 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,501 [INFO] PluginManager:200 - loadIPPluginJar : add fatfs
+2020-08-04 16:43:54,504 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,504 [INFO] PluginManager:200 - loadIPPluginJar : add fmc
+2020-08-04 16:43:54,508 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,508 [INFO] PluginManager:200 - loadIPPluginJar : add freertos
+2020-08-04 16:43:54,509 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,510 [INFO] PluginManager:200 - loadIPPluginJar : add genericplugin
+2020-08-04 16:43:54,511 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,511 [INFO] PluginManager:200 - loadIPPluginJar : add gfxmmu
+2020-08-04 16:43:54,513 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,513 [INFO] PluginManager:200 - loadIPPluginJar : add gfxsimulator
+2020-08-04 16:43:54,517 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,518 [INFO] PluginManager:200 - loadIPPluginJar : add gic
+2020-08-04 16:43:54,521 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,521 [INFO] PluginManager:200 - loadIPPluginJar : add gpio
+2020-08-04 16:43:54,522 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,523 [INFO] PluginManager:200 - loadIPPluginJar : add gtzc
+2020-08-04 16:43:54,524 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,524 [INFO] PluginManager:200 - loadIPPluginJar : add hash
+2020-08-04 16:43:54,526 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,527 [INFO] PluginManager:200 - loadIPPluginJar : add i2c
+2020-08-04 16:43:54,528 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,528 [INFO] PluginManager:200 - loadIPPluginJar : add i2s
+2020-08-04 16:43:54,530 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,530 [INFO] PluginManager:200 - loadIPPluginJar : add ipddr
+2020-08-04 16:43:54,533 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,533 [INFO] PluginManager:200 - loadIPPluginJar : add ltdc
+2020-08-04 16:43:54,535 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,535 [INFO] PluginManager:200 - loadIPPluginJar : add mdma
+2020-08-04 16:43:54,537 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,537 [INFO] PluginManager:200 - loadIPPluginJar : add nvic
+2020-08-04 16:43:54,539 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,539 [INFO] PluginManager:200 - loadIPPluginJar : add opamp
+2020-08-04 16:43:54,540 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,541 [INFO] PluginManager:200 - loadIPPluginJar : add pdm2pcm
+2020-08-04 16:43:54,544 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,546 [INFO] PluginManager:200 - loadIPPluginJar : add plateformsettings
+2020-08-04 16:43:54,547 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,547 [INFO] PluginManager:200 - loadIPPluginJar : add quadspi
+2020-08-04 16:43:54,549 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,549 [INFO] PluginManager:200 - loadIPPluginJar : add resmgrutility
+2020-08-04 16:43:54,550 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,551 [INFO] PluginManager:200 - loadIPPluginJar : add sai
+2020-08-04 16:43:54,552 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,552 [INFO] PluginManager:200 - loadIPPluginJar : add spi
+2020-08-04 16:43:54,553 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,553 [INFO] PluginManager:200 - loadIPPluginJar : add stm32_wpan
+2020-08-04 16:43:54,555 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,555 [INFO] PluginManager:200 - loadIPPluginJar : add tim
+2020-08-04 16:43:54,557 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,557 [INFO] PluginManager:200 - loadIPPluginJar : add touchsensing
+2020-08-04 16:43:54,558 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,558 [INFO] PluginManager:200 - loadIPPluginJar : add tracer_emb
+2020-08-04 16:43:54,559 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,559 [INFO] PluginManager:200 - loadIPPluginJar : add ts
+2020-08-04 16:43:54,560 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,560 [INFO] PluginManager:200 - loadIPPluginJar : add tsc
+2020-08-04 16:43:54,561 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,561 [INFO] PluginManager:200 - loadIPPluginJar : add ucpd
+2020-08-04 16:43:54,562 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:43:54,563 [INFO] PluginManager:200 - loadIPPluginJar : add usart
+2020-08-04 16:43:54,764 [INFO] BoardConnectionPanel:226 - [DDR PANEL] osNameString: Windows
+2020-08-04 16:43:54,833 [INFO] BoardConnectionPanel:3472 - [DDR PANEL] STM32CubeIDE environment
+2020-08-04 16:43:54,834 [INFO] MainDdrPanel:103 - [DDR PANEL] GETTER - cubeProgrammerPath is: null
+2020-08-04 16:43:54,971 [FATAL] Updater:277 - Updater called before beeing initialized
+2020-08-04 16:43:55,087 [FATAL] Updater:277 - Updater called before beeing initialized
+2020-08-04 16:43:55,089 [INFO] PinOutPanel:1399 - setPackage(No Configuration,No Configuration)
+2020-08-04 16:43:55,089 [FATAL] Updater:277 - Updater called before beeing initialized
+2020-08-04 16:43:55,092 [INFO] BoardConnectionPanel:3472 - [DDR PANEL] STM32CubeIDE environment
+2020-08-04 16:43:55,092 [INFO] MainDdrPanel:103 - [DDR PANEL] GETTER - cubeProgrammerPath is: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_1.1.0.201910081157\tools\bin
+2020-08-04 16:43:55,095 [INFO] ProgrammerExecThread:148 - [ProgrammerAPI] CubeProgrammer command construction: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_1.1.0.201910081157\tools\bin\STM32_Programmer_CLI.exe -l
+2020-08-04 16:43:55,196 [INFO] MainDdrPanel:93 - [DDR PANEL] SETTER - Set cubeProgrammerPath to: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_1.1.0.201910081157\tools\bin
+2020-08-04 16:43:55,199 [INFO] Updater:886 - Updater Version found : 5.5.0
+2020-08-04 16:43:55,210 [INFO] ApplicationProperties:181 - Using Application install path: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511
+2020-08-04 16:43:55,323 [INFO] MainUpdater:2230 - connection check result : 10
+2020-08-04 16:43:55,324 [INFO] MainUpdater:236 - Updater Check For Update Now.
+2020-08-04 16:43:55,324 [INFO] MicroXplorer:420 - Change Database Version : DB.5.0.50
+2020-08-04 16:43:55,346 [INFO] CheckServerUpdateThread:92 - End of CheckServer Thread
+2020-08-04 16:43:55,527 [INFO] MainUpdater:2230 - connection check result : 10
+2020-08-04 16:43:55,527 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Successfull proxy connection.
+2020-08-04 16:43:55,619 [INFO] McuFinderGlobals:40 - Set McuFinder mode to 2 (CubeIDE integrated)
+2020-08-04 16:43:55,629 [INFO] FinderPluginLoader:86 - Searching for filters in installed packs
+2020-08-04 16:43:55,630 [INFO] DbMcusXml:107 - Load MCU database from C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/mcu/families.xml
+2020-08-04 16:43:56,147 [INFO] DbMcusJson:87 - JSON generation date=Mon Jul 27 08:58:30 EDT 2020 (1595854710)
+2020-08-04 16:43:56,774 [INFO] DbMcus:192 - Found 1628 MCUs (1588 are supported by CubeMX, 1588 are visible in CubeMX)
+2020-08-04 16:43:56,774 [INFO] ApiDb:158 - Load user favorites file C:\Users\rahul/.stm32cubeide/favorites.mcus.txt: 0 item(s)
+2020-08-04 16:43:56,775 [INFO] ApiDb:163 - User favorites MCUs=[]
+2020-08-04 16:43:56,775 [INFO] DbMcus:203 - Set 0 / 0 favorites MCUs
+2020-08-04 16:43:57,235 [INFO] DbMcusAds:130 - JSON generation date=Mon Jul 27 10:58:30 EDT 2020 (1595861910)
+2020-08-04 16:43:57,237 [INFO] LoadUrlFilesThread:161 - End of LoadServerUrlFiles without Thread
+2020-08-04 16:43:57,284 [INFO] McuDetailPanel:181 - Set advertising image to C:/Users/rahul/STM32Cube/Repository/\STM32Cube_ecosystem_N4273S_big.jpg
+2020-08-04 16:43:57,432 [INFO] ThirdPartyDb:261 - Close Third Party DataBase File (C:/Users/rahul/.stm32cubemx/plugins/thirdparty/db/thirdparties_db.xml)
+2020-08-04 16:43:57,485 [INFO] IntegrityCheckThread:98 - End integrity checks thread
+2020-08-04 16:43:57,598 [INFO] McuFilterPanel:282 - Update 0 favorites MCUs
+2020-08-04 16:43:57,660 [INFO] DbBoardsPdsc:92 - Found 21 items
+2020-08-04 16:43:57,662 [INFO] DbBoardsPdsc:92 - Found 9 items
+2020-08-04 16:43:57,663 [INFO] DbBoardsPdsc:92 - Found 27 items
+2020-08-04 16:43:57,664 [INFO] DbBoardsPdsc:92 - Found 1 items
+2020-08-04 16:43:57,667 [INFO] DbBoardsPdsc:92 - Found 40 items
+2020-08-04 16:43:57,670 [INFO] DbBoardsPdsc:92 - Found 39 items
+2020-08-04 16:43:57,671 [INFO] DbBoardsPdsc:92 - Found 2 items
+2020-08-04 16:43:57,672 [INFO] DbBoardsPdsc:92 - Found 4 items
+2020-08-04 16:43:57,676 [WARN] DbBoardsPdsc:256 - Board STM32H7B3I-DK: unknown feature type=Audio, name=, username=Audio stereo codec with Headphone Amp (CS42L51-CNZ), n=1
+2020-08-04 16:43:57,676 [WARN] DbBoardsPdsc:256 - Board STM32H7B3I-DK: unknown feature type=WIFI, name=, username=WIFI 802.11 b/g/n, n=1
+2020-08-04 16:43:57,678 [WARN] DbBoardsPdsc:256 - Board STM32H7B3I-EVAL: unknown feature type=Audio, name=, username=Multi-Channel Audio Codec (CS42L51-CNZ), n=1
+2020-08-04 16:43:57,678 [WARN] DbBoardsPdsc:256 - Board STM32H7B3I-EVAL: unknown feature type=Meter, name=, username=Power-metering and Temperature-monitoring with sigma-delta modulators, n=1
+2020-08-04 16:43:57,678 [WARN] DbBoardsPdsc:256 - Board STM32H7B3I-EVAL: unknown feature type=WIFI, name=, username=WIFI 802.11 a/b/g/n, n=1
+2020-08-04 16:43:57,678 [WARN] DbBoardsPdsc:256 - Board STM32H7B3I-EVAL: unknown feature type=Motor, name=, username=Motor Control, n=1
+2020-08-04 16:43:57,679 [WARN] DbBoardsPdsc:256 - Board STEVAL-IDP005V1: unknown feature type=PWRSock, name=Power Socket, username=IO-Link 4-position M12 A-coded connector, n=1
+2020-08-04 16:43:57,679 [WARN] DbBoardsPdsc:256 - Board STEVAL-IDP005V2: unknown feature type=PWRSock, name=Power Socket, username=IO-Link 4-position M12 A-coded connector, n=1
+2020-08-04 16:43:57,686 [INFO] DbBoardsJson:79 - JSON generation date=Thu Jul 02 09:35:57 EDT 2020 (1593696957)
+2020-08-04 16:43:57,691 [INFO] DbBoards:120 - Found 145 boards (140 are supported by CubeMX)
+2020-08-04 16:43:57,696 [INFO] DbBoardsDocs:118 - JSON generation date=Mon Jul 27 08:58:30 EDT 2020 (1595854710)
+2020-08-04 16:43:57,705 [INFO] DbBoardsDocs:57 - Found 185 boards documents
+2020-08-04 16:43:57,706 [WARN] DbBoards:130 - board NUCLEO-H743ZI2 has no document id list !
+2020-08-04 16:43:57,707 [WARN] DbBoards:130 - board P-NUCLEO-WB55-Nucleo has no document id list !
+2020-08-04 16:43:57,707 [WARN] DbBoards:130 - board P-NUCLEO-WB55-USBDongle has no document id list !
+2020-08-04 16:43:57,708 [WARN] DbBoards:130 - board STM32F401C-DISCO has no document id list !
+2020-08-04 16:43:57,708 [WARN] DbBoards:130 - board STM32F769I-DISC1 has no document id list !
+2020-08-04 16:43:57,708 [WARN] DbBoards:152 - board B-G474E-DPOW1 / document id not found: 4624
+2020-08-04 16:43:57,708 [WARN] DbBoards:152 - board B-G474E-DPOW1 / document id not found: 4625
+2020-08-04 16:43:57,709 [WARN] DbBoards:130 - board STM32L-DISCOVERY has no document id list !
+2020-08-04 16:43:57,709 [WARN] DbBoards:130 - board STM32H747I-DISC1 has no document id list !
+2020-08-04 16:43:57,709 [WARN] DbBoards:130 - board STM32MP157A-DK1 has no document id list !
+2020-08-04 16:43:57,710 [WARN] DbBoards:130 - board STM32H743I-EVAL2 has no document id list !
+2020-08-04 16:43:57,710 [WARN] DbBoards:130 - board STM32H753I-EVAL2 has no document id list !
+2020-08-04 16:43:57,710 [WARN] DbBoards:130 - board STM32G474E-EVAL1 has no document id list !
+2020-08-04 16:43:57,710 [WARN] DbBoards:130 - board STEVAL-BFA001V1B has no document id list !
+2020-08-04 16:43:57,710 [WARN] DbBoards:130 - board STEVAL-BFA001V2B has no document id list !
+2020-08-04 16:43:57,711 [WARN] DbBoards:130 - board STEVAL-MKSBOX1V1 has no document id list !
+2020-08-04 16:43:57,711 [WARN] DbBoards:130 - board STEVAL-STWINKT1 has no document id list !
+2020-08-04 16:43:57,711 [WARN] DbBoards:130 - board STEVAL-IDP005V1 has no document id list !
+2020-08-04 16:43:57,711 [WARN] DbBoards:130 - board STEVAL-IDP005V2 has no document id list !
+2020-08-04 16:43:57,920 [ERROR] DbBoards:192 - Image file not found for board P-NUCLEO-WB55: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/plugins/mcufinder/images/boards/p-nucleo-wb55_small.jpg
+2020-08-04 16:43:58,422 [ERROR] DbBoards:192 - Image file not found for board B-L4S5I-IOT01A: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\/plugins/mcufinder/images/boards/B-L4S5I-IOT01A_small.jpg
+2020-08-04 16:43:58,423 [INFO] ApiDb:158 - Load user favorites file C:\Users\rahul/.stm32cubeide/favorites.boards.txt: 0 item(s)
+2020-08-04 16:43:58,423 [INFO] ApiDb:163 - User favorites Boards=[]
+2020-08-04 16:43:58,423 [INFO] DbBoards:209 - Set 0 / 0 favorites Boards
+2020-08-04 16:43:58,463 [INFO] LoadUrlFilesThread:161 - End of LoadServerUrlFiles without Thread
+2020-08-04 16:43:58,464 [INFO] BoardDetailPanel:179 - Set advertising image to C:/Users/rahul/STM32Cube/Repository/\STM32Cube_ecosystem_N4273S_big.jpg
+2020-08-04 16:43:58,481 [INFO] BoardFilterPanel:211 - Update 0 favorites Boards
+2020-08-04 16:43:58,609 [INFO] CrossSelectorPresenter:1319 - Cross Selector saved comparison directory: C:\Users\rahul\.stmcufinder\plugins\mcufinder\mcu\cs_comparisons_mx
+2020-08-04 16:44:11,130 [INFO] DbMcusDocs:126 - JSON generation date=Mon Jul 27 08:58:30 EDT 2020 (1595854710)
+2020-08-04 16:44:11,220 [INFO] DbMcusDocs:61 - Found 580 MCUs documents
+2020-08-04 16:44:23,403 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] withoutVersionV1.24.2
+2020-08-04 16:44:23,403 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] withoutVersionV1.24.1
+2020-08-04 16:44:23,404 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] withoutVersionV1.24.0
+2020-08-04 16:44:24,991 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] File copied successfully!!
+2020-08-04 16:44:29,845 [INFO] MainUpdater:2230 - connection check result : 10
+2020-08-04 16:44:29,866 [INFO] MicroXplorer:390 - Change Database Path : 
+2020-08-04 16:44:29,866 [INFO] MicroXplorer:420 - Change Database Version : DB.5.0.50
+2020-08-04 16:44:29,867 [INFO] PinOutPanel:1399 - setPackage(No Configuration,No Configuration)
+2020-08-04 16:44:29,867 [INFO] UtilMem:74 - Begin LoadConfig() Used Memory: 438958608 Bytes (715128832)
+2020-08-04 16:44:29,868 [INFO] MicroXplorer:390 - Change Database Path : 
+2020-08-04 16:44:29,868 [INFO] MicroXplorer:420 - Change Database Version : DB.5.0.50
+2020-08-04 16:44:29,868 [INFO] OpenFileManager:274 - Change cursor
+2020-08-04 16:44:31,052 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) Unable to find key (Mcu.ThirdPartyNb) in loaded IOC file
+2020-08-04 16:44:31,052 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) Unable to find key (Mcu.PinsNb) in loaded IOC file
+2020-08-04 16:44:31,052 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) Unable to find key (Mcu.IPNb) in loaded IOC file
+2020-08-04 16:44:31,200 [INFO] UtilMem:74 - End LoadConfig() Used Memory: 309922744 Bytes (715128832)
+2020-08-04 16:44:31,212 [INFO] ThirdPartyDb:295 - Open Third Party DataBase File (C:/Users/rahul/.stm32cubemx/plugins/thirdparty/db/thirdparties_db.xml) : 5 ms. number of Sw pack : 23
+2020-08-04 16:44:31,291 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE1 5.0.0
+2020-08-04 16:44:31,291 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SUBG2 1.1.0
+2020-08-04 16:44:31,291 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-GNSS1 4.1.0
+2020-08-04 16:44:31,292 [INFO] ThirdParty:899 - CMSIS Pack Vendor :ARM CMSIS 5.6.0
+2020-08-04 16:44:31,292 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 8.0.0
+2020-08-04 16:44:31,292 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics FreeRTOS 0.0.1
+2020-08-04 16:44:31,292 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ALGOBUILD 1.0.0
+2020-08-04 16:44:31,292 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE2 2.0.0
+2020-08-04 16:44:31,292 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ALGOBUILD 1.1.0
+2020-08-04 16:44:31,292 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-GNSS1 5.0.0
+2020-08-04 16:44:31,292 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SUBG2 2.0.0
+2020-08-04 16:44:31,292 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE1 6.0.0
+2020-08-04 16:44:31,292 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOUCHGFX 4.13.0
+2020-08-04 16:44:31,292 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC4 1.5.2
+2020-08-04 16:44:31,292 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOUCHGFX 4.14.0
+2020-08-04 16:44:31,292 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 7.1.0
+2020-08-04 16:44:31,292 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 5.1.1
+2020-08-04 16:44:31,292 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 7.2.0
+2020-08-04 16:44:31,292 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 5.1.2
+2020-08-04 16:44:31,293 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC4 2.0.0
+2020-08-04 16:44:31,293 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 5.0.0
+2020-08-04 16:44:31,293 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE2 1.0.0
+2020-08-04 16:44:31,293 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 5.1.0
+2020-08-04 16:44:31,426 [INFO] PinOutPanel:1399 - setPackage(No Configuration,No Configuration)
+2020-08-04 16:44:31,427 [INFO] PinOutPanel:1399 - setPackage(STM32F446RETx,LQFP64)
+2020-08-04 16:44:31,667 [INFO] UtilMem:74 - Before build in PCC Used Memory: 519055128 Bytes (715128832)
+2020-08-04 16:44:31,834 [INFO] SharedServices:71 - Folder for power plug-in: C:/Users/rahul/.stm32cubemx/plugins/power
+2020-08-04 16:44:31,835 [INFO] UtilMem:74 - After build in PCC Used Memory: 535310096 Bytes (715128832)
+2020-08-04 16:44:31,847 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,847 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,847 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,847 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,847 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,847 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,847 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,848 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,848 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,848 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,848 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,848 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,848 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,848 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,848 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,848 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,848 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,848 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,849 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,849 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,849 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,849 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,849 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,849 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,849 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,849 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,850 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,850 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,850 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,850 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,850 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,850 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,850 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,850 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,851 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,851 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,851 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,851 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,851 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,851 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,851 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,851 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,851 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,851 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,852 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,852 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,852 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,852 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,852 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,852 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,852 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,852 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,853 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,853 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,853 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,853 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,853 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,854 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,854 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,854 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 16:44:31,867 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] toolchainItems.length=====1
+2020-08-04 16:44:31,913 [INFO] OpenFileManager:294 - Restore cursor
+2020-08-04 16:44:32,048 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 599746664 Bytes (715128832)
+2020-08-04 16:44:32,064 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 602941208 Bytes (715128832)
+2020-08-04 16:44:32,307 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: SYS
+2020-08-04 16:44:32,307 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: NVIC
+2020-08-04 16:44:32,308 [INFO] CodeGenerator:601 - code generatio: config db path: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\
+2020-08-04 16:44:32,536 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\license.tmp_save
+2020-08-04 16:44:32,727 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\license.tmp
+2020-08-04 16:44:32,787 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Debug : prepare data for NVIC
+2020-08-04 16:44:32,788 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line test
+2020-08-04 16:44:32,807 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_it.c_save
+2020-08-04 16:44:32,896 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_it.c
+2020-08-04 16:44:32,908 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\stm32f4xx_it.h_save
+2020-08-04 16:44:32,958 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\stm32f4xx_it.h
+2020-08-04 16:44:32,977 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_hal_msp.c_save
+2020-08-04 16:44:33,052 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_hal_msp.c
+2020-08-04 16:44:33,066 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\system.tmp_save
+2020-08-04 16:44:33,119 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\system.tmp
+2020-08-04 16:44:33,142 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\stm32f4xx_hal_conf.h_save
+2020-08-04 16:44:33,212 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\stm32f4xx_hal_conf.h
+2020-08-04 16:44:33,238 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\main.h_save
+2020-08-04 16:44:33,297 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\main.h
+2020-08-04 16:44:33,316 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\main.c_save
+2020-08-04 16:44:33,393 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\main.c
+2020-08-04 16:44:34,089 [INFO] ProjectBuilder:1843 - Time for Copy HAL[1] : 271mS.
+2020-08-04 16:44:34,093 [INFO] ProjectBuilder:2428 - Project Generator version: 3.6.0
+2020-08-04 16:44:34,345 [INFO] ConfigFileManager:1043 - The Die is : DIE421
+2020-08-04 16:44:36,817 [INFO] ProjectBuilder:2595 - Time for Generating toolchain IDE Files: 2724mS.
+2020-08-04 16:44:36,818 [INFO] ProjectBuilder:1703 - Time for Copy CMSIS : 1mS.
+2020-08-04 16:44:36,818 [INFO] ProjectBuilder:1703 - Time for Copy CMSIS : 0mS.
+2020-08-04 16:44:51,211 [ERROR] FreeRTOS:500 - Case being investigated as it may cause exception (when called to early by set config state
+2020-08-04 16:44:51,221 [INFO] ApiDbMcu:445 - Load IP Config File for FREERTOS
+2020-08-04 16:44:51,238 [ERROR] FreeRTOS:500 - Case being investigated as it may cause exception (when called to early by set config state
+2020-08-04 16:44:51,241 [ERROR] FreeRTOS:500 - Case being investigated as it may cause exception (when called to early by set config state
+2020-08-04 16:44:51,366 [ERROR] RtosPanel:515 - Can not restore the selected Tab for FREERTOS(A reason can be that the tab is no more available.)
+2020-08-04 16:44:51,447 [ERROR] RtosPanel:515 - Can not restore the selected Tab for FREERTOS(A reason can be that the tab is no more available.)
+2020-08-04 16:44:51,490 [ERROR] RtosPanel:515 - Can not restore the selected Tab for FREERTOS(A reason can be that the tab is no more available.)
+2020-08-04 16:45:05,545 [INFO] Gpio:248 - dependency for GPIO []
+2020-08-04 16:45:30,667 [INFO] Gpio:248 - dependency for GPIO []
+2020-08-04 16:45:32,721 [INFO] Gpio:248 - dependency for GPIO []
+2020-08-04 16:45:41,503 [INFO] Gpio:248 - dependency for GPIO []
+2020-08-04 16:45:45,511 [INFO] Gpio:248 - dependency for GPIO []
+2020-08-04 16:45:46,951 [INFO] Gpio:248 - dependency for GPIO []
+2020-08-04 16:46:00,189 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 678344432 Bytes (795869184)
+2020-08-04 16:46:01,438 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 685684464 Bytes (795869184)
+2020-08-04 16:46:01,525 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 701413104 Bytes (795869184)
+2020-08-04 16:46:01,642 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: FREERTOS
+2020-08-04 16:46:01,642 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: SYS
+2020-08-04 16:46:01,642 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: NVIC
+2020-08-04 16:46:01,642 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: GPIO
+2020-08-04 16:46:01,642 [INFO] CodeGenerator:601 - code generatio: config db path: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\
+2020-08-04 16:46:01,826 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\license.tmp_save
+2020-08-04 16:46:01,867 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\license.tmp
+2020-08-04 16:46:01,891 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\gpio.tmp_save
+2020-08-04 16:46:01,946 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\gpio.tmp
+2020-08-04 16:46:01,959 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2020-08-04 16:46:01,967 [INFO] Middleware:1107 - No code input for Bsp Dependency
+2020-08-04 16:46:01,981 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_inc.tmp_save
+2020-08-04 16:46:02,028 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_inc.tmp
+2020-08-04 16:46:02,045 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_kernelInit.tmp_save
+2020-08-04 16:46:02,087 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_kernelInit.tmp
+2020-08-04 16:46:02,101 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_kernelStart.tmp_save
+2020-08-04 16:46:02,141 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_kernelStart.tmp
+2020-08-04 16:46:02,153 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_typedefs.tmp_save
+2020-08-04 16:46:02,192 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_typedefs.tmp
+2020-08-04 16:46:02,209 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_vars.tmp_save
+2020-08-04 16:46:02,248 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_vars.tmp
+2020-08-04 16:46:02,261 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_pfp.tmp_save
+2020-08-04 16:46:02,304 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_pfp.tmp
+2020-08-04 16:46:02,320 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_obj_creat.tmp_save
+2020-08-04 16:46:02,369 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_obj_creat.tmp
+2020-08-04 16:46:02,381 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_default_thread.tmp_save
+2020-08-04 16:46:02,426 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_default_thread.tmp
+2020-08-04 16:46:02,437 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_threads.tmp_save
+2020-08-04 16:46:02,474 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_threads.tmp
+2020-08-04 16:46:02,490 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\FreeRTOSConfig.h_save
+2020-08-04 16:46:02,543 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\FreeRTOSConfig.h
+2020-08-04 16:46:02,560 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\freertos.c_save
+2020-08-04 16:46:02,605 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\freertos.c
+2020-08-04 16:46:02,607 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Debug : prepare data for NVIC
+2020-08-04 16:46:02,607 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line test
+2020-08-04 16:46:02,627 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_it.c_save
+2020-08-04 16:46:02,691 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_it.c
+2020-08-04 16:46:02,702 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\stm32f4xx_it.h_save
+2020-08-04 16:46:02,772 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\stm32f4xx_it.h
+2020-08-04 16:46:02,792 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_hal_msp.c_save
+2020-08-04 16:46:02,889 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_hal_msp.c
+2020-08-04 16:46:02,900 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\system.tmp_save
+2020-08-04 16:46:02,940 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\system.tmp
+2020-08-04 16:46:02,952 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_hal_timebase_tim.c_save
+2020-08-04 16:46:02,991 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_hal_timebase_tim.c
+2020-08-04 16:46:03,010 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\stm32f4xx_hal_conf.h_save
+2020-08-04 16:46:03,072 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\stm32f4xx_hal_conf.h
+2020-08-04 16:46:03,081 [WARN] IPConfigManager:2706 - IP not found : gpio
+2020-08-04 16:46:03,082 [WARN] CodeGenerator:2776 - IP not found : gpio
+2020-08-04 16:46:03,099 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\main.h_save
+2020-08-04 16:46:03,145 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\main.h
+2020-08-04 16:46:03,166 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\main.c_save
+2020-08-04 16:46:03,246 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\main.c
+2020-08-04 16:46:03,770 [INFO] ProjectBuilder:1843 - Time for Copy HAL[1] : 195mS.
+2020-08-04 16:46:03,773 [INFO] ProjectBuilder:2428 - Project Generator version: 3.6.0
+2020-08-04 16:46:03,920 [INFO] ConfigFileManager:1043 - The Die is : DIE421
+2020-08-04 16:46:05,027 [INFO] ProjectBuilder:2595 - Time for Generating toolchain IDE Files: 1254mS.
+2020-08-04 16:46:05,027 [INFO] ProjectBuilder:1703 - Time for Copy CMSIS : 0mS.
+2020-08-04 16:46:05,029 [INFO] ProjectBuilder:1703 - Time for Copy CMSIS : 0mS.
+2020-08-04 17:02:51,189 [INFO] MainUpdater:2230 - connection check result : 10
+2020-08-04 17:02:51,212 [INFO] MicroXplorer:390 - Change Database Path : 
+2020-08-04 17:02:51,213 [INFO] MicroXplorer:420 - Change Database Version : DB.5.0.50
+2020-08-04 17:02:51,213 [INFO] PinOutPanel:1399 - setPackage(No Configuration,No Configuration)
+2020-08-04 17:02:51,215 [INFO] UtilMem:74 - Begin LoadConfig() Used Memory: 738806200 Bytes (936378368)
+2020-08-04 17:02:51,215 [INFO] MicroXplorer:390 - Change Database Path : 
+2020-08-04 17:02:51,215 [INFO] MicroXplorer:420 - Change Database Version : DB.5.0.50
+2020-08-04 17:02:51,215 [INFO] OpenFileManager:274 - Change cursor
+2020-08-04 17:02:51,221 [INFO] RulesReader:52 - Compatibility file has been processed (205 Rules)
+2020-08-04 17:02:52,140 [INFO] UtilMem:74 - End LoadConfig() Used Memory: 454756088 Bytes (936378368)
+2020-08-04 17:02:52,200 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE1 5.0.0
+2020-08-04 17:02:52,200 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SUBG2 1.1.0
+2020-08-04 17:02:52,200 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-GNSS1 4.1.0
+2020-08-04 17:02:52,200 [INFO] ThirdParty:899 - CMSIS Pack Vendor :ARM CMSIS 5.6.0
+2020-08-04 17:02:52,200 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 8.0.0
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics FreeRTOS 0.0.1
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ALGOBUILD 1.0.0
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE2 2.0.0
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ALGOBUILD 1.1.0
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-GNSS1 5.0.0
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SUBG2 2.0.0
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE1 6.0.0
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOUCHGFX 4.13.0
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC4 1.5.2
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOUCHGFX 4.14.0
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 7.1.0
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 5.1.1
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 7.2.0
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 5.1.2
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC4 2.0.0
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 5.0.0
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE2 1.0.0
+2020-08-04 17:02:52,201 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 5.1.0
+2020-08-04 17:02:52,276 [INFO] PinOutPanel:1399 - setPackage(No Configuration,No Configuration)
+2020-08-04 17:02:52,277 [INFO] PinOutPanel:1399 - setPackage(STM32F446RETx,LQFP64)
+2020-08-04 17:02:52,458 [INFO] UtilMem:74 - Before build in PCC Used Memory: 603468056 Bytes (936378368)
+2020-08-04 17:02:52,525 [INFO] SharedServices:71 - Folder for power plug-in: C:/Users/rahul/.stm32cubemx/plugins/power
+2020-08-04 17:02:52,525 [INFO] UtilMem:74 - After build in PCC Used Memory: 612905240 Bytes (936378368)
+2020-08-04 17:02:52,531 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,531 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,531 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,531 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,532 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,532 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,532 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,532 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,532 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,532 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,532 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,532 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,532 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,532 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,532 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,532 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,532 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,533 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,533 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,533 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,533 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,533 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,533 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,533 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,533 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,533 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,533 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,533 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,534 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,534 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,534 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,534 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,534 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,534 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,534 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,534 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,535 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,535 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,535 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,535 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,535 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,535 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,535 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,535 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,535 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,535 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,535 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,536 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,536 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,536 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,536 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,536 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,536 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,536 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,536 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,536 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,536 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,537 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,537 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,537 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:02:52,541 [ERROR] FreeRTOS:936 - Null or empty value: should not occur! (nothing added to the table)
+2020-08-04 17:02:52,544 [INFO] ApiDbMcu:445 - Load IP Config File for FREERTOS
+2020-08-04 17:02:52,557 [INFO] OpenFileManager:294 - Restore cursor
+2020-08-04 17:03:13,453 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:13,453 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:13,487 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:13,487 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:13,487 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:13,487 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:13,534 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:13,534 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:13,535 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:13,535 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:13,538 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:13,538 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:13,540 [INFO] NvicIntPanel:88 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2020-08-04 17:03:16,631 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:16,631 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:16,642 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:16,642 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:16,642 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:16,642 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:16,650 [INFO] NvicIntPanel:88 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2020-08-04 17:03:18,159 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:18,159 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:18,162 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:18,162 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:18,163 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:18,163 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:50,021 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:50,021 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:50,021 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:03:50,021 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:04:00,392 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:04:00,392 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:04:00,392 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:04:00,392 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:04:15,431 [INFO] NvicIntPanel:88 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,466x420,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2020-08-04 17:04:31,509 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,099 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,099 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,099 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,099 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,099 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,099 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,099 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,099 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,099 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,099 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,099 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,099 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,099 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,099 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,127 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,211 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,211 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,211 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,211 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,211 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,211 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,212 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,212 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,212 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,212 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,212 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,212 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,212 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,212 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:32,229 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:39,236 [INFO] SpinnerEditor:79 - is string kkkk
+2020-08-04 17:04:41,409 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,411 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,411 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,411 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,411 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,411 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,411 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,411 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,411 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,411 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,411 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,411 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,411 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,411 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,419 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,419 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,419 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:41,561 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:41,589 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,590 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:04:41,590 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:46,303 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:46,303 [INFO] ADCParametersView:101 -        *      Rank 2 : false
+2020-08-04 17:04:49,559 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:49,559 [INFO] ADCParametersView:101 -        *      Rank 2 : true
+2020-08-04 17:04:52,972 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:52,972 [INFO] ADCParametersView:101 -        *      Rank 2 : true
+2020-08-04 17:04:52,974 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:52,974 [INFO] ADCParametersView:101 -        *      Rank 2 : true
+2020-08-04 17:04:52,975 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:52,975 [INFO] ADCParametersView:101 -        *      Rank 2 : true
+2020-08-04 17:04:52,975 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:52,975 [INFO] ADCParametersView:101 -        *      Rank 2 : true
+2020-08-04 17:04:52,975 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:52,975 [INFO] ADCParametersView:101 -        *      Rank 2 : true
+2020-08-04 17:04:52,975 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:52,975 [INFO] ADCParametersView:101 -        *      Rank 2 : true
+2020-08-04 17:04:52,975 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:52,976 [INFO] ADCParametersView:101 -        *      Rank 2 : true
+2020-08-04 17:04:52,976 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:52,976 [INFO] ADCParametersView:101 -        *      Rank 2 : true
+2020-08-04 17:04:52,976 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:52,976 [INFO] ADCParametersView:101 -        *      Rank 2 : true
+2020-08-04 17:04:52,976 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:52,976 [INFO] ADCParametersView:101 -        *      Rank 2 : true
+2020-08-04 17:04:52,976 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:52,976 [INFO] ADCParametersView:101 -        *      Rank 2 : true
+2020-08-04 17:04:52,977 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:52,977 [INFO] ADCParametersView:101 -        *      Rank 2 : true
+2020-08-04 17:04:52,977 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:52,977 [INFO] ADCParametersView:101 -        *      Rank 2 : true
+2020-08-04 17:04:52,977 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:52,977 [INFO] ADCParametersView:101 -        *      Rank 2 : true
+2020-08-04 17:04:52,977 [INFO] ADCParametersView:101 -        *      Rank 2 : true
+2020-08-04 17:04:53,001 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:53,001 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:04:53,001 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:04:58,397 [INFO] NvicIntPanel:88 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,466x420,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2020-08-04 17:05:04,707 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:04,707 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:04,708 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:04,708 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:04,708 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:04,708 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:04,709 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:04,709 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:04,709 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:04,709 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:04,709 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:04,709 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:04,709 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:04,709 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:04,709 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:04,709 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:04,710 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:04,710 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:04,710 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:04,710 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:04,710 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:04,710 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:04,710 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:04,710 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:04,710 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:04,710 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:04,710 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:04,710 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:04,710 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:04,733 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:04,734 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:04,734 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,311 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,311 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,312 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,312 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,312 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,312 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,312 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,312 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,312 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,312 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,313 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,313 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,313 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,313 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,313 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,313 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,313 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,313 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,313 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,313 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,313 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,314 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,314 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,314 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,314 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,314 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,314 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,314 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,314 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,338 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,339 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,339 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,429 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:23,429 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:23,429 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:23,429 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:23,437 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,437 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,438 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,438 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,438 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,438 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,438 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,438 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,438 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,438 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,439 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,439 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,439 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,439 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,439 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,439 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,439 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,439 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,439 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,439 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,439 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,439 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,440 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,440 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,440 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,440 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,440 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,440 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,440 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:23,463 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,464 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:23,464 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,833 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,833 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,833 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,834 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,834 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,834 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,834 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,834 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,834 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,834 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,834 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,834 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,834 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,834 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,835 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,835 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,835 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,835 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,835 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,835 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,835 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,835 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,835 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,835 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,835 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,835 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,836 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,836 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,836 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,859 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,859 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,860 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,950 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:26,951 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:26,951 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:26,951 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:26,958 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,958 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,959 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,959 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,959 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,959 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,959 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,959 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,960 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,960 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,960 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,960 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,960 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,960 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,960 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,960 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,960 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,960 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,960 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,961 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,961 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,961 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,961 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,961 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,961 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,961 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,961 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,961 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,961 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:26,984 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,985 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:26,985 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,468 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,468 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,469 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,470 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,471 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,471 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,471 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,495 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,495 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,495 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,581 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:29,581 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:29,581 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:29,582 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:29,589 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,589 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,589 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,590 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,590 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,590 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,590 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,590 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,590 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,590 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,590 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,590 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,590 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,590 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,591 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,591 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,591 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,591 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,591 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,591 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,591 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,591 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,591 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,591 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,591 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,591 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,591 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,591 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,591 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:29,623 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,624 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:29,624 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:31,989 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:31,990 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:31,990 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:31,990 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:31,990 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:31,990 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:31,991 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:31,991 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:31,991 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:31,991 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:31,991 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:31,991 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:31,991 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:31,991 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:31,991 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:31,991 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:31,991 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:31,991 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:31,992 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:31,992 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:31,992 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:31,992 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:31,992 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:31,992 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:31,992 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:31,992 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:31,992 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:31,992 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:31,992 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,015 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,017 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,017 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,102 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:32,103 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:32,103 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:32,103 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:32,110 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,110 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,111 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,111 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,111 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,111 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,111 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,111 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,111 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,111 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,111 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,111 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,112 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,112 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,112 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,112 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,112 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,112 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,112 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,112 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,112 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,112 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,112 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,112 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,112 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,113 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,113 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,113 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,113 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:32,135 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,136 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:32,136 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,217 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,217 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,217 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,218 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,218 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,218 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,218 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,218 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,218 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,218 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,218 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,218 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,218 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,218 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,219 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,219 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,219 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,219 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,219 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,219 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,219 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,219 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,219 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,219 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,219 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,219 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,220 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,220 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,220 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,242 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,243 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,243 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,331 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:48,331 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:48,331 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:48,331 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,341 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:48,369 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,370 [INFO] ADCParametersView:101 -                Rank 1 : true
+2020-08-04 17:05:48,370 [INFO] ADCParametersView:101 -                Rank 2 : true
+2020-08-04 17:05:53,168 [INFO] Gpio:248 - dependency for GPIO [ADC1, I2C1, SPI2]
+2020-08-04 17:06:38,492 [INFO] Gpio:248 - dependency for GPIO [ADC1, I2C1, SPI2]
+2020-08-04 17:06:49,831 [INFO] NvicIntPanel:88 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,466x420,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2020-08-04 17:06:51,205 [INFO] NvicIntPanel:88 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2020-08-04 17:07:06,574 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 582889752 Bytes (936378368)
+2020-08-04 17:07:09,100 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 591804688 Bytes (936378368)
+2020-08-04 17:07:09,185 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 601241872 Bytes (936378368)
+2020-08-04 17:07:09,271 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: SPI
+2020-08-04 17:07:09,271 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: FREERTOS
+2020-08-04 17:07:09,271 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: SYS
+2020-08-04 17:07:09,271 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: ADC
+2020-08-04 17:07:09,271 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: I2C
+2020-08-04 17:07:09,271 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: NVIC
+2020-08-04 17:07:09,271 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: USART
+2020-08-04 17:07:09,271 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: DMA
+2020-08-04 17:07:09,271 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: GPIO
+2020-08-04 17:07:09,271 [INFO] CodeGenerator:601 - code generatio: config db path: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\
+2020-08-04 17:07:09,281 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:07:09,281 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:07:09,421 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\license.tmp_save
+2020-08-04 17:07:09,459 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\license.tmp
+2020-08-04 17:07:09,501 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\gpio.tmp_save
+2020-08-04 17:07:09,551 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\gpio.tmp
+2020-08-04 17:07:09,680 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2020-08-04 17:07:09,680 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Debug : prepare data for ADC
+2020-08-04 17:07:09,680 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line test
+2020-08-04 17:07:09,680 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2020-08-04 17:07:09,680 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Debug : prepare data for DMA
+2020-08-04 17:07:09,680 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line test
+2020-08-04 17:07:09,701 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\dma.tmp_save
+2020-08-04 17:07:09,751 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\dma.tmp
+2020-08-04 17:07:09,761 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\dma_GV.tmp_save
+2020-08-04 17:07:09,801 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\dma_GV.tmp
+2020-08-04 17:07:09,801 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2020-08-04 17:07:09,811 [INFO] Middleware:1107 - No code input for Bsp Dependency
+2020-08-04 17:07:09,829 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_inc.tmp_save
+2020-08-04 17:07:09,871 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_inc.tmp
+2020-08-04 17:07:09,881 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_kernelInit.tmp_save
+2020-08-04 17:07:09,921 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_kernelInit.tmp
+2020-08-04 17:07:09,941 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_kernelStart.tmp_save
+2020-08-04 17:07:09,981 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_kernelStart.tmp
+2020-08-04 17:07:09,997 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_typedefs.tmp_save
+2020-08-04 17:07:10,048 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_typedefs.tmp
+2020-08-04 17:07:10,066 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_vars.tmp_save
+2020-08-04 17:07:10,107 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_vars.tmp
+2020-08-04 17:07:10,119 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_pfp.tmp_save
+2020-08-04 17:07:10,161 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_pfp.tmp
+2020-08-04 17:07:10,179 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_obj_creat.tmp_save
+2020-08-04 17:07:10,224 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_obj_creat.tmp
+2020-08-04 17:07:10,243 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_default_thread.tmp_save
+2020-08-04 17:07:10,281 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_default_thread.tmp
+2020-08-04 17:07:10,293 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_threads.tmp_save
+2020-08-04 17:07:10,329 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_threads.tmp
+2020-08-04 17:07:10,347 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\FreeRTOSConfig.h_save
+2020-08-04 17:07:10,399 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\FreeRTOSConfig.h
+2020-08-04 17:07:10,417 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\freertos.c_save
+2020-08-04 17:07:10,466 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\freertos.c
+2020-08-04 17:07:10,467 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2020-08-04 17:07:10,468 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Debug : prepare data for I2C
+2020-08-04 17:07:10,468 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line test
+2020-08-04 17:07:10,469 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2020-08-04 17:07:10,469 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Debug : prepare data for SPI
+2020-08-04 17:07:10,470 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line test
+2020-08-04 17:07:10,470 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2020-08-04 17:07:10,471 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Debug : prepare data for USART
+2020-08-04 17:07:10,471 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line test
+2020-08-04 17:07:10,472 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Debug : prepare data for NVIC
+2020-08-04 17:07:10,472 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line test
+2020-08-04 17:07:10,492 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_it.c_save
+2020-08-04 17:07:10,564 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_it.c
+2020-08-04 17:07:10,576 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\stm32f4xx_it.h_save
+2020-08-04 17:07:10,624 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\stm32f4xx_it.h
+2020-08-04 17:07:10,644 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_hal_msp.c_save
+2020-08-04 17:07:10,728 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_hal_msp.c
+2020-08-04 17:07:10,743 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\system.tmp_save
+2020-08-04 17:07:10,782 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\system.tmp
+2020-08-04 17:07:10,795 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_hal_timebase_tim.c_save
+2020-08-04 17:07:10,841 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_hal_timebase_tim.c
+2020-08-04 17:07:10,862 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\stm32f4xx_hal_conf.h_save
+2020-08-04 17:07:10,928 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\stm32f4xx_hal_conf.h
+2020-08-04 17:07:10,937 [WARN] IPConfigManager:2706 - IP not found : gpio
+2020-08-04 17:07:10,938 [WARN] CodeGenerator:2776 - IP not found : gpio
+2020-08-04 17:07:10,958 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\main.h_save
+2020-08-04 17:07:11,009 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\main.h
+2020-08-04 17:07:11,030 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\main.c_save
+2020-08-04 17:07:11,150 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\main.c
+2020-08-04 17:07:11,641 [INFO] ProjectBuilder:1843 - Time for Copy HAL[1] : 170mS.
+2020-08-04 17:07:11,641 [INFO] ProjectBuilder:2428 - Project Generator version: 3.6.0
+2020-08-04 17:07:11,790 [INFO] ConfigFileManager:1043 - The Die is : DIE421
+2020-08-04 17:07:12,642 [INFO] ProjectBuilder:2595 - Time for Generating toolchain IDE Files: 1001mS.
+2020-08-04 17:07:12,643 [INFO] ProjectBuilder:1703 - Time for Copy CMSIS : 0mS.
+2020-08-04 17:07:12,645 [INFO] ProjectBuilder:1703 - Time for Copy CMSIS : 0mS.
+2020-08-04 17:17:56,425 [INFO] MainUpdater:2230 - connection check result : 10
+2020-08-04 17:17:56,452 [INFO] MicroXplorer:390 - Change Database Path : 
+2020-08-04 17:17:56,452 [INFO] MicroXplorer:420 - Change Database Version : DB.5.0.50
+2020-08-04 17:17:56,453 [INFO] PinOutPanel:1399 - setPackage(No Configuration,No Configuration)
+2020-08-04 17:17:56,455 [INFO] UtilMem:74 - Begin LoadConfig() Used Memory: 441060112 Bytes (1005584384)
+2020-08-04 17:17:56,455 [INFO] MicroXplorer:390 - Change Database Path : 
+2020-08-04 17:17:56,455 [INFO] MicroXplorer:420 - Change Database Version : DB.5.0.50
+2020-08-04 17:17:56,455 [INFO] OpenFileManager:274 - Change cursor
+2020-08-04 17:17:56,460 [INFO] RulesReader:52 - Compatibility file has been processed (205 Rules)
+2020-08-04 17:17:57,225 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) IP (ADC1) : Parameter (Rank) has Id (0#ChannelRegularConversion) currently not set
+2020-08-04 17:17:57,226 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) IP (ADC1) : Parameter (Channel) has Id (0#ChannelRegularConversion) currently not set
+2020-08-04 17:17:57,226 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) IP (ADC1) : Parameter (SamplingTime) has Id (0#ChannelRegularConversion) currently not set
+2020-08-04 17:17:57,226 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) IP (ADC1) : Parameter (Rank) has Id (1#ChannelRegularConversion) currently not set
+2020-08-04 17:17:57,226 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) IP (ADC1) : Parameter (Channel) has Id (1#ChannelRegularConversion) currently not set
+2020-08-04 17:17:57,226 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) IP (ADC1) : Parameter (SamplingTime) has Id (1#ChannelRegularConversion) currently not set
+2020-08-04 17:17:57,226 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) IP (DMA) : Parameter (Instance) has Id (SPI2_TX) currently not set
+2020-08-04 17:17:57,226 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) IP (DMA) : Parameter (Channel) has Id (SPI2_TX) currently not set
+2020-08-04 17:17:57,226 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) IP (DMA) : Parameter (Direction) has Id (SPI2_TX) currently not set
+2020-08-04 17:17:57,226 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) IP (DMA) : Parameter (PeriphInc) has Id (SPI2_TX) currently not set
+2020-08-04 17:17:57,226 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) IP (DMA) : Parameter (MemInc) has Id (SPI2_TX) currently not set
+2020-08-04 17:17:57,226 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) IP (DMA) : Parameter (PeriphDataAlignment) has Id (SPI2_TX) currently not set
+2020-08-04 17:17:57,226 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) IP (DMA) : Parameter (MemDataAlignment) has Id (SPI2_TX) currently not set
+2020-08-04 17:17:57,226 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) IP (DMA) : Parameter (Mode) has Id (SPI2_TX) currently not set
+2020-08-04 17:17:57,226 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) IP (DMA) : Parameter (Priority) has Id (SPI2_TX) currently not set
+2020-08-04 17:17:57,227 [INFO] ImportTextPane:162 - (OptionalMessage_ERROR) IP (DMA) : Parameter (FIFOMode) has Id (SPI2_TX) currently not set
+2020-08-04 17:17:57,361 [INFO] UtilMem:74 - End LoadConfig() Used Memory: 511149832 Bytes (1005584384)
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE1 5.0.0
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SUBG2 1.1.0
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-GNSS1 4.1.0
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :ARM CMSIS 5.6.0
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 8.0.0
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics FreeRTOS 0.0.1
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ALGOBUILD 1.0.0
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE2 2.0.0
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ALGOBUILD 1.1.0
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-GNSS1 5.0.0
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SUBG2 2.0.0
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE1 6.0.0
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOUCHGFX 4.13.0
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC4 1.5.2
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOUCHGFX 4.14.0
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 7.1.0
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 5.1.1
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 7.2.0
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 5.1.2
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC4 2.0.0
+2020-08-04 17:17:57,398 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 5.0.0
+2020-08-04 17:17:57,399 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE2 1.0.0
+2020-08-04 17:17:57,399 [INFO] ThirdParty:899 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 5.1.0
+2020-08-04 17:17:57,443 [INFO] PinOutPanel:1399 - setPackage(No Configuration,No Configuration)
+2020-08-04 17:17:57,444 [INFO] PinOutPanel:1399 - setPackage(STM32F446RETx,LQFP64)
+2020-08-04 17:17:57,545 [INFO] UtilMem:74 - Before build in PCC Used Memory: 631679584 Bytes (1005584384)
+2020-08-04 17:17:57,607 [INFO] SharedServices:71 - Folder for power plug-in: C:/Users/rahul/.stm32cubemx/plugins/power
+2020-08-04 17:17:57,608 [INFO] UtilMem:74 - After build in PCC Used Memory: 641116768 Bytes (1005584384)
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,613 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,619 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,619 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,619 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,619 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,619 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,619 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,619 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,619 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,620 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,620 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,620 [INFO] IPUIPlugin:65 - create IPUIPlugin
+2020-08-04 17:17:57,621 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:17:57,621 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:17:57,625 [ERROR] FreeRTOS:936 - Null or empty value: should not occur! (nothing added to the table)
+2020-08-04 17:17:57,628 [INFO] ApiDbMcu:445 - Load IP Config File for FREERTOS
+2020-08-04 17:17:57,641 [INFO] OpenFileManager:294 - Restore cursor
+2020-08-04 17:17:57,692 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:17:57,692 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:17:57,693 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:17:57,693 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:18:00,144 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:00,145 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:00,145 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:12,779 [INFO] NvicIntPanel:88 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,481x420,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2020-08-04 17:18:14,203 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:14,203 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:14,203 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:14,204 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:14,204 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:14,204 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:14,204 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:14,204 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:14,204 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:14,204 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:14,204 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:14,204 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:14,204 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:14,204 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:14,204 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:14,204 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:14,204 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:14,204 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:14,205 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:14,205 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:14,205 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:14,205 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:14,205 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:14,205 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:14,205 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:14,205 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:14,205 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:14,205 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:14,205 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:14,227 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:14,227 [INFO] ADCParametersView:101 -                Rank 1 : false
+2020-08-04 17:18:14,227 [INFO] ADCParametersView:101 -                Rank 2 : false
+2020-08-04 17:18:23,682 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 515978848 Bytes (1005584384)
+2020-08-04 17:18:25,019 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 524889704 Bytes (1005584384)
+2020-08-04 17:18:25,106 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 588330592 Bytes (1005584384)
+2020-08-04 17:18:25,197 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: SPI
+2020-08-04 17:18:25,197 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: FREERTOS
+2020-08-04 17:18:25,197 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: SYS
+2020-08-04 17:18:25,197 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: ADC
+2020-08-04 17:18:25,197 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: I2C
+2020-08-04 17:18:25,197 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: NVIC
+2020-08-04 17:18:25,197 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: USART
+2020-08-04 17:18:25,197 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: DMA
+2020-08-04 17:18:25,197 [INFO] BlockDiagram:2751 - set Specific Code input for plugin: GPIO
+2020-08-04 17:18:25,198 [INFO] CodeGenerator:601 - code generatio: config db path: C:\ST\STM32CubeIDE_1.2.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_5.5.0.201912201511\\db\
+2020-08-04 17:18:25,205 [WARN] IP:1931 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2020-08-04 17:18:25,205 [WARN] IP:1931 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2020-08-04 17:18:25,215 [INFO] Argument:278 - Argument : hdmavalue: null
+2020-08-04 17:18:25,215 [INFO] Argument:280 - 	 sub Args: 
+2020-08-04 17:18:25,215 [INFO] Argument:278 - Argument : Instancevalue: DMA1_Stream4
+2020-08-04 17:18:25,215 [INFO] Argument:288 - Argument : Instancevalue: DMA1_Stream4
+2020-08-04 17:18:25,215 [INFO] Argument:278 - Argument : Initvalue: null
+2020-08-04 17:18:25,215 [INFO] Argument:280 - 	 sub Args: 
+2020-08-04 17:18:25,215 [INFO] Argument:278 - Argument : Channelvalue: DMA_CHANNEL_0
+2020-08-04 17:18:25,215 [INFO] Argument:288 - Argument : Channelvalue: DMA_CHANNEL_0
+2020-08-04 17:18:25,215 [INFO] Argument:278 - Argument : Directionvalue: DMA_MEMORY_TO_PERIPH
+2020-08-04 17:18:25,215 [INFO] Argument:288 - Argument : Directionvalue: DMA_MEMORY_TO_PERIPH
+2020-08-04 17:18:25,215 [INFO] Argument:278 - Argument : PeriphIncvalue: DMA_PINC_DISABLE
+2020-08-04 17:18:25,216 [INFO] Argument:288 - Argument : PeriphIncvalue: DMA_PINC_DISABLE
+2020-08-04 17:18:25,216 [INFO] Argument:278 - Argument : MemIncvalue: DMA_MINC_ENABLE
+2020-08-04 17:18:25,216 [INFO] Argument:288 - Argument : MemIncvalue: DMA_MINC_ENABLE
+2020-08-04 17:18:25,216 [INFO] Argument:278 - Argument : PeriphDataAlignmentvalue: DMA_PDATAALIGN_BYTE
+2020-08-04 17:18:25,216 [INFO] Argument:288 - Argument : PeriphDataAlignmentvalue: DMA_PDATAALIGN_BYTE
+2020-08-04 17:18:25,216 [INFO] Argument:278 - Argument : MemDataAlignmentvalue: DMA_MDATAALIGN_BYTE
+2020-08-04 17:18:25,216 [INFO] Argument:288 - Argument : MemDataAlignmentvalue: DMA_MDATAALIGN_BYTE
+2020-08-04 17:18:25,216 [INFO] Argument:278 - Argument : Modevalue: DMA_NORMAL
+2020-08-04 17:18:25,216 [INFO] Argument:288 - Argument : Modevalue: DMA_NORMAL
+2020-08-04 17:18:25,216 [INFO] Argument:278 - Argument : Priorityvalue: DMA_PRIORITY_LOW
+2020-08-04 17:18:25,216 [INFO] Argument:288 - Argument : Priorityvalue: DMA_PRIORITY_LOW
+2020-08-04 17:18:25,216 [INFO] Argument:278 - Argument : FIFOModevalue: DMA_FIFOMODE_DISABLE
+2020-08-04 17:18:25,216 [INFO] Argument:288 - Argument : FIFOModevalue: DMA_FIFOMODE_DISABLE
+2020-08-04 17:18:25,216 [INFO] Argument:278 - Argument : FIFOThresholdvalue: null
+2020-08-04 17:18:25,216 [INFO] Argument:288 - Argument : FIFOThresholdvalue: null
+2020-08-04 17:18:25,216 [INFO] Argument:278 - Argument : MemBurstvalue: null
+2020-08-04 17:18:25,216 [INFO] Argument:288 - Argument : MemBurstvalue: null
+2020-08-04 17:18:25,216 [INFO] Argument:278 - Argument : PeriphBurstvalue: null
+2020-08-04 17:18:25,216 [INFO] Argument:288 - Argument : PeriphBurstvalue: null
+2020-08-04 17:18:25,216 [INFO] Argument:278 - Argument : Lockvalue: null
+2020-08-04 17:18:25,216 [INFO] Argument:288 - Argument : Lockvalue: null
+2020-08-04 17:18:25,216 [INFO] Argument:278 - Argument : Statevalue: null
+2020-08-04 17:18:25,216 [INFO] Argument:288 - Argument : Statevalue: null
+2020-08-04 17:18:25,216 [INFO] Argument:278 - Argument : Parentvalue: null
+2020-08-04 17:18:25,216 [INFO] Argument:288 - Argument : Parentvalue: null
+2020-08-04 17:18:25,216 [INFO] Argument:278 - Argument : XferCpltCallbackvalue: null
+2020-08-04 17:18:25,217 [INFO] Argument:288 - Argument : XferCpltCallbackvalue: null
+2020-08-04 17:18:25,217 [INFO] Argument:278 - Argument : XferHalfCpltCallbackvalue: null
+2020-08-04 17:18:25,217 [INFO] Argument:288 - Argument : XferHalfCpltCallbackvalue: null
+2020-08-04 17:18:25,217 [INFO] Argument:278 - Argument : XferM1CpltCallbackvalue: null
+2020-08-04 17:18:25,217 [INFO] Argument:288 - Argument : XferM1CpltCallbackvalue: null
+2020-08-04 17:18:25,217 [INFO] Argument:278 - Argument : XferErrorCallbackvalue: null
+2020-08-04 17:18:25,217 [INFO] Argument:288 - Argument : XferErrorCallbackvalue: null
+2020-08-04 17:18:25,217 [INFO] Argument:278 - Argument : ErrorCodevalue: null
+2020-08-04 17:18:25,217 [INFO] Argument:288 - Argument : ErrorCodevalue: null
+2020-08-04 17:18:25,318 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\license.tmp_save
+2020-08-04 17:18:25,354 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\license.tmp
+2020-08-04 17:18:25,395 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\gpio.tmp_save
+2020-08-04 17:18:25,431 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\gpio.tmp
+2020-08-04 17:18:25,622 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2020-08-04 17:18:25,623 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Debug : prepare data for ADC
+2020-08-04 17:18:25,623 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line test
+2020-08-04 17:18:25,624 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2020-08-04 17:18:25,625 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Debug : prepare data for DMA
+2020-08-04 17:18:25,625 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line test
+2020-08-04 17:18:25,658 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\dma.tmp_save
+2020-08-04 17:18:25,705 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\dma.tmp
+2020-08-04 17:18:25,719 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\dma_GV.tmp_save
+2020-08-04 17:18:25,757 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\dma_GV.tmp
+2020-08-04 17:18:25,758 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2020-08-04 17:18:25,767 [INFO] Middleware:1107 - No code input for Bsp Dependency
+2020-08-04 17:18:25,781 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_inc.tmp_save
+2020-08-04 17:18:25,822 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_inc.tmp
+2020-08-04 17:18:25,838 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_kernelInit.tmp_save
+2020-08-04 17:18:25,879 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_kernelInit.tmp
+2020-08-04 17:18:25,891 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_kernelStart.tmp_save
+2020-08-04 17:18:25,922 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_kernelStart.tmp
+2020-08-04 17:18:25,941 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_typedefs.tmp_save
+2020-08-04 17:18:25,980 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_typedefs.tmp
+2020-08-04 17:18:25,995 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_vars.tmp_save
+2020-08-04 17:18:26,035 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_vars.tmp
+2020-08-04 17:18:26,047 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_pfp.tmp_save
+2020-08-04 17:18:26,085 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_pfp.tmp
+2020-08-04 17:18:26,101 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_obj_creat.tmp_save
+2020-08-04 17:18:26,139 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_obj_creat.tmp
+2020-08-04 17:18:26,154 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_default_thread.tmp_save
+2020-08-04 17:18:26,198 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_default_thread.tmp
+2020-08-04 17:18:26,210 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_threads.tmp_save
+2020-08-04 17:18:26,246 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\rtos_threads.tmp
+2020-08-04 17:18:26,266 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\FreeRTOSConfig.h_save
+2020-08-04 17:18:26,316 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\FreeRTOSConfig.h
+2020-08-04 17:18:26,335 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\freertos.c_save
+2020-08-04 17:18:26,383 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\freertos.c
+2020-08-04 17:18:26,385 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2020-08-04 17:18:26,385 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Debug : prepare data for I2C
+2020-08-04 17:18:26,386 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line test
+2020-08-04 17:18:26,387 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2020-08-04 17:18:26,387 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Debug : prepare data for SPI
+2020-08-04 17:18:26,387 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line test
+2020-08-04 17:18:26,388 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line
+2020-08-04 17:18:26,389 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Debug : prepare data for USART
+2020-08-04 17:18:26,389 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line test
+2020-08-04 17:18:26,390 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Debug : prepare data for NVIC
+2020-08-04 17:18:26,391 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] Command line test
+2020-08-04 17:18:26,411 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_it.c_save
+2020-08-04 17:18:26,480 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_it.c
+2020-08-04 17:18:26,494 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\stm32f4xx_it.h_save
+2020-08-04 17:18:26,543 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\stm32f4xx_it.h
+2020-08-04 17:18:26,567 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_hal_msp.c_save
+2020-08-04 17:18:26,658 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_hal_msp.c
+2020-08-04 17:18:26,674 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\system.tmp_save
+2020-08-04 17:18:26,713 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\MXTmpFiles\system.tmp
+2020-08-04 17:18:26,726 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_hal_timebase_tim.c_save
+2020-08-04 17:18:26,811 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\stm32f4xx_hal_timebase_tim.c
+2020-08-04 17:18:26,830 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\stm32f4xx_hal_conf.h_save
+2020-08-04 17:18:26,892 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\stm32f4xx_hal_conf.h
+2020-08-04 17:18:26,900 [WARN] IPConfigManager:2706 - IP not found : gpio
+2020-08-04 17:18:26,900 [WARN] CodeGenerator:2776 - IP not found : gpio
+2020-08-04 17:18:26,918 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\main.h_save
+2020-08-04 17:18:26,969 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Inc\main.h
+2020-08-04 17:18:26,990 [INFO] CodeEngine:193 - oldGeneratedFile, D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\main.c_save
+2020-08-04 17:18:27,086 [INFO] CodeEngine:211 - Generated code: D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\Core\Src\main.c
+2020-08-04 17:18:27,516 [INFO] ProjectBuilder:1843 - Time for Copy HAL[1] : 95mS.
+2020-08-04 17:18:27,519 [INFO] ProjectBuilder:2428 - Project Generator version: 3.6.0
+2020-08-04 17:18:27,668 [INFO] ConfigFileManager:1043 - The Die is : DIE421
+2020-08-04 17:18:28,443 [INFO] ProjectBuilder:2595 - Time for Generating toolchain IDE Files: 924mS.
+2020-08-04 17:18:28,443 [INFO] ProjectBuilder:1703 - Time for Copy CMSIS : 0mS.
+2020-08-04 17:18:28,475 [INFO] ProjectBuilder:1703 - Time for Copy CMSIS : 0mS.
+2020-08-04 23:27:51,284 [INFO] Activator:176 - 
+
+
+2020-08-04 23:27:51,286 [INFO] Activator:177 - !SESSION log4j initialized

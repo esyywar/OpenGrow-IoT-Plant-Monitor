@@ -1,5 +1,7 @@
 /application/node_modules
 /application/dist
 /application/src/config/default.json
+/application/src/client/node_modules
 /application/config
 /esp8266/credentials
+/stm32

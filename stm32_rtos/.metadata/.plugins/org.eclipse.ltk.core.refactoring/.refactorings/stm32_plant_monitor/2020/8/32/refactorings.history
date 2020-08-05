@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;stm32_plant_monitor/stm32_plant_monitor Debug (1).launch&apos; to &apos;stm32_plant_monitor Debug.launch&apos;" description="Rename resource &apos;stm32_plant_monitor Debug (1).launch&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="stm32_plant_monitor Debug (1).launch" name="stm32_plant_monitor Debug.launch" stamp="1596575250980" updateReferences="true"/>
+</session>
