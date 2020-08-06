@@ -1,4 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+
+import { useDispatch } from 'react-redux'
+import { loadUser } from '../../actions/auth'
 
 import { useTypedSelector } from '../../reducers'
 
@@ -14,6 +17,12 @@ interface PrivateRouteProps extends RouteProps {
 }
 
 function PrivateRoute(props: PrivateRouteProps) {
+	const dispatch = useDispatch()
+
+	useEffect(() => {
+		dispatch(loadUser())
+	}, [dispatch])
+
 	const authUser = useTypedSelector((state) => state.authState.auth)
 
 	const { component: Component, children, ...rest } = props

@@ -19,6 +19,26 @@ const router = express.Router()
  ******************************************************/
 
 /*
+ *	Brief: Get user username and id from token
+ *	Path: /api/user/auth
+ */
+router.get('/auth', auth, async (req: Request, res: Response) => {
+	const token = req.header('x-auth-token')
+
+	try {
+		const user: IUser | null = await User.findById(req.body.user.id)
+
+		if (!user) {
+			return res.status(400).json({ errors: [{ msg: 'User does not exist.' }] })
+		}
+
+		res.json({ token, userId: user.id, username: user.username })
+	} catch (error) {
+		res.status(500).json({ errors: [{ msg: 'Server error.' }] })
+	}
+})
+
+/*
  *	Brief: Get all plants associated with the user
  *	Path: /api/user/plants
  */

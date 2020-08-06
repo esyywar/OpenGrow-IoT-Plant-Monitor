@@ -2,12 +2,7 @@
 import mqtt, { QoS } from 'mqtt'
 import config from 'config'
 import Plant, { IPlant } from '../models/Plant'
-import {
-	plantVarEnum,
-	getPlantIdFromTopic,
-	getMsgTypeFromTopic,
-	getPlantVarFromTopic,
-} from './util'
+import { plantVarEnum, getPlantIdFromTopic } from './util'
 
 /* Subscriber must be connected to db for updating plant documents */
 import connectDB from '../database/db'
@@ -23,10 +18,13 @@ const connectOptions: object = {
 	reconnectPeriod: 5000,
 }
 
-const client = mqtt.connect(config.get('mqtt.brokerUrl'), connectOptions)
+/* Payload type from plant monitor */
+type plantData = {
+	soilMoisture?: number
+	lightLevel?: number
+}
 
-/* Plant moisture level topic */
-const topic = 'testId/plant_1234'
+const client = mqtt.connect(config.get('mqtt.brokerUrl'), connectOptions)
 
 /* Subscribe to topic */
 client.on('connect', async () => {
@@ -49,8 +47,8 @@ client.on('connect', async () => {
 		/*	Client action on topic
 		 *	Brief: topic is of the form: ${plantId}/data
 		 */
-		client.on('message', async (topic, payload: any) => {
-			payload = JSON.parse(payload)
+		client.on('message', async (topic, payloadRaw: any) => {
+			const payload: plantData = JSON.parse(payloadRaw)
 
 			/* Get the plant's id in database from topic root */
 			const plantId: string = getPlantIdFromTopic(topic)
@@ -62,20 +60,13 @@ client.on('connect', async () => {
 				return
 			}
 
-			/* Publish data in db */
-			const plantVar = getPlantVarFromTopic(topic)
-
-			switch (Object.keys(payload)[0]) {
-				case plantVarEnum.soilMoisture:
-					plant.data.soilMoisture.push({ measurement: payload.soilMoisture })
-					await plant.save()
-					break
-				case plantVarEnum.lightLevel:
-					plant.data.soilMoisture.push({ measurement: payload.lightLevel })
-					await plant.save()
-					break
-				default:
-					console.log(plantVar)
+			if (payload.soilMoisture) {
+				plant.data.soilMoisture.push({ measurement: payload.soilMoisture })
+				await plant.save()
+			}
+			if (payload.lightLevel) {
+				plant.data.lightLevel.push({ measurement: payload.lightLevel })
+				await plant.save()
 			}
 		})
 	} catch (error) {

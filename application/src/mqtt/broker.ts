@@ -29,7 +29,6 @@ aedes.authenticate = (client: any, username: string, password: string, callback:
 			username.toString() === config.get('mqtt.brokerUsername') &&
 			password.toString() === config.get('mqtt.brokerPassword')
 		) {
-			console.log(`Client ${client.id} has been authenticated!`)
 			callback(null, true)
 		} else {
 			/* Incorrect username + password */
@@ -61,7 +60,7 @@ aedes.on('publish', async (publish: any, client: any) => {
 		return
 	}
 
-	console.log(`Published message ${publish.messageId} of topic ${publish.topic} to ${client.id}`)
+	console.log(`Published message ${publish.messageId} of topic ${publish.topic} from ${client.id}`)
 })
 
 /* Client subscribes to a topic */

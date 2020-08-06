@@ -10,6 +10,7 @@ export const LOGIN_FAILED = 'LOGIN_FAILED'
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
 export const REGISTER_FAILED = 'REGISTER_FAILED'
 export const LOGOUT_USER = 'LOGOUT_USER'
+export const LOADED_USER = 'LOADED_USER'
 
 /******************** USER PLANTS *******************/
 

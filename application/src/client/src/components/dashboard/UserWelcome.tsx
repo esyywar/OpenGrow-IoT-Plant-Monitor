@@ -11,7 +11,7 @@ export default function UserWelcome() {
 
 	return (
 		<Grid container>
-			{auth.isLoading ? (
+			{auth.isLoading || auth.username === null ? (
 				<Spinner />
 			) : (
 				<Grid item xs={12} lg={6}>

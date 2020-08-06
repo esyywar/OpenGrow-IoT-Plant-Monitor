@@ -4,9 +4,12 @@ import {
 	REGISTER_SUCCESS,
 	REGISTER_FAILED,
 	LOGOUT_USER,
+	LOADED_USER,
 } from './types'
 
 import { setAlert } from './alerts'
+
+import { setAuthToken } from './setAuthToken'
 
 import axios from 'axios'
 
@@ -27,7 +30,7 @@ export type registerCredsType = {
 /************************ ACTION TYPES ***************************/
 
 export type authSuccessType = {
-	type: 'LOGIN_SUCCESS' | 'REGISTER_SUCCESS'
+	type: 'LOGIN_SUCCESS' | 'REGISTER_SUCCESS' | 'LOADED_USER'
 	payload: {
 		userId: string
 		username: string
@@ -36,6 +39,30 @@ export type authSuccessType = {
 }
 
 /**************************** ACTIONS ********************************/
+
+/* Try to load user from JWT in local storage */
+export const loadUser = () => async (dispatch: Function) => {
+	if (localStorage.token) {
+		setAuthToken(localStorage.token)
+	}
+
+	try {
+		const res = await axios.get('/api/user/auth')
+
+		const action: authSuccessType = {
+			type: LOADED_USER,
+			payload: res.data,
+		}
+
+		dispatch(action)
+	} catch (error) {
+		dispatch({ type: LOGIN_FAILED })
+
+		const errors = error.response.data.errors
+
+		errors.forEach((error: any) => dispatch(setAlert(error.msg, 'error')))
+	}
+}
 
 /* Attempt user login */
 export const userLogin = (loginCreds: loginCredsType) => async (dispatch: Function) => {

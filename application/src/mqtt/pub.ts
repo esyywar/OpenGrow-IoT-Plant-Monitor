@@ -15,7 +15,7 @@ const connectOptions: object = {
 const client: any = mqtt.connect(config.get('mqtt.brokerUrl'), connectOptions)
 
 /* Plant moisture level topic */
-const topic: string = 'testId/plant_1234'
+const topic: string = '5f14fc26066e941a68d81828/data'
 
 const message = {
 	soilMoisture: 400,
