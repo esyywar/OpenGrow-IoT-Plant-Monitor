@@ -55,7 +55,11 @@
   margin-right: 2%;
 }
 
-.dashboard .user-plant-list .plant-card .plant-card-content .data-btn {
-  margin-top: 3%;
+.dashboard .user-plant-list .plant-card .plant-card-content .plant-card-btn {
+  margin: 3% 2% 0 0;
+}
+
+.dashboard .user-plant-list .plant-card .plant-card-content .delete-btn {
+  background-color: #940303;
 }
 /*# sourceMappingURL=dashboard.css.map */

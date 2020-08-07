@@ -4,7 +4,7 @@ import { useTheme } from '@material-ui/core/styles'
 
 import { Grid, Button, Paper } from '@material-ui/core/'
 
-import AddPlantModal from './AddPlantModal'
+import AddPlantModal from './Modals/AddPlantModal'
 
 export default function DashActions() {
 	const theme = useTheme()

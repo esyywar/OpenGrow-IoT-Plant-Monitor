@@ -255,10 +255,8 @@ router.put('/plant/:plantId?', auth, async (req: Request, res: Response) => {
 
 	try {
 		/* Verify that plant exists */
-		if (!(await Plant.exists({ id: plantId })) || !plantId) {
-			return res
-				.status(400)
-				.json({ errors: [{ msg: 'Plant not found. Please check the ID is entered correctly.' }] })
+		if (!(await Plant.exists({ _id: plantId })) || !plantId) {
+			return res.status(400).json({ errors: [{ msg: 'Plant ID is invalid.' }] })
 		}
 
 		let plant: IPlant | null = await Plant.findById(plantId)

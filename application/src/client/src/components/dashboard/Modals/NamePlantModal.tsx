@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import PropTypes, { InferProps } from 'prop-types'
 
 import { useDispatch } from 'react-redux'
-import { renameUserPlant } from '../../actions/userPlants'
+import { renameUserPlant } from '../../../actions/userPlants'
 
 import {
 	Dialog,

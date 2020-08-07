@@ -6,13 +6,16 @@ import { useTheme } from '@material-ui/core/styles'
 import { Grid, Button, Paper } from '@material-ui/core/'
 
 import EditIcon from '@material-ui/icons/Edit'
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 
-import NamePlantModal from './NamePlantModal'
+import NamePlantModal from './Modals/NamePlantModal'
+import RemovePlantModal from './Modals/RemovePlantModal'
 
 export default function PlantCard({ id, name, cardNum }: InferProps<typeof PlantCard.propTypes>) {
 	const theme = useTheme()
 
-	const [modalOpen, setModalOpen] = useState(false)
+	const [plantNameModal, setPlantNameModal] = useState(false)
+	const [removePlantModal, setRemovePlantModal] = useState(false)
 
 	const plantImg = require('../../media/cartoon-potted-plant.jpg')
 
@@ -32,14 +35,21 @@ export default function PlantCard({ id, name, cardNum }: InferProps<typeof Plant
 					<Grid item xs={6} lg={9} className="plant-card-content">
 						<Grid container direction="row" alignItems="center" justify="flex-start">
 							<h4 className="plant-card-title">{name}</h4>
-							<Button onClick={() => setModalOpen(true)}>
+							<Button onClick={() => setPlantNameModal(true)}>
 								<EditIcon />
 							</Button>
 						</Grid>
 
-						<Grid container direction="row" alignItems="center" justify="flex-start">
-							<Button className="data-btn" variant="contained" color="primary">
+						<Grid container direction="row" alignItems="center" justify="space-between">
+							<Button className="plant-card-btn" variant="contained" color="primary">
 								View Data
+							</Button>
+							<Button
+								className="plant-card-btn delete-btn"
+								variant="contained"
+								onClick={() => setRemovePlantModal(true)}
+							>
+								<DeleteForeverIcon />
 							</Button>
 						</Grid>
 					</Grid>
@@ -49,8 +59,14 @@ export default function PlantCard({ id, name, cardNum }: InferProps<typeof Plant
 			<NamePlantModal
 				plantId={id}
 				currName={name}
-				isOpen={modalOpen}
-				handleClose={() => setModalOpen(false)}
+				isOpen={plantNameModal}
+				handleClose={() => setPlantNameModal(false)}
+			/>
+
+			<RemovePlantModal
+				plantId={id}
+				isOpen={removePlantModal}
+				handleClose={() => setRemovePlantModal(false)}
 			/>
 		</Grid>
 	)
