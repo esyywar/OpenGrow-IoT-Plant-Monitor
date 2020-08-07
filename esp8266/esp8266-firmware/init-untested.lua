@@ -21,28 +21,29 @@ station_cfg = {
 
 -- mqtt settings 
 mqtt_cfg = {
-    clientId = "ESP8266_Client",
-    topic = "esp8266_plant",
+    clientId = "esp_" .. device_info.ID,
+    subTopic = device_info.ID .. "/update",
+    pubTopic = device_info.ID .. "/data",
     qos = 1,
     host = "192.168.0.23",
     port = 1883,
 }
 
-mqtt_subTopic = 'ESP8266_test'
-
--- i2c onfiguration
-id  = 0 
-sda = 1     -- set pin 1 as sda
-scl = 2     -- set pin 2 as scl
+-- i2c configuration
+i2c_config = {
+    id  = 0,
+    sda = 1,    -- set pin 1 as sda
+    scl = 2     -- set pin 2 as scl
+}
 
 STM32_ADDR = 0x68
 
 -- i2c commands to stm32
-ESP_REQ_SENSOR_DATA = 0x42
-ESP_SEND_SETPOINT_LOW = 0x44
-ESP_SEND_SETPOINT_HIGH = 0x46
+ESP_REQ_SENSOR_DATA_CMD = 0x42
+ESP_SEND_SETPOINT_CMD = 0x44
+ESP_SEND_TOLERANCE_CMD = 0x46
 
-i2c.setup(id, sda, scl, i2c.SLOW)   -- initialize i2c
+i2c.setup(i2c_config.id, i2c_config.sda, i2c_config.scl, i2c.SLOW)   -- initialize i2c
 
 -- Wait 4 seconds after power-on to enter the main program
 tmr.create():alarm(4000, tmr.ALARM_SINGLE, function()

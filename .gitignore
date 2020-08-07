@@ -4,4 +4,4 @@
 /application/src/client/node_modules
 /application/config
 /esp8266/credentials
-/stm32
+/stm32-old
