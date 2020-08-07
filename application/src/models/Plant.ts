@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose'
 
 export interface IPlant extends Document {
 	control: {
-		soilMoisture: { setpoint: number; tolerance: number }
+		soilMoisture: { setpoint?: number; tolerance?: number }
 	}
 	data: {
 		soilMoisture: [{ measurement: number; date?: Date }]
@@ -17,9 +17,11 @@ const plantSchema: Schema = new Schema({
 		soilMoisture: {
 			setpoint: {
 				type: Number,
+				default: 400,
 			},
 			tolerance: {
 				type: Number,
+				default: 150,
 			},
 		},
 	},

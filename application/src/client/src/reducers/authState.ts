@@ -38,11 +38,12 @@ export const authState = (state = initialState, action: any) => {
 		case LOGIN_FAILED:
 		case REGISTER_FAILED:
 		case LOGOUT_USER:
+			localStorage.removeItem('token')
 			return {
 				...state,
 				auth: {
-					...state.auth,
 					userId: null,
+					username: null,
 					token: null,
 					isLoading: false,
 					isAuthenticated: false,

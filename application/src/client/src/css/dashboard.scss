@@ -38,7 +38,7 @@
 		}
 
 		.plant-card {
-			min-height: 150px;
+			font-family: 'Mulish', sans-serif;
 			max-height: 250px;
 			width: 90%;
 			padding: 15px 30px;
@@ -48,6 +48,16 @@
 				.plant-card-avatar {
 					height: 100px;
 					width: auto;
+				}
+			}
+
+			.plant-card-content {
+				.plant-card-title {
+					font-size: 20px;
+					margin-right: 2%;
+				}
+				.data-btn {
+					margin-top: 3%;
 				}
 			}
 		}

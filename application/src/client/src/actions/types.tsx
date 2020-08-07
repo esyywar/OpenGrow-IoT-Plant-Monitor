@@ -18,12 +18,15 @@ export const LOAD_PLANTS = 'LOAD_PLANTS'
 export const ADD_PLANT = 'ADD_PLANT'
 export const REMOVE_PLANT = 'REMOVE_PLANT'
 export const CLEAR_PLANTS = 'CLEAR_PLANTS'
+export const RENAMED_PLANT = 'RENAMED_PLANT'
 
 /****************** ACTIVE PLANT (BELGONING TO AUTHENTICATED USER) ***************/
 
 export const PLANT_LOAD_DATA = 'PLANT_LOAD_DATA'
 export const PLANT_SETPOINT_CHANGE = 'PLANT_SETPOINT_CHANGE'
 export const PLANT_TOLERANCE_CHANGE = 'PLANT_TOLERANCE_CHANGE'
+
+/****************** PLANT DATA (FOR SHOWING A PLANT'S COLLECTED DATA) ************/
 
 /******************* STATE INTERFACES *********************/
 
@@ -51,4 +54,17 @@ export interface UserPlantsState {
 		plantId: string
 	}>
 	isLoading: boolean
+}
+
+export interface PlantDataState {
+	data: {
+		soilMoisture: Array<{
+			measurement: number
+			date: Date
+		}>
+		lightLevel: Array<{
+			measurement: number
+			date: Date
+		}>
+	}
 }

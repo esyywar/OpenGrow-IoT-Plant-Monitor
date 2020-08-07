@@ -1,4 +1,4 @@
-import { LOAD_PLANTS, ADD_PLANT, REMOVE_PLANT, CLEAR_PLANTS } from './types'
+import { LOAD_PLANTS, ADD_PLANT, REMOVE_PLANT, CLEAR_PLANTS, RENAMED_PLANT } from './types'
 
 import { setAuthToken } from './setAuthToken'
 
@@ -6,18 +6,17 @@ import { setAlert } from './alerts'
 
 import axios from 'axios'
 
-/************************ ACTION TYPES ***************************/
+/************************ ARGUEMENT TYPES ***************************/
 
-export type loadPlantsType = {
-	type: 'LOAD_PLANTS'
-	payload: Array<{
-		name: string
-		plantId: string
-	}>
+export type renamePlantType = {
+	plantId: string
+	name: string
 }
 
-export type addPlantType = {
-	type: 'ADD_PLANT'
+/************************ ACTION TYPES ***************************/
+
+export type allPlantsType = {
+	type: 'LOAD_PLANTS' | 'ADD_PLANT' | 'RENAMED_PLANT'
 	payload: Array<{
 		name: string
 		plantId: string
@@ -45,7 +44,7 @@ export const loadUserPlants = () => async (dispatch: Function) => {
 	try {
 		const res = await axios.get('/api/user/plants')
 
-		const action: loadPlantsType = {
+		const action: allPlantsType = {
 			type: LOAD_PLANTS,
 			payload: res.data.plants.map((item: any) => {
 				return {
@@ -80,7 +79,7 @@ export const addUserPlant = (plantId: string) => async (dispatch: Function) => {
 	try {
 		const res = await axios.put(`/api/user/plant/${plantId}`, config)
 
-		const action: addPlantType = {
+		const action: allPlantsType = {
 			type: ADD_PLANT,
 			payload: res.data.plants.map((item: any) => {
 				return {
@@ -110,6 +109,43 @@ export const removeUserPlant = (plantId: string) => async (dispatch: Function) =
 		const action: removePlantType = {
 			type: REMOVE_PLANT,
 			payload: plantId,
+		}
+
+		dispatch(action)
+	} catch (error) {
+		const errors = error.response.data.errors
+
+		errors.forEach((error: any) => dispatch(setAlert(error.msg, 'error')))
+	}
+}
+
+/* Rename a plant on the user's account */
+export const renameUserPlant = (renamePlant: renamePlantType) => async (dispatch: Function) => {
+	const { name, plantId } = renamePlant
+
+	if (localStorage.token) {
+		setAuthToken(localStorage.token)
+	}
+
+	const config = {
+		headers: {
+			'Content-type': 'application/json',
+		},
+	}
+
+	const body = JSON.stringify({ name: name })
+
+	try {
+		const res = await axios.post(`/api/user/plant/name/${plantId}`, body, config)
+
+		const action: allPlantsType = {
+			type: RENAMED_PLANT,
+			payload: res.data.plants.map((item: any) => {
+				return {
+					name: item.name,
+					plantId: item.plant,
+				}
+			}),
 		}
 
 		dispatch(action)

@@ -5,6 +5,7 @@ import {
 	REGISTER_FAILED,
 	LOGOUT_USER,
 	LOADED_USER,
+	CLEAR_PLANTS,
 } from './types'
 
 import { setAlert } from './alerts'
@@ -57,10 +58,6 @@ export const loadUser = () => async (dispatch: Function) => {
 		dispatch(action)
 	} catch (error) {
 		dispatch({ type: LOGIN_FAILED })
-
-		const errors = error.response.data.errors
-
-		errors.forEach((error: any) => dispatch(setAlert(error.msg, 'error')))
 	}
 }
 
@@ -128,4 +125,5 @@ export const registerUser = (registerCreds: registerCredsType) => async (dispatc
 /* Logout user */
 export const userLogout = () => (dispatch: Function) => {
 	dispatch({ type: LOGOUT_USER })
+	dispatch({ type: CLEAR_PLANTS })
 }

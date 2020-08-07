@@ -1,6 +1,6 @@
 import { UserPlantsState } from '../actions/types'
 
-import { LOAD_PLANTS, ADD_PLANT, REMOVE_PLANT, CLEAR_PLANTS } from '../actions/types'
+import { LOAD_PLANTS, ADD_PLANT, REMOVE_PLANT, CLEAR_PLANTS, RENAMED_PLANT } from '../actions/types'
 
 const initialState: UserPlantsState = {
 	userPlants: [],
@@ -9,6 +9,7 @@ const initialState: UserPlantsState = {
 
 export const userPlantsState = (state = initialState, action: any) => {
 	switch (action.type) {
+		case RENAMED_PLANT:
 		case LOAD_PLANTS:
 			return { userPlants: action.payload, isLoading: false }
 		case ADD_PLANT:
