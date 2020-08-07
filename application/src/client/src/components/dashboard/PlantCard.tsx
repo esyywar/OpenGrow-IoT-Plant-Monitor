@@ -30,14 +30,14 @@ export default function PlantCard({ id, name, cardNum }: InferProps<typeof Plant
 						<img src={plantImg} className="plant-card-avatar" alt="cartoon-potted-plant" />
 					</Grid>
 					<Grid item xs={6} lg={9} className="plant-card-content">
-						<Grid container xs={12} direction="row" alignItems="center" justify="flex-start">
+						<Grid container direction="row" alignItems="center" justify="flex-start">
 							<h4 className="plant-card-title">{name}</h4>
 							<Button onClick={() => setModalOpen(true)}>
 								<EditIcon />
 							</Button>
 						</Grid>
 
-						<Grid container xs={12} direction="row" alignItems="center" justify="flex-start">
+						<Grid container direction="row" alignItems="center" justify="flex-start">
 							<Button className="data-btn" variant="contained" color="primary">
 								View Data
 							</Button>

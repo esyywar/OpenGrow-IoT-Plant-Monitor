@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import PropTypes, { InferProps } from 'prop-types'
 
 import { useDispatch } from 'react-redux'
-import { renameUserPlant } from '../../actions/userPlants'
+import { addUserPlant } from '../../actions/userPlants'
 
 import {
 	Dialog,
@@ -15,31 +15,26 @@ import {
 	Button,
 } from '@material-ui/core/'
 
-type PlantNameForm = {
+type AddPlantForm = {
 	plantId: string
-	name: string
 }
 
 export default function NamePlantModal({
-	plantId,
-	currName,
 	isOpen,
 	handleClose,
 }: InferProps<typeof NamePlantModal.propTypes>) {
 	const dispatch = useDispatch()
 
-	const initialState: PlantNameForm = { plantId, name: currName }
+	const initialState: AddPlantForm = { plantId: '' }
 
-	const [formData, setFormData] = useState<PlantNameForm>(initialState)
+	const [formData, setFormData] = useState<AddPlantForm>(initialState)
 
 	function handleInputChange(event: any) {
 		setFormData({ ...formData, [event.target.name]: event.target.value })
 	}
 
 	function submitNameChange() {
-		if (formData.name !== currName) {
-			dispatch(renameUserPlant(formData))
-		}
+		dispatch(addUserPlant(formData.plantId))
 		handleClose()
 	}
 
@@ -51,24 +46,24 @@ export default function NamePlantModal({
 			aria-describedby="form-for-naming-plant"
 			fullWidth
 		>
-			<DialogTitle id="form-dialog-title">Name Your Plant</DialogTitle>
+			<DialogTitle id="form-dialog-title">Add A Plant</DialogTitle>
 			<DialogContent>
-				<DialogContentText>What do you want to name this plant?</DialogContentText>
+				<DialogContentText>What is the ID number of the plant?</DialogContentText>
 				<TextField
 					autoFocus
 					margin="dense"
 					id="name"
 					label="Plant Name"
 					type="text"
-					name="name"
-					placeholder={currName}
+					name="plantId"
+					placeholder="Enter 24 character ID code"
 					fullWidth
 					onChange={handleInputChange}
 				/>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={submitNameChange} color="primary">
-					Change Name
+					Add Plant
 				</Button>
 				<Button onClick={handleClose} color="primary">
 					Cancel
@@ -79,8 +74,6 @@ export default function NamePlantModal({
 }
 
 NamePlantModal.propTypes = {
-	plantId: PropTypes.string.isRequired,
-	currName: PropTypes.string.isRequired,
 	isOpen: PropTypes.bool.isRequired,
 	handleClose: PropTypes.func.isRequired,
 }

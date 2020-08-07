@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useTheme } from '@material-ui/core/styles'
 
 import { Grid, Button, Paper } from '@material-ui/core/'
 
+import AddPlantModal from './AddPlantModal'
+
 export default function DashActions() {
 	const theme = useTheme()
+
+	const [modalOpen, setModalOpen] = useState(false)
 
 	return (
 		<Grid container>
@@ -24,11 +28,18 @@ export default function DashActions() {
 					className="dash-action-container"
 				>
 					<div className="dash-action-title">Actions</div>
-					<Button variant="contained" color="secondary" className="dash-action-btn">
+					<Button
+						variant="contained"
+						color="secondary"
+						className="dash-action-btn"
+						onClick={() => setModalOpen(true)}
+					>
 						Add A Plant
 					</Button>
 				</Paper>
 			</Grid>
+
+			<AddPlantModal isOpen={modalOpen} handleClose={() => setModalOpen(false)} />
 		</Grid>
 	)
 }

@@ -70,14 +70,8 @@ export const addUserPlant = (plantId: string) => async (dispatch: Function) => {
 		setAuthToken(localStorage.token)
 	}
 
-	const config = {
-		headers: {
-			'Content-type': 'application/json',
-		},
-	}
-
 	try {
-		const res = await axios.put(`/api/user/plant/${plantId}`, config)
+		const res = await axios.put(`/api/user/plant/${plantId}`)
 
 		const action: allPlantsType = {
 			type: ADD_PLANT,

@@ -250,11 +250,17 @@ router.post(
  *	Brief: Add a plant to user's profile (maximum 10 per user)
  *	Path: /api/user/plant/:id
  */
-router.put('/plant/:plantId', auth, async (req: Request, res: Response) => {
+router.put('/plant/:plantId?', auth, async (req: Request, res: Response) => {
 	const plantId = req.params.plantId
 
 	try {
 		/* Verify that plant exists */
+		if (!(await Plant.exists({ id: plantId })) || !plantId) {
+			return res
+				.status(400)
+				.json({ errors: [{ msg: 'Plant not found. Please check the ID is entered correctly.' }] })
+		}
+
 		let plant: IPlant | null = await Plant.findById(plantId)
 
 		if (!plant) {
@@ -300,7 +306,7 @@ router.put('/plant/:plantId', auth, async (req: Request, res: Response) => {
 		plant.isAssociated = true
 
 		await user.save()
-		await plant.save()
+		await plant?.save()
 
 		res.json({ plants: user.plants })
 	} catch (error) {
