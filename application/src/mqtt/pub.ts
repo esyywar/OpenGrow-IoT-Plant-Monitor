@@ -14,8 +14,8 @@ const connectOptions: object = {
 
 const client: any = mqtt.connect(config.get('mqtt.brokerUrl'), connectOptions)
 
-/* Plant moisture level topic */
-const topic: string = '5f14fc26066e941a68d81828/data'
+/* Plant moisture level topic (3rd in database) */
+const topic: string = '5f14fc2b066e941a68d8182a/data'
 
 const message = {
 	soilMoisture: 400,
@@ -27,7 +27,7 @@ client.on('connect', () => {
 
 	setInterval(() => {
 		client.publish(topic, JSON.stringify(message), { qos: mqttQoS })
-	}, 15000)
+	}, 30000)
 
 	client.on('error', (error: object) => {
 		console.log(error)

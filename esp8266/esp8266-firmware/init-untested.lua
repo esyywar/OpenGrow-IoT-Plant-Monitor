@@ -2,6 +2,9 @@
 ------------------- Initialization --------------------
 -------------------------------------------------------
 
+-- device info
+device_info = require 'device_info'
+
 -- wifi credentials
 wifi_creds = require 'credentials'
 

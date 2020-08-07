@@ -47,8 +47,12 @@ client.on('connect', async () => {
 		/*	Client action on topic
 		 *	Brief: topic is of the form: ${plantId}/data
 		 */
-		client.on('message', async (topic, payloadRaw: any) => {
-			const payload: plantData = JSON.parse(payloadRaw)
+		client.on('message', async (topic, msgBuffer: any) => {
+			const buf: string = msgBuffer.toString()
+
+			console.log(buf)
+
+			const payload: plantData = JSON.parse(buf)
 
 			/* Get the plant's id in database from topic root */
 			const plantId: string = getPlantIdFromTopic(topic)

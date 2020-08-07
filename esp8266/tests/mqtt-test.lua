@@ -12,14 +12,18 @@ station_cfg.auto = false
 wifi.setmode(wifi.STATION, true)
 wifi.sta.config(station_cfg)
 
+--import device info
+local device_info = require 'device_info'
+
 -- import mqtt credentials
 local mqtt_creds = require 'mqtt_credentials'
 
 -- Mqtt connect configuration
-local clientId = "ESP8266_Client"
-local topic = 'esp8266_plant'
+local clientId = "esp_" .. device_info.ID
+local subTopic = device_info.ID .. "/update"
+local pubTopic = device_info.ID .. "/data"
 local qos = 1
-local mqtt_host = '192.168.0.23'
+local mqtt_host = '192.168.0.25'
 local mqtt_port = 1883
 
 -- create mqtt client
@@ -49,9 +53,23 @@ wifi.sta.connect(function()
     end
 )
 
+-- timer to publish messages every 15 sec
+local mqtt_pubData = tmr.create()
+
+mqtt_pubData:register(15000, tmr.ALARM_AUTO, function()
+    data = '{"soilMoisture": "400", "lightLevel": "1200"}'
+
+    client:publish(pubTopic, data, qos, 0, function()
+            print('Published data ack\'d')
+        end
+    )
+end
+)
+
 -- handle mqtt connection error by trying reconnection
 function handle_mqtt_conn_error()
     print ('Mqtt connection error')
+    mqtt_pubData:stop()
     tmr.create():alarm(5000, tmr.ALARM_SINGLE, mqtt_data_connect)
 end
 
@@ -62,13 +80,16 @@ function mqtt_data_connect()
             print('Mqtt broker connected') 
 
             -- subscribe to topic
-            client:subscribe(topic, qos, function() print('ESP8266 subscribed') end)
+            client:subscribe(subTopic, qos, function() print('ESP8266 subscribed') end)
+
+            -- start timer to publish data every 15 seconds
+            mqtt_pubData:start()
+
+            -- if go offline, call connection error
+            client:on("offline", handle_mqtt_conn_error)
         end, 
         handle_mqtt_conn_error)
 end
-
--- if go offline, call connection error
-client:on("offline", handle_mqtt_conn_error)
 
 
 

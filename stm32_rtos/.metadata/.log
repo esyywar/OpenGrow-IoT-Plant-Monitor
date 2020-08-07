@@ -6378,3 +6378,47 @@ java.lang.RuntimeException
 	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
 	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
 	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+!SESSION 2020-08-05 16:59:13.282 -----------------------------------------------
+eclipse.buildId=Version 1.2.0
+java.version=1.8.0_202
+java.vendor=AdoptOpenJdk
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Framework arguments:  D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\.cproject
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\.cproject
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2020-08-05 16:59:21.177
+!MESSAGE Log4j initialized with config file D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2020-08-05 16:59:24.964
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 4 4 2020-08-05 16:59:25.570
+!MESSAGE com.st.stm32cube.ide.mcu.ide/META-INF/version/build_ref file not found, build reference will not be reported into properties
+
+!ENTRY org.eclipse.cdt.core 1 0 2020-08-05 16:59:30.505
+!MESSAGE Indexed 'stm32_plant_monitor' (41 sources, 134 headers) in 4.06 sec: 13,619 declarations; 74,776 references; 2 unresolved inclusions; 30 syntax errors; 145 unresolved names (0.16%)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2020-08-05 23:28:17.370
+!MESSAGE Error - No active DSF-Session. tmpSessionId = 0 (contextManager row 121)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2020-08-05 23:28:17.374
+!MESSAGE Existing sessions are:
+!SESSION 2020-08-06 19:55:34.417 -----------------------------------------------
+eclipse.buildId=Version 1.2.0
+java.version=1.8.0_202
+java.vendor=AdoptOpenJdk
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Framework arguments:  D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\.cproject
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\.cproject
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2020-08-06 19:55:44.364
+!MESSAGE Log4j initialized with config file D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2020-08-06 19:55:47.968
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 4 4 2020-08-06 19:55:48.593
+!MESSAGE com.st.stm32cube.ide.mcu.ide/META-INF/version/build_ref file not found, build reference will not be reported into properties
+
+!ENTRY org.eclipse.cdt.core 1 0 2020-08-06 19:55:52.907
+!MESSAGE Indexed 'stm32_plant_monitor' (41 sources, 134 headers) in 3.67 sec: 13,619 declarations; 74,776 references; 2 unresolved inclusions; 30 syntax errors; 145 unresolved names (0.16%)
