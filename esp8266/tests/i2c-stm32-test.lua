@@ -17,9 +17,12 @@ if (i2c.address(id, stm32_address, i2c.TRANSMITTER)) then   -- set slave address
     i2c.start(id)
     if (i2c.address(id, stm32_address, i2c.RECEIVER)) then
         print('got data ack')
-        len = i2c.read(id, 4)
+        data = i2c.read(id, 4)
         i2c.stop(id)
-        print('Msg length: ', string.byte(len, 1, 5))
+
+        -- reverse to data buffer is MSB first
+        data = string.reverse(data)
+        print('soilMoisture: ', string.byte(data, 3), string.byte(data, 4), ' lightLevel: ', string.byte(data, 1, 2))
     end
 else
     print('STM32 Not responding..!')
