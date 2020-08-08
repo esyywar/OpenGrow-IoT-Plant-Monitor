@@ -1802,7 +1802,7 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
  8000e4c:	2b01      	cmp	r3, #1
  8000e4e:	d124      	bne.n	8000e9a <HAL_I2C_SlaveRxCpltCallback+0x6e>
 		{
-			/* Read value from ADC1 at pin GPIO A0 */
+			/* Transmit data to ESP8266 */
 			HAL_I2C_Slave_Transmit(I2c1_espComm, (uint8_t*)plant_sensors, sizeof(plant_sensors)/sizeof(uint8_t), 2000);
  8000e50:	f44f 63fa 	mov.w	r3, #2000	; 0x7d0
  8000e54:	2204      	movs	r2, #4

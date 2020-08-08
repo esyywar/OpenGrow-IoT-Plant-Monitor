@@ -619,7 +619,7 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
 		/* Send soil moisture and light sensor data to ESP8266 (4 bytes) */
 		if(xSemaphoreTakeFromISR(Sensor_Sema_Handle, NULL) == pdTRUE)
 		{
-			/* Transmit data to ESP8266 */
+			/* Read value from ADC1 at pin GPIO A0 */
 			HAL_I2C_Slave_Transmit(I2c1_espComm, (uint8_t*)plant_sensors, sizeof(plant_sensors)/sizeof(uint8_t), 2000);
 
 			xSemaphoreGiveFromISR(Sensor_Sema_Handle, NULL);

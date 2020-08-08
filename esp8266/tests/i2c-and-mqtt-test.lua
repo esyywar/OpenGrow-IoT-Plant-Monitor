@@ -63,7 +63,7 @@ mqtt_pubData:register(15000, tmr.ALARM_AUTO, function()
     local data = i2c_get_data()
 
     -- sending data in json format
-    data = '{"soilMoisture": ' .. string.sub(data, 2, 2) .. string.sub(data, 1, 1) .. ', "lightLevel": ' .. string.sub(data, 4, 4) .. string.sub(data, 3, 3) .. '}'
+    data = '{"soilMoisture": ' .. string.byte(data, 3) .. ' ' .. string.byte(data, 4) .. ', "lightLevel": ' .. string.byte(data, 1) .. ' ' .. string.byte(data, 2) .. '}'
 
     client:publish(pubTopic, data, qos, 0, function()
             print('Published data ack\'d')
@@ -111,6 +111,8 @@ function i2c_get_data()
             print('got data ack')
             data = i2c.read(id, 4)
             i2c.stop(id)
+
+            data = string.reverse(data)
             print('Got data: ', string.byte(data, 1, 5))
 
             return data
