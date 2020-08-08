@@ -29,6 +29,7 @@ const client = mqtt.connect(config.get('mqtt.brokerUrl'), connectOptions)
 
 /* Record soil moisture value in database */
 const soilDataReceived = async (plantId: string, soilMoisture: number) => {
+	console.log('Publishing to soil: ' + soilMoisture)
 	try {
 		/* Get plant in database */
 		let plant: IPlant | null = await Plant.findById(plantId)
@@ -47,6 +48,7 @@ const soilDataReceived = async (plantId: string, soilMoisture: number) => {
 
 /* Record light level value in database */
 const lightDataReceived = async (plantId: string, lightLevel: number) => {
+	console.log('Publishing to light: ' + lightLevel)
 	try {
 		/* Get plant in database */
 		let plant: IPlant | null = await Plant.findById(plantId)

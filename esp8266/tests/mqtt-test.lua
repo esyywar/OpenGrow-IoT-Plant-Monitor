@@ -21,7 +21,7 @@ local mqtt_creds = require 'mqtt_credentials'
 -- Mqtt connect configuration
 local clientId = "esp_" .. device_info.ID
 local subTopic = device_info.ID .. "/update"
-local pubTopics = device_info.ID .. "/soilMoisture"
+local pubTopics = {soil=device_info.ID .. "/soilMoisture", light=device_info.ID .. "/lightLevel"}
 local qos = 1
 local mqtt_host = '192.168.0.25'
 local mqtt_port = 1883
@@ -57,9 +57,12 @@ wifi.sta.connect(function()
 local mqtt_pubData = tmr.create()
 
 mqtt_pubData:register(15000, tmr.ALARM_AUTO, function()
-    data = '{"highByte": 6, "lowByte": 160}'
+    soilData = '{"highByte": 6, "lowByte": 160}'
+    lightData = '{"highByte": 4, "lowByte": 135}'
 
-    client:publish(pubTopic, data, qos, 0, function()
+    -- publish soil and light data
+    client:publish(pubTopics.soil, soilData, qos, 0)
+    client:publish(pubTopics.light, lightData, qos, 0, function()
             print('Published data ack\'d')
     end)
 end
