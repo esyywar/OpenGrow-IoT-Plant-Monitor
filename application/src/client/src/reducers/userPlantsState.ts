@@ -10,10 +10,9 @@ const initialState: UserPlantsState = {
 export const userPlantsState = (state = initialState, action: any) => {
 	switch (action.type) {
 		case RENAMED_PLANT:
+		case ADD_PLANT:
 		case LOAD_PLANTS:
 			return { userPlants: action.payload, isLoading: false }
-		case ADD_PLANT:
-			return { userPlants: [...state.userPlants, action.payload], isLoading: false }
 		case REMOVE_PLANT:
 			return {
 				userPlants: state.userPlants.filter((plant) => plant.plantId !== action.payload),

@@ -60,9 +60,9 @@ export default function StepsCarousel() {
 	}
 
 	return (
-		<Paper style={{ backgroundColor: 'whitesmoke' }}>
+		<Paper className="carousel-container">
 			<SwipeableViews
-				className="carousel-container"
+				className="carousel-swipe-container"
 				axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
 				index={activeStep}
 				onChangeIndex={handleStepChange}
@@ -76,7 +76,9 @@ export default function StepsCarousel() {
 								<span className="step-text">{step.text}</span>
 							</div>
 						</Typography>
-						{Math.abs(activeStep - index) <= 2 ? <img src={step.img} alt={step.imgAlt} /> : null}
+						{Math.abs(activeStep - index) <= 2 ? (
+							<img className="carousel-img" src={step.img} alt={step.imgAlt} />
+						) : null}
 					</div>
 				))}
 			</SwipeableViews>

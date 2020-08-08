@@ -9,7 +9,7 @@ export default function Landing() {
 	return (
 		<Grid
 			container
-			style={{ marginTop: '45px' }}
+			className="landing-container"
 			direction="row"
 			alignItems="center"
 			justify="space-evenly"

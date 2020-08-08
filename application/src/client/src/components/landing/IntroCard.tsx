@@ -25,11 +25,11 @@ export default function IntroCard() {
 					</Typography>
 				</Grid>
 
-				<Grid item container xs={12} direction="row" justify="space-evenly">
-					<Grid item xs={5} style={{ overflow: 'hidden' }}>
+				<Grid item container spacing={6} direction="row" alignItems="center" justify="center">
+					<Grid item xs={11} lg={5} style={{ overflow: 'hidden' }}>
 						<img className="plant-image" alt="potted-plant" src={pottedPlantImg} />
 					</Grid>
-					<Grid item xs={6}>
+					<Grid item xs={11} lg={6}>
 						<Paper className="card-info-container">
 							<p className="card-info-text">
 								Ottogrow provides you with the information to make sure your plant is thriving!
@@ -49,8 +49,6 @@ export default function IntroCard() {
 				<Grid
 					item
 					container
-					xs={12}
-					spacing={4}
 					direction="row"
 					alignItems="center"
 					justify="center"
