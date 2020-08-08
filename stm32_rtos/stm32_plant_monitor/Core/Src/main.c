@@ -308,7 +308,7 @@ static void MX_I2C1_Init(void)
   hi2c1.Instance = I2C1;
   hi2c1.Init.ClockSpeed = 100000;
   hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.OwnAddress1 = STM32_I2C_ADDR;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
   hi2c1.Init.OwnAddress2 = 0;
@@ -617,12 +617,12 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
 	/* Check command code sent */
 	if (espCmdCode == ESP_REQ_SENSOR_DATA) {
 		/* Send soil moisture and light sensor data to ESP8266 (4 bytes) */
-		if(xSemaphoreTake(Sensor_Sema_Handle, portMAX_DELAY) == pdTRUE)
+		if(xSemaphoreTakeFromISR(Sensor_Sema_Handle, NULL) == pdTRUE)
 		{
 			/* Read value from ADC1 at pin GPIO A0 */
 			HAL_I2C_Slave_Transmit(I2c1_espComm, (uint8_t*)plant_sensors, sizeof(plant_sensors)/sizeof(uint8_t), 2000);
 
-			xSemaphoreGive(Sensor_Sema_Handle);
+			xSemaphoreGiveFromISR(Sensor_Sema_Handle, NULL);
 		}
 	}
 	else if (espCmdCode == ESP_SEND_MOIS_SETPOINT) {

@@ -38,7 +38,7 @@ extern "C" {
 #define STM32_I2C_ADDR					0x68 << 1
 
 /* I2C commands */
-#define ESP_REQ_SENSOR_DATA				0x42
+#define ESP_REQ_SENSOR_DATA				0x51
 #define ESP_SEND_MOIS_SETPOINT			0x44
 #define ESP_SEND_MOIS_TOLERANCE			0x46
 
