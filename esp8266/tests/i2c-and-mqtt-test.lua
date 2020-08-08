@@ -25,7 +25,7 @@ i2c.setup(id, sda, scl, i2c.SLOW)   -- initialize i2c
 -- Mqtt connect configuration
 local clientId = "esp_" .. device_info.ID
 local subTopic = device_info.ID .. "/update"
-local pubTopic = device_info.ID .. "/data"
+local pubTopics = {soil=device_info.ID .. "/soilMoisture", light=device_info.ID .. "/lightLevel"}
 local qos = 1
 local mqtt_host = '192.168.0.25'
 local mqtt_port = 1883
@@ -63,12 +63,14 @@ mqtt_pubData:register(15000, tmr.ALARM_AUTO, function()
     local data = i2c_get_data()
 
     -- sending data in json format
-    data = '{"soilMoisture": ' .. string.byte(data, 3) .. ' ' .. string.byte(data, 4) .. ', "lightLevel": ' .. string.byte(data, 1) .. ' ' .. string.byte(data, 2) .. '}'
+    soilData = '{"highByte": ' .. string.byte(data, 3) .. ', "lowByte": ' .. string.byte(data, 4) .. '}'
+    lightData = '{"highByte": ' .. string.byte(data, 1) .. ', "lowByte": ' .. string.byte(data, 2) .. '}'
 
-    client:publish(pubTopic, data, qos, 0, function()
+    -- publish soil and light data
+    client:publish(pubTopics.soil, soilData, qos, 0)
+    client:publish(pubTopics.light, lightData, qos, 0, function()
             print('Published data ack\'d')
-        end
-    )
+    end)
 end)
 
 -- handle mqtt connection error by trying reconnection
