@@ -36,7 +36,7 @@ client.on('connect', () => {
 	setInterval(() => {
 		client.publish(soilTopic, JSON.stringify(soilData), { qos: mqttQoS })
 		client.publish(lightTopic, JSON.stringify(lightData), { qos: mqttQoS })
-	}, 60000)
+	}, 300000)
 
 	client.on('error', (error: object) => {
 		console.log(error)

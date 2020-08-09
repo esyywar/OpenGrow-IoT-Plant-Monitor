@@ -72,9 +72,6 @@ netinfo_timer:register(3000, tmr.ALARM_AUTO, function()
 
             -- connect to mqtt broker
             mqtt_data_connect()
-
-            -- Start blinky timer
-            blinky_timer:start()
         end
     end
 )
@@ -87,7 +84,7 @@ end)
 -- timer to publish messages every 15 sec
 local mqtt_pubData = tmr.create()
 
-mqtt_pubData:register(10000, tmr.ALARM_AUTO, function()
+mqtt_pubData:register(300000, tmr.ALARM_AUTO, function()
     local data = i2c_get_data()
 
     -- sending data in json format
@@ -96,9 +93,7 @@ mqtt_pubData:register(10000, tmr.ALARM_AUTO, function()
 
     -- publish soil and light data
     client:publish(pubTopics.soil, soilData, qos, 0)
-    client:publish(pubTopics.light, lightData, qos, 0, function()
-        print('Published data ack\'d')
-    end)
+    client:publish(pubTopics.light, lightData, qos, 0)
 end)
 
 -- handle mqtt connection error by trying reconnection
@@ -120,6 +115,9 @@ function mqtt_data_connect()
 
             -- start timer to publish data every 15 seconds
             mqtt_pubData:start()
+
+            -- Start blinky timer
+            blinky_timer:start()
 
             -- if go offline, call connection error
             client:on("offline", handle_mqtt_conn_error)

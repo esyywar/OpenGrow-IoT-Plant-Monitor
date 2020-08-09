@@ -39,7 +39,7 @@ const soilDataReceived = async (plantId: string, soilMoisture: number) => {
 			return
 		}
 
-		plant.data.soilMoisture.push({ measurement: soilMoisture })
+		plant.data.soilMoisture.push({ measurement: soilMoisture, date: new Date() })
 		await plant.save()
 	} catch (error) {
 		console.log(error)
@@ -58,7 +58,7 @@ const lightDataReceived = async (plantId: string, lightLevel: number) => {
 			return
 		}
 
-		plant.data.lightLevel.push({ measurement: lightLevel })
+		plant.data.lightLevel.push({ measurement: lightLevel, date: new Date() })
 		await plant.save()
 	} catch (error) {
 		console.group(error)
