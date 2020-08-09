@@ -28,38 +28,35 @@ const connectOptions: object = {
 const client = mqtt.connect(config.get('mqtt.brokerUrl'), connectOptions)
 
 /* Record soil moisture value in database */
-const soilDataReceived = async (plantId: string, soilMoisture: number) => {
+const soilDataReceived = async (plant: IPlant, soilMoisture: number) => {
 	console.log('Publishing to soil: ' + soilMoisture)
 	try {
-		/* Get plant in database */
-		let plant: IPlant | null = await Plant.findById(plantId)
+		const lastEntryMin = plant.data.soilMoisture.slice(-1)[0].date?.getMinutes()
 
-		/* Verify plant is found in db */
-		if (!plant) {
-			return
+		const currDate = new Date()
+
+		/* Check that new data is at least 5 minutes from previous entry */
+		if (!lastEntryMin || Math.abs(currDate.getMinutes() - lastEntryMin) >= 5) {
+			plant.data.soilMoisture.push({ measurement: soilMoisture, date: currDate })
+			await plant.save()
 		}
-
-		plant.data.soilMoisture.push({ measurement: soilMoisture, date: new Date() })
-		await plant.save()
 	} catch (error) {
 		console.log(error)
 	}
 }
 
 /* Record light level value in database */
-const lightDataReceived = async (plantId: string, lightLevel: number) => {
+const lightDataReceived = async (plant: IPlant, lightLevel: number) => {
 	console.log('Publishing to light: ' + lightLevel)
 	try {
-		/* Get plant in database */
-		let plant: IPlant | null = await Plant.findById(plantId)
+		const lastEntryMin = plant.data.lightLevel.slice(-1)[0].date?.getMinutes()
 
-		/* Verify plant is found in db */
-		if (!plant) {
-			return
+		const currDate = new Date()
+
+		if (!lastEntryMin || Math.abs(currDate.getMinutes() - lastEntryMin) >= 5) {
+			plant.data.lightLevel.push({ measurement: lightLevel, date: new Date() })
+			await plant.save()
 		}
-
-		plant.data.lightLevel.push({ measurement: lightLevel, date: new Date() })
-		await plant.save()
 	} catch (error) {
 		console.group(error)
 	}
@@ -101,13 +98,25 @@ client.on('connect', async () => {
 			/* Check the topic to see what data has been sent */
 			const plantMetric: string = getMetricFromTopic(topic)
 
-			switch (plantMetric) {
-				case plantMetricEnum.soilMoisture:
-					soilDataReceived(plantId, data)
-					break
-				case plantMetricEnum.lightLevel:
-					lightDataReceived(plantId, data)
-					break
+			try {
+				/* Get plant in database */
+				let plant: IPlant | null = await Plant.findById(plantId)
+
+				/* Verify plant is found in db */
+				if (!plant) {
+					return
+				}
+
+				switch (plantMetric) {
+					case plantMetricEnum.soilMoisture:
+						soilDataReceived(plant, data)
+						break
+					case plantMetricEnum.lightLevel:
+						lightDataReceived(plant, data)
+						break
+				}
+			} catch (error) {
+				console.log(error)
 			}
 		})
 	} catch (error) {
