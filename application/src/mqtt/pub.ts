@@ -17,12 +17,12 @@ const connectOptions: object = {
 const client: any = mqtt.connect(config.get('mqtt.brokerUrl'), connectOptions)
 
 /* Plant moisture level topic (3rd in database) */
-const soilTopic: string = '5f2db60230c9640b04ef156f/soilMoisture'
-const lightTopic: string = '5f2db60230c9640b04ef156f/lightLevel'
+const soilTopic: string = '5f2db60030c9640b04ef156e/soilMoisture'
+const lightTopic: string = '5f2db60030c9640b04ef156e/lightLevel'
 
 const soilData: espPlantDataType = {
 	highByte: 6,
-	lowByte: 42,
+	lowByte: 140,
 }
 
 const lightData: espPlantDataType = {
@@ -35,7 +35,7 @@ client.on('connect', () => {
 
 	setInterval(() => {
 		client.publish(soilTopic, JSON.stringify(soilData), { qos: mqttQoS })
-		//client.publish(lightTopic, JSON.stringify(lightData), { qos: mqttQoS })
+		client.publish(lightTopic, JSON.stringify(lightData), { qos: mqttQoS })
 	}, 300000)
 
 	client.on('error', (error: object) => {

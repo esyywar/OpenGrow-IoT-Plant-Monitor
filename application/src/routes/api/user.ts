@@ -46,7 +46,11 @@ router.get('/plants', auth, async (req: Request, res: Response) => {
 	try {
 		const user: IUser | null = await User.findById(req.body.user.id)
 
-		res.json({ plants: user?.plants })
+		if (!user) {
+			return res.status(400).json({ errors: [{ msg: 'User does not exist.' }] })
+		}
+
+		res.json({ plants: user.plants })
 	} catch (error) {
 		res.status(500).json({ errors: [{ msg: 'Server error.' }] })
 	}

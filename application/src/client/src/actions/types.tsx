@@ -20,13 +20,17 @@ export const REMOVE_PLANT = 'REMOVE_PLANT'
 export const CLEAR_PLANTS = 'CLEAR_PLANTS'
 export const RENAMED_PLANT = 'RENAMED_PLANT'
 
-/****************** ACTIVE PLANT (BELGONING TO AUTHENTICATED USER) ***************/
+/********************** PLANT DATA **********************/
 
-export const PLANT_LOAD_DATA = 'PLANT_LOAD_DATA'
-export const PLANT_SETPOINT_CHANGE = 'PLANT_SETPOINT_CHANGE'
-export const PLANT_TOLERANCE_CHANGE = 'PLANT_TOLERANCE_CHANGE'
+export const PLANT_DATA_LOAD = 'PLANT_DATA_LOAD'
+export const PLANT_DATA_CLEAR = 'PLANT_DATA_CLEAR'
 
-/****************** PLANT DATA (FOR SHOWING A PLANT'S COLLECTED DATA) ************/
+/********************* PLANT CONTROL **********************/
+
+export const PLANT_CONTROL_LOAD = 'PLANT_CONTROL_LOAD'
+export const PLANT_SETPOINT_UPDATE = 'PLANT_SETPOINT_UPDATE'
+export const PLANT_TOLERANCE_UPDATE = 'PLANT_TOLERANCE_UPDATE'
+export const PLANT_CONTROL_CLEAR = 'PLANT_CONTROL_CLEAR'
 
 /******************* STATE INTERFACES *********************/
 
@@ -67,4 +71,15 @@ export interface PlantDataState {
 			date: Date
 		}>
 	}
+	isLoading: boolean
+}
+
+export interface PlantControlState {
+	control: {
+		soilMoisture: {
+			setpoint: number
+			tolerance: number
+		}
+	}
+	isLoading: boolean
 }

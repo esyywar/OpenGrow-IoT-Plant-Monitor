@@ -30,10 +30,17 @@ const client = mqtt.connect(config.get('mqtt.brokerUrl'), connectOptions)
 /* Record soil moisture value in database */
 const soilDataReceived = async (plant: IPlant, soilMoisture: number) => {
 	console.log('Publishing to soil: ' + soilMoisture)
-	try {
-		const lastEntryMin = plant.data.soilMoisture.slice(-1)[0].date?.getMinutes()
+	const currDate = new Date()
 
-		const currDate = new Date()
+	try {
+		/* If first entry in data array -> record and return */
+		if (!(plant.data.soilMoisture.length > 0)) {
+			plant.data.soilMoisture.push({ measurement: soilMoisture, date: currDate })
+			await plant.save()
+			return
+		}
+
+		const lastEntryMin = plant.data.soilMoisture.slice(-1)[0].date?.getMinutes()
 
 		/* Check that new data is at least 5 minutes from previous entry */
 		if (!lastEntryMin || Math.abs(currDate.getMinutes() - lastEntryMin) >= 5) {
@@ -48,17 +55,25 @@ const soilDataReceived = async (plant: IPlant, soilMoisture: number) => {
 /* Record light level value in database */
 const lightDataReceived = async (plant: IPlant, lightLevel: number) => {
 	console.log('Publishing to light: ' + lightLevel)
+	const currDate = new Date()
+
 	try {
+		/* If first entry in data array -> record and return */
+		if (!(plant.data.lightLevel.length > 0)) {
+			plant.data.lightLevel.push({ measurement: lightLevel, date: currDate })
+			await plant.save()
+			return
+		}
+
 		const lastEntryMin = plant.data.lightLevel.slice(-1)[0].date?.getMinutes()
 
-		const currDate = new Date()
-
+		/* Check that new data is at least 5 minutes from previous entry */
 		if (!lastEntryMin || Math.abs(currDate.getMinutes() - lastEntryMin) >= 5) {
-			plant.data.lightLevel.push({ measurement: lightLevel, date: new Date() })
+			plant.data.lightLevel.push({ measurement: lightLevel, date: currDate })
 			await plant.save()
 		}
 	} catch (error) {
-		console.group(error)
+		console.log(error)
 	}
 }
 
