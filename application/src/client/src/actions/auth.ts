@@ -16,12 +16,12 @@ import axios from 'axios'
 
 /************************ ARGUEMENT TYPES ***************************/
 
-export type loginCredsType = {
+type loginCredsType = {
 	email: string
 	password: string
 }
 
-export type registerCredsType = {
+type registerCredsType = {
 	username: string
 	email: string
 	password: string
@@ -37,6 +37,10 @@ export type authSuccessType = {
 		username: string
 		token: string
 	}
+}
+
+export type authFailType = {
+	type: 'LOGOUT_USER' | 'LOGIN_FAILED' | 'REGISTER_FAILED'
 }
 
 /**************************** ACTIONS ********************************/

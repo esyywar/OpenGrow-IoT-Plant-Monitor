@@ -7,6 +7,8 @@ import {
 	PLANT_CONTROL_CLEAR,
 } from '../actions/types'
 
+import { loadCtrlDataType, clearCtrlDataType } from '../actions/plantControl'
+
 const initialState: PlantControlState = {
 	control: {
 		soilMoisture: {
@@ -17,8 +19,17 @@ const initialState: PlantControlState = {
 	isLoading: true,
 }
 
-export const plantControlState = (state = initialState, action: any) => {
+export const plantControlState = (
+	state = initialState,
+	action: loadCtrlDataType | clearCtrlDataType
+) => {
 	switch (action.type) {
+		case PLANT_SETPOINT_UPDATE:
+		case PLANT_TOLERANCE_UPDATE:
+		case PLANT_CONTROL_LOAD:
+			return { control: action.payload, isLoading: false }
+		case PLANT_CONTROL_CLEAR:
+			return { ...initialState, isLoading: false }
 		default:
 			return state
 	}

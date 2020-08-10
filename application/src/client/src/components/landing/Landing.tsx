@@ -14,10 +14,10 @@ export default function Landing() {
 			alignItems="center"
 			justify="space-evenly"
 		>
-			<Grid item container xs={12} lg={7} direction="column" alignItems="center" justify="center">
+			<Grid item container xs={12} lg={6} direction="column" alignItems="center" justify="center">
 				<IntroCard />
 			</Grid>
-			<Grid item container xs={12} lg={4} direction="column" alignItems="center" justify="center">
+			<Grid item container xs={12} lg={5} direction="column" alignItems="center" justify="center">
 				<HowItWorks />
 			</Grid>
 		</Grid>

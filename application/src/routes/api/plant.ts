@@ -90,7 +90,7 @@ router.get('/control/:plantId', auth, async (req: Request, res: Response) => {
 			return res.status(401).json({ msg: 'This plant is not associated with your account.' })
 		}
 
-		res.json({ plantControl: plant.control })
+		res.json({ control: plant.control })
 	} catch (error) {
 		res.status(500).json({ msg: 'Server error.' })
 	}
@@ -138,7 +138,7 @@ router.post(
 
 			await plant.save()
 
-			res.json({ plant })
+			res.json({ control: plant.control })
 		} catch (error) {
 			res.status(500).json({ msg: 'Server error.' })
 		}
@@ -178,7 +178,7 @@ router.post(
 
 			await plant.save()
 
-			res.json({ plant })
+			res.json({ control: plant.control })
 		} catch (error) {
 			res.status(500).json({ msg: 'Server error.' })
 		}
@@ -218,7 +218,7 @@ router.post(
 
 			await plant.save()
 
-			res.json({ plant })
+			res.json({ control: plant.control })
 		} catch (error) {
 			res.status(500).json({ msg: 'Server error.' })
 		}

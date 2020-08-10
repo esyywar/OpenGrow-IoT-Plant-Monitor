@@ -1,5 +1,7 @@
 import { AlertState } from '../actions/types'
+
 import { SET_ALERT, RESET_ALERT } from '../actions/types'
+
 import { setActionType, resetActionType } from '../actions/alerts'
 
 const initialState: AlertState = {

@@ -1,21 +1,21 @@
+import axios from 'axios'
+
 import { LOAD_PLANTS, ADD_PLANT, REMOVE_PLANT, CLEAR_PLANTS, RENAMED_PLANT } from './types'
 
 import { setAuthToken } from './setAuthToken'
 
 import { setAlert } from './alerts'
 
-import axios from 'axios'
-
 /************************ ARGUEMENT TYPES ***************************/
 
-export type renamePlantType = {
+type renamePlantType = {
 	plantId: string
 	name: string
 }
 
 /************************ ACTION TYPES ***************************/
 
-export type allPlantsType = {
+export type loadAllPlantsType = {
 	type: 'LOAD_PLANTS' | 'ADD_PLANT' | 'RENAMED_PLANT'
 	payload: Array<{
 		name: string
@@ -44,7 +44,7 @@ export const loadUserPlants = () => async (dispatch: Function) => {
 	try {
 		const res = await axios.get('/api/user/plants')
 
-		const action: allPlantsType = {
+		const action: loadAllPlantsType = {
 			type: LOAD_PLANTS,
 			payload: res.data.plants.map((item: any) => {
 				return {
@@ -73,7 +73,7 @@ export const addUserPlant = (plantId: string) => async (dispatch: Function) => {
 	try {
 		const res = await axios.put(`/api/user/plant/${plantId}`)
 
-		const action: allPlantsType = {
+		const action: loadAllPlantsType = {
 			type: ADD_PLANT,
 			payload: res.data.plants.map((item: any) => {
 				return {
@@ -127,12 +127,12 @@ export const renameUserPlant = (renamePlant: renamePlantType) => async (dispatch
 		},
 	}
 
-	const body = JSON.stringify({ name: name })
+	const body = JSON.stringify({ name })
 
 	try {
 		const res = await axios.post(`/api/user/plant/name/${plantId}`, body, config)
 
-		const action: allPlantsType = {
+		const action: loadAllPlantsType = {
 			type: RENAMED_PLANT,
 			payload: res.data.plants.map((item: any) => {
 				return {

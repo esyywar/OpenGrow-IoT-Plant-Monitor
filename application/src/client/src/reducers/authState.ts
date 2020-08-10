@@ -9,6 +9,8 @@ import {
 	LOADED_USER,
 } from '../actions/types'
 
+import { authSuccessType, authFailType } from '../actions/auth'
+
 const initialState: UserAuthState = {
 	auth: {
 		userId: null,
@@ -19,7 +21,7 @@ const initialState: UserAuthState = {
 	},
 }
 
-export const authState = (state = initialState, action: any) => {
+export const authState = (state = initialState, action: authSuccessType | authFailType) => {
 	switch (action.type) {
 		case LOGIN_SUCCESS:
 		case REGISTER_SUCCESS:
