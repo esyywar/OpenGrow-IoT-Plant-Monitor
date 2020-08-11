@@ -56,7 +56,8 @@
 }
 
 .dashboard .user-plant-list .plant-card .plant-card-content .plant-card-btn {
-  margin: 3% 2% 0 0;
+  margin: 5px 0;
+  padding: 8px 10px;
 }
 
 .dashboard .user-plant-list .plant-card .plant-card-content .delete-btn {

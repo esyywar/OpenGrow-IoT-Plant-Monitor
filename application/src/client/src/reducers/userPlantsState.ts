@@ -1,8 +1,22 @@
 import { UserPlantsState } from '../actions/types'
 
-import { LOAD_PLANTS, ADD_PLANT, REMOVE_PLANT, CLEAR_PLANTS, RENAMED_PLANT } from '../actions/types'
+import {
+	LOAD_PLANTS,
+	ADD_PLANT,
+	REMOVE_PLANT,
+	CLEAR_PLANTS,
+	RENAMED_PLANT,
+	SET_ACTIVE_PLANT,
+	CLEAR_ACTIVE_PLANT,
+} from '../actions/types'
 
-import { loadAllPlantsType, removePlantType, clearPlantsType } from '../actions/userPlants'
+import {
+	loadAllPlantsType,
+	removePlantType,
+	clearPlantsType,
+	setActivePlantType,
+	clearActivePlantType,
+} from '../actions/userPlants'
 
 const initialState: UserPlantsState = {
 	userPlants: [],
@@ -11,7 +25,12 @@ const initialState: UserPlantsState = {
 
 export const userPlantsState = (
 	state = initialState,
-	action: loadAllPlantsType | removePlantType | clearPlantsType
+	action:
+		| loadAllPlantsType
+		| removePlantType
+		| clearPlantsType
+		| setActivePlantType
+		| clearActivePlantType
 ) => {
 	switch (action.type) {
 		case RENAMED_PLANT:
@@ -21,6 +40,21 @@ export const userPlantsState = (
 		case REMOVE_PLANT:
 			return {
 				userPlants: state.userPlants.filter((plant) => plant.plantId !== action.payload),
+				isLoading: false,
+			}
+		case SET_ACTIVE_PLANT:
+			return {
+				userPlants: state.userPlants.map((plant) => {
+					return {
+						...plant,
+						isActive: plant.plantId === action.payload ? true : false,
+					}
+				}),
+				isLoading: false,
+			}
+		case CLEAR_ACTIVE_PLANT:
+			return {
+				userPlants: state.userPlants.map(({ isActive }) => (isActive = false)),
 				isLoading: false,
 			}
 		case CLEAR_PLANTS:

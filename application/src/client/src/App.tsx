@@ -13,6 +13,8 @@ import Login from './components/userForms/Login'
 
 import Dashboard from './components/dashboard/Dashboard'
 
+import PlantMonitor from './components/plantMonitor/PlantMonitor'
+
 function App() {
 	return (
 		<Fragment>
@@ -28,6 +30,9 @@ function App() {
 					</Route>
 					<PrivateRoute path="/dashboard">
 						<Dashboard />
+					</PrivateRoute>
+					<PrivateRoute path="/plantMonitor">
+						<PlantMonitor />
 					</PrivateRoute>
 				</Router>
 			</Container>

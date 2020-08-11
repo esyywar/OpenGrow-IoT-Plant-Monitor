@@ -1,5 +1,10 @@
 import React, { useState } from 'react'
 
+import { useHistory } from 'react-router-dom'
+
+import { useDispatch } from 'react-redux'
+import { setActivePlant } from '../../actions/userPlants'
+
 import PropTypes, { InferProps } from 'prop-types'
 
 import { useTheme } from '@material-ui/core/styles'
@@ -12,12 +17,22 @@ import NamePlantModal from './Modals/NamePlantModal'
 import RemovePlantModal from './Modals/RemovePlantModal'
 
 export default function PlantCard({ id, name, cardNum }: InferProps<typeof PlantCard.propTypes>) {
+	const dispatch = useDispatch()
+
 	const theme = useTheme()
 
 	const [plantNameModal, setPlantNameModal] = useState(false)
 	const [removePlantModal, setRemovePlantModal] = useState(false)
 
 	const plantImg = require('../../media/cartoon-potted-plant.jpg')
+
+	const history = useHistory()
+
+	/* Set the clicked plant as active and go to plant monitor page */
+	const handleViewDataClick = (event: React.MouseEvent) => {
+		dispatch(setActivePlant(id))
+		history.push('/plantMonitor')
+	}
 
 	return (
 		<Grid item xs={12} lg={6}>
@@ -41,7 +56,12 @@ export default function PlantCard({ id, name, cardNum }: InferProps<typeof Plant
 						</Grid>
 
 						<Grid container direction="row" alignItems="center" justify="space-between">
-							<Button className="plant-card-btn" variant="contained" color="primary">
+							<Button
+								className="plant-card-btn"
+								variant="contained"
+								color="primary"
+								onClick={handleViewDataClick}
+							>
 								View Data
 							</Button>
 							<Button

@@ -19,6 +19,8 @@ export const ADD_PLANT = 'ADD_PLANT'
 export const REMOVE_PLANT = 'REMOVE_PLANT'
 export const CLEAR_PLANTS = 'CLEAR_PLANTS'
 export const RENAMED_PLANT = 'RENAMED_PLANT'
+export const SET_ACTIVE_PLANT = 'SET_ACTIVE_PLANT'
+export const CLEAR_ACTIVE_PLANT = 'CLEAR_ACTIVE_PLANT'
 
 /********************** PLANT DATA **********************/
 
@@ -56,6 +58,7 @@ export interface UserPlantsState {
 	userPlants: Array<{
 		name: string
 		plantId: string
+		isActive: boolean
 	}>
 	isLoading: boolean
 }
