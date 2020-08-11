@@ -1,16 +1,15 @@
 import React from 'react'
 
-import PropTypes, { InferProps } from 'prop-types'
+import { Container } from '@material-ui/core/'
 
-export default function PlantMonitor({ plantId, name }: InferProps<typeof PlantMonitor.propTypes>) {
+import PlantNameDisp from './PlantNameDisp'
+
+import '../../css/plantMonitor.css'
+
+export default function PlantMonitor() {
 	return (
-		<div>
-			Welcome to plant {name} with id: {plantId}
-		</div>
+		<Container maxWidth="lg" className="plant-monitor">
+			<PlantNameDisp />
+		</Container>
 	)
-}
-
-PlantMonitor.propTypes = {
-	plantId: PropTypes.string,
-	name: PropTypes.string,
 }

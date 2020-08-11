@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,cAAc,CAAC;EACd,UAAU,EAAE,eAAe;CAU3B;;AAXD,AAGC,cAHa,CAGb,sBAAsB,CAAC;EACtB,OAAO,EAAE,IAAI;CAMb;;AAVF,AAME,cANY,CAGb,sBAAsB,CAGrB,kBAAkB,CAAC;EAClB,WAAW,EAAE,oBAAoB;EACjC,SAAS,EAAE,IAAI;CACf",
+    "sources": [
+        "plantMonitor.scss"
+    ],
+    "names": [],
+    "file": "plantMonitor.css"
+}

@@ -1,0 +1,13 @@
+.plant-monitor {
+  margin-top: 75px !important;
+}
+
+.plant-monitor .plant-monitor-welcome {
+  padding: 15px;
+}
+
+.plant-monitor .plant-monitor-welcome .active-plant-name {
+  font-family: 'Mulish', sans-serif;
+  font-size: 30px;
+}
+/*# sourceMappingURL=plantMonitor.css.map */
