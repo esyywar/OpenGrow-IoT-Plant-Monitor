@@ -1,14 +1,6 @@
 import axios from 'axios'
 
-import {
-	LOAD_PLANTS,
-	ADD_PLANT,
-	REMOVE_PLANT,
-	CLEAR_PLANTS,
-	RENAMED_PLANT,
-	SET_ACTIVE_PLANT,
-	CLEAR_ACTIVE_PLANT,
-} from './types'
+import { LOAD_PLANTS, ADD_PLANT, REMOVE_PLANT, CLEAR_PLANTS, RENAMED_PLANT } from './types'
 
 import { setAuthToken } from './setAuthToken'
 
@@ -37,15 +29,6 @@ export type loadAllPlantsType = {
 export type removePlantType = {
 	type: 'REMOVE_PLANT'
 	payload: string
-}
-
-export type setActivePlantType = {
-	type: 'SET_ACTIVE_PLANT'
-	payload: string
-}
-
-export type clearActivePlantType = {
-	type: 'CLEAR_ACTIVE_PLANT'
 }
 
 export type clearPlantsType = {
@@ -170,25 +153,6 @@ export const renameUserPlant = (renamePlant: renamePlantType) => async (dispatch
 
 		errors.forEach((error: any) => dispatch(setAlert(error.msg, 'error')))
 	}
-}
-
-/* Set an active plant (this plant's data will be loaded to state) */
-export const setActivePlant = (plantId: string) => (dispatch: Function) => {
-	const action: setActivePlantType = {
-		type: SET_ACTIVE_PLANT,
-		payload: plantId,
-	}
-
-	dispatch(action)
-}
-
-/* Unset the active plant */
-export const clearActivePlant = () => (dispatch: Function) => {
-	const action: clearActivePlantType = {
-		type: CLEAR_ACTIVE_PLANT,
-	}
-
-	dispatch(action)
 }
 
 /* Clear the userPlants state */

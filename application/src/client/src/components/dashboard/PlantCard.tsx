@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { useDispatch } from 'react-redux'
-import { setActivePlant } from '../../actions/userPlants'
+import { setActivePlant } from '../../actions/activePlant'
 
 import PropTypes, { InferProps } from 'prop-types'
 

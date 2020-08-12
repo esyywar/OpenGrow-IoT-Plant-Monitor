@@ -6,6 +6,7 @@ import {
 	LOGOUT_USER,
 	LOADED_USER,
 	CLEAR_PLANTS,
+	CLEAR_ACTIVE_PLANT,
 } from './types'
 
 import { setAlert } from './alerts'
@@ -130,4 +131,5 @@ export const registerUser = (registerCreds: registerCredsType) => async (dispatc
 export const userLogout = () => (dispatch: Function) => {
 	dispatch({ type: LOGOUT_USER })
 	dispatch({ type: CLEAR_PLANTS })
+	dispatch({ type: CLEAR_ACTIVE_PLANT })
 }
