@@ -19,12 +19,13 @@ export default function PlantMonitor() {
 
 	const activePlantState = useTypedSelector((state) => state.activePlantState)
 
-	/* If actuve plant state is not loaded then try load from local storage */
+	/* If active plant state is not loaded then try loading from plantId in local storage */
 	useEffect(() => {
-		if (activePlantState.activePlant.name === '') {
+		if (activePlantState.activePlant.plantId === '') {
 			dispatch(loadActivePlant(history))
 		}
-	}, [dispatch, activePlantState, history])
+		// eslint-disable-next-line
+	}, [dispatch])
 
 	return (
 		<Container maxWidth="lg" className="plant-monitor">

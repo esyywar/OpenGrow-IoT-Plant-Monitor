@@ -11,7 +11,7 @@ import {
 const initialState: ActivePlantState = {
 	activePlant: {
 		name: '',
-		plantId: localStorage.getItem('activePlant'),
+		plantId: '',
 	},
 	isLoading: true,
 }

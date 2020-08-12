@@ -29,7 +29,7 @@ export type setActivePlantType = {
 }
 
 export type clearActivePlantType = {
-	type: 'CLEAR_ACTIVE_PLANT'
+	type: 'CLEAR_ACTIVE_PLANT_NAME' | 'CLEAR_ACTIVE_PLANT'
 }
 
 /**************************** ACTIONS ********************************/

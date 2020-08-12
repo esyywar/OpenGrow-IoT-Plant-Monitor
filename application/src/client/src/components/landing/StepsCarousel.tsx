@@ -70,12 +70,12 @@ export default function StepsCarousel() {
 			>
 				{howItWorksSteps.map((step, index) => (
 					<div className="carousel-step-item" key={step.stepNum}>
-						<Typography>
-							<div className="text-container">
+						<div className="text-container">
+							<Typography>
 								<span className="step-number">{`${step.stepNum}. `}</span>
 								<span className="step-text">{step.text}</span>
-							</div>
-						</Typography>
+							</Typography>
+						</div>
 						{Math.abs(activeStep - index) <= 2 ? (
 							<img className="carousel-img" src={step.img} alt={step.imgAlt} />
 						) : null}
