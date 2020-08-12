@@ -20,7 +20,7 @@ export default function PlantNameDisp() {
 				<Grid item xs={12} lg={6}>
 					<Paper
 						elevation={8}
-						style={{ backgroundColor: theme.palette.primary.light }}
+						style={{ backgroundColor: theme.palette.secondary.light }}
 						className="plant-monitor-welcome"
 					>
 						<h4 className="active-plant-name">{activePlantState.activePlant.name}</h4>

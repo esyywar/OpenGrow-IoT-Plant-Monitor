@@ -8,7 +8,6 @@ import Plant, { IPlant } from '../../models/Plant'
 import User, { IUser } from '../../models/User'
 
 import auth from '../../middleware/auth'
-import adminAuth from '../../middleware/adminAuth'
 
 const router = express.Router()
 
@@ -34,12 +33,14 @@ router.get('/data/:plantId', auth, async (req: Request, res: Response) => {
 
 		/* Verify that plant exists */
 		if (!plant) {
-			return res.status(401).json({ msg: 'Plant not found.' })
+			return res.status(401).json({ errors: [{ msg: 'Plant not found.' }] })
 		}
 
 		/* Verify that plant is associated with user */
 		if (!user.plants.some((item) => item.plant.toString() === plantId)) {
-			return res.status(401).json({ msg: 'This plant is not associated with your account.' })
+			return res
+				.status(401)
+				.json({ errors: [{ msg: 'This plant is not associated with your account.' }] })
 		}
 
 		/* Return soil moisture and light data without the _id field */
@@ -61,7 +62,7 @@ router.get('/data/:plantId', auth, async (req: Request, res: Response) => {
 
 		res.json({ plantData })
 	} catch (error) {
-		res.status(500).json({ msg: 'Server error.' })
+		res.status(500).json({ errors: [{ msg: 'Server error.' }] })
 	}
 })
 
@@ -82,17 +83,19 @@ router.get('/control/:plantId', auth, async (req: Request, res: Response) => {
 		const plant: IPlant | null = await Plant.findById(plantId)
 
 		if (!plant) {
-			return res.status(401).json({ msg: 'Plant not found.' })
+			return res.status(401).json({ errors: [{ msg: 'Plant not found.' }] })
 		}
 
 		/* Verify that plant is associated with user */
 		if (!user.plants.some((item) => item.plant.toString() === plantId)) {
-			return res.status(401).json({ msg: 'This plant is not associated with your account.' })
+			return res
+				.status(401)
+				.json({ errors: [{ msg: 'This plant is not associated with your account.' }] })
 		}
 
 		res.json({ control: plant.control })
 	} catch (error) {
-		res.status(500).json({ msg: 'Server error.' })
+		res.status(500).json({ errors: [{ msg: 'Server error.' }] })
 	}
 })
 
@@ -126,11 +129,11 @@ router.post(
 			const plant: IPlant | null = await Plant.findById(plantId)
 
 			if (!plant) {
-				return res.status(401).json({ msg: 'Plant not found.' })
+				return res.status(401).json({ errors: [{ msg: 'Plant not found.' }] })
 			}
 
 			if (setpoint < 0 || tolerance < 0) {
-				res.status(401).json({ msg: 'Setpoints must be positive values.' })
+				return res.status(401).json({ errors: [{ msg: 'Setpoints must be positive values.' }] })
 			}
 
 			plant.control.soilMoisture.setpoint = setpoint
@@ -140,7 +143,7 @@ router.post(
 
 			res.json({ control: plant.control })
 		} catch (error) {
-			res.status(500).json({ msg: 'Server error.' })
+			res.status(500).json({ errors: [{ msg: 'Server error.' }] })
 		}
 	}
 )
@@ -167,11 +170,11 @@ router.post(
 			const plant: IPlant | null = await Plant.findById(plantId)
 
 			if (!plant) {
-				return res.status(401).json({ msg: 'Plant not found.' })
+				return res.status(401).json({ errors: [{ msg: 'Plant not found.' }] })
 			}
 
 			if (setpoint < 0) {
-				res.status(401).json({ msg: 'Setpoints must be positive values.' })
+				return res.status(401).json({ errors: [{ msg: 'Setpoints must be positive values.' }] })
 			}
 
 			plant.control.soilMoisture.setpoint = setpoint
@@ -180,7 +183,7 @@ router.post(
 
 			res.json({ control: plant.control })
 		} catch (error) {
-			res.status(500).json({ msg: 'Server error.' })
+			res.status(500).json({ errors: [{ msg: 'Server error.' }] })
 		}
 	}
 )
@@ -207,11 +210,11 @@ router.post(
 			const plant: IPlant | null = await Plant.findById(plantId)
 
 			if (!plant) {
-				return res.status(401).json({ msg: 'Plant not found.' })
+				return res.status(401).json({ errors: [{ msg: 'Plant not found.' }] })
 			}
 
 			if (tolerance < 0) {
-				res.status(401).json({ msg: 'Setpoints must be positive values.' })
+				return res.status(401).json({ errors: [{ msg: 'Tolerance must be positive values..' }] })
 			}
 
 			plant.control.soilMoisture.tolerance = tolerance
@@ -220,7 +223,7 @@ router.post(
 
 			res.json({ control: plant.control })
 		} catch (error) {
-			res.status(500).json({ msg: 'Server error.' })
+			res.status(500).json({ errors: [{ msg: 'Server error.' }] })
 		}
 	}
 )
@@ -244,7 +247,7 @@ router.put('/create', async (req: Request, res: Response) => {
 
 		res.json({ numPlants, msg: `Plant ${newPlant.id} has been created.` })
 	} catch (error) {
-		res.status(500).json({ msg: 'Server error.' })
+		res.status(500).json({ errors: [{ msg: 'Server error.' }] })
 	}
 })
 

@@ -53,6 +53,7 @@ export const loadCtrlData = (plantId: string) => async (dispatch: Function) => {
 
 		dispatch(action)
 	} catch (error) {
+		console.log(error)
 		dispatch(clearCtrlData())
 
 		const errors = error.response.data.errors

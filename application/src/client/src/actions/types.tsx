@@ -55,7 +55,7 @@ export const CLEAR_ACTIVE_PLANT = 'CLEAR_ACTIVE_PLANT'
 export interface ActivePlantState {
 	activePlant: {
 		name: string
-		plantId: string | null
+		plantId: string
 	}
 	isLoading: boolean
 }

@@ -9,6 +9,8 @@ import { loadActivePlant } from '../../actions/activePlant'
 import { Container } from '@material-ui/core/'
 
 import PlantNameDisp from './PlantNameDisp'
+import PlantCtrlSettings from './PlantCtrlSettings'
+import PlantDataPlot from './PlantDataPlot'
 
 import '../../css/plantMonitor.css'
 
@@ -30,6 +32,8 @@ export default function PlantMonitor() {
 	return (
 		<Container maxWidth="lg" className="plant-monitor">
 			<PlantNameDisp />
+			<PlantCtrlSettings />
+			<PlantDataPlot />
 		</Container>
 	)
 }

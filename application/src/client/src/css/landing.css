@@ -120,12 +120,11 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding: 5px;
+  padding: 10px 14px;
   width: 100%;
 }
 
 .landing-container .how-it-works-card .carousel-container .carousel-swipe-container .carousel-step-item .text-container .step-number {
-  display: block;
   padding: 5px 9px;
   margin-right: 1em;
   background-color: #3c4cdf;

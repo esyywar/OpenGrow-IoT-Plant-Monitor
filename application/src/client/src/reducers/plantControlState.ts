@@ -29,7 +29,7 @@ export const plantControlState = (
 		case PLANT_CONTROL_LOAD:
 			return { control: action.payload, isLoading: false }
 		case PLANT_CONTROL_CLEAR:
-			return { ...initialState, isLoading: false }
+			return initialState
 		default:
 			return state
 	}

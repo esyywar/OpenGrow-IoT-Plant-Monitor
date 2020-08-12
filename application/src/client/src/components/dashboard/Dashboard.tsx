@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 
 import { useDispatch } from 'react-redux'
+
 import { clearActivePlant } from '../../actions/activePlant'
+import { clearCtrlData } from '../../actions/plantControl'
 
 import { Container } from '@material-ui/core/'
 
@@ -16,7 +18,9 @@ export default function Dashboard() {
 
 	/* Clear active plant name from state allowing user to select */
 	useEffect(() => {
+		/* TODO move these actions to a seperate and single action */
 		dispatch(clearActivePlant())
+		dispatch(clearCtrlData())
 	}, [dispatch])
 
 	return (
