@@ -3,6 +3,7 @@ import { combineReducers } from 'redux'
 import { useSelector, TypedUseSelectorHook } from 'react-redux'
 
 import { alertState } from './alertState'
+import { darkModeState } from './darkModeState'
 import { authState } from './authState'
 import { userPlantsState } from './userPlantsState'
 import { activePlantState } from './activePlantState'
@@ -11,6 +12,7 @@ import { plantControlState } from './plantControlState'
 
 import {
 	AlertState,
+	DarkModeState,
 	UserAuthState,
 	UserPlantsState,
 	ActivePlantState,
@@ -20,6 +22,7 @@ import {
 
 const rootReducer = combineReducers({
 	alertState,
+	darkModeState,
 	authState,
 	userPlantsState,
 	activePlantState,
@@ -29,6 +32,7 @@ const rootReducer = combineReducers({
 
 interface RootState {
 	alertState: AlertState
+	darkModeState: DarkModeState
 	authState: UserAuthState
 	userPlantsState: UserPlantsState
 	activePlantState: ActivePlantState

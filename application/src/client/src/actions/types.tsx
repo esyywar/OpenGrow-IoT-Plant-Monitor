@@ -11,6 +11,15 @@ export interface AlertState {
 	}>
 }
 
+/******************** DARK/LIGHT MODE ****************/
+
+export const SET_LIGHT_MODE = 'SET_LIGHT_MODE'
+export const SET_DARK_MODE = 'SET_DARK_MODE'
+
+export interface DarkModeState {
+	isDarkMode: boolean
+}
+
 /******************** USER AUTHENTICATION ****************/
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'

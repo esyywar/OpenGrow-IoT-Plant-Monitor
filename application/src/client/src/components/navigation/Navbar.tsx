@@ -5,10 +5,14 @@ import { Link } from 'react-router-dom'
 import { useTypedSelector } from '../../reducers'
 import { useDispatch } from 'react-redux'
 import { userLogout } from '../../actions/auth'
+import { setDarkMode, setLightMode } from '../../actions/darkMode'
 
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles'
 import { AppBar, Toolbar, Typography, Button, IconButton, Container } from '@material-ui/core/'
+
 import MenuIcon from '@material-ui/icons/Menu'
+import Brightness7Icon from '@material-ui/icons/Brightness7'
+import NightsStayIcon from '@material-ui/icons/NightsStay'
 
 import { UserAuthState } from '../../actions/types'
 
@@ -30,14 +34,30 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Navbar() {
 	const theme = useTheme()
+
 	const classes = useStyles()
 
 	const dispatch = useDispatch()
 
+	/* Auth state to choose which nav menu to show */
 	const authUser = useTypedSelector((state) => state.authState)
+
+	/* Dark mode state to decide switch button icon */
+	const isDarkMode = useTypedSelector((state) => state.darkModeState.isDarkMode)
+
+	const handleDarkModeBtn = (event: React.MouseEvent) => {
+		if (isDarkMode) {
+			dispatch(setLightMode())
+		} else {
+			dispatch(setDarkMode())
+		}
+	}
 
 	const loggedIn = (
 		<Container maxWidth="xl" className="link-container">
+			<Button className="nav-link" onClick={handleDarkModeBtn}>
+				{isDarkMode ? <Brightness7Icon /> : <NightsStayIcon style={{ color: 'white' }} />}
+			</Button>
 			<Link to="/login" className="link-style">
 				<Button color="inherit" className="nav-link" onClick={() => dispatch(userLogout())}>
 					Logout
@@ -53,6 +73,9 @@ export default function Navbar() {
 
 	const guestUser = (
 		<Container maxWidth="xl" className="link-container">
+			<Button className="nav-link" onClick={handleDarkModeBtn}>
+				{isDarkMode ? <Brightness7Icon /> : <NightsStayIcon style={{ color: 'white' }} />}
+			</Button>
 			<Link to="/login" className="link-style">
 				<Button color="inherit" className="nav-link">
 					Login
