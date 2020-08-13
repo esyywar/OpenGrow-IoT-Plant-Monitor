@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Link } from 'react-router-dom'
+
+import { UserAuthState } from '../../actions/types'
 
 import { useTypedSelector } from '../../reducers'
 import { useDispatch } from 'react-redux'
@@ -14,7 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import Brightness7Icon from '@material-ui/icons/Brightness7'
 import NightsStayIcon from '@material-ui/icons/NightsStay'
 
-import { UserAuthState } from '../../actions/types'
+import NavDrawer from './NavDrawer'
 
 import '../../css/navbar.css'
 
@@ -45,6 +47,19 @@ export default function Navbar() {
 	/* Dark mode state to decide switch button icon */
 	const isDarkMode = useTypedSelector((state) => state.darkModeState.isDarkMode)
 
+	/* Toggle collapsable side nav open/close */
+	const [sideNav, setSideNav] = useState(false)
+
+	/* Handle toggle of side nav */
+	const toggleSideNav = (isOpen: boolean | null = null) => {
+		if (isOpen === null) {
+			setSideNav(!sideNav)
+		} else {
+			setSideNav(isOpen)
+		}
+	}
+
+	/* Toggle light/dark mode */
 	const handleDarkModeBtn = (event: React.MouseEvent) => {
 		if (isDarkMode) {
 			dispatch(setLightMode())
@@ -95,7 +110,7 @@ export default function Navbar() {
 			<AppBar position="static">
 				<Toolbar>
 					<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-						<MenuIcon />
+						<MenuIcon onClick={() => toggleSideNav()} />
 					</IconButton>
 					<Typography variant="h6">
 						<Link to="/" className="link-style">
@@ -108,6 +123,13 @@ export default function Navbar() {
 					{getNavLinks(authUser)}
 				</Toolbar>
 			</AppBar>
+
+			{/* Side nav drawer to be toggles */}
+			<NavDrawer
+				isOpen={sideNav}
+				onOpen={() => setSideNav(true)}
+				onClose={() => setSideNav(false)}
+			/>
 		</div>
 	)
 }

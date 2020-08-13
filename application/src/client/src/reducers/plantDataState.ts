@@ -17,7 +17,7 @@ export const plantDataState = (state = initialState, action: loadDataType | clea
 		case PLANT_DATA_LOAD:
 			return { data: action.payload, isLoading: false }
 		case PLANT_DATA_CLEAR:
-			return { ...initialState, isLoading: false }
+			return initialState
 		default:
 			return state
 	}

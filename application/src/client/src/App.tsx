@@ -22,7 +22,6 @@ import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 
 function App() {
 	const isDarkMode = useTypedSelector((state) => state.darkModeState.isDarkMode)
-	console.log(isDarkMode)
 
 	/* Creating custom material-ui themes */
 	const lightTheme = createMuiTheme({

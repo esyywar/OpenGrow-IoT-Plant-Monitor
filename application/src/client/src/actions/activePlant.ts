@@ -7,8 +7,8 @@ import { LOAD_ACTIVE_PLANT, SET_ACTIVE_PLANT, CLEAR_ACTIVE_PLANT } from './types
 import { setAuthToken } from './setAuthToken'
 
 import { setAlert } from './alerts'
-
-/************************ ARGUEMENT TYPES ***************************/
+import { clearCtrlData } from './plantControl'
+import { clearPlantData } from './plantData'
 
 /************************ ACTION TYPES ***************************/
 
@@ -119,4 +119,6 @@ export const clearActivePlant = () => (dispatch: Function) => {
 	}
 
 	dispatch(action)
+	dispatch(clearCtrlData())
+	dispatch(clearPlantData())
 }

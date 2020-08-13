@@ -46,11 +46,9 @@ export const loadPlantData = (plantId: string) => async (dispatch: Function) => 
 	} catch (error) {
 		dispatch(clearPlantData())
 
-		console.log(error)
-
 		const errors = error.response.data.errors
 
-		//errors.forEach((error: any) => dispatch(setAlert(error.msg, 'error')))
+		errors.forEach((error: any) => dispatch(setAlert(error.msg, 'error')))
 	}
 }
 
