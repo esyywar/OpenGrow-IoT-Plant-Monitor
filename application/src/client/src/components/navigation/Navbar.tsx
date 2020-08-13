@@ -109,8 +109,14 @@ export default function Navbar() {
 		<div className={classes.root}>
 			<AppBar position="static">
 				<Toolbar>
-					<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-						<MenuIcon onClick={() => toggleSideNav()} />
+					<IconButton
+						onClick={() => toggleSideNav()}
+						edge="start"
+						className={classes.menuButton}
+						color="inherit"
+						aria-label="menu"
+					>
+						<MenuIcon />
 					</IconButton>
 					<Typography variant="h6">
 						<Link to="/" className="link-style">

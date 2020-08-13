@@ -6,20 +6,35 @@ import { setAuthToken } from './setAuthToken'
 
 import { setAlert } from './alerts'
 
+/************************ RESPONSE TYPES ***************************/
+
+export type plantDataRawType = {
+	soilMoisture: Array<{
+		measurement: number
+		date: string
+	}>
+	lightLevel: Array<{
+		measurement: number
+		date: string
+	}>
+}
+
+export type plantDataCorrType = {
+	soilMoisture?: Array<{
+		measurement: number
+		date: Date
+	}>
+	lightLevel?: Array<{
+		measurement: number
+		date: Date
+	}>
+}
+
 /************************ ACTION TYPES ***************************/
 
 export type loadDataType = {
 	type: 'PLANT_DATA_LOAD'
-	payload: {
-		soilMoisture: Array<{
-			measurement: number
-			date: Date
-		}>
-		lightLevel: Array<{
-			measurement: number
-			date: Date
-		}>
-	}
+	payload: plantDataCorrType
 }
 
 export type clearDataType = {
@@ -37,9 +52,28 @@ export const loadPlantData = (plantId: string) => async (dispatch: Function) => 
 	try {
 		const res = await axios.get(`/api/plant/data/${plantId}`)
 
+		const rawData: plantDataRawType = res.data.plantData
+		let payload: plantDataCorrType = {}
+
+		/* Populate soil moisture with date object data */
+		payload.soilMoisture = rawData.soilMoisture.map(({ measurement, date }) => {
+			return {
+				measurement,
+				date: new Date(date),
+			}
+		})
+
+		/* Populate light level with date object data */
+		payload.lightLevel = rawData.lightLevel.map(({ measurement, date }) => {
+			return {
+				measurement,
+				date: new Date(date),
+			}
+		})
+
 		const action: loadDataType = {
 			type: PLANT_DATA_LOAD,
-			payload: res.data.plantData,
+			payload,
 		}
 
 		dispatch(action)
