@@ -29,6 +29,7 @@ export default function PlantDataPlot() {
 	/* Get plant data */
 	const plantData = useTypedSelector((state) => state.plantDataState)
 
+	/* Map soil data for plotting */
 	const soilData = plantData.data.soilMoisture.map(({ measurement, date }) => {
 		return {
 			x: date.getMinutes(),
@@ -36,6 +37,7 @@ export default function PlantDataPlot() {
 		}
 	})
 
+	/* Map light data for plotting */
 	const lightData = plantData.data.lightLevel.map(({ measurement, date }) => {
 		return {
 			x: date.getMinutes(),
@@ -49,8 +51,8 @@ export default function PlantDataPlot() {
 				<Spinner />
 			) : plantData.data.soilMoisture.length > 0 && plantData.data.lightLevel.length > 0 ? (
 				<Fragment>
-					<LinePlot data={soilData} />
-					<LinePlot data={lightData} />
+					<LinePlot dataId="Soil Moisture" data={soilData} />
+					<LinePlot dataId="Light Level" data={lightData} />
 				</Fragment>
 			) : (
 				'This plant has not collected any data yet!'
