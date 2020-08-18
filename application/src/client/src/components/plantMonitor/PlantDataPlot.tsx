@@ -4,10 +4,6 @@ import { useTypedSelector } from '../../reducers'
 import { useDispatch } from 'react-redux'
 import { loadPlantData } from '../../actions/plantData'
 
-import { ResponsiveLine } from '@nivo/line'
-import * as time from 'd3-time'
-import { timeFormat } from 'd3-time-format'
-
 import LinePlot from './LinePlot'
 
 import { Grid } from '@material-ui/core/'
@@ -46,7 +42,14 @@ export default function PlantDataPlot() {
 	})
 
 	return (
-		<Grid container className="plant-data-plot-container">
+		<Grid
+			container
+			className="plant-data-plot-container"
+			spacing={8}
+			direction="row"
+			alignItems="center"
+			justify="center"
+		>
 			{plantData.isLoading ? (
 				<Spinner />
 			) : plantData.data.soilMoisture.length > 0 && plantData.data.lightLevel.length > 0 ? (

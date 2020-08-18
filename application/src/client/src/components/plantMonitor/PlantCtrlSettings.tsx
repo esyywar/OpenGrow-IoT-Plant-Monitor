@@ -47,7 +47,13 @@ export default function PlantCtrlSettings() {
 						<Grid item xs={6} lg={5} className="ctrl-metric">
 							<h4 className="ctrl-setting-text">Setpoint:</h4>
 						</Grid>
-						<Grid item xs={2} lg={2} className="ctrl-value">
+						<Grid
+							item
+							xs={2}
+							lg={2}
+							className="ctrl-value"
+							style={{ backgroundColor: theme.palette.background.default }}
+						>
 							<h4 className="ctrl-setting-text">{plantCtrlState.control.soilMoisture.setpoint}</h4>
 						</Grid>
 						<Grid item xs={1} className="ctrl-edit-btn">
@@ -60,7 +66,13 @@ export default function PlantCtrlSettings() {
 						<Grid item xs={6} lg={5} className="ctrl-metric">
 							<h4 className="ctrl-setting-text">Tolerance:</h4>
 						</Grid>
-						<Grid item xs={2} lg={2} className="ctrl-value">
+						<Grid
+							item
+							xs={2}
+							lg={2}
+							className="ctrl-value"
+							style={{ backgroundColor: theme.palette.background.default }}
+						>
 							<h4 className="ctrl-setting-text">{plantCtrlState.control.soilMoisture.tolerance}</h4>
 						</Grid>
 						<Grid item xs={1} className="ctrl-edit-btn">

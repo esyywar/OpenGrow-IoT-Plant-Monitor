@@ -8,27 +8,19 @@ import { timeFormat } from 'd3-time-format'
 
 import { makeStyles, createStyles } from '@material-ui/core/styles'
 
-import { useTheme, Theme, Grid } from '@material-ui/core/'
+import { useTheme, Theme, Grid, Typography, Paper } from '@material-ui/core/'
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
-		chartRoot: {
-			padding: theme.spacing(2),
-			borderRadius: theme.spacing(2),
-			width: 620,
-			height: 400,
+		titleRoot: {
+			fontFamily: "'Mulish', sans-seif",
+			fontWeight: 600,
 		},
-		toolTip: {
-			backgroundColor: 'white',
-			border: '2px solid ' + theme.palette.primary.main,
-			borderRadius: theme.spacing(2),
+		chartRoot: {
+			width: '100%',
+			height: 500,
 			padding: theme.spacing(2),
-			fontFamily: 'Helvetica',
-			fontSize: 12,
-			color: theme.palette.primary.main,
-			fontWeight: 'bold',
-			boxShadow: '0px 5px 15px rgba(0,0,0,0.1)',
-			marginBottom: theme.spacing(2),
+			color: theme.palette.text.primary,
 		},
 	})
 )
@@ -38,46 +30,68 @@ export default function LinePlot({ dataId, data }: InferProps<typeof LinePlot.pr
 
 	const theme = useTheme()
 
+	const nivoTheme = {
+		axis: {
+			textColor: theme.palette.text.primary,
+			fontSize: '14px',
+			tickColor: '#eee',
+		},
+		grid: {
+			stroke: '#888',
+			strokeWidth: 1,
+		},
+	}
+
 	const classes = useStyles()
 
 	return (
-		<Grid
-			item
-			xs={12}
-			onMouseEnter={() => setHover(true)}
-			onMouseLeave={() => setHover(false)}
-			className={classes.chartRoot}
-		>
-			<ResponsiveLine
-				data={[{ id: dataId, data }]}
-				curve={'monotoneX'}
-				enableGridY={true}
-				enableGridX={true}
-				colors={isHover ? theme.palette.primary.main : theme.palette.primary.light}
-				margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-				xScale={{ type: 'linear' }}
-				yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
-				axisTop={null}
-				axisRight={null}
-				axisBottom={{
-					orient: 'bottom',
-					tickSize: 5,
-					tickPadding: 5,
-					tickRotation: 0,
-					legend: 'Time',
-					legendOffset: 36,
-					legendPosition: 'middle',
+		<Grid item xs={12}>
+			<Paper
+				style={{
+					backgroundColor: theme.palette.background.paper,
+					borderWidth: '4px',
+					borderStyle: 'solid',
+					borderColor: isHover ? theme.palette.secondary.light : theme.palette.secondary.main,
 				}}
-				axisLeft={{
-					orient: 'left',
-					tickSize: 5,
-					tickPadding: 5,
-					tickRotation: 0,
-					legend: dataId,
-					legendOffset: -40,
-					legendPosition: 'middle',
-				}}
-			/>
+				className={classes.chartRoot}
+			>
+				<Typography align="center" variant="h5" className={classes.titleRoot}>
+					{dataId}
+				</Typography>
+				<ResponsiveLine
+					onMouseEnter={() => setHover(true)}
+					onMouseLeave={() => setHover(false)}
+					data={[{ id: dataId, data }]}
+					curve={'monotoneX'}
+					enableGridY={true}
+					enableGridX={true}
+					colors={isHover ? theme.palette.secondary.main : theme.palette.primary.main}
+					margin={{ top: 50, right: 110, bottom: 100, left: 60 }}
+					xScale={{ type: 'linear' }}
+					yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
+					axisTop={null}
+					axisRight={null}
+					axisBottom={{
+						orient: 'bottom',
+						tickSize: 5,
+						tickPadding: 5,
+						tickRotation: 0,
+						legend: 'Time',
+						legendOffset: 50,
+						legendPosition: 'middle',
+					}}
+					axisLeft={{
+						orient: 'left',
+						tickSize: 5,
+						tickPadding: 5,
+						tickRotation: 0,
+						legend: dataId,
+						legendOffset: -50,
+						legendPosition: 'middle',
+					}}
+					useMesh={true}
+				/>
+			</Paper>
 		</Grid>
 	)
 }

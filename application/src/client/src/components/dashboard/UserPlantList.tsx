@@ -6,13 +6,27 @@ import { useTypedSelector } from '../../reducers'
 
 import { loadUserPlants } from '../../actions/userPlants'
 
-import { Grid } from '@material-ui/core/'
+import { Grid, Typography, Theme } from '@material-ui/core/'
+import { makeStyles, createStyles } from '@material-ui/core/styles'
 
 import Spinner from '../util/Spinner'
 import PlantCard from './PlantCard'
 
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		plantListTitle: {
+			fontFamily: "'Mulish', sans-serif",
+			fontSize: 35,
+			margin: '10px 0 20px 0',
+			color: theme.palette.text.primary,
+		},
+	})
+)
+
 export default function UserPlantList() {
 	const dispatch = useDispatch()
+
+	const classes = useStyles()
 
 	useEffect(() => {
 		dispatch(loadUserPlants())
@@ -29,7 +43,9 @@ export default function UserPlantList() {
 			className="user-plant-list"
 		>
 			<Grid item xs={12}>
-				<h4 className="user-plant-list-title">Your Plants</h4>
+				<Typography variant="h4" className={classes.plantListTitle}>
+					Your Plants
+				</Typography>
 			</Grid>
 			{userPlants.isLoading ? (
 				<Spinner />

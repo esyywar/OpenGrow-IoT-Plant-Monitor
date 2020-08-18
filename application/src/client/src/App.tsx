@@ -17,7 +17,6 @@ import Dashboard from './components/dashboard/Dashboard'
 
 import PlantMonitor from './components/plantMonitor/PlantMonitor'
 
-import { useTheme } from '@material-ui/core'
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 
 function App() {
@@ -37,16 +36,22 @@ function App() {
 				main: '#474973',
 				dark: '#0D0C1D',
 			},
+			background: {
+				default: '#FAFAFA',
+				paper: '#D9DBF1',
+			},
 		},
 	})
 
 	const darkTheme = createMuiTheme({
 		palette: {
 			type: 'dark',
+			background: {
+				default: '#303030',
+				paper: '#424242',
+			},
 		},
 	})
-
-	const theme = useTheme()
 
 	return (
 		<ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
@@ -55,7 +60,9 @@ function App() {
 				style={{
 					padding: '0',
 					minHeight: '100vh',
-					backgroundColor: theme.palette.background.default,
+					backgroundColor: isDarkMode
+						? darkTheme.palette.background.default
+						: lightTheme.palette.background.default,
 				}}
 			>
 				<Router>
