@@ -60,7 +60,11 @@
   text-align: center;
 }
 
-.plant-monitor .plant-data-plot {
+.plant-monitor .plant-data-plot-container {
   margin-top: 25px;
+}
+
+.plant-monitor .plant-data-plot-container .plant-data-plot {
+  height: 500px;
 }
 /*# sourceMappingURL=plantMonitor.css.map */

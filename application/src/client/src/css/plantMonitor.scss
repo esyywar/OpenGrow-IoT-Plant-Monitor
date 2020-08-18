@@ -51,7 +51,11 @@
 	}
 
 	/* Plot of plant data */
-	.plant-data-plot {
+	.plant-data-plot-container {
 		margin-top: 25px;
+
+		.plant-data-plot {
+			height: 500px;
+		}
 	}
 }
