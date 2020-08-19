@@ -86,8 +86,6 @@ export const updateSetpoint = (update: controlUpdateType) => async (dispatch: Fu
 
 		dispatch(action)
 	} catch (error) {
-		dispatch(clearCtrlData())
-
 		const errors = error.response.data.errors
 
 		errors.forEach((error: any) => dispatch(setAlert(error.msg, 'error')))
@@ -118,8 +116,6 @@ export const updateTolerance = (update: controlUpdateType) => async (dispatch: F
 
 		dispatch(action)
 	} catch (error) {
-		dispatch(clearCtrlData())
-
 		const errors = error.response.data.errors
 
 		errors.forEach((error: any) => dispatch(setAlert(error.msg, 'error')))

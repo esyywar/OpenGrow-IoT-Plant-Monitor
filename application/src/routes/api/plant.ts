@@ -214,7 +214,7 @@ router.post(
 			}
 
 			if (tolerance < 0) {
-				return res.status(401).json({ errors: [{ msg: 'Tolerance must be positive values..' }] })
+				return res.status(401).json({ errors: [{ msg: 'Tolerance must be a positive value.' }] })
 			}
 
 			plant.control.soilMoisture.tolerance = tolerance

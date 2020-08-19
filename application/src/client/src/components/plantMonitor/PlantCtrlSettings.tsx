@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useTypedSelector } from '../../reducers'
 import { useDispatch } from 'react-redux'
@@ -9,6 +9,8 @@ import { Grid, Paper, Button } from '@material-ui/core/'
 
 import EditIcon from '@material-ui/icons/Edit'
 
+import UpdateSetpointModal from './Modals/UpdateSetpointModal'
+import UpdateToleranceModal from './Modals/UpdateToleranceModal'
 import Spinner from '../util/Spinner'
 
 export default function PlantCtrlSettings() {
@@ -26,6 +28,10 @@ export default function PlantCtrlSettings() {
 			dispatch(loadCtrlData(activePlant.plantId))
 		}
 	}, [dispatch, activePlant])
+
+	/* State to open/close modal windows */
+	const [setpointModal, setSetpointModal] = useState(false)
+	const [toleranceModal, setToleranceModal] = useState(false)
 
 	return (
 		<Grid
@@ -57,7 +63,7 @@ export default function PlantCtrlSettings() {
 							<h4 className="ctrl-setting-text">{plantCtrlState.control.soilMoisture.setpoint}</h4>
 						</Grid>
 						<Grid item xs={1} className="ctrl-edit-btn">
-							<Button>
+							<Button onClick={() => setSetpointModal(true)}>
 								<EditIcon />
 							</Button>
 						</Grid>
@@ -76,11 +82,18 @@ export default function PlantCtrlSettings() {
 							<h4 className="ctrl-setting-text">{plantCtrlState.control.soilMoisture.tolerance}</h4>
 						</Grid>
 						<Grid item xs={1} className="ctrl-edit-btn">
-							<Button>
+							<Button onClick={() => setToleranceModal(true)}>
 								<EditIcon />
 							</Button>
 						</Grid>
 					</Grid>
+
+					<UpdateSetpointModal isOpen={setpointModal} handleClose={() => setSetpointModal(false)} />
+
+					<UpdateToleranceModal
+						isOpen={toleranceModal}
+						handleClose={() => setToleranceModal(false)}
+					/>
 				</Paper>
 			)}
 		</Grid>
