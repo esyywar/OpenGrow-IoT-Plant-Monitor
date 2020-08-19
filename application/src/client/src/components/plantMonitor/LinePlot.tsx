@@ -22,6 +22,18 @@ const useStyles = makeStyles((theme: Theme) =>
 			padding: theme.spacing(2),
 			color: theme.palette.text.primary,
 		},
+		toolTip: {
+			backgroundColor: 'white',
+			border: '2px solid ' + theme.palette.secondary.main,
+			borderRadius: theme.spacing(2),
+			padding: theme.spacing(2),
+			fontFamily: "'Mulish', sans-serif",
+			fontSize: 14,
+			color: theme.palette.text.primary,
+			fontWeight: 'bold',
+			boxShadow: '0px 5px 15px rgba(0,0,0,0.1)',
+			marginBottom: theme.spacing(2),
+		},
 	})
 )
 
@@ -29,18 +41,6 @@ export default function LinePlot({ dataId, data }: InferProps<typeof LinePlot.pr
 	const [isHover, setHover] = useState(false)
 
 	const theme = useTheme()
-
-	const nivoTheme = {
-		axis: {
-			textColor: theme.palette.text.primary,
-			fontSize: '14px',
-			tickColor: '#eee',
-		},
-		grid: {
-			stroke: '#888',
-			strokeWidth: 1,
-		},
-	}
 
 	const classes = useStyles()
 
@@ -62,11 +62,13 @@ export default function LinePlot({ dataId, data }: InferProps<typeof LinePlot.pr
 					onMouseEnter={() => setHover(true)}
 					onMouseLeave={() => setHover(false)}
 					data={[{ id: dataId, data }]}
+					lineWidth={4}
+					pointSize={10}
 					curve={'monotoneX'}
 					enableGridY={true}
 					enableGridX={true}
-					colors={isHover ? theme.palette.secondary.main : theme.palette.primary.main}
-					margin={{ top: 50, right: 110, bottom: 100, left: 60 }}
+					colors={isHover ? theme.palette.text.primary : theme.palette.text.secondary}
+					margin={{ top: 50, right: 110, bottom: 100, left: 100 }}
 					xScale={{ type: 'linear' }}
 					yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
 					axisTop={null}
@@ -86,10 +88,56 @@ export default function LinePlot({ dataId, data }: InferProps<typeof LinePlot.pr
 						tickPadding: 5,
 						tickRotation: 0,
 						legend: dataId,
-						legendOffset: -50,
+						legendOffset: -70,
 						legendPosition: 'middle',
 					}}
 					useMesh={true}
+					theme={{
+						grid: {
+							line: {
+								stroke: theme.palette.text.primary,
+							},
+						},
+						axis: {
+							legend: {
+								text: {
+									fill: theme.palette.text.primary,
+									fontSize: 20,
+								},
+							},
+							ticks: {
+								text: {
+									fill: theme.palette.text.primary,
+									fontSize: 14,
+								},
+								line: {
+									stroke: theme.palette.text.primary,
+									strokeWidth: 1,
+								},
+							},
+							domain: {
+								line: {
+									stroke: theme.palette.text.primary,
+									strokeWidth: 1,
+								},
+							},
+						},
+						crosshair: {
+							line: {
+								stroke: theme.palette.text.primary,
+								strokeWidth: 1,
+								strokeOpacity: 0.35,
+							},
+						},
+					}}
+					tooltip={({ point }) => {
+						return (
+							<div className={classes.toolTip}>
+								<p>{point.data.x}</p>
+								<p>{`${dataId}: ${point.data.y}`}</p>
+							</div>
+						)
+					}}
 				/>
 			</Paper>
 		</Grid>
