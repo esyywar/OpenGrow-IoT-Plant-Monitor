@@ -69,10 +69,11 @@ export default function UpdateSetpointModal({
 					placeholder={`${currTolerance}`}
 					fullWidth
 					onChange={handleInputChange}
+					required
 				/>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={submitNameChange} color="primary">
+				<Button onClick={submitNameChange} color="primary" type="submit">
 					Update Tolerance
 				</Button>
 				<Button onClick={handleClose} color="primary">

@@ -64,10 +64,11 @@ export default function NamePlantModal({
 					placeholder={currName}
 					fullWidth
 					onChange={handleInputChange}
+					required
 				/>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={submitNameChange} color="primary">
+				<Button onClick={submitNameChange} color="primary" type="submit">
 					Change Name
 				</Button>
 				<Button onClick={handleClose} color="primary">

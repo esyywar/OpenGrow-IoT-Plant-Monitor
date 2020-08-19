@@ -28,10 +28,13 @@ export default function PlantDataPlot() {
 	/* Get plant data */
 	const plantData = useTypedSelector((state) => state.plantDataState)
 
+	/* Date format specifier */
+	const dateFormat = timeFormat('%m-%d-%Y-%H-%M-%S')
+
 	/* Map soil data for plotting */
 	const soilData = plantData.data.soilMoisture.map(({ measurement, date }) => {
 		return {
-			x: date,
+			x: dateFormat(date),
 			y: measurement,
 		}
 	})
@@ -39,13 +42,10 @@ export default function PlantDataPlot() {
 	/* Map light data for plotting */
 	const lightData = plantData.data.lightLevel.map(({ measurement, date }) => {
 		return {
-			x: date,
+			x: dateFormat(date),
 			y: measurement,
 		}
 	})
-
-	/* Date format specifier */
-	let dateFormat = timeFormat('%m-%d-%Y-%H-%M-%S-%L')
 
 	return (
 		<Grid container className="plant-data-plot-container" spacing={4}>
@@ -55,7 +55,6 @@ export default function PlantDataPlot() {
 				<Fragment>
 					<LinePlot dataId="Soil Moisture" data={soilData} />
 					<LinePlot dataId="Light Level" data={lightData} />
-					{console.log(dateFormat(plantData.data.soilMoisture[0].date))}
 				</Fragment>
 			) : (
 				'This plant has not collected any data yet!'

@@ -66,10 +66,11 @@ export default function UpdateSetpointModal({
 					placeholder={`${currSetpoint}`}
 					fullWidth
 					onChange={handleInputChange}
+					required
 				/>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={submitNameChange} color="primary">
+				<Button onClick={submitNameChange} color="primary" type="submit">
 					Update Setpoint
 				</Button>
 				<Button onClick={handleClose} color="primary">

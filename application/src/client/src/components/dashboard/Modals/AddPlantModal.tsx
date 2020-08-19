@@ -59,10 +59,11 @@ export default function NamePlantModal({
 					placeholder="Enter 24 character ID code"
 					fullWidth
 					onChange={handleInputChange}
+					required
 				/>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={submitNameChange} color="primary">
+				<Button onClick={submitNameChange} color="primary" type="submit">
 					Add Plant
 				</Button>
 				<Button onClick={handleClose} color="primary">

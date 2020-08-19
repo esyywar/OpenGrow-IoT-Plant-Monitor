@@ -154,7 +154,7 @@ router.post(
  */
 router.post(
 	'/setpoint/:plantId',
-	[check('setpoint', 'Setpoint is required.').isNumeric(), auth],
+	[check('setpoint', 'Setpoint value is required.').isNumeric(), auth],
 	async (req: Request, res: Response) => {
 		const errors = validationResult(req)
 
