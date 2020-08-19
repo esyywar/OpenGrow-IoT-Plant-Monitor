@@ -26,15 +26,6 @@
 			height: 100%;
 			padding: 15px;
 			border-radius: 35px;
-			background-color: whitesmoke;
-
-			.card-info-text {
-				font-family: 'Mulish', sans-serif;
-				font-size: 19px;
-				line-height: 35px;
-				text-align: center;
-				padding: 20px 5px;
-			}
 		}
 
 		.icons-container {
@@ -77,15 +68,12 @@
 			font-family: 'Mulish', sans-serif;
 			font-size: 19px;
 			line-height: 30px;
-			background-color: whitesmoke;
 			border-radius: 35px;
 			margin: 2em 0;
 			padding: 0.8em;
 		}
 
 		.carousel-container {
-			background-color: whitesmoke;
-
 			.carousel-swipe-container {
 				.carousel-step-item {
 					width: 100%;
@@ -112,7 +100,6 @@
 
 						.step-text {
 							font-family: 'Mulish', sans-serif;
-							color: black;
 							font-size: 19px;
 						}
 					}

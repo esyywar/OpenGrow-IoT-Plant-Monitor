@@ -60,7 +60,10 @@ export default function StepsCarousel() {
 	}
 
 	return (
-		<Paper className="carousel-container">
+		<Paper
+			className="carousel-container"
+			style={{ backgroundColor: theme.palette.background.paper }}
+		>
 			<SwipeableViews
 				className="carousel-swipe-container"
 				axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}

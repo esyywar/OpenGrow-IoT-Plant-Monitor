@@ -3,8 +3,6 @@ import React, { useState } from 'react'
 import PropTypes, { InferProps } from 'prop-types'
 
 import { ResponsiveLine } from '@nivo/line'
-import * as time from 'd3-time'
-import { timeFormat } from 'd3-time-format'
 
 import { makeStyles, createStyles } from '@material-ui/core/styles'
 
@@ -69,7 +67,9 @@ export default function LinePlot({ dataId, data }: InferProps<typeof LinePlot.pr
 					enableGridX={true}
 					colors={isHover ? theme.palette.text.primary : theme.palette.text.secondary}
 					margin={{ top: 50, right: 110, bottom: 100, left: 100 }}
-					xScale={{ type: 'linear' }}
+					xScale={{
+						type: 'linear',
+					}}
 					yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
 					axisTop={null}
 					axisRight={null}
