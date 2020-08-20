@@ -1,15 +1,14 @@
-import React, { useEffect, Fragment } from 'react'
+import React, { useEffect } from 'react'
 
 import { useTypedSelector } from '../../reducers'
 import { useDispatch } from 'react-redux'
 import { loadPlantData } from '../../actions/plantData'
 
-import * as time from 'd3-time'
 import { timeFormat } from 'd3-time-format'
 
 import LinePlot from './LinePlot'
 
-import { Grid } from '@material-ui/core/'
+import { Grid, Container } from '@material-ui/core/'
 
 import Spinner from '../util/Spinner'
 
@@ -48,17 +47,17 @@ export default function PlantDataPlot() {
 	})
 
 	return (
-		<Grid container className="plant-data-plot-container" spacing={4}>
+		<Container maxWidth={false} className="plant-data-plot-container">
 			{plantData.isLoading ? (
 				<Spinner />
 			) : plantData.data.soilMoisture.length > 0 && plantData.data.lightLevel.length > 0 ? (
-				<Fragment>
+				<Grid container spacing={4} style={{ marginBottom: 20 }}>
 					<LinePlot dataId="Soil Moisture" data={soilData} />
 					<LinePlot dataId="Light Level" data={lightData} />
-				</Fragment>
+				</Grid>
 			) : (
 				'This plant has not collected any data yet!'
 			)}
-		</Grid>
+		</Container>
 	)
 }
