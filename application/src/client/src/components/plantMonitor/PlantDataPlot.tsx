@@ -51,7 +51,7 @@ export default function PlantDataPlot() {
 			{plantData.isLoading ? (
 				<Spinner />
 			) : plantData.data.soilMoisture.length > 0 && plantData.data.lightLevel.length > 0 ? (
-				<Grid container spacing={4} style={{ marginBottom: 20 }}>
+				<Grid container spacing={4} style={{ padding: '25px 0' }}>
 					<LinePlot dataId="Soil Moisture" data={soilData} />
 					<LinePlot dataId="Light Level" data={lightData} />
 				</Grid>

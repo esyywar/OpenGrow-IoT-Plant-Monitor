@@ -1,27 +1,16 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 
 import PropTypes, { InferProps } from 'prop-types'
 
 import { ResponsiveLine } from '@nivo/line'
 
 import RefreshIcon from '@material-ui/icons/Refresh'
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 
 import { makeStyles, createStyles } from '@material-ui/core/styles'
 
-import {
-	useTheme,
-	Theme,
-	Grid,
-	Typography,
-	Paper,
-	Button,
-	MenuList,
-	MenuItem,
-	Popper,
-	Grow,
-	ClickAwayListener,
-} from '@material-ui/core/'
+import { useTheme, Theme, Grid, Typography, Paper, Button } from '@material-ui/core/'
+
+import TimeScaleMenu from './TimeScaleMenu'
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -55,37 +44,28 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 )
 
+export enum TimeScaleEnum {
+	Hours = 'Hours',
+	Days = 'Days',
+	Weeks = 'Weeks',
+}
+
 export default function LinePlot({ dataId, data }: InferProps<typeof LinePlot.propTypes>) {
-	/* Toggle collapsable time-scale menu */
-	const [isMenuOpen, setMenuOpen] = useState(false)
-
-	const anchorRef = useRef(null)
-
-	const handleClose = (event: any) => {
-		setMenuOpen(false)
-	}
-
-	function handleListKeyDown(event: React.KeyboardEvent) {
-		if (event.key === 'Tab') {
-			event.preventDefault()
-			setMenuOpen(false)
-		}
-	}
-
-	// return focus to the button when we transitioned from !isMenuOpen -> isMenuOpen
-	const prevOpen = useRef(isMenuOpen)
-	React.useEffect(() => {
-		if (prevOpen !== null) {
-			prevOpen.current = isMenuOpen
-		}
-	}, [isMenuOpen])
-
-	/* Hover effect for chart */
 	const [isHover, setHover] = useState(false)
+
+	/* Time scale (chosen from menu in TimeScaleMenu component) */
+	const [timeScale, setTimeScale] = useState<TimeScaleEnum>(TimeScaleEnum.Days)
 
 	const theme = useTheme()
 
 	const classes = useStyles()
+
+	/* If time scale updated, reflect change in local state */
+	const updateTimeScale = (newTimeScale: TimeScaleEnum) => {
+		if (timeScale !== newTimeScale) {
+			setTimeScale(newTimeScale)
+		}
+	}
 
 	return (
 		<Grid item container xs={12} direction="column" alignItems="center" justify="flex-start">
@@ -126,43 +106,7 @@ export default function LinePlot({ dataId, data }: InferProps<typeof LinePlot.pr
 						</Typography>
 					</Button>
 
-					<Button
-						startIcon={<ArrowDropDownIcon />}
-						color="secondary"
-						variant="contained"
-						onClick={() => setMenuOpen(!isMenuOpen)}
-						className={classes.actionButton}
-						ref={anchorRef}
-					>
-						<Typography align="center" variant="body2">
-							Test Drop Down
-						</Typography>
-					</Button>
-					<Popper
-						open={isMenuOpen}
-						anchorEl={anchorRef.current}
-						role={undefined}
-						transition
-						disablePortal
-					>
-						{({ TransitionProps }) => (
-							<Grow {...TransitionProps} style={{ transformOrigin: 'bottom' }}>
-								<Paper>
-									<ClickAwayListener onClickAway={handleClose}>
-										<MenuList
-											autoFocusItem={isMenuOpen}
-											id="menu-list-grow"
-											onKeyDown={handleListKeyDown}
-										>
-											<MenuItem onClick={handleClose}>Hours</MenuItem>
-											<MenuItem onClick={handleClose}>Days</MenuItem>
-											<MenuItem onClick={handleClose}>Weeks</MenuItem>
-										</MenuList>
-									</ClickAwayListener>
-								</Paper>
-							</Grow>
-						)}
-					</Popper>
+					<TimeScaleMenu currTimeScale={timeScale} onScaleChange={updateTimeScale} />
 				</Grid>
 
 				<Grid item xs={12} className={classes.chartRoot}>
