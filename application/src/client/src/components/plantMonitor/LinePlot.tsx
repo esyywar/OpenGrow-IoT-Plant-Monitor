@@ -66,7 +66,7 @@ export default function LinePlot({
 	const [isHover, setHover] = useState(false)
 
 	/* Time scale (chosen from menu in TimeScaleMenu component) */
-	const [timeScale, setTimeScale] = useState<TimeScaleEnum>(TimeScaleEnum.Days)
+	const [timeScale, setTimeScale] = useState<TimeScaleEnum>(TimeScaleEnum.Hours)
 
 	const dispatch = useDispatch()
 
@@ -83,8 +83,22 @@ export default function LinePlot({
 
 	const plantId = useTypedSelector((state) => state.activePlantState.activePlant.plantId)
 
+	/* Get fresh data from database on refresh */
 	const refreshData = () => {
 		dispatch(loadPlantData(plantId))
+	}
+
+	const tickFromScale = () => {
+		switch (timeScale) {
+			case TimeScaleEnum.Hours:
+				return 'every 1 hour'
+			case TimeScaleEnum.Days:
+				return 'every 1 day'
+			case TimeScaleEnum.Weeks:
+				return 'every 7 days'
+			default:
+				return 'every 1 hour'
+		}
 	}
 
 	return (
@@ -149,11 +163,11 @@ export default function LinePlot({
 						axisRight={null}
 						axisBottom={{
 							orient: 'bottom',
-							format: '%m-%d',
+							format: '%b-%d %H:%M',
 							tickSize: 5,
 							tickPadding: 5,
 							tickRotation: 0,
-							tickValues: 'every 1 hour',
+							tickValues: tickFromScale(),
 							legend: 'Time',
 							legendOffset: 50,
 							legendPosition: 'middle',
