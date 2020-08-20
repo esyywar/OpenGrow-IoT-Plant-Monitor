@@ -8,6 +8,8 @@ import { loadPlantData } from '../../actions/plantData'
 
 import { ResponsiveLine } from '@nivo/line'
 
+import { timeFormat } from 'd3-time-format'
+
 import RefreshIcon from '@material-ui/icons/Refresh'
 
 import { makeStyles, createStyles } from '@material-ui/core/styles'
@@ -27,7 +29,6 @@ const useStyles = makeStyles((theme: Theme) =>
 		chartRoot: {
 			width: '100%',
 			height: 500,
-			padding: theme.spacing(2),
 			color: theme.palette.text.primary,
 		},
 		actionButton: {
@@ -53,6 +54,9 @@ export enum TimeScaleEnum {
 	Days = 'Days',
 	Weeks = 'Weeks',
 }
+
+/* Date format specifier */
+const dateFormat = timeFormat('%b %d, %Y %H:%M')
 
 export default function LinePlot({
 	title,
@@ -205,7 +209,7 @@ export default function LinePlot({
 						tooltip={({ point }) => {
 							return (
 								<div className={classes.toolTip}>
-									<p>{point.data.x.toString()}</p>
+									<p>{dateFormat(new Date(point.data.x))}</p>
 									<p>{`${point.id.slice(0, point.id.indexOf('.'))}: ${point.data.y}`}</p>
 								</div>
 							)
