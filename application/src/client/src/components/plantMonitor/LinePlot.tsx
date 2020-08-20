@@ -2,6 +2,10 @@ import React, { useState } from 'react'
 
 import PropTypes, { InferProps } from 'prop-types'
 
+import { useTypedSelector } from '../../reducers'
+import { useDispatch } from 'react-redux'
+import { loadPlantData } from '../../actions/plantData'
+
 import { ResponsiveLine } from '@nivo/line'
 
 import RefreshIcon from '@material-ui/icons/Refresh'
@@ -50,11 +54,17 @@ export enum TimeScaleEnum {
 	Weeks = 'Weeks',
 }
 
-export default function LinePlot({ dataId, data }: InferProps<typeof LinePlot.propTypes>) {
+export default function LinePlot({
+	title,
+	yTitle,
+	plotData,
+}: InferProps<typeof LinePlot.propTypes>) {
 	const [isHover, setHover] = useState(false)
 
 	/* Time scale (chosen from menu in TimeScaleMenu component) */
 	const [timeScale, setTimeScale] = useState<TimeScaleEnum>(TimeScaleEnum.Days)
+
+	const dispatch = useDispatch()
 
 	const theme = useTheme()
 
@@ -65,6 +75,12 @@ export default function LinePlot({ dataId, data }: InferProps<typeof LinePlot.pr
 		if (timeScale !== newTimeScale) {
 			setTimeScale(newTimeScale)
 		}
+	}
+
+	const plantId = useTypedSelector((state) => state.activePlantState.activePlant.plantId)
+
+	const refreshData = () => {
+		dispatch(loadPlantData(plantId))
 	}
 
 	return (
@@ -81,7 +97,7 @@ export default function LinePlot({ dataId, data }: InferProps<typeof LinePlot.pr
 			>
 				<Grid item xs={12}>
 					<Typography align="center" variant="h5" className={classes.titleRoot}>
-						{dataId}
+						{title}
 					</Typography>
 				</Grid>
 
@@ -99,6 +115,7 @@ export default function LinePlot({ dataId, data }: InferProps<typeof LinePlot.pr
 						color="secondary"
 						variant="contained"
 						className={classes.actionButton}
+						onClick={refreshData}
 					>
 						{' '}
 						<Typography align="center" variant="body2">
@@ -113,7 +130,7 @@ export default function LinePlot({ dataId, data }: InferProps<typeof LinePlot.pr
 					<ResponsiveLine
 						onMouseEnter={() => setHover(true)}
 						onMouseLeave={() => setHover(false)}
-						data={[{ id: dataId, data }]}
+						data={plotData}
 						lineWidth={4}
 						pointSize={10}
 						curve={'monotoneX'}
@@ -142,7 +159,7 @@ export default function LinePlot({ dataId, data }: InferProps<typeof LinePlot.pr
 							tickSize: 5,
 							tickPadding: 5,
 							tickRotation: 0,
-							legend: dataId,
+							legend: yTitle,
 							legendOffset: -70,
 							legendPosition: 'middle',
 						}}
@@ -189,7 +206,7 @@ export default function LinePlot({ dataId, data }: InferProps<typeof LinePlot.pr
 							return (
 								<div className={classes.toolTip}>
 									<p>{point.data.x.toString()}</p>
-									<p>{`${dataId}: ${point.data.y}`}</p>
+									<p>{`${point.id.slice(0, point.id.indexOf('.'))}: ${point.data.y}`}</p>
 								</div>
 							)
 						}}
@@ -201,9 +218,15 @@ export default function LinePlot({ dataId, data }: InferProps<typeof LinePlot.pr
 }
 
 LinePlot.propTypes = {
-	dataId: PropTypes.string.isRequired,
-	data: {
-		x: PropTypes.number.isRequired,
-		y: PropTypes.instanceOf(Date).isRequired,
-	},
+	title: PropTypes.string.isRequired,
+	yTitle: PropTypes.string.isRequired,
+	plotData: [
+		{
+			id: PropTypes.string.isRequired,
+			data: {
+				x: PropTypes.instanceOf(Date).isRequired,
+				y: PropTypes.number.isRequired,
+			},
+		},
+	],
 }

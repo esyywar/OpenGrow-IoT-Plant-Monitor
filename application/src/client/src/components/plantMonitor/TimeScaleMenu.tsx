@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 
 import PropTypes, { InferProps } from 'prop-types'
 import { TimeScaleEnum } from './LinePlot'

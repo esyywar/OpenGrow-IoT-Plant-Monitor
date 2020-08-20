@@ -52,8 +52,16 @@ export default function PlantDataPlot() {
 				<Spinner />
 			) : plantData.data.soilMoisture.length > 0 && plantData.data.lightLevel.length > 0 ? (
 				<Grid container spacing={4} style={{ padding: '25px 0' }}>
-					<LinePlot dataId="Soil Moisture" data={soilData} />
-					<LinePlot dataId="Light Level" data={lightData} />
+					<LinePlot
+						title="Soil Moisture"
+						yTitle="Soil Moisture"
+						plotData={[{ id: 'Soil Moisture', data: soilData }]}
+					/>
+					<LinePlot
+						title="Light Availability"
+						yTitle="Light Level"
+						plotData={[{ id: 'Light Level', data: lightData }]}
+					/>
 				</Grid>
 			) : (
 				'This plant has not collected any data yet!'
