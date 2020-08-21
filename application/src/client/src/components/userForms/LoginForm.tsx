@@ -3,22 +3,42 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { userLogin } from '../../actions/auth'
 
-import { useTheme } from '@material-ui/core/styles'
+import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles'
 
 import { Paper, Grid, Button, TextField } from '@material-ui/core/'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-
-import '../../css/loginForm.css'
 
 type InputForm = {
 	email: string
 	password: string
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		loginFormContainer: {
+			padding: 40,
+		},
+		loginFormTitle: {
+			fontFamily: "'Mulish', sans-serif",
+			fontSize: '28px',
+			textAlign: 'center',
+			fontWeight: 600,
+			textTransform: 'uppercase',
+			marginBottom: 10,
+		},
+		inputField: {
+			marginBottom: '15px',
+			minWidth: '250px',
+		},
+	})
+)
+
 export default function LoginForm() {
 	const dispatch = useDispatch()
 
 	const theme = useTheme()
+
+	const classes = useStyles()
 
 	const initialState: InputForm = { email: '', password: '' }
 
@@ -35,14 +55,14 @@ export default function LoginForm() {
 
 	return (
 		<Paper
-			className="login-form-container"
+			className={classes.loginFormContainer}
 			style={{ backgroundColor: theme.palette.secondary.light }}
 		>
 			<Grid container direction="column" alignItems="center" justify="center">
-				<Grid item xs={12} className="login-form-title">
+				<Grid item xs={12} className={classes.loginFormTitle}>
 					Login
 				</Grid>
-				<form className="login-form">
+				<form>
 					<Grid item xs={12}>
 						<TextField
 							required
@@ -52,7 +72,7 @@ export default function LoginForm() {
 							autoFocus
 							placeholder="Email"
 							onChange={handleInputChange}
-							className="input-field"
+							className={classes.inputField}
 						/>
 					</Grid>
 					<Grid item xs={12}>
@@ -63,7 +83,7 @@ export default function LoginForm() {
 							name="password"
 							placeholder="Password"
 							onChange={handleInputChange}
-							className="input-field"
+							className={classes.inputField}
 						/>
 					</Grid>
 					<Grid item xs={6}>

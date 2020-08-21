@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAAA,AAAA,qBAAqB,CAAC;EACrB,OAAO,EAAE,IAAI;CAiBb;;AAlBD,AAGC,qBAHoB,CAGpB,iBAAiB,CAAC;EACjB,WAAW,EAAE,oBAAoB;EACjC,SAAS,EAAE,IAAI;EACf,UAAU,EAAE,MAAM;EAClB,WAAW,EAAE,GAAG;EAChB,cAAc,EAAE,SAAS;EACzB,aAAa,EAAE,KAAK;CACpB;;AAVF,AAaE,qBAbmB,CAYpB,WAAW,CACV,YAAY,CAAC;EACZ,aAAa,EAAE,IAAI;EACnB,SAAS,EAAE,KAAK;CAChB",
-    "sources": [
-        "loginForm.scss"
-    ],
-    "names": [],
-    "file": "loginForm.css"
-}

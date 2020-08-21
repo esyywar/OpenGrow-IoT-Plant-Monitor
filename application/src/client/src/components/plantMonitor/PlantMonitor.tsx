@@ -6,18 +6,34 @@ import { useTypedSelector } from '../../reducers'
 import { useDispatch } from 'react-redux'
 import { loadActivePlant } from '../../actions/activePlant'
 
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+
 import { Container } from '@material-ui/core/'
 
 import PlantNameDisp from './PlantNameDisp'
 import PlantCtrlSettings from './PlantCtrlSettings'
 import PlantDataPlot from './PlantDataPlot'
 
-import '../../css/plantMonitor.css'
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		plantMonitor: {
+			[theme.breakpoints.down('sm')]: {
+				marginTop: theme.spacing(6),
+			},
+			[theme.breakpoints.up('md')]: {
+				marginTop: theme.spacing(8),
+			},
+			paddingBottom: theme.spacing(4),
+		},
+	})
+)
 
 export default function PlantMonitor() {
 	const dispatch = useDispatch()
 
 	const history = useHistory()
+
+	const classes = useStyles()
 
 	const activePlantState = useTypedSelector((state) => state.activePlantState)
 
@@ -30,7 +46,7 @@ export default function PlantMonitor() {
 	}, [dispatch])
 
 	return (
-		<Container maxWidth="lg" className="plant-monitor">
+		<Container maxWidth="lg" className={classes.plantMonitor}>
 			<PlantNameDisp />
 			<PlantCtrlSettings />
 			<PlantDataPlot />

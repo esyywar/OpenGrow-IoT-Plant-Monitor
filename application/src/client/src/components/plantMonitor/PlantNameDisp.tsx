@@ -2,13 +2,29 @@ import React from 'react'
 
 import { useTypedSelector } from '../../reducers'
 
-import { useTheme } from '@material-ui/core'
-import { Grid, Paper } from '@material-ui/core/'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+
+import { Grid, Paper, useTheme } from '@material-ui/core/'
 
 import Spinner from '../util/Spinner'
 
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		plantMonWelcome: {
+			fontSize: 15,
+			padding: 18,
+		},
+		activePlantName: {
+			fontFamily: "'Mulish', sans-serif",
+			fontSize: 35,
+		},
+	})
+)
+
 export default function PlantNameDisp() {
 	const theme = useTheme()
+
+	const classes = useStyles()
 
 	const activePlantState = useTypedSelector((state) => state.activePlantState)
 
@@ -21,9 +37,9 @@ export default function PlantNameDisp() {
 					<Paper
 						elevation={8}
 						style={{ backgroundColor: theme.palette.secondary.light }}
-						className="plant-monitor-welcome"
+						className={classes.plantMonWelcome}
 					>
-						<h4 className="active-plant-name">{activePlantState.activePlant.name}</h4>
+						<h4 className={classes.activePlantName}>{activePlantState.activePlant.name}</h4>
 					</Paper>
 				</Grid>
 			)}

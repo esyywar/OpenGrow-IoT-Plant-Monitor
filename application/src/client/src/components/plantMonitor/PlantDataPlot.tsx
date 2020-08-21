@@ -8,6 +8,8 @@ import { timeFormat } from 'd3-time-format'
 
 import LinePlot from './LinePlot'
 
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+
 import { Grid, Container } from '@material-ui/core/'
 
 import Spinner from '../util/Spinner'
@@ -15,8 +17,23 @@ import Spinner from '../util/Spinner'
 /* Date format specifier */
 const dateFormat = timeFormat('%m-%d-%Y-%H-%M-%S')
 
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		dataPlotContainer: {
+			[theme.breakpoints.down('sm')]: {
+				marginTop: theme.spacing(2),
+			},
+			[theme.breakpoints.up('md')]: {
+				marginTop: theme.spacing(3),
+			},
+		},
+	})
+)
+
 export default function PlantDataPlot() {
 	const dispatch = useDispatch()
+
+	const classes = useStyles()
 
 	const activePlant = useTypedSelector((state) => state.activePlantState.activePlant)
 
@@ -51,7 +68,7 @@ export default function PlantDataPlot() {
 	)
 
 	return (
-		<Container maxWidth={false} className="plant-data-plot-container">
+		<Container maxWidth={false} className={classes.dataPlotContainer}>
 			{plantData.isLoading ? (
 				<Spinner />
 			) : plantData.data.soilMoisture.length > 0 &&

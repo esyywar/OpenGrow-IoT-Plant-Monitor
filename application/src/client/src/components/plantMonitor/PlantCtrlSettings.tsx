@@ -4,7 +4,7 @@ import { useTypedSelector } from '../../reducers'
 import { useDispatch } from 'react-redux'
 import { loadCtrlData } from '../../actions/plantControl'
 
-import { useTheme } from '@material-ui/core'
+import { createStyles, makeStyles, useTheme, Theme } from '@material-ui/core/styles'
 import { Grid, Paper, Button } from '@material-ui/core/'
 
 import EditIcon from '@material-ui/icons/Edit'
@@ -13,10 +13,49 @@ import UpdateSetpointModal from './Modals/UpdateSetpointModal'
 import UpdateToleranceModal from './Modals/UpdateToleranceModal'
 import Spinner from '../util/Spinner'
 
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		plantCtrlSettings: {
+			[theme.breakpoints.down('sm')]: {
+				marginTop: theme.spacing(2),
+			},
+			[theme.breakpoints.up('md')]: {
+				marginTop: theme.spacing(3),
+			},
+		},
+		plantCtrlContainer: {
+			width: '100%',
+			maxWidth: '550px',
+			padding: '30px 10px 20px 20px',
+			fontFamily: "'Mulish', sans-serif",
+		},
+		soilMoisTitle: {
+			fontSize: '25px',
+			marginBottom: '28px',
+		},
+		ctrlSettingContainer: {
+			marginBottom: '6px',
+			width: '100%',
+		},
+		ctrlSettingText: {
+			textAlign: 'center',
+			fontSize: '20px',
+			fontWeight: 600,
+		},
+		ctrlValue: {
+			padding: 6,
+			backgroundColor: theme.palette.background.default,
+			borderRadius: '8px',
+		},
+	})
+)
+
 export default function PlantCtrlSettings() {
 	const dispatch = useDispatch()
 
 	const theme = useTheme()
+
+	const classes = useStyles()
 
 	const activePlant = useTypedSelector((state) => state.activePlantState.activePlant)
 
@@ -39,49 +78,59 @@ export default function PlantCtrlSettings() {
 			direction="column"
 			justify="flex-start"
 			alignItems="flex-start"
-			className="plant-ctrl-settings"
+			className={classes.plantCtrlSettings}
 		>
 			{plantCtrlState.isLoading ? (
 				<Spinner />
 			) : (
 				<Paper
 					style={{ backgroundColor: theme.palette.primary.light }}
-					className="plant-ctrl-container"
+					className={classes.plantCtrlContainer}
 				>
-					<h3 className="soil-mois-title">Soil Moisture Controls</h3>
-					<Grid item container xs={12} spacing={5} className="ctrl-setting-container">
-						<Grid item xs={6} lg={5} className="ctrl-metric">
-							<h4 className="ctrl-setting-text">Setpoint:</h4>
+					<h3 className={classes.soilMoisTitle}>Soil Moisture Controls</h3>
+					<Grid
+						item
+						container
+						xs={12}
+						spacing={5}
+						direction="row"
+						justify="flex-start"
+						alignItems="center"
+						className={classes.ctrlSettingContainer}
+					>
+						<Grid item xs={5} lg={5}>
+							<h4 className={classes.ctrlSettingText}>Setpoint:</h4>
 						</Grid>
-						<Grid
-							item
-							xs={2}
-							lg={2}
-							className="ctrl-value"
-							style={{ backgroundColor: theme.palette.background.default }}
-						>
-							<h4 className="ctrl-setting-text">{plantCtrlState.control.soilMoisture.setpoint}</h4>
+						<Grid item xs={4} lg={3}>
+							<h4 className={`${classes.ctrlSettingText} ${classes.ctrlValue}`}>
+								{plantCtrlState.control.soilMoisture.setpoint}
+							</h4>
 						</Grid>
-						<Grid item xs={1} className="ctrl-edit-btn">
+						<Grid item xs={1}>
 							<Button onClick={() => setSetpointModal(true)}>
 								<EditIcon />
 							</Button>
 						</Grid>
 					</Grid>
-					<Grid item container xs={12} spacing={5} className="ctrl-setting-container">
-						<Grid item xs={6} lg={5} className="ctrl-metric">
-							<h4 className="ctrl-setting-text">Tolerance:</h4>
+					<Grid
+						item
+						container
+						xs={12}
+						spacing={5}
+						direction="row"
+						justify="flex-start"
+						alignItems="center"
+						className={classes.ctrlSettingContainer}
+					>
+						<Grid item xs={5} lg={5}>
+							<h4 className={classes.ctrlSettingText}>Tolerance:</h4>
 						</Grid>
-						<Grid
-							item
-							xs={2}
-							lg={2}
-							className="ctrl-value"
-							style={{ backgroundColor: theme.palette.background.default }}
-						>
-							<h4 className="ctrl-setting-text">{plantCtrlState.control.soilMoisture.tolerance}</h4>
+						<Grid item xs={4} lg={3}>
+							<h4 className={`${classes.ctrlSettingText} ${classes.ctrlValue}`}>
+								{plantCtrlState.control.soilMoisture.tolerance}
+							</h4>
 						</Grid>
-						<Grid item xs={1} className="ctrl-edit-btn">
+						<Grid item xs={1}>
 							<Button onClick={() => setToleranceModal(true)}>
 								<EditIcon />
 							</Button>

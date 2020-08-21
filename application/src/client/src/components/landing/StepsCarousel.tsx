@@ -1,11 +1,53 @@
 import React, { useState } from 'react'
 
-import { useTheme } from '@material-ui/core/styles'
+import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles'
 
 import { MobileStepper, Paper, Typography, Button } from '@material-ui/core/'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import SwipeableViews from 'react-swipeable-views'
+
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		carouselStep: {
+			width: '100%',
+			display: 'flex',
+			flexFlow: 'row wrap',
+			alignItems: 'center',
+			justifyContent: 'center',
+		},
+		textContainer: {
+			display: 'flex',
+			flexDirection: 'row',
+			alignItems: 'center',
+			padding: '10px 14px',
+			width: '100%',
+		},
+		stepNumber: {
+			padding: '5px 9px',
+			marginRight: theme.spacing(2),
+			backgroundColor: '#3C4CDF',
+			borderRadius: '20px',
+			color: 'white',
+			fontSize: '19px',
+			bordeRadius: '50%',
+		},
+		stepText: {
+			fontFamily: "'Mulish', sans-serif",
+			[theme.breakpoints.down('sm')]: {
+				fontSize: '18px',
+			},
+			[theme.breakpoints.up('md')]: {
+				fontSize: '19px',
+			},
+		},
+		carouselImg: {
+			display: 'block',
+			margin: 'auto',
+			width: 'auto',
+		},
+	})
+)
 
 const howItWorksSteps = [
 	{
@@ -44,6 +86,8 @@ const howItWorksSteps = [
 export default function StepsCarousel() {
 	const theme = useTheme()
 
+	const classes = useStyles()
+
 	const [activeStep, setActiveStep] = useState(0)
 	const maxSteps = howItWorksSteps.length
 
@@ -60,27 +104,23 @@ export default function StepsCarousel() {
 	}
 
 	return (
-		<Paper
-			className="carousel-container"
-			style={{ backgroundColor: theme.palette.background.paper }}
-		>
+		<Paper style={{ backgroundColor: theme.palette.background.paper }}>
 			<SwipeableViews
-				className="carousel-swipe-container"
 				axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
 				index={activeStep}
 				onChangeIndex={handleStepChange}
 				enableMouseEvents
 			>
 				{howItWorksSteps.map((step, index) => (
-					<div className="carousel-step-item" key={step.stepNum}>
-						<div className="text-container">
+					<div className={classes.carouselStep} key={step.stepNum}>
+						<div className={classes.textContainer}>
 							<Typography>
-								<span className="step-number">{`${step.stepNum}. `}</span>
-								<span className="step-text">{step.text}</span>
+								<span className={classes.stepNumber}>{`${step.stepNum}. `}</span>
+								<span className={classes.stepText}>{step.text}</span>
 							</Typography>
 						</div>
 						{Math.abs(activeStep - index) <= 2 ? (
-							<img className="carousel-img" src={step.img} alt={step.imgAlt} />
+							<img className={classes.carouselImg} src={step.img} alt={step.imgAlt} />
 						) : null}
 					</div>
 				))}

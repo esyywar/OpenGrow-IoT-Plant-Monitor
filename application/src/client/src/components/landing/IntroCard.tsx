@@ -9,17 +9,64 @@ import WifiIcon from '@material-ui/icons/Wifi'
 import OpacityIcon from '@material-ui/icons/Opacity'
 import ComputerIcon from '@material-ui/icons/Computer'
 
-import '../../css/landing.css'
-
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
+		introCard: {
+			padding: '30px 5px',
+			marginBottom: theme.spacing(4),
+			width: '100%',
+			borderRadius: '25px',
+		},
+		cardTitle: {
+			fontFamily: "'Mulish', sans-serif",
+			marginBottom: theme.spacing(4),
+			textAlign: 'center',
+		},
+		plantImage: {
+			[theme.breakpoints.down('sm')]: {
+				maxHeight: '300px',
+			},
+			[theme.breakpoints.up('md')]: {
+				maxHeight: '500px',
+			},
+			display: 'block',
+			margin: 'auto',
+			width: 'auto',
+		},
+		cardInfoContainer: {
+			width: '100%',
+			height: '100%',
+			padding: '15px',
+			borderRadius: '35px',
+		},
 		cardInfoText: {
 			fontFamily: "'Mulish', sans-seif",
-			fontSize: '19px',
-			lineHeight: '35px',
 			textAlign: 'center',
-			padding: '20px 5px',
+
 			color: theme.palette.text.primary,
+			[theme.breakpoints.down('sm')]: {
+				fontSize: '18px',
+				lineHeight: '30px',
+				padding: '10px 5px',
+			},
+			[theme.breakpoints.up('md')]: {
+				fontSize: '19px',
+				lineHeight: '35px',
+				padding: '20px 5px',
+			},
+		},
+		iconContainer: {
+			[theme.breakpoints.down('sm')]: {
+				marginTop: theme.spacing(2),
+			},
+			[theme.breakpoints.up('md')]: {
+				marginTop: theme.spacing(4),
+			},
+		},
+		iconsStyle: {
+			display: 'block',
+			margin: 'auto',
+			fontSize: '40px',
 		},
 	})
 )
@@ -32,21 +79,21 @@ export default function IntroCard() {
 	const pottedPlantImg = require('../../media/potted_plant.jpg')
 
 	return (
-		<Paper className="intro-card" style={{ backgroundColor: theme.palette.secondary.light }}>
+		<Paper className={classes.introCard} style={{ backgroundColor: theme.palette.secondary.light }}>
 			<Grid container direction="column" alignItems="center" justify="center">
 				<Grid item xs={12}>
 					<Typography component="div" align="center" variant="h4">
-						<h4 className="card-title">Data Driven Care For Your Plant!</h4>
+						<h4 className={classes.cardTitle}>Data Driven Care For Your Plant!</h4>
 					</Typography>
 				</Grid>
 
 				<Grid item container spacing={6} direction="row" alignItems="center" justify="center">
 					<Grid item xs={11} lg={5} style={{ overflow: 'hidden' }}>
-						<img className="plant-image" alt="potted-plant" src={pottedPlantImg} />
+						<img className={classes.plantImage} alt="potted-plant" src={pottedPlantImg} />
 					</Grid>
 					<Grid item xs={11} lg={6}>
 						<Paper
-							className="card-info-container"
+							className={classes.cardInfoContainer}
 							style={{ backgroundColor: theme.palette.background.paper }}
 						>
 							<Typography variant="body1" className={classes.cardInfoText}>
@@ -70,19 +117,19 @@ export default function IntroCard() {
 					direction="row"
 					alignItems="center"
 					justify="center"
-					className="icons-container"
+					className={classes.iconContainer}
 				>
 					<Grid item xs={3}>
-						<OpacityIcon className="icons-style water-icon" />
+						<OpacityIcon className={classes.iconsStyle} />
 					</Grid>
 					<Grid item xs={3}>
-						<WbSunnyIcon className="icons-style sun-icon" />
+						<WbSunnyIcon className={classes.iconsStyle} />
 					</Grid>
 					<Grid item xs={3}>
-						<WifiIcon className="icons-style wifi-icon" />
+						<WifiIcon className={classes.iconsStyle} />
 					</Grid>
 					<Grid item xs={3}>
-						<ComputerIcon className="icons-style computer-icon" />
+						<ComputerIcon className={classes.iconsStyle} />
 					</Grid>
 				</Grid>
 			</Grid>

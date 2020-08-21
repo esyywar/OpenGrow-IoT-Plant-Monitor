@@ -2,14 +2,31 @@ import React from 'react'
 
 import { Grid } from '@material-ui/core/'
 
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+
 import IntroCard from './IntroCard'
 import HowItWorks from './HowItWorks'
 
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		landing: {
+			[theme.breakpoints.down('sm')]: {
+				marginTop: theme.spacing(4),
+			},
+			[theme.breakpoints.up('md')]: {
+				marginTop: theme.spacing(8),
+			},
+		},
+	})
+)
+
 export default function Landing() {
+	const classes = useStyles()
+
 	return (
 		<Grid
 			container
-			className="landing-container"
+			className={classes.landing}
 			direction="row"
 			alignItems="center"
 			justify="space-evenly"
