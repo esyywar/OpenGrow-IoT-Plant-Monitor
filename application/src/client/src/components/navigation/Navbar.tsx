@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { UserAuthState } from '../../actions/types'
-
 import { useTypedSelector } from '../../reducers'
 import { useDispatch } from 'react-redux'
 import { userLogout } from '../../actions/auth'
@@ -18,12 +16,43 @@ import NightsStayIcon from '@material-ui/icons/NightsStay'
 
 import NavDrawer from './NavDrawer'
 
-import '../../css/navbar.css'
-
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		root: {
 			flexGrow: 1,
+		},
+		logo: {
+			backgroundColor: 'whitesmoke',
+			borderRadius: '35px',
+			padding: '5px 8px',
+			fontWeight: 500,
+		},
+		linkStyle: {
+			textDecoration: 'none',
+			color: 'white',
+		},
+		linkContainer: {
+			[theme.breakpoints.up('md')]: {
+				display: 'flex',
+				flexDirection: 'row',
+				alignItems: 'center',
+				justifyContent: 'flex-end',
+			},
+		},
+		navLink: {
+			[theme.breakpoints.down('sm')]: {
+				display: 'none',
+			},
+			[theme.breakpoints.up('md')]: {
+				float: 'right',
+				display: 'block',
+				margin: 'auto 10px',
+			},
+		},
+		darkModeBtn: {
+			float: 'right',
+			display: 'block',
+			margin: 'auto 10px',
 		},
 		menuButton: {
 			marginRight: theme.spacing(2),
@@ -69,37 +98,37 @@ export default function Navbar() {
 	}
 
 	const loggedIn = (
-		<Container maxWidth="xl" className="link-container">
-			<Button className="nav-link" onClick={handleDarkModeBtn}>
-				{isDarkMode ? <Brightness7Icon /> : <NightsStayIcon style={{ color: 'white' }} />}
-			</Button>
-			<Link to="/login" className="link-style">
-				<Button color="inherit" className="nav-link" onClick={() => dispatch(userLogout())}>
-					Logout
-				</Button>
-			</Link>
-			<Link to="/dashboard" className="link-style">
-				<Button color="inherit" className="nav-link">
+		<Container maxWidth="xl" className={classes.linkContainer}>
+			<Link to="/dashboard" className={classes.linkStyle}>
+				<Button color="inherit" className={classes.navLink}>
 					Dashboard
 				</Button>
 			</Link>
+			<Link to="/login" className={classes.linkStyle}>
+				<Button color="inherit" className={classes.navLink} onClick={() => dispatch(userLogout())}>
+					Logout
+				</Button>
+			</Link>
+			<Button className={classes.darkModeBtn} onClick={handleDarkModeBtn}>
+				{isDarkMode ? <Brightness7Icon /> : <NightsStayIcon style={{ color: 'white' }} />}
+			</Button>
 		</Container>
 	)
 
 	const guestUser = (
-		<Container maxWidth="xl" className="link-container">
-			<Button className="nav-link" onClick={handleDarkModeBtn}>
-				{isDarkMode ? <Brightness7Icon /> : <NightsStayIcon style={{ color: 'white' }} />}
-			</Button>
-			<Link to="/login" className="link-style">
-				<Button color="inherit" className="nav-link">
+		<Container maxWidth="xl" className={classes.linkContainer}>
+			<Link to="/login" className={classes.linkStyle}>
+				<Button color="inherit" className={classes.navLink}>
 					Login
 				</Button>
 			</Link>
+			<Button className={classes.darkModeBtn} onClick={handleDarkModeBtn}>
+				{isDarkMode ? <Brightness7Icon /> : <NightsStayIcon style={{ color: 'white' }} />}
+			</Button>
 		</Container>
 	)
 
-	const getNavLinks = (authUser: UserAuthState) => {
+	const getNavLinks = () => {
 		const auth = authUser.auth
 
 		return !auth.isLoading && auth.isAuthenticated ? loggedIn : guestUser
@@ -119,14 +148,14 @@ export default function Navbar() {
 						<MenuIcon />
 					</IconButton>
 					<Typography variant="h6">
-						<Link to="/" className="link-style">
-							<div className="logo">
+						<Link to="/" className={classes.linkStyle}>
+							<div className={classes.logo}>
 								<span style={{ color: theme.palette.primary.main }}>Otto</span>
 								<span style={{ color: theme.palette.secondary.main }}>Grow</span>
 							</div>
 						</Link>
 					</Typography>
-					{getNavLinks(authUser)}
+					{getNavLinks()}
 				</Toolbar>
 			</AppBar>
 

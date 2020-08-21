@@ -4,16 +4,32 @@ import { useDispatch } from 'react-redux'
 
 import { clearActivePlant } from '../../actions/activePlant'
 
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+
 import { Container } from '@material-ui/core/'
 
 import UserWelcome from './UserWelcome'
 import DashActions from './DashActions'
 import UserPlantList from './UserPlantList'
 
-import '../../css/dashboard.css'
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		dashboard: {
+			[theme.breakpoints.down('sm')]: {
+				marginTop: theme.spacing(6),
+			},
+			[theme.breakpoints.up('md')]: {
+				marginTop: theme.spacing(8),
+			},
+			paddingBottom: theme.spacing(4),
+		},
+	})
+)
 
 export default function Dashboard() {
 	const dispatch = useDispatch()
+
+	const classes = useStyles()
 
 	/*
 	 * Clear active plant state and loaded data
@@ -24,7 +40,7 @@ export default function Dashboard() {
 	}, [dispatch])
 
 	return (
-		<Container maxWidth="lg" className="dashboard">
+		<Container maxWidth="lg" className={classes.dashboard}>
 			<UserWelcome />
 			<DashActions />
 			<UserPlantList />

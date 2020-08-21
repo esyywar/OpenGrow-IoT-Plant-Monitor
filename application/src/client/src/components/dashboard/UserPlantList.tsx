@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		plantListTitle: {
 			fontFamily: "'Mulish', sans-serif",
 			fontSize: 35,
-			margin: '10px 0 20px 0',
+			margin: '40px 0 15px 0',
 			color: theme.palette.text.primary,
 		},
 	})

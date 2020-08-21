@@ -1,8 +1,8 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 
 import PropTypes, { InferProps } from 'prop-types'
 
-import { SwipeableDrawer } from '@material-ui/core'
+import { SwipeableDrawer, List, ListItem, ListItemIcon } from '@material-ui/core'
 
 export default function NavDrawer({
 	isOpen,
@@ -10,11 +10,9 @@ export default function NavDrawer({
 	onClose,
 }: InferProps<typeof NavDrawer.propTypes>) {
 	return (
-		<Fragment>
-			<SwipeableDrawer anchor="left" open={isOpen} onOpen={onOpen} onClose={onClose}>
-				I am Open
-			</SwipeableDrawer>
-		</Fragment>
+		<SwipeableDrawer anchor="left" open={isOpen} onOpen={onOpen} onClose={onClose}>
+			I am Open
+		</SwipeableDrawer>
 	)
 }
 

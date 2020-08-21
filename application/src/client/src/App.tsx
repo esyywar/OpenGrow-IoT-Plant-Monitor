@@ -38,7 +38,7 @@ function App() {
 			},
 			background: {
 				default: '#FAFAFA',
-				paper: '#D9DBF1',
+				paper: '#F0F1F9',
 			},
 		},
 	})
@@ -48,7 +48,7 @@ function App() {
 			type: 'dark',
 			background: {
 				default: '#303030',
-				paper: '#424242',
+				paper: '#525252',
 			},
 		},
 	})
