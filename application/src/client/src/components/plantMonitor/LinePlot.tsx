@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import PropTypes, { InferProps } from 'prop-types'
 
@@ -28,11 +28,29 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		chartRoot: {
 			width: '100%',
-			height: 500,
+			[theme.breakpoints.down('sm')]: {
+				height: 300,
+			},
+			[theme.breakpoints.up('md')]: {
+				height: 500,
+			},
 			color: theme.palette.text.primary,
 		},
-		actionButton: {
-			marginRight: 25,
+		actionBtnContainer: {
+			[theme.breakpoints.down('sm')]: {
+				margin: '5px 0',
+			},
+			[theme.breakpoints.up('md')]: {
+				margin: '5px 0 15px 50px',
+			},
+		},
+		actionBtn: {
+			[theme.breakpoints.down('sm')]: {
+				marginTop: '8px',
+			},
+			[theme.breakpoints.up('md')]: {
+				marginTop: '15px',
+			},
 		},
 		toolTip: {
 			border: '2px solid ' + theme.palette.secondary.main,
@@ -74,6 +92,23 @@ export default function LinePlot({
 
 	const classes = useStyles()
 
+	/****************** HANDLING RERENDER WHEN SCREEN RESIZED (for responsive nivo plot) ******************/
+
+	const [isMobile, setIsMobile] = useState(window.screen.width < 800)
+
+	/* Check if mobile screen width */
+	const isMobileWidth = () => {
+		setIsMobile(window.screen.width < 800)
+	}
+
+	/* Attach event listener for resize */
+	useEffect(() => {
+		window.addEventListener('resize', isMobileWidth)
+		return () => {
+			window.removeEventListener('resize', isMobileWidth)
+		}
+	}, [isMobileWidth])
+
 	/* If time scale updated, reflect change in local state */
 	const updateTimeScale = (newTimeScale: TimeScaleEnum) => {
 		if (timeScale !== newTimeScale) {
@@ -91,14 +126,116 @@ export default function LinePlot({
 	const tickFromScale = () => {
 		switch (timeScale) {
 			case TimeScaleEnum.Hours:
+				if (isMobile) {
+					return 'every 2 hours'
+				}
 				return 'every 1 hour'
 			case TimeScaleEnum.Days:
+				if (isMobile) {
+					return 'every 2 days'
+				}
 				return 'every 1 day'
 			case TimeScaleEnum.Weeks:
 				return 'every 7 days'
 			default:
 				return 'every 1 hour'
 		}
+	}
+
+	/************************************** PLOT THEME SETTINGS FOR MOBILE/DESKTOP SCREENS *****************************/
+
+	/* Plot theme for mobile */
+	const mobilePlotTheme = {
+		grid: {
+			line: {
+				stroke: theme.palette.text.primary,
+			},
+		},
+		axis: {
+			legend: {
+				text: {
+					fill: theme.palette.text.primary,
+					fontSize: 0,
+				},
+			},
+			ticks: {
+				text: {
+					fill: theme.palette.text.primary,
+					fontSize: 10,
+				},
+				line: {
+					stroke: theme.palette.text.primary,
+					strokeWidth: 1,
+				},
+			},
+			domain: {
+				line: {
+					stroke: theme.palette.text.primary,
+					strokeWidth: 1,
+				},
+			},
+		},
+		crosshair: {
+			line: {
+				stroke: theme.palette.text.primary,
+				strokeWidth: 1,
+				strokeOpacity: 0.35,
+			},
+		},
+	}
+
+	/* Plot theme for desktop */
+	const desktopPlotTheme = {
+		grid: {
+			line: {
+				stroke: theme.palette.text.primary,
+			},
+		},
+		axis: {
+			legend: {
+				text: {
+					fill: theme.palette.text.primary,
+					fontSize: 20,
+				},
+			},
+			ticks: {
+				text: {
+					fill: theme.palette.text.primary,
+					fontSize: 14,
+				},
+				line: {
+					stroke: theme.palette.text.primary,
+					strokeWidth: 1,
+				},
+			},
+			domain: {
+				line: {
+					stroke: theme.palette.text.primary,
+					strokeWidth: 1,
+				},
+			},
+		},
+		crosshair: {
+			line: {
+				stroke: theme.palette.text.primary,
+				strokeWidth: 1,
+				strokeOpacity: 0.35,
+			},
+		},
+	}
+
+	const mobilePlotMargins = {
+		top: 10,
+		right: 10,
+		bottom: 65,
+		left: 40,
+	}
+
+	const desktopPlotMargins = {
+		top: 10,
+		right: 50,
+		bottom: 100,
+		left: 100,
 	}
 
 	return (
@@ -126,22 +263,26 @@ export default function LinePlot({
 					direction="row"
 					alignItems="center"
 					justify="flex-start"
-					style={{ margin: '10px 20px' }}
+					className={classes.actionBtnContainer}
 				>
-					<Button
-						startIcon={<RefreshIcon />}
-						color="secondary"
-						variant="contained"
-						className={classes.actionButton}
-						onClick={refreshData}
-					>
-						{' '}
-						<Typography align="center" variant="body2">
-							Refresh Data
-						</Typography>
-					</Button>
+					<Grid item xs={12}>
+						<Button
+							startIcon={<RefreshIcon />}
+							color="secondary"
+							variant="contained"
+							className={classes.actionBtn}
+							onClick={refreshData}
+						>
+							{' '}
+							<Typography align="center" variant="body2">
+								Refresh Data
+							</Typography>
+						</Button>
+					</Grid>
 
-					<TimeScaleMenu currTimeScale={timeScale} onScaleChange={updateTimeScale} />
+					<div className={classes.actionBtn}>
+						<TimeScaleMenu currTimeScale={timeScale} onScaleChange={updateTimeScale} />
+					</div>
 				</Grid>
 
 				<Grid item xs={12} className={classes.chartRoot}>
@@ -149,13 +290,14 @@ export default function LinePlot({
 						onMouseEnter={() => setHover(true)}
 						onMouseLeave={() => setHover(false)}
 						data={plotData}
+						enablePoints={!isMobile}
 						lineWidth={4}
 						pointSize={10}
 						curve={'monotoneX'}
 						enableGridY={true}
 						enableGridX={true}
 						colors={isHover ? theme.palette.text.primary : theme.palette.text.secondary}
-						margin={{ top: 10, right: 110, bottom: 100, left: 100 }}
+						margin={isMobile ? mobilePlotMargins : desktopPlotMargins}
 						xScale={{ format: '%m-%d-%Y-%H-%M-%S', type: 'time' }}
 						xFormat="time:%m-%d-%Y-%H-%M-%S"
 						yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
@@ -169,7 +311,7 @@ export default function LinePlot({
 							tickRotation: 0,
 							tickValues: tickFromScale(),
 							legend: 'Time',
-							legendOffset: 50,
+							legendOffset: isMobile ? 40 : 50,
 							legendPosition: 'middle',
 						}}
 						axisLeft={{
@@ -178,48 +320,11 @@ export default function LinePlot({
 							tickPadding: 5,
 							tickRotation: 0,
 							legend: yTitle,
-							legendOffset: -70,
+							legendOffset: isMobile ? -45 : -70,
 							legendPosition: 'middle',
 						}}
 						useMesh={true}
-						theme={{
-							grid: {
-								line: {
-									stroke: theme.palette.text.primary,
-								},
-							},
-							axis: {
-								legend: {
-									text: {
-										fill: theme.palette.text.primary,
-										fontSize: 20,
-									},
-								},
-								ticks: {
-									text: {
-										fill: theme.palette.text.primary,
-										fontSize: 14,
-									},
-									line: {
-										stroke: theme.palette.text.primary,
-										strokeWidth: 1,
-									},
-								},
-								domain: {
-									line: {
-										stroke: theme.palette.text.primary,
-										strokeWidth: 1,
-									},
-								},
-							},
-							crosshair: {
-								line: {
-									stroke: theme.palette.text.primary,
-									strokeWidth: 1,
-									strokeOpacity: 0.35,
-								},
-							},
-						}}
+						theme={isMobile ? mobilePlotTheme : desktopPlotTheme}
 						tooltip={({ point }) => {
 							return (
 								<div className={classes.toolTip}>

@@ -20,6 +20,8 @@ const dateFormat = timeFormat('%m-%d-%Y-%H-%M-%S')
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		dataPlotContainer: {
+			margin: '0',
+			padding: '0',
 			[theme.breakpoints.down('sm')]: {
 				marginTop: theme.spacing(2),
 			},
@@ -74,7 +76,7 @@ export default function PlantDataPlot() {
 			) : plantData.data.soilMoisture.length > 0 &&
 			  plantData.data.lightLevel.length > 0 &&
 			  soilData ? (
-				<Grid container spacing={4} style={{ padding: '25px 0' }}>
+				<Grid container spacing={2} style={{ padding: '25px 0' }}>
 					<LinePlot
 						title="Soil Moisture"
 						yTitle="Soil Moisture"

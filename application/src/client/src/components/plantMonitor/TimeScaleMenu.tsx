@@ -61,7 +61,7 @@ export default function TimeScaleMenu({
 			<Button
 				color="secondary"
 				variant="contained"
-				endIcon={<ArrowDropDownIcon />}
+				startIcon={<ArrowDropDownIcon />}
 				onClick={() => setMenuOpen(!isMenuOpen)}
 				ref={anchorRef}
 			>

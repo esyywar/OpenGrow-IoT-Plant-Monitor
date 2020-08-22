@@ -17,13 +17,15 @@ import PlantDataPlot from './PlantDataPlot'
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		plantMonitor: {
+			maxWidth: '1500px',
 			[theme.breakpoints.down('sm')]: {
 				marginTop: theme.spacing(6),
+				paddingBottom: theme.spacing(2),
 			},
 			[theme.breakpoints.up('md')]: {
 				marginTop: theme.spacing(8),
+				paddingBottom: theme.spacing(4),
 			},
-			paddingBottom: theme.spacing(4),
 		},
 	})
 )
@@ -46,7 +48,7 @@ export default function PlantMonitor() {
 	}, [dispatch])
 
 	return (
-		<Container maxWidth="lg" className={classes.plantMonitor}>
+		<Container maxWidth={false} className={classes.plantMonitor}>
 			<PlantNameDisp />
 			<PlantCtrlSettings />
 			<PlantDataPlot />
