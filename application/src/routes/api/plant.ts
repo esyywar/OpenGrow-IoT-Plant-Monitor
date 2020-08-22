@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express'
 
 import config from 'config'
 
+import mqtt from 'mqtt'
+
 import { check, validationResult } from 'express-validator'
 
 import Plant, { IPlant } from '../../models/Plant'

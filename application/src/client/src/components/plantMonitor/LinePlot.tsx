@@ -96,18 +96,17 @@ export default function LinePlot({
 
 	const [isMobile, setIsMobile] = useState(window.screen.width < 800)
 
-	/* Check if mobile screen width */
-	const isMobileWidth = () => {
-		setIsMobile(window.screen.width < 800)
-	}
-
-	/* Attach event listener for resize */
+	/* Set up event listener to determine screen width and update on screen resize */
 	useEffect(() => {
+		const isMobileWidth = () => {
+			setIsMobile(window.screen.width < 800)
+		}
+
 		window.addEventListener('resize', isMobileWidth)
 		return () => {
 			window.removeEventListener('resize', isMobileWidth)
 		}
-	}, [isMobileWidth])
+	}, [])
 
 	/* If time scale updated, reflect change in local state */
 	const updateTimeScale = (newTimeScale: TimeScaleEnum) => {

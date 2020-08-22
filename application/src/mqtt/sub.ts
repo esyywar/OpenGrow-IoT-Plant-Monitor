@@ -1,3 +1,8 @@
+/*
+ *	Brief: Subscriber will find registered plants in the database and subscribe to these topics
+ *			Received data will be saved to the database as required
+ */
+
 /* MQTT subscriber */
 import mqtt, { QoS } from 'mqtt'
 import config from 'config'
@@ -18,6 +23,7 @@ connectDB()
 const mqttQoS: QoS = config.get('mqtt.qos')
 
 const connectOptions: object = {
+	clientId: 'webAppServerSubscriber',
 	username: config.get('mqtt.brokerUsername'),
 	password: config.get('mqtt.brokerPassword'),
 	keepalive: 120,

@@ -1,8 +1,9 @@
 import express, { Application, Request, Response, NextFunction } from 'express'
 const bodyParser = require('body-parser')
-const path = require('path')
 
 import connectDB from './database/db'
+
+import connectBroker from './mqtt/connMqtt'
 
 const server: Application = express()
 
@@ -22,7 +23,11 @@ server.get('/', (req: Request, res: Response, next: NextFunction) => {
 	res.send('Ottogrow plant monitor server running!')
 })
 
+/* Connecting to database */
 connectDB()
+
+/* Connecting to mqtt broker */
+connectBroker()
 
 /* Routes to api */
 server.use('/api/plant', require('./routes/api/plant'))

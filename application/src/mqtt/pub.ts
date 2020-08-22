@@ -1,3 +1,8 @@
+/*
+ *	Brief: This is a proxy publisher to test the MQTT broker (to be during development)
+ *		   	Publishes to provided topics which gives messages which will be caught by the subscriber
+ */
+
 /* MQTT publisher */
 import mqtt from 'mqtt'
 
@@ -9,6 +14,7 @@ import { espPlantDataType } from './util'
 const mqttQoS = config.get('mqtt.qos')
 
 const connectOptions: object = {
+	clientId: 'ProxyPublisher',
 	username: config.get('mqtt.brokerUsername'),
 	password: config.get('mqtt.brokerPassword'),
 	reconnectPeriod: 5000,
@@ -16,7 +22,7 @@ const connectOptions: object = {
 
 const client: any = mqtt.connect(config.get('mqtt.brokerUrl'), connectOptions)
 
-/* Plant moisture level topic (3rd in database) */
+/* Plant moisture level topic (3rd plant in database) */
 const soilTopic: string = '5f2db60030c9640b04ef156e/soilMoisture'
 const lightTopic: string = '5f2db60030c9640b04ef156e/lightLevel'
 
