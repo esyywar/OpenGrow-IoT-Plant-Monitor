@@ -36,7 +36,7 @@ i2c.setup(id, sda, scl, i2c.SLOW)   -- initialize i2c
 
 -- Mqtt connect configuration
 local clientId = "esp_" .. device_info.ID
-local subTopic = device_info.ID .. "/update"
+local subTopic = {setpoint=device_info.ID .. "/soilMoisture/setpoint", tolerance=device_info.ID .. "/soilMoisture/tolerance"}
 local pubTopics = {soil=device_info.ID .. "/soilMoisture", light=device_info.ID .. "/lightLevel"}
 local qos = 1
 local mqtt_host = '192.168.0.25'

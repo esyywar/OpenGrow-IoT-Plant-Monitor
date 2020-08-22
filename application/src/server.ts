@@ -27,7 +27,7 @@ server.get('/', (req: Request, res: Response, next: NextFunction) => {
 connectDB()
 
 /* Connecting to mqtt broker */
-connectBroker()
+export const mqttClient = connectBroker()
 
 /* Routes to api */
 server.use('/api/plant', require('./routes/api/plant'))

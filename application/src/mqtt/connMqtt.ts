@@ -1,4 +1,6 @@
 import config from 'config'
+
+import asyncMQTT from 'async-mqtt'
 import mqtt from 'mqtt'
 
 const connectOptions: object = {
@@ -9,12 +11,12 @@ const connectOptions: object = {
 	reconnectPeriod: 5000,
 }
 
+/* Connect to broker and return client */
 const connectBroker = () => {
-	/* Create mqtt client */
-	const client = mqtt.connect(config.get('mqtt.brokerUrl'), connectOptions)
+	const client: mqtt.MqttClient = mqtt.connect(config.get('mqtt.brokerUrl'), connectOptions)
 
-	client.on('connect', async () => {
-		console.log('Application backend connected!')
+	return client.on('connect', () => {
+		return client
 	})
 }
 

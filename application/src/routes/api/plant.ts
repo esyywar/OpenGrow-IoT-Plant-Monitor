@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express'
 
 import config from 'config'
 
-import mqtt from 'mqtt'
+import { mqttClient } from '../../server'
 
 import { check, validationResult } from 'express-validator'
 
@@ -12,6 +12,16 @@ import User, { IUser } from '../../models/User'
 import auth from '../../middleware/auth'
 
 const router = express.Router()
+
+/*********** CONTROL DATA PACKET INTERFACES **********/
+
+interface IToleranceUpdate {
+	tolerance: number
+}
+
+interface ISetpointUpdate {
+	setpoint: number
+}
 
 /*******************************************************
  ******************** GET Requests *********************
@@ -168,6 +178,15 @@ router.post(
 		const plantId = req.params.plantId
 		const setpoint = req.body.setpoint
 
+		/* Publish data to plant */
+		const topic = plantId.concat('/soilMoisture/setpoint')
+
+		const data: ISetpointUpdate = {
+			setpoint,
+		}
+
+		mqttClient.publish(topic, JSON.stringify(data), { qos: config.get('mqtt.qos') })
+
 		try {
 			const plant: IPlant | null = await Plant.findById(plantId)
 
@@ -207,6 +226,15 @@ router.post(
 
 		const plantId = req.params.plantId
 		const tolerance = req.body.tolerance
+
+		/* Publish data to plant */
+		const topic = plantId.concat('/soilMoisture/tolerance')
+
+		const data: IToleranceUpdate = {
+			tolerance,
+		}
+
+		mqttClient.publish(topic, JSON.stringify(data), { qos: config.get('mqtt.qos') })
 
 		try {
 			const plant: IPlant | null = await Plant.findById(plantId)
