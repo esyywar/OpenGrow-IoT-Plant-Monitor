@@ -14,6 +14,7 @@ import {
 	DialogContentText,
 	TextField,
 	Button,
+	Typography,
 } from '@material-ui/core/'
 
 type SetpointForm = {
@@ -60,9 +61,10 @@ export default function UpdateSetpointModal({
 					autoFocus
 					margin="dense"
 					id="name"
-					label="Plant Name"
+					label="Soil Moisture Setpoint"
 					type="text"
 					name="setpoint"
+					color="secondary"
 					placeholder={`${currSetpoint}`}
 					fullWidth
 					onChange={handleInputChange}
@@ -71,10 +73,10 @@ export default function UpdateSetpointModal({
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={submitNameChange} color="primary" type="submit">
-					Update Setpoint
+					<Typography color="textSecondary">Update Setpoint</Typography>
 				</Button>
 				<Button onClick={handleClose} color="primary">
-					Cancel
+					<Typography color="textSecondary">Cancel</Typography>
 				</Button>
 			</DialogActions>
 		</Dialog>

@@ -13,6 +13,7 @@ import {
 	DialogContentText,
 	DialogTitle,
 	Slide,
+	Typography,
 } from '@material-ui/core'
 
 import { TransitionProps } from '@material-ui/core/transitions'
@@ -56,10 +57,10 @@ export default function RemovePlantModal({
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={removePlant} color="primary">
-					Remove Plant
+					<Typography color="textSecondary">Remove Plant</Typography>
 				</Button>
 				<Button onClick={handleClose} color="primary">
-					Cancel
+					<Typography color="textSecondary">Cancel</Typography>
 				</Button>
 			</DialogActions>
 		</Dialog>

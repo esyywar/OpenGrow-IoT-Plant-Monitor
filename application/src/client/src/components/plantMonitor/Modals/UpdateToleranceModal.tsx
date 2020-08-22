@@ -15,6 +15,7 @@ import {
 	DialogContentText,
 	TextField,
 	Button,
+	Typography,
 } from '@material-ui/core/'
 
 type ToleranceForm = {
@@ -63,9 +64,10 @@ export default function UpdateSetpointModal({
 					autoFocus
 					margin="dense"
 					id="name"
-					label="Plant Name"
+					label="Soil Moisture Tolerance"
 					type="text"
 					name="tolerance"
+					color="secondary"
 					placeholder={`${currTolerance}`}
 					fullWidth
 					onChange={handleInputChange}
@@ -74,10 +76,10 @@ export default function UpdateSetpointModal({
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={submitNameChange} color="primary" type="submit">
-					Update Tolerance
+					<Typography color="textSecondary">Update Tolerance</Typography>
 				</Button>
 				<Button onClick={handleClose} color="primary">
-					Cancel
+					<Typography color="textSecondary">Cancel</Typography>
 				</Button>
 			</DialogActions>
 		</Dialog>

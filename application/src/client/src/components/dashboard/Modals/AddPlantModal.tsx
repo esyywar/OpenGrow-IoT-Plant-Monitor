@@ -13,6 +13,7 @@ import {
 	DialogContentText,
 	TextField,
 	Button,
+	Typography,
 } from '@material-ui/core/'
 
 type AddPlantForm = {
@@ -56,6 +57,7 @@ export default function NamePlantModal({
 					label="Plant Name"
 					type="text"
 					name="plantId"
+					color="secondary"
 					placeholder="Enter 24 character ID code"
 					fullWidth
 					onChange={handleInputChange}
@@ -64,10 +66,10 @@ export default function NamePlantModal({
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={submitNameChange} color="primary" type="submit">
-					Add Plant
+					<Typography color="textSecondary">Add Plant</Typography>
 				</Button>
 				<Button onClick={handleClose} color="primary">
-					Cancel
+					<Typography color="textSecondary">Cancel</Typography>
 				</Button>
 			</DialogActions>
 		</Dialog>
