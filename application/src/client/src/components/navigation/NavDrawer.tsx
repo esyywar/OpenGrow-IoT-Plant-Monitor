@@ -26,8 +26,8 @@ import MeetingRoomIcon from '@material-ui/icons/MeetingRoom'
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
-		sideNav: {
-			width: '80vw',
+		sideNavRoot: {
+			width: '250px',
 		},
 		linkStyle: {
 			textDecoration: 'none',
@@ -52,14 +52,14 @@ export default function NavDrawer({
 
 	const loggedInList = (
 		<Fragment>
-			<ListItem>
-				<Link to="/dashboard" className={classes.linkStyle} onClick={() => onClose()}>
+			<Link to="/dashboard" className={classes.linkStyle} onClick={() => onClose()}>
+				<ListItem>
 					<ListItemIcon>
 						<SettingsRemoteIcon />
 					</ListItemIcon>
 					<ListItemText primary="Dashboard" />
-				</Link>
-			</ListItem>
+				</ListItem>
+			</Link>
 		</Fragment>
 	)
 
@@ -74,17 +74,19 @@ export default function NavDrawer({
 			open={isOpen}
 			onOpen={onOpen}
 			onClose={onClose}
-			className={classes.sideNav}
+			classes={{
+				paper: classes.sideNavRoot,
+			}}
 		>
 			<List>
-				<ListItem>
-					<Link to="/" className={classes.linkStyle} onClick={() => onClose()}>
+				<Link to="/" className={classes.linkStyle} onClick={() => onClose()}>
+					<ListItem>
 						<ListItemIcon>
 							<HomeIcon />
 						</ListItemIcon>
 						<ListItemText primary="Home" />
-					</Link>
-				</ListItem>
+					</ListItem>
+				</Link>
 				{isLoggedIn && loggedInList}
 			</List>
 			<Divider />
@@ -97,14 +99,14 @@ export default function NavDrawer({
 						<ListItemText primary="Logout" />
 					</ListItem>
 				) : (
-					<ListItem>
-						<Link to="/login" className={classes.linkStyle}>
+					<Link to="/login" className={classes.linkStyle} onClick={() => onClose()}>
+						<ListItem>
 							<ListItemIcon>
 								<ExitToAppIcon />
 							</ListItemIcon>
 							<ListItemText primary="Login" />
-						</Link>
-					</ListItem>
+						</ListItem>
+					</Link>
 				)}
 			</List>
 		</SwipeableDrawer>

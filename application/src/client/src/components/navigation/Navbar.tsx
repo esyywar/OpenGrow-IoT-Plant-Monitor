@@ -52,7 +52,12 @@ const useStyles = makeStyles((theme: Theme) =>
 		darkModeBtn: {
 			float: 'right',
 			display: 'block',
-			margin: 'auto 10px',
+			[theme.breakpoints.down('sm')]: {
+				margin: 'auto 0',
+			},
+			[theme.breakpoints.up('md')]: {
+				margin: 'auto 10px',
+			},
 		},
 		menuButton: {
 			marginRight: theme.spacing(2),
@@ -80,11 +85,9 @@ export default function Navbar() {
 	const [sideNav, setSideNav] = useState(false)
 
 	/* Handle toggle of side nav */
-	const toggleSideNav = (isOpen: boolean | null = null) => {
-		if (isOpen === null) {
+	const toggleSideNav = () => {
+		if (window.screen.width < 800) {
 			setSideNav(!sideNav)
-		} else {
-			setSideNav(isOpen)
 		}
 	}
 
@@ -104,11 +107,9 @@ export default function Navbar() {
 					Dashboard
 				</Button>
 			</Link>
-			<Link to="/login" className={classes.linkStyle}>
-				<Button color="inherit" className={classes.navLink} onClick={() => dispatch(userLogout())}>
-					Logout
-				</Button>
-			</Link>
+			<Button color="inherit" className={classes.navLink} onClick={() => dispatch(userLogout())}>
+				Logout
+			</Button>
 			<Button className={classes.darkModeBtn} onClick={handleDarkModeBtn}>
 				{isDarkMode ? <Brightness7Icon /> : <NightsStayIcon style={{ color: 'white' }} />}
 			</Button>
