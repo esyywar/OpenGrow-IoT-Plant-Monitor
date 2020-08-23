@@ -36,10 +36,10 @@ i2c.setup(id, sda, scl, i2c.SLOW)   -- initialize i2c
 
 -- Mqtt connect configuration
 local clientId = "esp_" .. device_info.ID
-local subTopic = {setpoint=device_info.ID .. "/soilMoisture/setpoint", tolerance=device_info.ID .. "/soilMoisture/tolerance"}
-local pubTopics = {soil=device_info.ID .. "/soilMoisture", light=device_info.ID .. "/lightLevel"}
 local qos = 1
-local mqtt_host = '192.168.0.25'
+local subTopic = {[device_info.ID .. "/soilMoisture/setpoint"]=qos, [device_info.ID .. "/soilMoisture/tolerance"]=qos}
+local pubTopics = {soil=device_info.ID .. "/soilMoisture", light=device_info.ID .. "/lightLevel"}
+local mqtt_host = '192.168.0.20'
 local mqtt_port = 1883
 
 -- create mqtt client
@@ -72,9 +72,6 @@ netinfo_timer:register(3000, tmr.ALARM_AUTO, function()
 
             -- connect to mqtt broker
             mqtt_data_connect()
-
-            -- Start blinky timer
-            blinky_timer:start()
         end
     end
 )
@@ -84,10 +81,25 @@ wifi.sta.connect(function()
     netinfo_timer:start()
 end)
 
--- timer to publish messages every 15 sec
+client:on("message", function(client, topic, data)
+    _, ind = string.find(data, ":")
+    local value = string.sub(data, ind + 2, -3)
+    print("Data is: " .. tonumber(value))
+
+    if string.find(topic, "setpoint") ~= nil then
+        print("This is setpoint data")
+    end
+    
+    if string.find(topic, "tolerance") ~= nil then
+        print("This is tolerance data")
+    end
+    
+end)
+
+-- timer to publish messages every 5 minutes
 local mqtt_pubData = tmr.create()
 
-mqtt_pubData:register(10000, tmr.ALARM_AUTO, function()
+mqtt_pubData:register(300000, tmr.ALARM_AUTO, function()
     local data = i2c_get_data()
 
     -- sending data in json format
@@ -96,9 +108,7 @@ mqtt_pubData:register(10000, tmr.ALARM_AUTO, function()
 
     -- publish soil and light data
     client:publish(pubTopics.soil, soilData, qos, 0)
-    client:publish(pubTopics.light, lightData, qos, 0, function()
-        print('Published data ack\'d')
-    end)
+    client:publish(pubTopics.light, lightData, qos, 0)
 end)
 
 -- handle mqtt connection error by trying reconnection
@@ -116,10 +126,13 @@ function mqtt_data_connect()
             print('Mqtt broker connected') 
 
             -- subscribe to topic
-            client:subscribe(subTopic, qos, function() print('ESP8266 subscribed') end)
+            client:subscribe(subTopic, function() print('ESP8266 subscribed') end)
 
             -- start timer to publish data every 15 seconds
             mqtt_pubData:start()
+
+            -- Start blinky timer
+            blinky_timer:start()
 
             -- if go offline, call connection error
             client:on("offline", handle_mqtt_conn_error)
