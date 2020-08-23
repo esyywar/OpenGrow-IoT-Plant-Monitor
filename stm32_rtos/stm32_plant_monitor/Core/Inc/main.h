@@ -57,7 +57,7 @@ extern "C" {
 
 /* On-time required for pump to bring water to plant (default) */
 #define PID_SETPOINT_DEFAULT			400U
-#define PID_TOLERANCE_DEFAULT			40U
+#define PID_TOLERANCE_DEFAULT			150U
 #define PUMP_MINIMUM_TIME_ON			3000U
 
 /* Exported functions prototypes ---------------------------------------------*/

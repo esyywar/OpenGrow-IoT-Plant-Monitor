@@ -81,6 +81,7 @@ wifi.sta.connect(function()
     netinfo_timer:start()
 end)
 
+-- receive messages from web app
 client:on("message", function(client, topic, data)
     _, ind = string.find(data, ":")
     local value = string.sub(data, ind + 2, -3)
@@ -88,18 +89,20 @@ client:on("message", function(client, topic, data)
 
     if string.find(topic, "setpoint") ~= nil then
         print("This is setpoint data")
+        i2c_send_update(0x44, tonumber(value))
     end
     
     if string.find(topic, "tolerance") ~= nil then
         print("This is tolerance data")
+        i2c_send_update(0x46, tonumber(value))
     end
-    
+
 end)
 
 -- timer to publish messages every 5 minutes
 local mqtt_pubData = tmr.create()
 
-mqtt_pubData:register(300000, tmr.ALARM_AUTO, function()
+mqtt_pubData:register(60000, tmr.ALARM_AUTO, function()
     local data = i2c_get_data()
 
     -- sending data in json format
@@ -140,7 +143,7 @@ function mqtt_data_connect()
         handle_mqtt_conn_error)
 end
 
--- Call this function to get sensor data from stm32
+-- This function will get sensor data from stm32
 function i2c_get_data()
     i2c.start(id)       -- send start condition
 
@@ -163,5 +166,36 @@ function i2c_get_data()
     end
 
     return 0
+end
+
+-- This function will first send command and then data to stm32
+function i2c_send_update(command, value)
+    -- break the value into high and low bytes
+    local highByte = bit.rshift(bit.band(value, 0xFF00), 8)
+    local lowByte = bit.band(value, 0xFF)
+    print(highByte)
+    print(lowByte)
+
+    i2c.start(id)       -- send start condition
+
+    if (i2c.address(id, stm32_address, i2c.TRANSMITTER)) then   -- set slave address and transmit direction
+        i2c.write(id, command)      -- command tells stm32 if we are sending setpoint or tolerance update
+        i2c.stop(id)
+
+        -- send the update value
+        i2c.start(id)
+        if (i2c.address(id, stm32_address, i2c.TRANSMITTER)) then
+
+            i2c.write(id, lowByte)     -- low byte in stm32
+            i2c.write(id, highByte)     -- high byte in stm32
+            i2c.stop(id)
+        end
+
+        -- return 0 if executed properly
+        return 0
+    end
+
+    -- -1 returned in case of error
+    return -1
 end
 

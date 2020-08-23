@@ -17,7 +17,22 @@ import Dashboard from './components/dashboard/Dashboard'
 
 import PlantMonitor from './components/plantMonitor/PlantMonitor'
 
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import {
+	ThemeProvider,
+	createMuiTheme,
+	createStyles,
+	makeStyles,
+	Theme,
+} from '@material-ui/core/styles'
+
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		appContainer: {
+			padding: '0',
+			minHeight: '100vh',
+		},
+	})
+)
 
 function App() {
 	const isDarkMode = useTypedSelector((state) => state.darkModeState.isDarkMode)
@@ -53,13 +68,14 @@ function App() {
 		},
 	})
 
+	const classes = useStyles()
+
 	return (
 		<ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
 			<Container
 				maxWidth={false}
+				className={classes.appContainer}
 				style={{
-					padding: '0',
-					minHeight: '100vh',
 					backgroundColor: isDarkMode
 						? darkTheme.palette.background.default
 						: lightTheme.palette.background.default,

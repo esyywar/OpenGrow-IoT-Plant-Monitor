@@ -17,7 +17,7 @@ export default function Login() {
 	}
 
 	return (
-		<Container maxWidth="lg" style={{ marginTop: '5%' }}>
+		<Container maxWidth="lg" style={{ marginTop: '5%', overflow: 'hidden' }}>
 			<Grid container direction="row" justify="space-around" alignItems="flex-start" spacing={7}>
 				<Grid item xs={12} sm={8} lg={6}>
 					<LoginForm />

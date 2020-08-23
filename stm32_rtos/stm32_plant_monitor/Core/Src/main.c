@@ -73,10 +73,10 @@ char soilMoistureDisp[11] = "Soil: ";
 char lightLevelDisp[12] = "Light: ";
 
 /* Moisture control variables */
-uint16_t moistureSetpoint = PID_SETPOINT_DEFAULT, moistureSetpointShdw = PID_SETPOINT_DEFAULT;
+uint16_t moistureSetpoint = PID_SETPOINT_DEFAULT;
 
 /* How far to let moisture drift from setpoint before watering */
-uint16_t moistureTolerance = PID_TOLERANCE_DEFAULT, moistureToleranceShdw = PID_TOLERANCE_DEFAULT;
+uint16_t moistureTolerance = PID_TOLERANCE_DEFAULT;
 
 /* PID controller coefficients (initialized to default values) */
 int16_t proportionCoeff = PID_P_DEFAULT;
@@ -563,6 +563,9 @@ void Water_Plant(void *pvParameters)
 		int16_t moistureError = 0;
 		int32_t PID_p, PID_i, PID_d;
 
+		/* If setpoint value is not the most recent, update it */
+
+
 		/* PID calculation for how long to turn on water pump */
 		if ((xSemaphoreTake(Sensor_Sema_Handle, (TickType_t) 10) == pdTRUE) && (xSemaphoreTake(Setpoint_Sema_Handle, (TickType_t) 10) == pdTRUE))
 		{
@@ -627,11 +630,23 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
 	}
 	else if (espCmdCode == ESP_SEND_MOIS_SETPOINT) {
 		/* Read updated setpoint value */
-		HAL_I2C_Slave_Receive(I2c1_espComm, (uint8_t*)&moistureSetpointShdw, 2, 2000);
+		if(xSemaphoreTakeFromISR(Setpoint_Sema_Handle, NULL) == pdTRUE)
+		{
+			/* Transmit data to ESP8266 */
+			HAL_I2C_Slave_Receive(I2c1_espComm, (uint8_t*)&moistureSetpoint, 2, 2000);
+
+			xSemaphoreGiveFromISR(Setpoint_Sema_Handle, NULL);
+		}
 	}
 	else if (espCmdCode == ESP_SEND_MOIS_TOLERANCE) {
-		/* Read updated setpoint value */
-		HAL_I2C_Slave_Receive(I2c1_espComm, (uint8_t*)&moistureToleranceShdw, 2, 2000);
+		/* Read updated tolerance value */
+		if(xSemaphoreTakeFromISR(Tolerance_Sema_Handle, NULL) == pdTRUE)
+		{
+			/* Transmit data to ESP8266 */
+			HAL_I2C_Slave_Receive(I2c1_espComm, (uint8_t*)&moistureTolerance, 2, 2000);
+
+			xSemaphoreGiveFromISR(Tolerance_Sema_Handle, NULL);
+		}
 	}
 
 	/* Keep in slave receive mode - should always be listening for commands from ESP8266 */

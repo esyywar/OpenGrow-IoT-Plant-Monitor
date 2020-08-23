@@ -18,10 +18,10 @@ type InputForm = {
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
-		loginFormContainer: {
+		registerFormContainer: {
 			padding: 40,
 		},
-		loginFormTitle: {
+		registerFormTitle: {
 			fontFamily: "'Mulish', sans-serif",
 			fontSize: '28px',
 			textAlign: 'center',
@@ -31,7 +31,9 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		inputField: {
 			marginBottom: '15px',
-			minWidth: '250px',
+			[theme.breakpoints.up('md')]: {
+				minWidth: '250px',
+			},
 		},
 	})
 )
@@ -57,18 +59,18 @@ export default function RegisterForm() {
 	}
 	return (
 		<Paper
-			className={classes.loginFormContainer}
+			className={classes.registerFormContainer}
 			style={{ backgroundColor: theme.palette.primary.light }}
 		>
 			<Grid container direction="column" alignItems="center" justify="center">
-				<Grid item xs={12} className={classes.loginFormTitle}>
+				<Grid item xs={12} className={classes.registerFormTitle}>
 					Register
 				</Grid>
 				<form className="login-form">
 					<Grid item xs={12}>
 						<TextField
 							required
-							id="Username"
+							id="register-username"
 							type="text"
 							name="username"
 							placeholder="Username"
@@ -79,7 +81,7 @@ export default function RegisterForm() {
 					<Grid item xs={12}>
 						<TextField
 							required
-							id="Email"
+							id="register-email"
 							type="text"
 							name="email"
 							placeholder="Email"
@@ -90,7 +92,7 @@ export default function RegisterForm() {
 					<Grid item xs={12}>
 						<TextField
 							required
-							id="Password"
+							id="register-password"
 							type="password"
 							name="password"
 							placeholder="Password"
@@ -101,7 +103,7 @@ export default function RegisterForm() {
 					<Grid item xs={12}>
 						<TextField
 							required
-							id="Password"
+							id="register-password2"
 							type="password"
 							name="passwordConfirm"
 							placeholder="Confirm Password"

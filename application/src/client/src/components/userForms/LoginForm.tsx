@@ -28,7 +28,9 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		inputField: {
 			marginBottom: '15px',
-			minWidth: '250px',
+			[theme.breakpoints.up('md')]: {
+				minWidth: '250px',
+			},
 		},
 	})
 )
@@ -66,7 +68,7 @@ export default function LoginForm() {
 					<Grid item xs={12}>
 						<TextField
 							required
-							id="Email"
+							id="login-email"
 							type="text"
 							name="email"
 							autoFocus
@@ -78,7 +80,7 @@ export default function LoginForm() {
 					<Grid item xs={12}>
 						<TextField
 							required
-							id="Password"
+							id="login-password"
 							type="password"
 							name="password"
 							placeholder="Password"

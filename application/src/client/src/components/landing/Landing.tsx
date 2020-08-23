@@ -16,6 +16,8 @@ const useStyles = makeStyles((theme: Theme) =>
 			[theme.breakpoints.up('md')]: {
 				marginTop: theme.spacing(8),
 			},
+			maxWidth: '100vw',
+			overflow: 'hidden',
 		},
 	})
 )
