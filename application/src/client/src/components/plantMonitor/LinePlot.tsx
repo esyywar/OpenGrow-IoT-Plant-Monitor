@@ -144,12 +144,16 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 	/* Write the plot data according to start and end dates */
 	const trimPlotData = {
 		...plotData,
-		data: plotData.data
-			.filter(({ x }) => x.getTime() >= startDate.getTime())
-			.map(({ x, y }) => ({
-				x: plotDateFormat(x),
-				y,
-			})),
+		data: plotData.data.reduce((trimmed: Array<{ x: Date | string; y: number }>, { x, y }) => {
+			if (x.getTime() >= startDate.getTime()) {
+				trimmed.push({
+					x: plotDateFormat(x),
+					y,
+				})
+			}
+
+			return trimmed
+		}, []),
 	}
 
 	/* If time scale updated, reflect change in local state */
@@ -175,7 +179,7 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 				return 'every 5 minutes'
 			case TimeScaleEnum.Day:
 				if (isMobile) {
-					return 'every 2 hours'
+					return 'every 4 hours'
 				}
 				return 'every 2 hours'
 			case TimeScaleEnum.Week:
@@ -184,6 +188,19 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 				return 'every 2 days'
 			default:
 				return 'every 1 hour'
+		}
+	}
+
+	const xLabelsFromScale = () => {
+		switch (timeScale) {
+			case TimeScaleEnum.Max:
+				return '%b-%d'
+			case TimeScaleEnum.Week:
+				return '%a %b-%d'
+			case TimeScaleEnum.Hour:
+			case TimeScaleEnum.Day:
+			default:
+				return '%I:%M %p'
 		}
 	}
 
@@ -350,7 +367,7 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 						axisRight={null}
 						axisBottom={{
 							orient: 'bottom',
-							format: '%b-%d %H:%M',
+							format: xLabelsFromScale(),
 							tickSize: 5,
 							tickPadding: 5,
 							tickRotation: 0,
