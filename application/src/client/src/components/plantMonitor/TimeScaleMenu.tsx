@@ -85,14 +85,17 @@ export default function TimeScaleMenu({
 									id="menu-list-grow"
 									onKeyDown={handleListKeyDown}
 								>
-									<MenuItem onClick={(event) => handleMenuChoice(event, TimeScaleEnum.Hours)}>
-										Hours
+									<MenuItem onClick={(event) => handleMenuChoice(event, TimeScaleEnum.Hour)}>
+										Last Hour
 									</MenuItem>
-									<MenuItem onClick={(event) => handleMenuChoice(event, TimeScaleEnum.Days)}>
-										Days
+									<MenuItem onClick={(event) => handleMenuChoice(event, TimeScaleEnum.Day)}>
+										Last Day
 									</MenuItem>
-									<MenuItem onClick={(event) => handleMenuChoice(event, TimeScaleEnum.Weeks)}>
-										Weeks
+									<MenuItem onClick={(event) => handleMenuChoice(event, TimeScaleEnum.Week)}>
+										Last Week
+									</MenuItem>
+									<MenuItem onClick={(event) => handleMenuChoice(event, TimeScaleEnum.Max)}>
+										Max
 									</MenuItem>
 								</MenuList>
 							</ClickAwayListener>

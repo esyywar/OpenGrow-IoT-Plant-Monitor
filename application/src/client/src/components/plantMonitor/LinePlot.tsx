@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 
-import PropTypes, { InferProps } from 'prop-types'
-
 import { useTypedSelector } from '../../reducers'
 import { useDispatch } from 'react-redux'
 import { loadPlantData } from '../../actions/plantData'
@@ -17,6 +15,18 @@ import { makeStyles, createStyles } from '@material-ui/core/styles'
 import { useTheme, Theme, Grid, Typography, Paper, Button } from '@material-ui/core/'
 
 import TimeScaleMenu from './TimeScaleMenu'
+
+interface PlotProps {
+	title: string
+	yTitle: string
+	plotData: {
+		id: string
+		data: Array<{
+			x: Date
+			y: number
+		}>
+	}
+}
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -68,23 +78,23 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export enum TimeScaleEnum {
-	Hours = 'Hours',
-	Days = 'Days',
-	Weeks = 'Weeks',
+	Hour = 'Last Hour',
+	Day = 'Last Day',
+	Week = 'Last Week',
+	Max = 'Max',
 }
 
-/* Date format specifier */
-const dateFormat = timeFormat('%b %d, %Y %H:%M')
+/* Date format specifier for plot data */
+const plotDateFormat = timeFormat('%m-%d-%Y-%H-%M-%S')
 
-export default function LinePlot({
-	title,
-	yTitle,
-	plotData,
-}: InferProps<typeof LinePlot.propTypes>) {
+/* Date format specifier for tool tip */
+const toolTipFormat = timeFormat('%b %d, %Y %H:%M')
+
+export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 	const [isHover, setHover] = useState(false)
 
 	/* Time scale (chosen from menu in TimeScaleMenu component) */
-	const [timeScale, setTimeScale] = useState<TimeScaleEnum>(TimeScaleEnum.Hours)
+	const [timeScale, setTimeScale] = useState<TimeScaleEnum>(TimeScaleEnum.Day)
 
 	const dispatch = useDispatch()
 
@@ -108,6 +118,39 @@ export default function LinePlot({
 		}
 	}, [])
 
+	/****************************** EDIT PLOT DATA DEPENDING ON TIME SCALE **************************/
+
+	/* End date is latest available entry */
+	const endDate = plotData.data.slice(-1)[0].x
+
+	const startDateInt = () => {
+		let date = new Date(endDate)
+
+		switch (timeScale) {
+			case TimeScaleEnum.Hour:
+				return date.setHours(endDate.getHours() - 1)
+			case TimeScaleEnum.Day:
+				return date.setDate(endDate.getDate() - 1)
+			case TimeScaleEnum.Week:
+				return date.setDate(endDate.getDate() - 7)
+			case TimeScaleEnum.Max:
+			default:
+				return plotData.data[0].x
+		}
+	}
+
+	const startDate = new Date(startDateInt())
+	console.log(startDate)
+
+	/* TODO -> write the plot data according to start and end dates */
+	const trimPlotData = {
+		...plotData,
+		data: plotData.data.map(({ x, y }) => ({
+			x: plotDateFormat(x),
+			y,
+		})),
+	}
+
 	/* If time scale updated, reflect change in local state */
 	const updateTimeScale = (newTimeScale: TimeScaleEnum) => {
 		if (timeScale !== newTimeScale) {
@@ -124,17 +167,17 @@ export default function LinePlot({
 
 	const tickFromScale = () => {
 		switch (timeScale) {
-			case TimeScaleEnum.Hours:
+			case TimeScaleEnum.Hour:
 				if (isMobile) {
 					return 'every 2 hours'
 				}
 				return 'every 1 hour'
-			case TimeScaleEnum.Days:
+			case TimeScaleEnum.Day:
 				if (isMobile) {
 					return 'every 2 days'
 				}
 				return 'every 1 day'
-			case TimeScaleEnum.Weeks:
+			case TimeScaleEnum.Week:
 				return 'every 7 days'
 			default:
 				return 'every 1 hour'
@@ -288,7 +331,7 @@ export default function LinePlot({
 					<ResponsiveLine
 						onMouseEnter={() => setHover(true)}
 						onMouseLeave={() => setHover(false)}
-						data={plotData}
+						data={[trimPlotData]}
 						enablePoints={!isMobile}
 						lineWidth={4}
 						pointSize={10}
@@ -327,7 +370,7 @@ export default function LinePlot({
 						tooltip={({ point }) => {
 							return (
 								<div className={classes.toolTip}>
-									<p>{dateFormat(new Date(point.data.x))}</p>
+									<p>{toolTipFormat(new Date(point.data.x))}</p>
 									<p>{`${point.id.slice(0, point.id.indexOf('.'))}: ${point.data.y}`}</p>
 								</div>
 							)
@@ -337,18 +380,4 @@ export default function LinePlot({
 			</Paper>
 		</Grid>
 	)
-}
-
-LinePlot.propTypes = {
-	title: PropTypes.string.isRequired,
-	yTitle: PropTypes.string.isRequired,
-	plotData: [
-		{
-			id: PropTypes.string.isRequired,
-			data: {
-				x: PropTypes.instanceOf(Date).isRequired,
-				y: PropTypes.number.isRequired,
-			},
-		},
-	],
 }

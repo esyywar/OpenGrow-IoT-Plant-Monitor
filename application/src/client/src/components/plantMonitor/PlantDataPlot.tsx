@@ -4,8 +4,6 @@ import { useTypedSelector } from '../../reducers'
 import { useDispatch } from 'react-redux'
 import { loadPlantData } from '../../actions/plantData'
 
-import { timeFormat } from 'd3-time-format'
-
 import LinePlot from './LinePlot'
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
@@ -13,9 +11,6 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import { Grid, Container } from '@material-ui/core/'
 
 import Spinner from '../util/Spinner'
-
-/* Date format specifier */
-const dateFormat = timeFormat('%m-%d-%Y-%H-%M-%S')
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -53,7 +48,7 @@ export default function PlantDataPlot() {
 	const soilData = useMemo(
 		() =>
 			plantData.data.soilMoisture.map(({ measurement, date }) => ({
-				x: dateFormat(date),
+				x: date,
 				y: measurement,
 			})),
 		[plantData.data.soilMoisture]
@@ -63,7 +58,7 @@ export default function PlantDataPlot() {
 	const lightData = useMemo(
 		() =>
 			plantData.data.lightLevel.map(({ measurement, date }) => ({
-				x: dateFormat(date),
+				x: date,
 				y: measurement,
 			})),
 		[plantData.data.lightLevel]
@@ -80,12 +75,12 @@ export default function PlantDataPlot() {
 					<LinePlot
 						title="Soil Moisture"
 						yTitle="Soil Moisture"
-						plotData={[{ id: 'Soil Moisture', data: soilData }]}
+						plotData={{ id: 'Soil Moisture', data: soilData }}
 					/>
 					<LinePlot
 						title="Light Availability"
 						yTitle="Light Level"
-						plotData={[{ id: 'Light Level', data: lightData }]}
+						plotData={{ id: 'Light Level', data: lightData }}
 					/>
 				</Grid>
 			) : (
