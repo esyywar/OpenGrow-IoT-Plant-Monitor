@@ -123,6 +123,7 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 	/* End date is latest available entry */
 	const endDate = plotData.data.slice(-1)[0].x
 
+	/* Calculate the start date from timeScale state */
 	const startDateInt = () => {
 		let date = new Date(endDate)
 
@@ -138,17 +139,17 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 				return plotData.data[0].x
 		}
 	}
-
 	const startDate = new Date(startDateInt())
-	console.log(startDate)
 
-	/* TODO -> write the plot data according to start and end dates */
+	/* Write the plot data according to start and end dates */
 	const trimPlotData = {
 		...plotData,
-		data: plotData.data.map(({ x, y }) => ({
-			x: plotDateFormat(x),
-			y,
-		})),
+		data: plotData.data
+			.filter(({ x }) => x.getTime() >= startDate.getTime())
+			.map(({ x, y }) => ({
+				x: plotDateFormat(x),
+				y,
+			})),
 	}
 
 	/* If time scale updated, reflect change in local state */
@@ -169,16 +170,18 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 		switch (timeScale) {
 			case TimeScaleEnum.Hour:
 				if (isMobile) {
-					return 'every 2 hours'
+					return 'every 10 minutes'
 				}
-				return 'every 1 hour'
+				return 'every 5 minutes'
 			case TimeScaleEnum.Day:
 				if (isMobile) {
-					return 'every 2 days'
+					return 'every 2 hours'
 				}
-				return 'every 1 day'
+				return 'every 2 hours'
 			case TimeScaleEnum.Week:
-				return 'every 7 days'
+				return 'every 1 day'
+			case TimeScaleEnum.Max:
+				return 'every 2 days'
 			default:
 				return 'every 1 hour'
 		}
