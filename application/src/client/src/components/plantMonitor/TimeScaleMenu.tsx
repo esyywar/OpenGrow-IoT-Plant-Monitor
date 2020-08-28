@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
 
-import PropTypes, { InferProps } from 'prop-types'
 import { TimeScaleEnum } from './LinePlot'
 
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
@@ -17,10 +16,12 @@ import {
 	ClickAwayListener,
 } from '@material-ui/core/'
 
-export default function TimeScaleMenu({
-	currTimeScale,
-	onScaleChange,
-}: InferProps<typeof TimeScaleMenu.propTypes>) {
+interface TimeScaleProps {
+	currTimeScale: string
+	onScaleChange: Function
+}
+
+export default function TimeScaleMenu({ currTimeScale, onScaleChange }: TimeScaleProps) {
 	const theme = useTheme()
 
 	/* Toggle collapsable time-scale menu */
@@ -105,9 +106,4 @@ export default function TimeScaleMenu({
 			</Popper>
 		</Paper>
 	)
-}
-
-TimeScaleMenu.propTypes = {
-	currTimeScale: PropTypes.string.isRequired,
-	onScaleChange: PropTypes.func.isRequired,
 }

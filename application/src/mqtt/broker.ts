@@ -16,7 +16,7 @@ const server = require('net').createServer(aedes.handle)
 
 /* Connect broker to port */
 server.listen(PORT, '0.0.0.0', () => {
-	console.log('Server is listening on port ' + PORT)
+	console.log('Broker is listening on port ' + PORT)
 })
 
 /*******************************************************

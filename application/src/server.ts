@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5000
 
 /* Listen on port */
 server.listen(PORT, () => {
-	console.log(`Listening on port ${PORT} ...`)
+	console.log('Server is listening on port ' + PORT)
 })
 
 server.get('/', (req: Request, res: Response, next: NextFunction) => {

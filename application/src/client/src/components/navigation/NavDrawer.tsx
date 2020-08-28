@@ -24,6 +24,12 @@ import SettingsRemoteIcon from '@material-ui/icons/SettingsRemote'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom'
 
+interface NavDrawerProps {
+	isOpen: boolean
+	onOpen: Function
+	onClose: Function
+}
+
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		sideNavRoot: {

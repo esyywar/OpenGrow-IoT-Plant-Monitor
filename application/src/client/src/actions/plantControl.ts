@@ -39,10 +39,6 @@ export type clearCtrlDataType = {
 
 /* Load plant's control data from id */
 export const loadCtrlData = (plantId: string) => async (dispatch: Function) => {
-	if (localStorage.token) {
-		setAuthToken(localStorage.token)
-	}
-
 	try {
 		const res = await axios.get(`/api/plant/control/${plantId}`)
 

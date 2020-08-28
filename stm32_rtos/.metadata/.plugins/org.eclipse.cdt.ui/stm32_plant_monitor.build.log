@@ -1,4 +1,4 @@
-16:02:31 **** Incremental Build of configuration Debug for project stm32_plant_monitor ****
+22:33:35 **** Incremental Build of configuration Debug for project stm32_plant_monitor ****
 make -j12 all 
 arm-none-eabi-size   stm32_plant_monitor.elf 
    text	   data	    bss	    dec	    hex	filename
@@ -6,5 +6,5 @@ arm-none-eabi-size   stm32_plant_monitor.elf
 Finished building: default.size.stdout
  
 
-16:02:31 Build Finished. 0 errors, 0 warnings. (took 186ms)
+22:33:35 Build Finished. 0 errors, 0 warnings. (took 187ms)
 

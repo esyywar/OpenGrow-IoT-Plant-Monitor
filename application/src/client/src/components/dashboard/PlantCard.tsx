@@ -5,8 +5,6 @@ import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setActivePlant } from '../../actions/activePlant'
 
-import PropTypes, { InferProps } from 'prop-types'
-
 import { useTheme, createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import { Grid, Button, Paper } from '@material-ui/core/'
 
@@ -15,6 +13,12 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 
 import NamePlantModal from './Modals/NamePlantModal'
 import RemovePlantModal from './Modals/RemovePlantModal'
+
+interface PlantCardProps {
+	id: string
+	name: string
+	cardNum: number
+}
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -48,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 )
 
-export default function PlantCard({ id, name, cardNum }: InferProps<typeof PlantCard.propTypes>) {
+export default function PlantCard({ id, name, cardNum }: PlantCardProps) {
 	const dispatch = useDispatch()
 
 	const theme = useTheme()
@@ -124,10 +128,4 @@ export default function PlantCard({ id, name, cardNum }: InferProps<typeof Plant
 			/>
 		</Grid>
 	)
-}
-
-PlantCard.propTypes = {
-	id: PropTypes.string.isRequired,
-	name: PropTypes.string.isRequired,
-	cardNum: PropTypes.number.isRequired,
 }
