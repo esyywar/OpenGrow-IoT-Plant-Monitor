@@ -601,7 +601,6 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* pSpi2_oledWrite) {
 
 /* Received data from ESP8266 Master -> Read command and take appropriate action */
 void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
-	/* Turn on on-board LED for visual indication */
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET);
 
 	/* Check command code sent */
@@ -636,9 +635,8 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
 		}
 	}
 
-	/* Turn off on-board LED */
-
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, RESET);
+
 
 	/* Keep in slave receive mode - should always be listening for commands from ESP8266 */
 	HAL_I2C_Slave_Receive_IT(I2c1_espComm, &espCmdCode, 1);

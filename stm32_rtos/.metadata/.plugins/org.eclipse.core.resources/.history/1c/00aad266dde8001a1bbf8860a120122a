@@ -165,6 +165,7 @@ int main(void)
   xSemaphoreGive(Tolerance_Sema_Handle);
 
   /* Task handlers */
+  TaskHandle_t Blinky_1_TaskHandle;
   TaskHandle_t Sensor_Read_TaskHandle;
   TaskHandle_t OLED_Update_TaskHandle;
   TaskHandle_t OLED_Data_Write_TaskHandle;
@@ -172,6 +173,7 @@ int main(void)
   TaskHandle_t Water_Plant_TaskHandle;
 
   /* Register tasks (each with 128 byte stack size) */
+  xTaskCreate(Blinky_1, "Blinky_1_Test", 32, NULL, 8, &Blinky_1_TaskHandle);
   xTaskCreate(Sensor_Read, "Sensor_Read", 32, NULL, 9, &Sensor_Read_TaskHandle);
   xTaskCreate(OLED_Update, "OLED_Update", 32, NULL, 5, &OLED_Update_TaskHandle);
   xTaskCreate(OLED_Data_Write, "OLED_Data_Write", 64, NULL, 7, &OLED_Data_Write_TaskHandle);
@@ -435,6 +437,20 @@ static void MX_GPIO_Init(void)
 }
 
 /**
+  * @brief  On-board LED blinking for giving debug status.
+  * @param  argument: Not used
+  * @retval None
+  */
+void Blinky_1(void *pvParameters)
+{
+	for(;;)
+	{
+		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+		vTaskDelay(250);
+	}
+}
+
+/**
   * @brief  Update the OLED screen by writing contents of the buffer.
   * @param  argument: Not used
   * @retval None
@@ -601,9 +617,6 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef* pSpi2_oledWrite) {
 
 /* Received data from ESP8266 Master -> Read command and take appropriate action */
 void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
-	/* Turn on on-board LED for visual indication */
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET);
-
 	/* Check command code sent */
 	if (espCmdCode == ESP_REQ_SENSOR_DATA) {
 		/* Send soil moisture and light sensor data to ESP8266 (4 bytes) */
@@ -635,10 +648,6 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
 			xSemaphoreGiveFromISR(Tolerance_Sema_Handle, NULL);
 		}
 	}
-
-	/* Turn off on-board LED */
-
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, RESET);
 
 	/* Keep in slave receive mode - should always be listening for commands from ESP8266 */
 	HAL_I2C_Slave_Receive_IT(I2c1_espComm, &espCmdCode, 1);
