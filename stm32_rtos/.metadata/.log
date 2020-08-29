@@ -7339,3 +7339,9 @@ java.lang.RuntimeException
 
 !ENTRY org.eclipse.cdt.dsf 4 10001 2020-08-28 23:12:29.242
 !MESSAGE Target not available.
+
+!ENTRY org.eclipse.core.jobs 2 2 2020-08-29 00:46:53.519
+!MESSAGE Job found still running after platform shutdown.  Jobs should be canceled by the plugin that scheduled them during shutdown: org.eclipse.debug.core.DebugPlugin$EventDispatchJob
+
+!ENTRY org.eclipse.core.jobs 2 2 2020-08-29 00:46:53.523
+!MESSAGE Job found still running after platform shutdown.  Jobs should be canceled by the plugin that scheduled them during shutdown: org.eclipse.cdt.dsf.gdb.internal.ui.console.GdbBasicCliConsole$InputReadJob

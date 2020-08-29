@@ -6,7 +6,7 @@ import { loadPlantData } from '../../actions/plantData'
 
 import { ResponsiveLine } from '@nivo/line'
 
-import { timeFormat } from 'd3-time-format'
+import { timeFormat, timeParse } from 'd3-time-format'
 
 import RefreshIcon from '@material-ui/icons/Refresh'
 
@@ -87,6 +87,9 @@ export enum TimeScaleEnum {
 /* Date format specifier for plot data */
 const plotDateFormat = timeFormat('%m-%d-%Y-%H-%M-%S')
 
+/* Parse date from plot data format */
+const parseTime = timeParse('%m-%d-%Y-%H-%M-%S')
+
 /* Date format specifier for tool tip */
 const toolTipFormat = timeFormat('%b %d, %Y %H:%M')
 
@@ -142,21 +145,40 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 	const startDate = new Date(startDateInt())
 
 	/* Write the plot data according to start and end dates */
+	let lastDate: undefined | Date
+
 	const trimPlotData = {
 		...plotData,
-		data: plotData.data.reduce((trimmed: Array<{ x: Date | string; y: number }>, { x, y }) => {
-			if (x.getTime() >= startDate.getTime()) {
-				trimmed.push({
-					x: plotDateFormat(x),
-					y,
-				})
-			}
+		data: plotData.data.reduce(
+			(trimmed: Array<{ x: Date | string; y: null | number }>, { x, y }) => {
+				/* Check that the datapoint is within the valid date range */
+				if (x.getTime() >= startDate.getTime()) {
+					/* If entry is greater than 30min apart from the previous point, insert a null to create hole in the plot */
+					if (lastDate !== undefined && (x.getTime() - lastDate.getTime()) / 60000 > 30) {
+						let date = new Date(lastDate)
+						date.setMinutes(lastDate.getMinutes() + 5)
+						trimmed.push({
+							x: plotDateFormat(date),
+							y: null,
+						})
+					}
 
-			return trimmed
-		}, []),
+					/* Push the valid datapoint to plot data */
+					trimmed.push({
+						x: plotDateFormat(x),
+						y,
+					})
+
+					lastDate = x
+				}
+
+				return trimmed
+			},
+			[]
+		),
 	}
 
-	/* If time scale updated, reflect change in local state */
+	/* Function passed to child component for local state update */
 	const updateTimeScale = (newTimeScale: TimeScaleEnum) => {
 		if (timeScale !== newTimeScale) {
 			setTimeScale(newTimeScale)
@@ -170,35 +192,51 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 		dispatch(loadPlantData(plantId))
 	}
 
+	/* Range of data values being displayed ... */
+	const latestPoint: Date | null = parseTime(trimPlotData.data.slice(-1)[0].x.toString())
+	const earliestPoint: Date | null = parseTime(trimPlotData.data[0].x.toString())
+	const timeRange =
+		latestPoint && earliestPoint ? latestPoint?.getTime() - earliestPoint?.getTime() : 300000
+
 	const tickFromScale = () => {
-		switch (timeScale) {
-			case TimeScaleEnum.Hour:
+		switch (true) {
+			/* Over 1 week */
+			case timeRange > 604800000:
 				if (isMobile) {
-					return 'every 10 minutes'
+					return 'every 3 days'
 				}
-				return 'every 5 minutes'
-			case TimeScaleEnum.Day:
-				if (isMobile) {
-					return 'every 4 hours'
-				}
-				return 'every 2 hours'
-			case TimeScaleEnum.Week:
-				return 'every 1 day'
-			case TimeScaleEnum.Max:
 				return 'every 2 days'
-			default:
+			/* Over 4 days */
+			case timeRange > 345600000:
+				return 'every 1 day'
+			/* Over 2 days */
+			case timeRange > 172800000:
+				return 'every 6 hours'
+			/* Over 1 day */
+			case timeRange > 86400000:
+				return 'every 2 hours'
+			/* Over 12 hours */
+			case timeRange > 43200000:
 				return 'every 1 hour'
+			/* Over an hour */
+			case timeRange > 3600000:
+				return 'every 10 minutes'
+			default:
+				return 'every 5 minutes'
 		}
 	}
 
 	const xLabelsFromScale = () => {
-		switch (timeScale) {
-			case TimeScaleEnum.Max:
+		switch (true) {
+			/* Over 1 week */
+			case timeRange > 604800000:
 				return '%b-%d'
-			case TimeScaleEnum.Week:
+			/* Over 4 days */
+			case timeRange > 345600000:
+				if (isMobile) {
+					return '%b-%d'
+				}
 				return '%a %b-%d'
-			case TimeScaleEnum.Hour:
-			case TimeScaleEnum.Day:
 			default:
 				return '%I:%M %p'
 		}
