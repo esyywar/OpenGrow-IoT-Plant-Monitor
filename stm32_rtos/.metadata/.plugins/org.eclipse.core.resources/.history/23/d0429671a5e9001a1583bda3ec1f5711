@@ -594,6 +594,9 @@ void Water_Plant(void *pvParameters)
 		int16_t moistureError = 0;
 		int32_t PID_p, PID_i, PID_d;
 
+		/* If setpoint value is not the most recent, update it */
+
+
 		/* PID calculation for how long to turn on water pump */
 		if ((xSemaphoreTake(Sensor_Sema_Handle, (TickType_t) 10) == pdTRUE) && (xSemaphoreTake(Setpoint_Sema_Handle, (TickType_t) 10) == pdTRUE))
 		{
@@ -614,8 +617,6 @@ void Water_Plant(void *pvParameters)
 				int32_t plantPumpOnTime = PID_p + PID_d + PID_i;
 				(void)plantPumpOnTime;
 			}
-
-			xSemaphoreGive(Tolerance_Sema_Handle);
 		}
 	}
 }
