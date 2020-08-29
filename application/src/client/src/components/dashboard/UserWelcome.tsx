@@ -11,7 +11,7 @@ import Spinner from '../util/Spinner'
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		dashboardWelcome: {
-			backgroundColor: 'rgb(164, 179, 247)',
+			backgroundColor: theme.palette.secondary.light,
 			padding: '15px',
 			marginBottom: 35,
 		},

@@ -10,6 +10,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 
 import { Grid, Container } from '@material-ui/core/'
 
+import NoPlantData from './NoPlantData'
 import Spinner from '../util/Spinner'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -84,7 +85,7 @@ export default function PlantDataPlot() {
 					/>
 				</Grid>
 			) : (
-				'This plant has not collected any data yet!'
+				<NoPlantData />
 			)}
 		</Container>
 	)

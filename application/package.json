@@ -4,7 +4,7 @@
 	"description": "Mqtt broker and web application for IoT plant controller",
 	"main": "index.js",
 	"scripts": {
-		"mqtt": "concurrently \"node dist/mqtt-broker/broker\" \"node dist/mqtt-broker/proxy-pub\"",
+		"mqtt": "concurrently \"node dist/mqtt-broker/broker\"",
 		"client": "npm start --prefix src/client",
 		"web-app": "concurrently \"npm run client\" \"nodemon src/server.ts\"",
 		"dev": "concurrently \"npm run client\" \"nodemon src/server.ts\" \"npm run mqtt\"",

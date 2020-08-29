@@ -2,11 +2,11 @@
  *	Brief: This is a proxy publisher to test the MQTT broker (to be during development)
  *		   	Publishes to provided topics which gives messages which will be caught by the subscriber
  *
- *  To disable this proxy publisher:
+ *  To enable this proxy publisher:
  * 			1. Open package.json
  * 			2. Look under "scripts"
  * 			3. See the "mqtt" script
- * 			4. Delete "\"node dist/server-mqtt/pub\""
+ * 			4. Add "\"node dist/server-mqtt/pub\""
  *
  */
 

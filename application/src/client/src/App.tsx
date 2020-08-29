@@ -42,14 +42,14 @@ function App() {
 		palette: {
 			type: 'light',
 			primary: {
-				light: '#BDD9BD',
-				main: '#4F772D',
-				dark: '#0D1C0D',
+				light: '#60AD5E',
+				main: '#2E7D32',
+				dark: '#005005',
 			},
 			secondary: {
-				light: '#A69CAC',
-				main: '#474973',
-				dark: '#0D0C1D',
+				light: '#7C43BD',
+				main: '#4a148c',
+				dark: '#12005E',
 			},
 			background: {
 				default: '#FAFAFA',
@@ -61,6 +61,16 @@ function App() {
 	const darkTheme = createMuiTheme({
 		palette: {
 			type: 'dark',
+			primary: {
+				light: '#58A5F0',
+				main: '#0277BD',
+				dark: '#004C8C',
+			},
+			secondary: {
+				light: '#757DE8',
+				main: '#3F51B5',
+				dark: '#002984',
+			},
 			background: {
 				default: '#303030',
 				paper: '#525252',
