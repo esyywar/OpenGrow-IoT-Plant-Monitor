@@ -82,14 +82,27 @@ router.get('/data/:plantId', auth, async (req: Request, res: Response) => {
  *	Brief: Get control data (setpoint and tolerance) for a plant
  *	Path: /api/plant/control/:plantId
  */
-router.get('/control/:plantId', async (req: Request, res: Response) => {
+router.get('/control/:plantId', auth, async (req: Request, res: Response) => {
 	try {
+		const user: IUser | null = await User.findById(req.body.user.id)
+
+		if (!user) {
+			return res.status(400).json({ errors: [{ msg: 'User does not exist.' }] })
+		}
+
 		const plantId = req.params.plantId
 
 		const plant: IPlant | null = await Plant.findById(plantId)
 
 		if (!plant) {
 			return res.status(401).json({ errors: [{ msg: 'Plant not found.' }] })
+		}
+
+		/* Verify that plant is associated with user */
+		if (!user.plants.some((item) => item.plant.toString() === plantId)) {
+			return res
+				.status(401)
+				.json({ errors: [{ msg: 'This plant is not associated with your account.' }] })
 		}
 
 		res.json({ control: plant.control })
