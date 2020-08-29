@@ -71,12 +71,17 @@ SSD1306_t SSD1306_Disp;
 /* Buffer for values appearing on OLED */
 char soilMoistureDisp[11] = "Soil: ";
 char lightLevelDisp[12] = "Light: ";
+char setpointDisp[10] = "Setpt: ";
+char toleranceDisp[10] = "Toler: ";
 
 /* Moisture control variables */
-uint16_t moistureSetpoint = PID_SETPOINT_DEFAULT;
+uint16_t moistureSetpoint;
 
 /* How far to let moisture drift from setpoint before watering */
-uint16_t moistureTolerance = PID_TOLERANCE_DEFAULT;
+uint16_t moistureTolerance;
+
+/* Flags to indicate if control data has been updated */
+uint8_t controlUpdateFlag = RESET;
 
 /* PID controller coefficients (initialized to default values) */
 int16_t proportionCoeff = PID_P_DEFAULT;
@@ -100,6 +105,7 @@ void OLED_Bitmap_Flip(void *pvParameters);
 void OLED_Data_Write(void *pvParameters);
 void Sensor_Read(void *pvParameters);
 void Water_Plant(void *pvParameters);
+void Flash_Update(void *pvParameters);
 
 /* Create semaphores */
 SemaphoreHandle_t Sensor_Sema_Handle;
@@ -170,13 +176,22 @@ int main(void)
   TaskHandle_t OLED_Data_Write_TaskHandle;
   TaskHandle_t OLED_Bitmap_Flip_TaskHandle;
   TaskHandle_t Water_Plant_TaskHandle;
+  TaskHandle_t Flash_Update_TaskHandle;
 
   /* Register tasks (each with 128 byte stack size) */
-  xTaskCreate(Sensor_Read, "Sensor_Read", 32, NULL, 9, &Sensor_Read_TaskHandle);
+  xTaskCreate(Sensor_Read, "Sensor_Read", 32, NULL, 8, &Sensor_Read_TaskHandle);
   xTaskCreate(OLED_Update, "OLED_Update", 32, NULL, 5, &OLED_Update_TaskHandle);
   xTaskCreate(OLED_Data_Write, "OLED_Data_Write", 64, NULL, 7, &OLED_Data_Write_TaskHandle);
   xTaskCreate(OLED_Bitmap_Flip, "OLED_Bitmap_Flip", 32, NULL, 6, &OLED_Bitmap_Flip_TaskHandle);
   xTaskCreate(Water_Plant, "Water_Plant", 32, NULL, 10, &Water_Plant_TaskHandle);
+  xTaskCreate(Flash_Update, "Flash_Update", 32, NULL, 9, &Flash_Update_TaskHandle);
+
+  /* Read the control data values from flash memory (or load default if blank) */
+  HAL_FLASH_Unlock();
+  uint16_t* flashCtrlData = (uint16_t*)FLASH_CONTROL_DATA_ADDR;
+  moistureSetpoint = flashCtrlData[0] == 0xFFFF ? PLANT_SETPOINT_DEFAULT : flashCtrlData[0];
+  moistureTolerance = flashCtrlData[1] == 0xFFFF ? PLANT_TOLERANCE_DEFAULT : flashCtrlData[1];
+  HAL_FLASH_Lock();
 
   /* Listen for commands from ESP I2C master (Need to always be listening for this) */
   HAL_I2C_Slave_Receive_IT(&hi2c1, &espCmdCode, 1);
@@ -486,26 +501,58 @@ void OLED_Data_Write(void *pvParameters)
 {
 	for(;;)
 	{
-		/* Append sensor values to display string */
-		if( xSemaphoreTake( Sensor_Sema_Handle, (TickType_t) 10 ) == pdTRUE  )
-		{
-			itoa(plant_sensors[0], soilMoistureDisp + 6, 10);
-			itoa(plant_sensors[1], lightLevelDisp + 7, 10);
+		static uint8_t cntTimer = 0;
+		static bool isCtrlDisplay = false;
 
-			xSemaphoreGive(Sensor_Sema_Handle);
+		/* String buffers to display on OLED screen */
+		char *topDisp, *btmDisp;
+
+		if (isCtrlDisplay) {
+			/* Append sensor values to display string */
+			if( xSemaphoreTake( Setpoint_Sema_Handle, (TickType_t) 10 ) == pdTRUE &&  xSemaphoreTake( Tolerance_Sema_Handle, (TickType_t) 10 ) == pdTRUE)
+			{
+				itoa(moistureSetpoint, setpointDisp + 7, 10);
+				itoa(moistureTolerance, toleranceDisp + 7, 10);
+
+				xSemaphoreGive(Setpoint_Sema_Handle);
+				xSemaphoreGive(Tolerance_Sema_Handle);
+			}
+
+			topDisp = setpointDisp;
+			btmDisp = toleranceDisp;
 		}
+		else
+		{
+			/* Append sensor values to display string */
+			if( xSemaphoreTake( Sensor_Sema_Handle, (TickType_t) 10 ) == pdTRUE  )
+			{
+				itoa(plant_sensors[0], soilMoistureDisp + 6, 10);
+				itoa(plant_sensors[1], lightLevelDisp + 7, 10);
+
+				xSemaphoreGive(Sensor_Sema_Handle);
+			}
+
+			topDisp = soilMoistureDisp;
+			btmDisp = lightLevelDisp;
+		}
+
 
 		/* Write sensor values to OLED buffer */
 		if (xSemaphoreTake( Oled_Buffer_Sema_Handle, (TickType_t) 10 ) == pdTRUE )
 		{
-			SSD1306_Fill_ToRight(50, SSD1306_PX_CLR_BLACK);
+			SSD1306_Fill_ToRight(40, SSD1306_PX_CLR_BLACK);
 
-			SSD1306_GotoXY(50, 5);
-			SSD1306_Puts(soilMoistureDisp, &Font_7x10, SSD1306_PX_CLR_WHITE);
-			SSD1306_GotoXY(50, 21);
-			SSD1306_Puts(lightLevelDisp, &Font_7x10, SSD1306_PX_CLR_WHITE);
+			SSD1306_GotoXY(40, 5);
+			SSD1306_Puts(topDisp, &Font_7x10, SSD1306_PX_CLR_WHITE);
+			SSD1306_GotoXY(40, 21);
+			SSD1306_Puts(btmDisp, &Font_7x10, SSD1306_PX_CLR_WHITE);
 
 			xSemaphoreGive(Oled_Buffer_Sema_Handle);
+		}
+
+		if (++cntTimer >= 100) {
+			isCtrlDisplay = !isCtrlDisplay;
+			cntTimer = 0;
 		}
 
 		vTaskDelay(700);
@@ -574,6 +621,33 @@ void Water_Plant(void *pvParameters)
 	}
 }
 
+/**
+* @brief If control data has been updated, update values in non-volatile memory.
+* @param argument: Not used
+* @retval None
+*/
+void Flash_Update(void *pvParameters)
+{
+	for(;;)
+	{
+		if (controlUpdateFlag == SET)
+		{
+			HAL_FLASH_Unlock();
+
+			FLASH_Erase_Sector(FLASH_SECTOR_NUM, FLASH_VOLTAGE_RANGE_3);
+
+			HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, FLASH_CONTROL_DATA_ADDR, (uint64_t)moistureSetpoint);
+			HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, FLASH_CONTROL_DATA_ADDR + 2, (uint64_t)moistureTolerance);
+
+			controlUpdateFlag = RESET;
+
+			HAL_FLASH_Lock();
+		}
+
+		vTaskDelay(10000);
+	}
+}
+
 
 /******************************************************************
 **************** Interrupt routine callbacks **********************
@@ -622,6 +696,9 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
 			/* Transmit data to ESP8266 */
 			HAL_I2C_Slave_Receive(I2c1_espComm, (uint8_t*)&moistureSetpoint, 2, 2000);
 
+			/* Set flag so setpoint will be updated in flash memory */
+			controlUpdateFlag = SET;
+
 			xSemaphoreGiveFromISR(Setpoint_Sema_Handle, NULL);
 		}
 	}
@@ -631,6 +708,9 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
 		{
 			/* Transmit data to ESP8266 */
 			HAL_I2C_Slave_Receive(I2c1_espComm, (uint8_t*)&moistureTolerance, 2, 2000);
+
+			/* Set flag so tolerance will be updated in flash memory */
+			controlUpdateFlag = SET;
 
 			xSemaphoreGiveFromISR(Tolerance_Sema_Handle, NULL);
 		}

@@ -30,17 +30,20 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
 
+/*******************************************************
+******************* I2C Settings ***********************
+*******************************************************/
 
-/* Private includes ----------------------------------------------------------*/
-/* I2C device addresses
-*	 Note: Hal driver shifts the address right -> compensate by left shift
-*/
 #define STM32_I2C_ADDR					0x68 << 1
 
 /* I2C commands */
 #define ESP_REQ_SENSOR_DATA				0x51
 #define ESP_SEND_MOIS_SETPOINT			0x44
 #define ESP_SEND_MOIS_TOLERANCE			0x46
+
+/*******************************************************
+******************* RTOS Timings ***********************
+*******************************************************/
 
 /* RTOS thread timing settings */
 #define RTOS_UPDATE_OLED_DISP			100U
@@ -50,15 +53,27 @@ extern "C" {
 #define RTOS_GET_SENSOR_DATA			1000U
 #define RTOS_PLANT_WATER				600000U
 
+/*******************************************************
+************* Plant Watering Controls ******************
+*******************************************************/
+
 /* Plant water pump water settings (to be optimzed) */
 #define PID_P_DEFAULT					8
 #define PID_I_DEFAULT					0.2
 #define PID_D_DEFAULT					10
 
 /* On-time required for pump to bring water to plant (default) */
-#define PID_SETPOINT_DEFAULT			400U
-#define PID_TOLERANCE_DEFAULT			150U
+#define PLANT_SETPOINT_DEFAULT			400U
+#define PLANT_TOLERANCE_DEFAULT			150U
 #define PUMP_MINIMUM_TIME_ON			3000U
+
+/*******************************************************
+*************** Flash Memory Settings ******************
+*******************************************************/
+
+#define FLASH_SECTOR_NUM				7U
+#define FLASH_CONTROL_DATA_ADDR			0x08060000UL
+
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
