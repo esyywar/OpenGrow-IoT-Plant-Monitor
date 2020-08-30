@@ -87,6 +87,7 @@ export const addUserPlant = (plantId: string) => async (dispatch: Function) => {
 			}),
 		}
 
+		dispatch(setAlert('Plant succesfully added!', 'success'))
 		dispatch(action)
 	} catch (error) {
 		const errors = error.response.data.errors

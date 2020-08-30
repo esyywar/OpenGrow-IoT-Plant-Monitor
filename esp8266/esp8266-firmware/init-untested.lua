@@ -20,12 +20,14 @@ station_cfg = {
 }
 
 -- mqtt settings 
+local mqttQoS = 1
+
 mqtt_cfg = {
     clientId = "esp_" .. device_info.ID,
-    subTopic = device_info.ID .. "/update",
-    pubTopic = device_info.ID .. "/data",
-    qos = 1,
-    host = "192.168.0.23",
+    qos = mqttQoS,
+    subTopics = {[device_info.ID .. "/soilMoisture/setpoint"]=mqttQoS, [device_info.ID .. "/soilMoisture/tolerance"]=mqttQoS},
+    pubTopics = {soil=device_info.ID .. "/soilMoisture", light=device_info.ID .. "/lightLevel"}
+    host = "192.168.0.20",
     port = 1883,
 }
 
@@ -39,7 +41,7 @@ i2c_config = {
 STM32_ADDR = 0x68
 
 -- i2c commands to stm32
-ESP_REQ_SENSOR_DATA_CMD = 0x42
+ESP_REQ_SENSOR_DATA_CMD = 0x51
 ESP_SEND_SETPOINT_CMD = 0x44
 ESP_SEND_TOLERANCE_CMD = 0x46
 

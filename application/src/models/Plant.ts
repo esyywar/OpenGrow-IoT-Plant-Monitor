@@ -17,11 +17,11 @@ const plantSchema: Schema = new Schema({
 		soilMoisture: {
 			setpoint: {
 				type: Number,
-				default: 400,
+				default: 2000,
 			},
 			tolerance: {
 				type: Number,
-				default: 150,
+				default: 300,
 			},
 		},
 	},

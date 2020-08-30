@@ -62,7 +62,7 @@ export default function NamePlantModal({
 					label="Plant Name"
 					type="text"
 					name="name"
-					color="secondary"
+					color="primary"
 					placeholder={currName}
 					fullWidth
 					onChange={handleInputChange}

@@ -67,7 +67,7 @@ export default function UpdateSetpointModal({
 					label="Soil Moisture Tolerance"
 					type="text"
 					name="tolerance"
-					color="secondary"
+					color="primary"
 					placeholder={`${currTolerance}`}
 					fullWidth
 					onChange={handleInputChange}

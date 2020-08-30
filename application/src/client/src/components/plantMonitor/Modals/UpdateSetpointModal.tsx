@@ -64,7 +64,7 @@ export default function UpdateSetpointModal({
 					label="Soil Moisture Setpoint"
 					type="text"
 					name="setpoint"
-					color="secondary"
+					color="primary"
 					placeholder={`${currSetpoint}`}
 					fullWidth
 					onChange={handleInputChange}

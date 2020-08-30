@@ -57,7 +57,7 @@ export default function NamePlantModal({
 					label="Plant Name"
 					type="text"
 					name="plantId"
-					color="secondary"
+					color="primary"
 					placeholder="Enter 24 character ID code"
 					fullWidth
 					onChange={handleInputChange}

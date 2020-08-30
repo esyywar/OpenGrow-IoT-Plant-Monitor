@@ -69,9 +69,6 @@ netinfo_timer:register(3000, tmr.ALARM_AUTO, function()
             print("ESP8266 mode is: " .. wifi.getmode())
             print("The module MAC address is: " .. wifi.ap.getmac())
             print("Config done, IP is "..wifi.sta.getip())
-
-            -- get the plant's setpoints from backend API and send to the stm32
-            get_control_data()
             
             -- connect to mqtt broker
             mqtt_data_connect()
@@ -99,7 +96,6 @@ client:on("message", function(client, topic, data)
         print("This is tolerance data")
         i2c_send_update(0x46, tonumber(value))
     end
-
 end)
 
 -- timer to publish messages every 5 minutes
@@ -121,7 +117,12 @@ end)
 function handle_mqtt_conn_error()
     print ('Mqtt connection error')
     mqtt_pubData:stop()
+
+    -- stop the LED blinking and turn off the LED
     blinky_timer:stop()
+    gpio.write(BLUE_LED, gpio.HIGH)
+
+    -- Try reconnecting every 5 seconds
     tmr.create():alarm(5000, tmr.ALARM_SINGLE, mqtt_data_connect)
 end
 
@@ -200,19 +201,5 @@ function i2c_send_update(command, value)
 
     -- -1 returned in case of error
     return -1
-end
-
--- Send http request to back end to get plant's control points data
-function get_control_data()
-    http.get('http://192.168.0.20:5000/api/plant/control/' .. device_info.ID, nil, function(code, data)
-        setStart, setFin = string.find(data, "setpoint")
-        tolStart, tolFin = string.find(data, "tolerance")
-
-        local setpoint = string.sub(data, setFin + 3, tolStart - 3)
-        local tolerance = string.sub(data, tolFin + 3, -4)
-
-        i2c_send_update(0x44, tonumber(setpoint))
-        i2c_send_update(0x46, tonumber(tolerance))
-    end)
 end
 

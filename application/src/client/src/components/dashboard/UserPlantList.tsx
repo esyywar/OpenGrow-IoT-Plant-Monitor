@@ -10,6 +10,7 @@ import { Grid, Typography, Theme } from '@material-ui/core/'
 import { makeStyles, createStyles } from '@material-ui/core/styles'
 
 import Spinner from '../util/Spinner'
+import NoUserPlants from './NoUserPlants'
 import PlantCard from './PlantCard'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -49,12 +50,14 @@ export default function UserPlantList() {
 			</Grid>
 			{userPlants.isLoading ? (
 				<Spinner />
-			) : (
+			) : userPlants.userPlants.length > 0 ? (
 				userPlants.userPlants.map((plant, index) => {
 					return (
 						<PlantCard key={plant.plantId} id={plant.plantId} name={plant.name} cardNum={index} />
 					)
 				})
+			) : (
+				<NoUserPlants />
 			)}
 		</Grid>
 	)

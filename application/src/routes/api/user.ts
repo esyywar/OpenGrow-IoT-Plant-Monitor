@@ -257,12 +257,14 @@ router.post(
 router.put('/plant/:plantId?', auth, async (req: Request, res: Response) => {
 	const plantId = req.params.plantId
 
+	let checkForHexRegExp = new RegExp('^[0-9a-fA-F]{24}$')
+
+	if (!checkForHexRegExp.test(plantId)) {
+		return res.status(400).json({ errors: [{ msg: 'Plant ID is invalid.' }] })
+	}
+
 	try {
 		/* Verify that plant exists */
-		if (!(await Plant.exists({ _id: plantId })) || !plantId) {
-			return res.status(400).json({ errors: [{ msg: 'Plant ID is invalid.' }] })
-		}
-
 		let plant: IPlant | null = await Plant.findById(plantId)
 
 		if (!plant) {
