@@ -36,6 +36,15 @@ const useStyles = makeStyles((theme: Theme) =>
 			fontSize: 30,
 			fontWeight: 600,
 		},
+		chartBgPaper: {
+			width: '100%',
+			maxWidth: 1000,
+			backgroundColor: theme.palette.background.paper,
+			borderWidth: '4px',
+			borderStyle: 'solid',
+			borderColor: theme.palette.secondary.light,
+			padding: '10px',
+		},
 		chartRoot: {
 			width: '100%',
 			[theme.breakpoints.down('sm')]: {
@@ -198,6 +207,7 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 	const timeRange =
 		latestPoint && earliestPoint ? latestPoint?.getTime() - earliestPoint?.getTime() : 300000
 
+	/* Get spacing between x-labels from timeRange */
 	const tickFromScale = () => {
 		switch (true) {
 			/* Over 1 week */
@@ -226,6 +236,7 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 		}
 	}
 
+	/* Get x-axis labels from timeRange */
 	const xLabelsFromScale = () => {
 		switch (true) {
 			/* Over 1 week */
@@ -255,7 +266,7 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 			legend: {
 				text: {
 					fill: theme.palette.text.primary,
-					fontSize: 0,
+					fontSize: 14,
 				},
 			},
 			ticks: {
@@ -339,17 +350,8 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 	}
 
 	return (
-		<Grid item container xs={12} direction="column" alignItems="center" justify="flex-start">
-			<Paper
-				style={{
-					width: '100%',
-					backgroundColor: theme.palette.background.paper,
-					borderWidth: '4px',
-					borderStyle: 'solid',
-					borderColor: isHover ? theme.palette.secondary.light : theme.palette.secondary.main,
-					padding: '10px',
-				}}
-			>
+		<Grid item container xs={12} direction="column" alignItems="flex-start" justify="flex-start">
+			<Paper className={classes.chartBgPaper}>
 				<Grid item xs={12}>
 					<Typography align="center" variant="h5" className={classes.titleRoot}>
 						{title}
@@ -411,7 +413,7 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 							tickRotation: 0,
 							tickValues: tickFromScale(),
 							legend: 'Time',
-							legendOffset: isMobile ? 40 : 50,
+							legendOffset: isMobile ? 35 : 50,
 							legendPosition: 'middle',
 						}}
 						axisLeft={{
@@ -420,7 +422,7 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 							tickPadding: 5,
 							tickRotation: 0,
 							legend: yTitle,
-							legendOffset: isMobile ? -45 : -70,
+							legendOffset: -70,
 							legendPosition: 'middle',
 						}}
 						useMesh={true}

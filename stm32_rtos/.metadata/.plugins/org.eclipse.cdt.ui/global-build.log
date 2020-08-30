@@ -1,6 +1,8 @@
-23:12:23 **** Incremental Build of configuration Debug for project stm32_plant_monitor ****
+23:42:56 **** Incremental Build of configuration Debug for project stm32_plant_monitor ****
 make -j12 all 
+arm-none-eabi-gcc "../Drivers/SSD1306/Src/ssd1306.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32F446xx -DDEBUG -c -I../Middlewares/Third_Party/FreeRTOS/Source/include -I"D:/Desktop/Dev_Projects/Embedded/IoT Plant Monitor/stm32_rtos/stm32_plant_monitor/Drivers/SSD1306/Inc" -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Drivers/CMSIS/Include -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/SSD1306/Src/ssd1306.d" -MT"Drivers/SSD1306/Src/ssd1306.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Drivers/SSD1306/Src/ssd1306.o"
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32F446xx -DDEBUG -c -I../Middlewares/Third_Party/FreeRTOS/Source/include -I"D:/Desktop/Dev_Projects/Embedded/IoT Plant Monitor/stm32_rtos/stm32_plant_monitor/Drivers/SSD1306/Inc" -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Drivers/CMSIS/Include -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/stm32f4xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32F446xx -DDEBUG -c -I../Middlewares/Third_Party/FreeRTOS/Source/include -I"D:/Desktop/Dev_Projects/Embedded/IoT Plant Monitor/stm32_rtos/stm32_plant_monitor/Drivers/SSD1306/Inc" -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -I../Drivers/CMSIS/Include -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/stm32f4xx_it.d" -MT"Core/Src/stm32f4xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32f4xx_it.o"
 arm-none-eabi-gcc -o "stm32_plant_monitor.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\Desktop\Dev_Projects\Embedded\IoT Plant Monitor\stm32_rtos\stm32_plant_monitor\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32_plant_monitor.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: stm32_plant_monitor.elf
  
@@ -8,17 +10,10 @@ arm-none-eabi-objdump -h -S  stm32_plant_monitor.elf  > "stm32_plant_monitor.lis
 arm-none-eabi-objcopy  -O binary  stm32_plant_monitor.elf  "stm32_plant_monitor.bin"
 arm-none-eabi-size   stm32_plant_monitor.elf 
    text	   data	    bss	    dec	    hex	filename
-  47188	     84	  21484	  68756	  10c94	stm32_plant_monitor.elf
+  47236	     96	  21496	  68828	  10cdc	stm32_plant_monitor.elf
 Finished building: default.size.stdout
  
 Finished building: stm32_plant_monitor.bin
  
 Finished building: stm32_plant_monitor.list
- 
-23:12:26 **** Incremental Build of configuration Debug for project stm32_plant_monitor ****
-make -j12 all 
-arm-none-eabi-size   stm32_plant_monitor.elf 
-   text	   data	    bss	    dec	    hex	filename
-  47188	     84	  21484	  68756	  10c94	stm32_plant_monitor.elf
-Finished building: default.size.stdout
  

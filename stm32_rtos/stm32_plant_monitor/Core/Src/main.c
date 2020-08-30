@@ -84,9 +84,9 @@ uint16_t moistureTolerance;
 uint8_t controlUpdateFlag = RESET;
 
 /* PID controller coefficients (initialized to default values) */
-int16_t proportionCoeff = PID_P_DEFAULT;
-int16_t integralCoeff = (int16_t)PID_I_DEFAULT;
-int16_t derivativeCoeff = PID_D_DEFAULT;
+uint32_t proportionCoeff = PID_P_DEFAULT;
+uint32_t integralCoeff = PID_I_DEFAULT;
+uint32_t derivativeCoeff = PID_D_DEFAULT;
 
 /* Data buffers for I2C from ESP8266 */
 uint8_t espCmdCode;
@@ -417,13 +417,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin : PC13 */
+  /*Configure GPIO pin : PC13 -> On-board button */
   GPIO_InitStruct.Pin = GPIO_PIN_13;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -433,15 +427,15 @@ static void MX_GPIO_Init(void)
   HAL_NVIC_SetPriority(EXTI15_10_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
-  /*Configure GPIO pin : PA5 */
+  /*Configure GPIO pin : PA5 -> On-board LED */
   GPIO_InitStruct.Pin = GPIO_PIN_5;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PC5 PC6 PC7 PC8 */
-  GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8;
+  /*Configure GPIO pins : PC2 PC5 PC6 PC7 PC8 -> Control pins for water pump (PC2) and SSD1306 display */
+  GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -589,10 +583,12 @@ void Water_Plant(void *pvParameters)
 	for(;;)
 	{
 		/* Every 5 minutes beginning 5 min after initialization */
-		vTaskDelay(300000);
+		vTaskDelay(RTOS_PLANT_WATER);
 
-		int16_t moistureError = 0;
-		int32_t PID_p, PID_i, PID_d;
+		uint16_t moistureError = 0;
+		uint32_t plantPumpOnTime = 0;
+
+		static uint32_t PID_p, PID_i, PID_d, previousError = 0;
 
 		/* PID calculation for how long to turn on water pump */
 		if ((xSemaphoreTake(Sensor_Sema_Handle, (TickType_t) 10) == pdTRUE) && (xSemaphoreTake(Setpoint_Sema_Handle, (TickType_t) 10) == pdTRUE))
@@ -604,18 +600,25 @@ void Water_Plant(void *pvParameters)
 		}
 
 		PID_p = moistureError * proportionCoeff;
-		PID_d = (moistureError / RTOS_PLANT_WATER) * derivativeCoeff;
+		PID_d = (moistureError - previousError > 0) ? (((moistureError / previousError) / RTOS_PLANT_WATER) * derivativeCoeff) : 0;
 		PID_i = (moistureError > 50) ? (PID_i + moistureError * integralCoeff) : 0;
 
+		/* Check if the moisture error exceeds the tolerance */
 		if (xSemaphoreTake(Tolerance_Sema_Handle, (TickType_t) 10) == pdTRUE)
 		{
 			if (moistureError > moistureTolerance)
 			{
-				int32_t plantPumpOnTime = PID_p + PID_d + PID_i;
-				(void)plantPumpOnTime;
+				plantPumpOnTime = PID_p + PID_d + PID_i;
 			}
 
 			xSemaphoreGive(Tolerance_Sema_Handle);
+		}
+
+		/* Water plant if on-time has a value */
+		if (plantPumpOnTime != 0) {
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_SET);
+			vTaskDelay(plantPumpOnTime);
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET);
 		}
 	}
 }
@@ -716,7 +719,6 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef* I2c1_espComm) {
 	}
 
 	/* Turn off on-board LED */
-
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, RESET);
 
 	/* Keep in slave receive mode - should always be listening for commands from ESP8266 */

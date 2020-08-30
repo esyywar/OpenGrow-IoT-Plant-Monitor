@@ -48,7 +48,7 @@ extern C
  * MOSI       |PB15         |Data line (stm32 -> SSD1306)
  * CS         |PB12         |Chip select (active low)
  * D/C        |PC8          |Data/Command buffer access select
- * RESET			|PC7					|Reset (held high, go low to reset)
+ * RESET	  |PC7			|Reset (held high, go low to reset)
  * VBATC      |PC6          |Power to OLED display - active low
  * VDDC       |PC5          |Power to OLED logic - active low
  */

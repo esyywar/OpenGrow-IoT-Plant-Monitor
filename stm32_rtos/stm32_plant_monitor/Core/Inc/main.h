@@ -51,15 +51,15 @@ extern "C" {
 #define RTOS_OLED_WRITE_DISP			200U
 #define RTOS_SEND_ESP_DATA				1000U
 #define RTOS_GET_SENSOR_DATA			1000U
-#define RTOS_PLANT_WATER				600000U
+#define RTOS_PLANT_WATER				300000U
 
 /*******************************************************
 ************* Plant Watering Controls ******************
 *******************************************************/
 
-/* Plant water pump water settings (to be optimzed) */
-#define PID_P_DEFAULT					8
-#define PID_I_DEFAULT					0.2
+/* Plant water pump water settings (to be optimized) */
+#define PID_P_DEFAULT					80
+#define PID_I_DEFAULT					40
 #define PID_D_DEFAULT					10
 
 /* On-time required for pump to bring water to plant (default) */
