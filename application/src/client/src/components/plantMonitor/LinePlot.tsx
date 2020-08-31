@@ -228,6 +228,9 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 			/* Over 12 hours */
 			case timeRange > 43200000:
 				return 'every 1 hour'
+			/* Over 2 hours */
+			case timeRange > 7200000:
+				return 'every 20 minutes'
 			/* Over an hour */
 			case timeRange > 3600000:
 				return 'every 10 minutes'

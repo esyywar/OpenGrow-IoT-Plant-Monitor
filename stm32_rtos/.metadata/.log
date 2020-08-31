@@ -7383,3 +7383,9 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64 D:\Desktop\Dev_Project
 
 !ENTRY org.eclipse.cdt.core 1 0 2020-08-30 13:37:15.998
 !MESSAGE Indexed 'stm32_plant_monitor' (41 sources, 134 headers) in 3.78 sec: 13,628 declarations; 74,907 references; 2 unresolved inclusions; 30 syntax errors; 145 unresolved names (0.16%)
+
+!ENTRY org.eclipse.cdt.dsf 4 10001 2020-08-30 20:00:07.027
+!MESSAGE Target not available.
+
+!ENTRY org.eclipse.cdt.dsf 4 10001 2020-08-30 20:50:01.709
+!MESSAGE Target not available.

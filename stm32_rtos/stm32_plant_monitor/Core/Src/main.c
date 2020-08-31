@@ -434,13 +434,19 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PC2 PC5 PC6 PC7 PC8 -> Control pins for water pump (PC2) and SSD1306 display */
-  GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8;
+  /*Configure GPIO pins : PC5 PC6 PC7 PC8 -> Control pins for SSD1306 display */
+  GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : PB7 -> Water pump transistor switch */
+  GPIO_InitStruct.Pin = GPIO_PIN_7;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 }
 
 /**
@@ -600,8 +606,10 @@ void Water_Plant(void *pvParameters)
 		}
 
 		PID_p = moistureError * proportionCoeff;
-		PID_d = (moistureError - previousError > 0) ? (((moistureError / previousError) / RTOS_PLANT_WATER) * derivativeCoeff) : 0;
 		PID_i = (moistureError > 50) ? (PID_i + moistureError * integralCoeff) : 0;
+		PID_d = (moistureError - previousError > 0) ? (((moistureError / previousError) / RTOS_PLANT_WATER) * derivativeCoeff) : 0;
+
+		previousError = moistureError;
 
 		/* Check if the moisture error exceeds the tolerance */
 		if (xSemaphoreTake(Tolerance_Sema_Handle, (TickType_t) 10) == pdTRUE)
@@ -615,10 +623,10 @@ void Water_Plant(void *pvParameters)
 		}
 
 		/* Water plant if on-time has a value */
-		if (plantPumpOnTime != 0) {
-			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_SET);
+		if (plantPumpOnTime > 0) {
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
 			vTaskDelay(plantPumpOnTime);
-			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
 		}
 	}
 }

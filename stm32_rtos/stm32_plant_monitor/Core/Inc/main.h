@@ -59,13 +59,12 @@ extern "C" {
 
 /* Plant water pump water settings (to be optimized) */
 #define PID_P_DEFAULT					80
-#define PID_I_DEFAULT					40
-#define PID_D_DEFAULT					10
+#define PID_I_DEFAULT					8
+#define PID_D_DEFAULT					15
 
 /* On-time required for pump to bring water to plant (default) */
-#define PLANT_SETPOINT_DEFAULT			400U
-#define PLANT_TOLERANCE_DEFAULT			150U
-#define PUMP_MINIMUM_TIME_ON			3000U
+#define PLANT_SETPOINT_DEFAULT			2000U
+#define PLANT_TOLERANCE_DEFAULT			300U
 
 /*******************************************************
 *************** Flash Memory Settings ******************
