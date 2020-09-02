@@ -20,11 +20,11 @@ export const userPlantsState = (
 			return { userPlants: action.payload, isLoading: false }
 		case REMOVE_PLANT:
 			return {
-				userPlants: state.userPlants.filter((plant) => plant.plantId !== action.payload),
+				userPlants: state.userPlants?.filter((plant) => plant.plantId !== action.payload),
 				isLoading: false,
 			}
 		case CLEAR_PLANTS:
-			return { userPlants: [], isLoading: false }
+			return initialState
 		default:
 			return state
 	}

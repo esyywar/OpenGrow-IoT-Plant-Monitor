@@ -209,33 +209,70 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 
 	/* Get spacing between x-labels from timeRange */
 	const tickFromScale = () => {
-		switch (true) {
-			/* Over 1 week */
-			case timeRange > 604800000:
-				if (isMobile) {
+		if (isMobile) {
+			switch (true) {
+				/* Over 1 week */
+				case timeRange > 604800000:
 					return 'every 3 days'
-				}
-				return 'every 2 days'
-			/* Over 4 days */
-			case timeRange > 345600000:
-				return 'every 1 day'
-			/* Over 2 days */
-			case timeRange > 172800000:
-				return 'every 6 hours'
-			/* Over 1 day */
-			case timeRange > 86400000:
-				return 'every 2 hours'
-			/* Over 12 hours */
-			case timeRange > 43200000:
-				return 'every 1 hour'
-			/* Over 2 hours */
-			case timeRange > 7200000:
-				return 'every 20 minutes'
-			/* Over an hour */
-			case timeRange > 3600000:
-				return 'every 10 minutes'
-			default:
-				return 'every 5 minutes'
+				/* Over 4 days */
+				case timeRange > 345600000:
+					return 'every 2 day'
+				/* Over 2 days */
+				case timeRange > 172800000:
+					return 'every 12 hours'
+				/* Over 1 day */
+				case timeRange > 86400000:
+					return 'every 6 hours'
+				/* Over 12 hours */
+				case timeRange > 43200000:
+					return 'every 4 hours'
+				/* Over 8 hours */
+				case timeRange > 28800000:
+					return 'every 2 hours'
+				/* Over 4 hours */
+				case timeRange > 14400000:
+					return 'every 1 hour'
+				/* Over 2 hours */
+				case timeRange > 7200000:
+					return 'every 45 minutes'
+				/* Over an hour */
+				case timeRange > 3600000:
+					return 'every 30 minutes'
+				default:
+					return 'every 20 minutes'
+			}
+		} else {
+			switch (true) {
+				/* Over 1 week */
+				case timeRange > 604800000:
+					return 'every 2 days'
+				/* Over 4 days */
+				case timeRange > 345600000:
+					return 'every 1 day'
+				/* Over 2 days */
+				case timeRange > 172800000:
+					return 'every 6 hours'
+				/* Over 1 day */
+				case timeRange > 86400000:
+					return 'every 4 hours'
+				/* Over 12 hours */
+				case timeRange > 43200000:
+					return 'every 2 hour'
+				/* Over 8 hours */
+				case timeRange > 28800000:
+					return 'every 1 hour'
+				/* Over 4 hours */
+				case timeRange > 14400000:
+					return 'every 30 minutes'
+				/* Over 2 hours */
+				case timeRange > 7200000:
+					return 'every 20 minutes'
+				/* Over an hour */
+				case timeRange > 3600000:
+					return 'every 10 minutes'
+				default:
+					return 'every 5 minutes'
+			}
 		}
 	}
 

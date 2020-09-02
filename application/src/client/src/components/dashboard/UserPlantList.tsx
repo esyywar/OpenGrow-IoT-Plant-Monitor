@@ -33,7 +33,7 @@ export default function UserPlantList() {
 		dispatch(loadUserPlants())
 	}, [dispatch])
 
-	const userPlants = useTypedSelector((state) => state.userPlantsState)
+	const userPlantState = useTypedSelector((state) => state.userPlantsState)
 
 	return (
 		<Grid
@@ -48,10 +48,10 @@ export default function UserPlantList() {
 					Your Plants
 				</Typography>
 			</Grid>
-			{userPlants.isLoading ? (
+			{userPlantState.isLoading || userPlantState.userPlants === null ? (
 				<Spinner />
-			) : userPlants.userPlants.length > 0 ? (
-				userPlants.userPlants.map((plant, index) => {
+			) : userPlantState.userPlants.length > 0 ? (
+				userPlantState.userPlants.map((plant, index) => {
 					return (
 						<PlantCard key={plant.plantId} id={plant.plantId} name={plant.name} cardNum={index} />
 					)

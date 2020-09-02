@@ -19,16 +19,11 @@ import {
 	Divider,
 } from '@material-ui/core'
 
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import HomeIcon from '@material-ui/icons/Home'
 import SettingsRemoteIcon from '@material-ui/icons/SettingsRemote'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom'
-
-interface NavDrawerProps {
-	isOpen: boolean
-	onOpen: Function
-	onClose: Function
-}
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -53,6 +48,9 @@ export default function NavDrawer({
 
 	/* Auth state to choose which nav menu to show */
 	const authUser = useTypedSelector((state) => state.authState)
+
+	/* Get number of plants registered to user */
+	const userPlants = useTypedSelector((state) => state.userPlantsState.userPlants)
 
 	const isLoggedIn = !authUser.auth.isLoading && authUser.auth.isAuthenticated
 
@@ -85,6 +83,20 @@ export default function NavDrawer({
 			}}
 		>
 			<List>
+				{isLoggedIn && (
+					<Fragment>
+						<ListItem>
+							<ListItemIcon>
+								<AccountCircleIcon />
+							</ListItemIcon>
+							<ListItemText
+								primary={`${authUser.auth.username}`}
+								secondary={`${userPlants.length} plants tracked!`}
+							/>
+						</ListItem>
+						<Divider />
+					</Fragment>
+				)}
 				<Link to="/" className={classes.linkStyle} onClick={() => onClose()}>
 					<ListItem>
 						<ListItemIcon>
