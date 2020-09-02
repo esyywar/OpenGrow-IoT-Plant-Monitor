@@ -183,7 +183,7 @@ int main(void)
   xTaskCreate(OLED_Update, "OLED_Update", 32, NULL, 5, &OLED_Update_TaskHandle);
   xTaskCreate(OLED_Data_Write, "OLED_Data_Write", 64, NULL, 7, &OLED_Data_Write_TaskHandle);
   xTaskCreate(OLED_Bitmap_Flip, "OLED_Bitmap_Flip", 32, NULL, 6, &OLED_Bitmap_Flip_TaskHandle);
-  xTaskCreate(Water_Plant, "Water_Plant", 64, NULL, 10, &Water_Plant_TaskHandle);
+  xTaskCreate(Water_Plant, "Water_Plant", 32, NULL, 10, &Water_Plant_TaskHandle);
   xTaskCreate(Flash_Update, "Flash_Update", 32, NULL, 9, &Flash_Update_TaskHandle);
 
   /* Read the control data values from flash memory (or load default if blank) */
@@ -607,7 +607,7 @@ void Water_Plant(void *pvParameters)
 
 		PID_p = moistureError * proportionCoeff;
 		PID_i = (moistureError > 50) ? (PID_i + moistureError * integralCoeff) : 0;
-		PID_d = (moistureError - previousError > 0) ? (((moistureError - previousError) / RTOS_PLANT_WATER) * derivativeCoeff) : 0;
+		PID_d = (moistureError - previousError > 0) ? (((moistureError / previousError) / RTOS_PLANT_WATER) * derivativeCoeff) : 0;
 
 		previousError = moistureError;
 
