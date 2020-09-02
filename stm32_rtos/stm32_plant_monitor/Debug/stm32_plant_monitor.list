@@ -39,9 +39,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  17 .debug_line   000179a4  00000000  00000000  00050daa  2**0
                   CONTENTS, READONLY, DEBUGGING
- 18 .debug_str    000e38f2  00000000  00000000  0006874e  2**0
+ 18 .debug_str    000e38f1  00000000  00000000  0006874e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 19 .comment      0000007b  00000000  00000000  0014c040  2**0
+ 19 .comment      0000007b  00000000  00000000  0014c03f  2**0
                   CONTENTS, READONLY
  20 .debug_frame  00007b6c  00000000  00000000  0014c0bc  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -542,13 +542,13 @@ uint32_t ulNewBASEPRI;
  800065a:	492b      	ldr	r1, [pc, #172]	; (8000708 <main+0x1f8>)
  800065c:	482b      	ldr	r0, [pc, #172]	; (800070c <main+0x1fc>)
  800065e:	f008 fd48 	bl	80090f2 <xTaskCreate>
-  xTaskCreate(Water_Plant, "Water_Plant", 32, NULL, 10, &Water_Plant_TaskHandle);
+  xTaskCreate(Water_Plant, "Water_Plant", 64, NULL, 10, &Water_Plant_TaskHandle);
  8000662:	f107 0308 	add.w	r3, r7, #8
  8000666:	9301      	str	r3, [sp, #4]
  8000668:	230a      	movs	r3, #10
  800066a:	9300      	str	r3, [sp, #0]
  800066c:	2300      	movs	r3, #0
- 800066e:	2220      	movs	r2, #32
+ 800066e:	2240      	movs	r2, #64	; 0x40
  8000670:	4927      	ldr	r1, [pc, #156]	; (8000710 <main+0x200>)
  8000672:	4828      	ldr	r0, [pc, #160]	; (8000714 <main+0x204>)
  8000674:	f008 fd3d 	bl	80090f2 <xTaskCreate>
@@ -1362,7 +1362,7 @@ void OLED_Update(void *pvParameters)
  8000b86:	f000 ff17 	bl	80019b8 <SSD1306_UpdateScreen>
 		}
 
-		vTaskDelay(50);
+		vTaskDelay(RTOS_UPDATE_OLED_DISP);
  8000b8a:	2032      	movs	r0, #50	; 0x32
  8000b8c:	f008 fbec 	bl	8009368 <vTaskDelay>
 		if ( xSemaphoreTake( Oled_Buffer_Sema_Handle, (TickType_t) 0 ) == pdTRUE )
@@ -1436,7 +1436,7 @@ void OLED_Bitmap_Flip(void *pvParameters)
  8000bfa:	f007 fc23 	bl	8008444 <xQueueGenericSend>
 		}
 
-		vTaskDelay(1000);
+		vTaskDelay(RTOS_OLED_BITMAP_FLIP);
  8000bfe:	f44f 707a 	mov.w	r0, #1000	; 0x3e8
  8000c02:	f008 fbb1 	bl	8009368 <vTaskDelay>
 	{
@@ -1650,7 +1650,7 @@ void OLED_Data_Write(void *pvParameters)
  8000d5c:	701a      	strb	r2, [r3, #0]
 		}
 
-		vTaskDelay(700);
+		vTaskDelay(RTOS_OLED_WRITE_DISP);
  8000d5e:	f44f 702f 	mov.w	r0, #700	; 0x2bc
  8000d62:	f008 fb01 	bl	8009368 <vTaskDelay>
 	{
@@ -1706,7 +1706,7 @@ void Sensor_Read(void *pvParameters)
  8000dd0:	f001 f98e 	bl	80020f0 <HAL_ADC_Start_DMA>
 		}
 
-		vTaskDelay(1000);
+		vTaskDelay(RTOS_GET_SENSOR_DATA);
  8000dd4:	f44f 707a 	mov.w	r0, #1000	; 0x3e8
  8000dd8:	f008 fac6 	bl	8009368 <vTaskDelay>
 		if( xSemaphoreTake( Sensor_Sema_Handle, (TickType_t) 10 ) == pdTRUE  )

@@ -183,7 +183,7 @@ int main(void)
   xTaskCreate(OLED_Update, "OLED_Update", 32, NULL, 5, &OLED_Update_TaskHandle);
   xTaskCreate(OLED_Data_Write, "OLED_Data_Write", 64, NULL, 7, &OLED_Data_Write_TaskHandle);
   xTaskCreate(OLED_Bitmap_Flip, "OLED_Bitmap_Flip", 32, NULL, 6, &OLED_Bitmap_Flip_TaskHandle);
-  xTaskCreate(Water_Plant, "Water_Plant", 32, NULL, 10, &Water_Plant_TaskHandle);
+  xTaskCreate(Water_Plant, "Water_Plant", 64, NULL, 10, &Water_Plant_TaskHandle);
   xTaskCreate(Flash_Update, "Flash_Update", 32, NULL, 9, &Flash_Update_TaskHandle);
 
   /* Read the control data values from flash memory (or load default if blank) */
@@ -463,7 +463,7 @@ void OLED_Update(void *pvParameters)
 			SSD1306_UpdateScreen();
 		}
 
-		vTaskDelay(50);
+		vTaskDelay(RTOS_UPDATE_OLED_DISP);
 	}
 }
 
@@ -488,7 +488,7 @@ void OLED_Bitmap_Flip(void *pvParameters)
 			xSemaphoreGive(Oled_Buffer_Sema_Handle);
 		}
 
-		vTaskDelay(1000);
+		vTaskDelay(RTOS_OLED_BITMAP_FLIP);
 	}
 }
 
@@ -555,7 +555,7 @@ void OLED_Data_Write(void *pvParameters)
 			cntTimer = 0;
 		}
 
-		vTaskDelay(700);
+		vTaskDelay(RTOS_OLED_WRITE_DISP);
 	}
 }
 
@@ -575,7 +575,7 @@ void Sensor_Read(void *pvParameters)
 			HAL_ADC_Start_DMA(&hadc1, (uint32_t*)plant_sensors, 2);
 		}
 
-		vTaskDelay(1000);
+		vTaskDelay(RTOS_GET_SENSOR_DATA);
 	}
 }
 

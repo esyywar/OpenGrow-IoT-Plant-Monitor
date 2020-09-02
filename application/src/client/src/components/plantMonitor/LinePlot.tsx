@@ -432,7 +432,9 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 						onMouseEnter={() => setHover(true)}
 						onMouseLeave={() => setHover(false)}
 						data={[trimPlotData]}
-						enablePoints={!isMobile}
+						enablePoints={
+							!isMobile && (timeScale === TimeScaleEnum.Hour || timeScale === TimeScaleEnum.Day)
+						}
 						lineWidth={4}
 						pointSize={10}
 						curve={'monotoneX'}

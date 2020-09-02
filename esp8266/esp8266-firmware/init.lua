@@ -51,7 +51,7 @@ clientId = "esp_" .. device_info.ID
 qos = 1
 subTopics = {[device_info.ID .. "/soilMoisture/setpoint"]=qos, [device_info.ID .. "/soilMoisture/tolerance"]=qos}
 pubTopics = {soil=device_info.ID .. "/soilMoisture", light=device_info.ID .. "/lightLevel"}
-mqtt_host = '192.168.0.20'
+mqtt_host = '192.168.2.81'
 mqtt_port = 1883
 
 -- create mqtt client
