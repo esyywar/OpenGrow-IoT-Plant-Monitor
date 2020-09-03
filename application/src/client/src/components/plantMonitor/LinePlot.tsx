@@ -130,7 +130,7 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 		}
 	}, [])
 
-	/****************************** EDIT PLOT DATA DEPENDING ON TIME SCALE **************************/
+	/****************************** CALCULATE PLOT DATA DEPENDING ON TIME SCALE ***************************/
 
 	/* End date is latest available entry */
 	const endDate = plotData.data.slice(-1)[0].x
@@ -153,13 +153,28 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 	}
 	const startDate = new Date(startDateInt())
 
+	/* Simple moving average window size depending on time scale */
+	const smaWindow = () => {
+		switch (timeScale) {
+			case TimeScaleEnum.Hour:
+				return 0
+			case TimeScaleEnum.Day:
+				return 4
+			case TimeScaleEnum.Week:
+			case TimeScaleEnum.Max:
+				return 8
+			default:
+				return 0
+		}
+	}
+
 	/* Write the plot data according to start and end dates */
 	let lastDate: undefined | Date
 
 	const trimPlotData = {
 		...plotData,
 		data: plotData.data.reduce(
-			(trimmed: Array<{ x: Date | string; y: null | number }>, { x, y }) => {
+			(trimmed: Array<{ x: Date | string; y: null | number }>, { x, y }, currInd, rawData) => {
 				/* Check that the datapoint is within the valid date range */
 				if (x.getTime() >= startDate.getTime()) {
 					/* If entry is greater than 30min apart from the previous point, insert a null to create hole in the plot */
@@ -251,13 +266,13 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 					return 'every 1 day'
 				/* Over 2 days */
 				case timeRange > 172800000:
-					return 'every 6 hours'
+					return 'every 12 hours'
 				/* Over 1 day */
 				case timeRange > 86400000:
-					return 'every 4 hours'
+					return 'every 6 hours'
 				/* Over 12 hours */
 				case timeRange > 43200000:
-					return 'every 2 hour'
+					return 'every 3 hour'
 				/* Over 8 hours */
 				case timeRange > 28800000:
 					return 'every 1 hour'
@@ -278,18 +293,32 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 
 	/* Get x-axis labels from timeRange */
 	const xLabelsFromScale = () => {
-		switch (true) {
-			/* Over 1 week */
-			case timeRange > 604800000:
-				return '%b-%d'
-			/* Over 4 days */
-			case timeRange > 345600000:
-				if (isMobile) {
+		if (isMobile) {
+			switch (true) {
+				/* Over 1 week */
+				case timeRange > 604800000:
 					return '%b-%d'
-				}
-				return '%a %b-%d'
-			default:
-				return '%I:%M %p'
+				/* Over 4 days */
+				case timeRange > 345600000:
+					return '%b-%d'
+
+				default:
+					return '%I:%M %p'
+			}
+		} else {
+			switch (true) {
+				/* Over 1 week */
+				case timeRange > 604800000:
+					return '%b-%d'
+				/* Every 4 days */
+				case timeRange > 345600000:
+					return '%b-%d %I:%M'
+				/* Over 2 days */
+				case timeRange > 172800000:
+					return '%b-%d %I %p'
+				default:
+					return '%I:%M %p'
+			}
 		}
 	}
 
@@ -432,9 +461,7 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 						onMouseEnter={() => setHover(true)}
 						onMouseLeave={() => setHover(false)}
 						data={[trimPlotData]}
-						enablePoints={
-							!isMobile && (timeScale === TimeScaleEnum.Hour || timeScale === TimeScaleEnum.Day)
-						}
+						enablePoints={timeScale === TimeScaleEnum.Hour}
 						lineWidth={4}
 						pointSize={10}
 						curve={'monotoneX'}
