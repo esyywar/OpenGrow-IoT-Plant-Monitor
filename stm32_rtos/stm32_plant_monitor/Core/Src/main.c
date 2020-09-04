@@ -626,6 +626,7 @@ void Water_Plant(void *pvParameters)
 
 		/* Water plant if on-time has a value */
 		if (plantPumpOnTime > 0) {
+			/* Stm32 does not provide current to power pump -> use an external power supply */
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
 			vTaskDelay(plantPumpOnTime);
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);

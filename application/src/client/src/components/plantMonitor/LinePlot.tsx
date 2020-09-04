@@ -154,22 +154,19 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 	const startDate = new Date(startDateInt())
 
 	/* Simple moving average window size depending on time scale */
-	const smaWindow = () => {
+	const calcSmaWindow = () => {
 		switch (timeScale) {
-			case TimeScaleEnum.Hour:
-				return 0
 			case TimeScaleEnum.Day:
-				return 4
+				return 6
 			case TimeScaleEnum.Week:
 			case TimeScaleEnum.Max:
-				return 8
+				return 12
 			default:
 				return 0
 		}
 	}
 
-	/* Write the plot data according to start and end dates */
-	let lastDate: undefined | Date
+	const smaWindow = calcSmaWindow()
 
 	const trimPlotData = {
 		...plotData,
@@ -178,13 +175,29 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 				/* Check that the datapoint is within the valid date range */
 				if (x.getTime() >= startDate.getTime()) {
 					/* If entry is greater than 30min apart from the previous point, insert a null to create hole in the plot */
-					if (lastDate !== undefined && (x.getTime() - lastDate.getTime()) / 60000 > 30) {
-						let date = new Date(lastDate)
-						date.setMinutes(lastDate.getMinutes() + 5)
+					if (currInd > 0 && (x.getTime() - rawData[currInd - 1].x.getTime()) / 60000 > 30) {
+						let date = new Date(rawData[currInd - 1].x)
+						date.setMinutes(rawData[currInd - 1].x.getMinutes() + 5)
 						trimmed.push({
 							x: plotDateFormat(date),
 							y: null,
 						})
+					}
+
+					/* SMA to smooth data with window size depending on selected time scale */
+					if (timeScale !== TimeScaleEnum.Hour && currInd > smaWindow) {
+						const sample = rawData.slice(currInd - smaWindow, currInd)
+
+						const sum = sample.reduce((sum, dataPoint) => {
+							return (sum += dataPoint.y)
+						}, 0)
+
+						trimmed.push({
+							x: plotDateFormat(x),
+							y: Math.round(sum / smaWindow),
+						})
+
+						return trimmed
 					}
 
 					/* Push the valid datapoint to plot data */
@@ -192,8 +205,6 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 						x: plotDateFormat(x),
 						y,
 					})
-
-					lastDate = x
 				}
 
 				return trimmed
@@ -315,7 +326,7 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 					return '%b-%d %I:%M'
 				/* Over 2 days */
 				case timeRange > 172800000:
-					return '%b-%d %I %p'
+					return '%b-%d %p'
 				default:
 					return '%I:%M %p'
 			}

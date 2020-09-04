@@ -1882,6 +1882,7 @@ void Water_Plant(void *pvParameters)
  8000eec:	68bb      	ldr	r3, [r7, #8]
  8000eee:	2b00      	cmp	r3, #0
  8000ef0:	d080      	beq.n	8000df4 <Water_Plant+0x8>
+			/* Stm32 does not provide current to power pump -> use an external power supply */
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
  8000ef2:	2201      	movs	r2, #1
  8000ef4:	2180      	movs	r1, #128	; 0x80
