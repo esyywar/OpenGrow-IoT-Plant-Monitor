@@ -11,9 +11,9 @@ main.c:476:6:OLED_Bitmap_Flip	24	static
 main.c:500:6:OLED_Data_Write	24	static
 main.c:567:6:Sensor_Read	16	static
 main.c:587:6:Water_Plant	24	static
-main.c:642:6:Flash_Update	24	static
-main.c:670:6:HAL_ADC_ConvCpltCallback	16	static
-main.c:675:6:HAL_SPI_TxCpltCallback	16	static
-main.c:690:6:HAL_I2C_SlaveRxCpltCallback	16	static
-main.c:748:6:HAL_TIM_PeriodElapsedCallback	16	static
-main.c:765:6:Error_Handler	4	static
+main.c:644:6:Flash_Update	24	static
+main.c:672:6:HAL_ADC_ConvCpltCallback	16	static
+main.c:677:6:HAL_SPI_TxCpltCallback	16	static
+main.c:692:6:HAL_I2C_SlaveRxCpltCallback	16	static
+main.c:750:6:HAL_TIM_PeriodElapsedCallback	16	static
+main.c:767:6:Error_Handler	4	static

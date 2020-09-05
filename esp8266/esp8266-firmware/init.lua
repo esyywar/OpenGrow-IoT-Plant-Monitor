@@ -43,7 +43,7 @@ i2c.setup(i2c_config.id, i2c_config.sda, i2c_config.scl, i2c.SLOW)
 require 'stm32_comm'
 
 -------------------------------------------------------
----------------- Create MQTT Clieht -------------------
+---------------- Create MQTT Client -------------------
 -------------------------------------------------------
 
 -- Mqtt connect configuration
@@ -51,8 +51,6 @@ clientId = "esp_" .. device_info.ID
 qos = 1
 subTopics = {[device_info.ID .. "/soilMoisture/setpoint"]=qos, [device_info.ID .. "/soilMoisture/tolerance"]=qos}
 pubTopics = {soil=device_info.ID .. "/soilMoisture", light=device_info.ID .. "/lightLevel"}
-mqtt_host = '192.168.2.81'
-mqtt_port = 1883
 
 -- create mqtt client
 client = mqtt.Client(clientId, 120, mqtt_creds.USERNAME, mqtt_creds.PASSWORD)
@@ -154,7 +152,7 @@ end
 
 -- connect to the mqtt broker
 function mqtt_data_connect()
-    client:connect(mqtt_host, mqtt_port, false, 
+    client:connect(mqtt_creds.HOST, mqtt_creds.PORT, false, 
         function() 
             print('Mqtt broker connected') 
 
