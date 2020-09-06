@@ -25,11 +25,18 @@ const useStyles = makeStyles((theme: Theme) =>
     appContainer: {
       padding: "0",
       minHeight: "100vh",
+      maxWidth: "100vw",
+      overflow: "hidden",
       position: "relative",
     },
     contentWrap: {
       padding: "0",
-      paddingBottom: "4rem",
+      [theme.breakpoints.down("sm")]: {
+        paddingBottom: "12rem",
+      },
+      [theme.breakpoints.up("md")]: {
+        paddingBottom: "4rem",
+      },
     },
   })
 )

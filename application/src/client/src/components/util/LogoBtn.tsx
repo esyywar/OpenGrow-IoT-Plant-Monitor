@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) =>
     logo: {
       backgroundColor: "whitesmoke",
       textAlign: "center",
-      width: "135px",
+      width: "120px",
       borderRadius: "35px",
       padding: "5px 8px",
       fontWeight: 500,
