@@ -7,13 +7,14 @@ import { useDispatch } from "react-redux"
 import { userLogout } from "../../actions/auth"
 import { setDarkMode, setLightMode } from "../../actions/darkMode"
 
-import { createStyles, makeStyles, Theme, useTheme } from "@material-ui/core/styles"
-import { AppBar, Toolbar, Typography, Button, IconButton, Container } from "@material-ui/core/"
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles"
+import { AppBar, Toolbar, Button, IconButton, Container } from "@material-ui/core/"
 
 import MenuIcon from "@material-ui/icons/Menu"
 import Brightness7Icon from "@material-ui/icons/Brightness7"
 import NightsStayIcon from "@material-ui/icons/NightsStay"
 
+import LogoBtn from "../util/LogoBtn"
 import NavDrawer from "./NavDrawer"
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -69,8 +70,6 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export default function Navbar() {
-  const theme = useTheme()
-
   const classes = useStyles()
 
   const dispatch = useDispatch()
@@ -148,14 +147,7 @@ export default function Navbar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant='h6'>
-            <Link to='/' className={classes.linkStyle}>
-              <div className={classes.logo}>
-                <span style={{ color: theme.palette.primary.main }}>Open</span>
-                <span style={{ color: theme.palette.secondary.main }}>Grow</span>
-              </div>
-            </Link>
-          </Typography>
+          <LogoBtn />
           {getNavLinks()}
         </Toolbar>
       </AppBar>
