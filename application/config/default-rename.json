@@ -1,0 +1,14 @@
+{
+  "mongoUri": "Insert here your mongoUri connection string",
+  "mqtt": {
+    "qos": 1,
+    "brokerUsername": "Choose a user name for connecting to your MQTT broker",
+    "brokerPassword": "Choose a password for connecting to your MQTT broker",
+    "brokerUrl": "mqtt://localhost:1883"
+  },
+  "jwt": {
+    "jwtSecret": "Generate a random 256-bit string from https://generate.plus/en/base64",
+    "expiresIn": "3h"
+  },
+  "comment": "Fill in the fields above and rename this file to 'default.json' ! More details at https://github.com/esyywar/OpenGrow-IoT-Plant-Monitor"
+}

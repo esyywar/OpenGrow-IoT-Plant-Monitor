@@ -6,7 +6,7 @@
 device_info = require 'device_info'
 
 -- wifi credentials
-wifi_creds = require 'credentials'
+wifi_creds = require 'wifi_credentials'
 
 -- mqtt broker credentials
 mqtt_creds = require 'mqtt_credentials'
