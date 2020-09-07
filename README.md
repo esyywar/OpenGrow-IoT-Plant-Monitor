@@ -6,11 +6,24 @@ Your plant is also automatically watered 24/7 according to soil moisture setpoin
 
 OpenGrow is easy to set-up and in this guide I will detail the steps to running OpenGrow in your own home.
 
-# System Architecture
+# Table of Contents
+
+1. System Architecture
+2. Parts List
+3. Web Application Set-Up
+  1. MongoDB Database
+  2. MQTT Broker
+  3. Web App
+4. Flash ESP8266 NodeMCU
+5. Flash STM32 FreeRTOS Firmware
+6. Electrical Schematic
+7. Done!
+
+## System Architecture
 
 This complete IoT solution can be broken up into 3 parts:
 1. Web Application
 2. MQTT Broker
 3. Firmware & Electronics
 
-In this guide, I will 
+The following diagram illustrates interaction between these components.
