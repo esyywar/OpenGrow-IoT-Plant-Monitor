@@ -22,6 +22,13 @@ import { ThemeProvider, createMuiTheme, createStyles, makeStyles, Theme } from "
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    cssResetContainer: {
+      padding: "0",
+      margin: "0",
+      minHeight: "100vh",
+      maxWidth: "100vw",
+      overflow: "hidden",
+    },
     appContainer: {
       padding: "0",
       minHeight: "100vh",
@@ -89,33 +96,37 @@ function App() {
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-      <Router>
-        <Container
-          maxWidth={false}
-          className={classes.appContainer}
-          style={{
-            backgroundColor: isDarkMode ? darkTheme.palette.background.default : lightTheme.palette.background.default,
-          }}
-        >
-          <Container maxWidth={false} className={classes.contentWrap}>
-            <Navbar />
-            <Alerts />
-            <Route exact path='/'>
-              <Landing />
-            </Route>
-            <Route path='/login'>
-              <Login />
-            </Route>
-            <PrivateRoute path='/dashboard'>
-              <Dashboard />
-            </PrivateRoute>
-            <PrivateRoute path='/plantMonitor'>
-              <PlantMonitor />
-            </PrivateRoute>
+      <Container maxWidth={false} className={classes.cssResetContainer}>
+        <Router>
+          <Container
+            maxWidth={false}
+            className={classes.appContainer}
+            style={{
+              backgroundColor: isDarkMode
+                ? darkTheme.palette.background.default
+                : lightTheme.palette.background.default,
+            }}
+          >
+            <Container maxWidth={false} className={classes.contentWrap}>
+              <Navbar />
+              <Alerts />
+              <Route exact path='/'>
+                <Landing />
+              </Route>
+              <Route path='/login'>
+                <Login />
+              </Route>
+              <PrivateRoute path='/dashboard'>
+                <Dashboard />
+              </PrivateRoute>
+              <PrivateRoute path='/plantMonitor'>
+                <PlantMonitor />
+              </PrivateRoute>
+            </Container>
+            <Footer />
           </Container>
-          <Footer />
-        </Container>
-      </Router>
+        </Router>
+      </Container>
     </ThemeProvider>
   )
 }
