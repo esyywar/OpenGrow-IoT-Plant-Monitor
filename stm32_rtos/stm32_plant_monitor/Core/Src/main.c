@@ -589,7 +589,7 @@ void Water_Plant(void *pvParameters)
 	for(;;)
 	{
 		/* Every 5 minutes beginning 5 min after initialization */
-		vTaskDelay(RTOS_PLANT_WATER);
+		vTaskDelay(30000);
 
 		uint16_t moistureError = 0;
 		uint32_t plantPumpOnTime = 0;
