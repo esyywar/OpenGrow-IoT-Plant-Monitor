@@ -21,9 +21,9 @@ OpenGrow is easy to set-up and in this guide I will detail the steps to running 
 ## System Architecture
 
 This complete IoT solution can be broken up into 3 parts:
-1. Web Application
-2. MQTT Broker
-3. Firmware & Electronics
+1. Web Application (MERN Stack Application)
+2. MQTT Broker (NodeJS with Aedes Framework)
+3. Firmware & Electronics (FreeRTOS on STM32F4 and NodeMCU on ESP8266)
 
 The following diagram illustrates interaction between these components.
 <br />
