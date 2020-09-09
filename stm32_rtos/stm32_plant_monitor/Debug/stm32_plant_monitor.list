@@ -1730,185 +1730,186 @@ void Water_Plant(void *pvParameters)
 	for(;;)
 	{
 		/* Every 5 minutes beginning 5 min after initialization */
-		vTaskDelay(30000);
- 8000df4:	f247 5030 	movw	r0, #30000	; 0x7530
- 8000df8:	f008 fac0 	bl	800937c <vTaskDelay>
+		vTaskDelay(RTOS_PLANT_WATER);
+ 8000df4:	484b      	ldr	r0, [pc, #300]	; (8000f24 <Water_Plant+0x138>)
+ 8000df6:	f008 fac1 	bl	800937c <vTaskDelay>
 
 		uint16_t moistureError = 0;
- 8000dfc:	2300      	movs	r3, #0
- 8000dfe:	81fb      	strh	r3, [r7, #14]
+ 8000dfa:	2300      	movs	r3, #0
+ 8000dfc:	81fb      	strh	r3, [r7, #14]
 		uint32_t plantPumpOnTime = 0;
- 8000e00:	2300      	movs	r3, #0
- 8000e02:	60bb      	str	r3, [r7, #8]
+ 8000dfe:	2300      	movs	r3, #0
+ 8000e00:	60bb      	str	r3, [r7, #8]
 
 		static uint32_t PID_p, PID_i, PID_d, previousError = 0;
 
 		/* PID calculation for how long to turn on water pump */
 		if ((xSemaphoreTake(Sensor_Sema_Handle, (TickType_t) 10) == pdTRUE) && (xSemaphoreTake(Setpoint_Sema_Handle, (TickType_t) 10) == pdTRUE))
- 8000e04:	4b48      	ldr	r3, [pc, #288]	; (8000f28 <Water_Plant+0x13c>)
- 8000e06:	681b      	ldr	r3, [r3, #0]
- 8000e08:	210a      	movs	r1, #10
- 8000e0a:	4618      	mov	r0, r3
- 8000e0c:	f007 fe18 	bl	8008a40 <xQueueSemaphoreTake>
- 8000e10:	4603      	mov	r3, r0
- 8000e12:	2b01      	cmp	r3, #1
- 8000e14:	d11f      	bne.n	8000e56 <Water_Plant+0x6a>
- 8000e16:	4b45      	ldr	r3, [pc, #276]	; (8000f2c <Water_Plant+0x140>)
- 8000e18:	681b      	ldr	r3, [r3, #0]
- 8000e1a:	210a      	movs	r1, #10
- 8000e1c:	4618      	mov	r0, r3
- 8000e1e:	f007 fe0f 	bl	8008a40 <xQueueSemaphoreTake>
- 8000e22:	4603      	mov	r3, r0
- 8000e24:	2b01      	cmp	r3, #1
- 8000e26:	d116      	bne.n	8000e56 <Water_Plant+0x6a>
+ 8000e02:	4b49      	ldr	r3, [pc, #292]	; (8000f28 <Water_Plant+0x13c>)
+ 8000e04:	681b      	ldr	r3, [r3, #0]
+ 8000e06:	210a      	movs	r1, #10
+ 8000e08:	4618      	mov	r0, r3
+ 8000e0a:	f007 fe19 	bl	8008a40 <xQueueSemaphoreTake>
+ 8000e0e:	4603      	mov	r3, r0
+ 8000e10:	2b01      	cmp	r3, #1
+ 8000e12:	d11f      	bne.n	8000e54 <Water_Plant+0x68>
+ 8000e14:	4b45      	ldr	r3, [pc, #276]	; (8000f2c <Water_Plant+0x140>)
+ 8000e16:	681b      	ldr	r3, [r3, #0]
+ 8000e18:	210a      	movs	r1, #10
+ 8000e1a:	4618      	mov	r0, r3
+ 8000e1c:	f007 fe10 	bl	8008a40 <xQueueSemaphoreTake>
+ 8000e20:	4603      	mov	r3, r0
+ 8000e22:	2b01      	cmp	r3, #1
+ 8000e24:	d116      	bne.n	8000e54 <Water_Plant+0x68>
 		{
 			moistureError = ((plant_sensors[0] - moistureSetpoint) > 0) ? (plant_sensors[0] - moistureSetpoint) : 0;
- 8000e28:	4b41      	ldr	r3, [pc, #260]	; (8000f30 <Water_Plant+0x144>)
- 8000e2a:	881b      	ldrh	r3, [r3, #0]
- 8000e2c:	461a      	mov	r2, r3
- 8000e2e:	4b41      	ldr	r3, [pc, #260]	; (8000f34 <Water_Plant+0x148>)
- 8000e30:	881b      	ldrh	r3, [r3, #0]
- 8000e32:	1ad3      	subs	r3, r2, r3
- 8000e34:	ea23 73e3 	bic.w	r3, r3, r3, asr #31
- 8000e38:	81fb      	strh	r3, [r7, #14]
+ 8000e26:	4b42      	ldr	r3, [pc, #264]	; (8000f30 <Water_Plant+0x144>)
+ 8000e28:	881b      	ldrh	r3, [r3, #0]
+ 8000e2a:	461a      	mov	r2, r3
+ 8000e2c:	4b41      	ldr	r3, [pc, #260]	; (8000f34 <Water_Plant+0x148>)
+ 8000e2e:	881b      	ldrh	r3, [r3, #0]
+ 8000e30:	1ad3      	subs	r3, r2, r3
+ 8000e32:	ea23 73e3 	bic.w	r3, r3, r3, asr #31
+ 8000e36:	81fb      	strh	r3, [r7, #14]
 
 			xSemaphoreGive(Sensor_Sema_Handle);
- 8000e3a:	4b3b      	ldr	r3, [pc, #236]	; (8000f28 <Water_Plant+0x13c>)
- 8000e3c:	6818      	ldr	r0, [r3, #0]
- 8000e3e:	2300      	movs	r3, #0
- 8000e40:	2200      	movs	r2, #0
- 8000e42:	2100      	movs	r1, #0
- 8000e44:	f007 fb08 	bl	8008458 <xQueueGenericSend>
+ 8000e38:	4b3b      	ldr	r3, [pc, #236]	; (8000f28 <Water_Plant+0x13c>)
+ 8000e3a:	6818      	ldr	r0, [r3, #0]
+ 8000e3c:	2300      	movs	r3, #0
+ 8000e3e:	2200      	movs	r2, #0
+ 8000e40:	2100      	movs	r1, #0
+ 8000e42:	f007 fb09 	bl	8008458 <xQueueGenericSend>
 			xSemaphoreGive(Setpoint_Sema_Handle);
- 8000e48:	4b38      	ldr	r3, [pc, #224]	; (8000f2c <Water_Plant+0x140>)
- 8000e4a:	6818      	ldr	r0, [r3, #0]
- 8000e4c:	2300      	movs	r3, #0
- 8000e4e:	2200      	movs	r2, #0
- 8000e50:	2100      	movs	r1, #0
- 8000e52:	f007 fb01 	bl	8008458 <xQueueGenericSend>
+ 8000e46:	4b39      	ldr	r3, [pc, #228]	; (8000f2c <Water_Plant+0x140>)
+ 8000e48:	6818      	ldr	r0, [r3, #0]
+ 8000e4a:	2300      	movs	r3, #0
+ 8000e4c:	2200      	movs	r2, #0
+ 8000e4e:	2100      	movs	r1, #0
+ 8000e50:	f007 fb02 	bl	8008458 <xQueueGenericSend>
 		}
 
 		PID_p = moistureError * proportionCoeff;
- 8000e56:	89fb      	ldrh	r3, [r7, #14]
- 8000e58:	4a37      	ldr	r2, [pc, #220]	; (8000f38 <Water_Plant+0x14c>)
- 8000e5a:	6812      	ldr	r2, [r2, #0]
- 8000e5c:	fb02 f303 	mul.w	r3, r2, r3
- 8000e60:	4a36      	ldr	r2, [pc, #216]	; (8000f3c <Water_Plant+0x150>)
- 8000e62:	6013      	str	r3, [r2, #0]
+ 8000e54:	89fb      	ldrh	r3, [r7, #14]
+ 8000e56:	4a38      	ldr	r2, [pc, #224]	; (8000f38 <Water_Plant+0x14c>)
+ 8000e58:	6812      	ldr	r2, [r2, #0]
+ 8000e5a:	fb02 f303 	mul.w	r3, r2, r3
+ 8000e5e:	4a37      	ldr	r2, [pc, #220]	; (8000f3c <Water_Plant+0x150>)
+ 8000e60:	6013      	str	r3, [r2, #0]
 		PID_i = (moistureError > 50) ? (PID_i + moistureError * integralCoeff) : 0;
- 8000e64:	89fb      	ldrh	r3, [r7, #14]
- 8000e66:	2b32      	cmp	r3, #50	; 0x32
- 8000e68:	d908      	bls.n	8000e7c <Water_Plant+0x90>
- 8000e6a:	89fb      	ldrh	r3, [r7, #14]
- 8000e6c:	4a34      	ldr	r2, [pc, #208]	; (8000f40 <Water_Plant+0x154>)
- 8000e6e:	6812      	ldr	r2, [r2, #0]
- 8000e70:	fb02 f203 	mul.w	r2, r2, r3
- 8000e74:	4b33      	ldr	r3, [pc, #204]	; (8000f44 <Water_Plant+0x158>)
- 8000e76:	681b      	ldr	r3, [r3, #0]
- 8000e78:	4413      	add	r3, r2
- 8000e7a:	e000      	b.n	8000e7e <Water_Plant+0x92>
- 8000e7c:	2300      	movs	r3, #0
- 8000e7e:	4a31      	ldr	r2, [pc, #196]	; (8000f44 <Water_Plant+0x158>)
- 8000e80:	6013      	str	r3, [r2, #0]
+ 8000e62:	89fb      	ldrh	r3, [r7, #14]
+ 8000e64:	2b32      	cmp	r3, #50	; 0x32
+ 8000e66:	d908      	bls.n	8000e7a <Water_Plant+0x8e>
+ 8000e68:	89fb      	ldrh	r3, [r7, #14]
+ 8000e6a:	4a35      	ldr	r2, [pc, #212]	; (8000f40 <Water_Plant+0x154>)
+ 8000e6c:	6812      	ldr	r2, [r2, #0]
+ 8000e6e:	fb02 f203 	mul.w	r2, r2, r3
+ 8000e72:	4b34      	ldr	r3, [pc, #208]	; (8000f44 <Water_Plant+0x158>)
+ 8000e74:	681b      	ldr	r3, [r3, #0]
+ 8000e76:	4413      	add	r3, r2
+ 8000e78:	e000      	b.n	8000e7c <Water_Plant+0x90>
+ 8000e7a:	2300      	movs	r3, #0
+ 8000e7c:	4a31      	ldr	r2, [pc, #196]	; (8000f44 <Water_Plant+0x158>)
+ 8000e7e:	6013      	str	r3, [r2, #0]
 
 		/* Derivative proportional to change in error per minutes */
 		PID_d = (moistureError - previousError > 0) ? (((moistureError - previousError) / (RTOS_PLANT_WATER / 60000)) * derivativeCoeff) : 0;
- 8000e82:	89fa      	ldrh	r2, [r7, #14]
- 8000e84:	4b30      	ldr	r3, [pc, #192]	; (8000f48 <Water_Plant+0x15c>)
- 8000e86:	681b      	ldr	r3, [r3, #0]
- 8000e88:	429a      	cmp	r2, r3
- 8000e8a:	d00c      	beq.n	8000ea6 <Water_Plant+0xba>
- 8000e8c:	89fa      	ldrh	r2, [r7, #14]
- 8000e8e:	4b2e      	ldr	r3, [pc, #184]	; (8000f48 <Water_Plant+0x15c>)
- 8000e90:	681b      	ldr	r3, [r3, #0]
- 8000e92:	1ad3      	subs	r3, r2, r3
- 8000e94:	4a2d      	ldr	r2, [pc, #180]	; (8000f4c <Water_Plant+0x160>)
- 8000e96:	fba2 2303 	umull	r2, r3, r2, r3
- 8000e9a:	089b      	lsrs	r3, r3, #2
- 8000e9c:	4a2c      	ldr	r2, [pc, #176]	; (8000f50 <Water_Plant+0x164>)
- 8000e9e:	6812      	ldr	r2, [r2, #0]
- 8000ea0:	fb02 f303 	mul.w	r3, r2, r3
- 8000ea4:	e000      	b.n	8000ea8 <Water_Plant+0xbc>
- 8000ea6:	2300      	movs	r3, #0
- 8000ea8:	4a2a      	ldr	r2, [pc, #168]	; (8000f54 <Water_Plant+0x168>)
- 8000eaa:	6013      	str	r3, [r2, #0]
+ 8000e80:	89fa      	ldrh	r2, [r7, #14]
+ 8000e82:	4b31      	ldr	r3, [pc, #196]	; (8000f48 <Water_Plant+0x15c>)
+ 8000e84:	681b      	ldr	r3, [r3, #0]
+ 8000e86:	429a      	cmp	r2, r3
+ 8000e88:	d00c      	beq.n	8000ea4 <Water_Plant+0xb8>
+ 8000e8a:	89fa      	ldrh	r2, [r7, #14]
+ 8000e8c:	4b2e      	ldr	r3, [pc, #184]	; (8000f48 <Water_Plant+0x15c>)
+ 8000e8e:	681b      	ldr	r3, [r3, #0]
+ 8000e90:	1ad3      	subs	r3, r2, r3
+ 8000e92:	4a2e      	ldr	r2, [pc, #184]	; (8000f4c <Water_Plant+0x160>)
+ 8000e94:	fba2 2303 	umull	r2, r3, r2, r3
+ 8000e98:	089b      	lsrs	r3, r3, #2
+ 8000e9a:	4a2d      	ldr	r2, [pc, #180]	; (8000f50 <Water_Plant+0x164>)
+ 8000e9c:	6812      	ldr	r2, [r2, #0]
+ 8000e9e:	fb02 f303 	mul.w	r3, r2, r3
+ 8000ea2:	e000      	b.n	8000ea6 <Water_Plant+0xba>
+ 8000ea4:	2300      	movs	r3, #0
+ 8000ea6:	4a2b      	ldr	r2, [pc, #172]	; (8000f54 <Water_Plant+0x168>)
+ 8000ea8:	6013      	str	r3, [r2, #0]
 
 		previousError = moistureError;
- 8000eac:	89fb      	ldrh	r3, [r7, #14]
- 8000eae:	4a26      	ldr	r2, [pc, #152]	; (8000f48 <Water_Plant+0x15c>)
- 8000eb0:	6013      	str	r3, [r2, #0]
+ 8000eaa:	89fb      	ldrh	r3, [r7, #14]
+ 8000eac:	4a26      	ldr	r2, [pc, #152]	; (8000f48 <Water_Plant+0x15c>)
+ 8000eae:	6013      	str	r3, [r2, #0]
 
 		/* Check if the moisture error exceeds the tolerance */
 		if (xSemaphoreTake(Tolerance_Sema_Handle, (TickType_t) 10) == pdTRUE)
- 8000eb2:	4b29      	ldr	r3, [pc, #164]	; (8000f58 <Water_Plant+0x16c>)
- 8000eb4:	681b      	ldr	r3, [r3, #0]
- 8000eb6:	210a      	movs	r1, #10
- 8000eb8:	4618      	mov	r0, r3
- 8000eba:	f007 fdc1 	bl	8008a40 <xQueueSemaphoreTake>
- 8000ebe:	4603      	mov	r3, r0
- 8000ec0:	2b01      	cmp	r3, #1
- 8000ec2:	d114      	bne.n	8000eee <Water_Plant+0x102>
+ 8000eb0:	4b29      	ldr	r3, [pc, #164]	; (8000f58 <Water_Plant+0x16c>)
+ 8000eb2:	681b      	ldr	r3, [r3, #0]
+ 8000eb4:	210a      	movs	r1, #10
+ 8000eb6:	4618      	mov	r0, r3
+ 8000eb8:	f007 fdc2 	bl	8008a40 <xQueueSemaphoreTake>
+ 8000ebc:	4603      	mov	r3, r0
+ 8000ebe:	2b01      	cmp	r3, #1
+ 8000ec0:	d114      	bne.n	8000eec <Water_Plant+0x100>
 		{
 			if (moistureError > moistureTolerance)
- 8000ec4:	4b25      	ldr	r3, [pc, #148]	; (8000f5c <Water_Plant+0x170>)
- 8000ec6:	881b      	ldrh	r3, [r3, #0]
- 8000ec8:	89fa      	ldrh	r2, [r7, #14]
- 8000eca:	429a      	cmp	r2, r3
- 8000ecc:	d908      	bls.n	8000ee0 <Water_Plant+0xf4>
+ 8000ec2:	4b26      	ldr	r3, [pc, #152]	; (8000f5c <Water_Plant+0x170>)
+ 8000ec4:	881b      	ldrh	r3, [r3, #0]
+ 8000ec6:	89fa      	ldrh	r2, [r7, #14]
+ 8000ec8:	429a      	cmp	r2, r3
+ 8000eca:	d908      	bls.n	8000ede <Water_Plant+0xf2>
 			{
 				plantPumpOnTime = PID_p + PID_d + PID_i;
- 8000ece:	4b1b      	ldr	r3, [pc, #108]	; (8000f3c <Water_Plant+0x150>)
- 8000ed0:	681a      	ldr	r2, [r3, #0]
- 8000ed2:	4b20      	ldr	r3, [pc, #128]	; (8000f54 <Water_Plant+0x168>)
- 8000ed4:	681b      	ldr	r3, [r3, #0]
- 8000ed6:	441a      	add	r2, r3
- 8000ed8:	4b1a      	ldr	r3, [pc, #104]	; (8000f44 <Water_Plant+0x158>)
- 8000eda:	681b      	ldr	r3, [r3, #0]
- 8000edc:	4413      	add	r3, r2
- 8000ede:	60bb      	str	r3, [r7, #8]
+ 8000ecc:	4b1b      	ldr	r3, [pc, #108]	; (8000f3c <Water_Plant+0x150>)
+ 8000ece:	681a      	ldr	r2, [r3, #0]
+ 8000ed0:	4b20      	ldr	r3, [pc, #128]	; (8000f54 <Water_Plant+0x168>)
+ 8000ed2:	681b      	ldr	r3, [r3, #0]
+ 8000ed4:	441a      	add	r2, r3
+ 8000ed6:	4b1b      	ldr	r3, [pc, #108]	; (8000f44 <Water_Plant+0x158>)
+ 8000ed8:	681b      	ldr	r3, [r3, #0]
+ 8000eda:	4413      	add	r3, r2
+ 8000edc:	60bb      	str	r3, [r7, #8]
 			}
 
 			xSemaphoreGive(Tolerance_Sema_Handle);
- 8000ee0:	4b1d      	ldr	r3, [pc, #116]	; (8000f58 <Water_Plant+0x16c>)
- 8000ee2:	6818      	ldr	r0, [r3, #0]
- 8000ee4:	2300      	movs	r3, #0
- 8000ee6:	2200      	movs	r2, #0
- 8000ee8:	2100      	movs	r1, #0
- 8000eea:	f007 fab5 	bl	8008458 <xQueueGenericSend>
+ 8000ede:	4b1e      	ldr	r3, [pc, #120]	; (8000f58 <Water_Plant+0x16c>)
+ 8000ee0:	6818      	ldr	r0, [r3, #0]
+ 8000ee2:	2300      	movs	r3, #0
+ 8000ee4:	2200      	movs	r2, #0
+ 8000ee6:	2100      	movs	r1, #0
+ 8000ee8:	f007 fab6 	bl	8008458 <xQueueGenericSend>
 		}
 
 		/* Water plant if on-time has a value */
 		if (plantPumpOnTime > 0) {
- 8000eee:	68bb      	ldr	r3, [r7, #8]
- 8000ef0:	2b00      	cmp	r3, #0
- 8000ef2:	f43f af7f 	beq.w	8000df4 <Water_Plant+0x8>
+ 8000eec:	68bb      	ldr	r3, [r7, #8]
+ 8000eee:	2b00      	cmp	r3, #0
+ 8000ef0:	d080      	beq.n	8000df4 <Water_Plant+0x8>
 			/* Turn on BJT switch for pump and on-board LED */
 			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
- 8000ef6:	2201      	movs	r2, #1
- 8000ef8:	2120      	movs	r1, #32
- 8000efa:	4819      	ldr	r0, [pc, #100]	; (8000f60 <Water_Plant+0x174>)
- 8000efc:	f002 fcea 	bl	80038d4 <HAL_GPIO_WritePin>
+ 8000ef2:	2201      	movs	r2, #1
+ 8000ef4:	2120      	movs	r1, #32
+ 8000ef6:	481a      	ldr	r0, [pc, #104]	; (8000f60 <Water_Plant+0x174>)
+ 8000ef8:	f002 fcec 	bl	80038d4 <HAL_GPIO_WritePin>
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
- 8000f00:	2201      	movs	r2, #1
- 8000f02:	2180      	movs	r1, #128	; 0x80
- 8000f04:	4817      	ldr	r0, [pc, #92]	; (8000f64 <Water_Plant+0x178>)
- 8000f06:	f002 fce5 	bl	80038d4 <HAL_GPIO_WritePin>
+ 8000efc:	2201      	movs	r2, #1
+ 8000efe:	2180      	movs	r1, #128	; 0x80
+ 8000f00:	4818      	ldr	r0, [pc, #96]	; (8000f64 <Water_Plant+0x178>)
+ 8000f02:	f002 fce7 	bl	80038d4 <HAL_GPIO_WritePin>
 			vTaskDelay(plantPumpOnTime);
- 8000f0a:	68b8      	ldr	r0, [r7, #8]
- 8000f0c:	f008 fa36 	bl	800937c <vTaskDelay>
+ 8000f06:	68b8      	ldr	r0, [r7, #8]
+ 8000f08:	f008 fa38 	bl	800937c <vTaskDelay>
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
- 8000f10:	2200      	movs	r2, #0
- 8000f12:	2180      	movs	r1, #128	; 0x80
- 8000f14:	4813      	ldr	r0, [pc, #76]	; (8000f64 <Water_Plant+0x178>)
- 8000f16:	f002 fcdd 	bl	80038d4 <HAL_GPIO_WritePin>
+ 8000f0c:	2200      	movs	r2, #0
+ 8000f0e:	2180      	movs	r1, #128	; 0x80
+ 8000f10:	4814      	ldr	r0, [pc, #80]	; (8000f64 <Water_Plant+0x178>)
+ 8000f12:	f002 fcdf 	bl	80038d4 <HAL_GPIO_WritePin>
 			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
- 8000f1a:	2200      	movs	r2, #0
- 8000f1c:	2120      	movs	r1, #32
- 8000f1e:	4810      	ldr	r0, [pc, #64]	; (8000f60 <Water_Plant+0x174>)
- 8000f20:	f002 fcd8 	bl	80038d4 <HAL_GPIO_WritePin>
+ 8000f16:	2200      	movs	r2, #0
+ 8000f18:	2120      	movs	r1, #32
+ 8000f1a:	4811      	ldr	r0, [pc, #68]	; (8000f60 <Water_Plant+0x174>)
+ 8000f1c:	f002 fcda 	bl	80038d4 <HAL_GPIO_WritePin>
 	{
- 8000f24:	e766      	b.n	8000df4 <Water_Plant+0x8>
- 8000f26:	bf00      	nop
+ 8000f20:	e768      	b.n	8000df4 <Water_Plant+0x8>
+ 8000f22:	bf00      	nop
+ 8000f24:	000493e0 	.word	0x000493e0
  8000f28:	20004c48 	.word	0x20004c48
  8000f2c:	20004c94 	.word	0x20004c94
  8000f30:	20004c40 	.word	0x20004c40
