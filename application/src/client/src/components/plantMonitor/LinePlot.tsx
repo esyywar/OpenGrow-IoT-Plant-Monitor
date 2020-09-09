@@ -166,8 +166,10 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 		}
 	}
 
+	/* Get the SMA window size based on the user chosen time scale */
 	const smaWindow = calcSmaWindow()
 
+	/* Create array of plot data by trimming data between relevant dates and applying simple moving average */
 	const trimPlotData = {
 		...plotData,
 		data: plotData.data.reduce(
@@ -284,8 +286,8 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 				/* Over 12 hours */
 				case timeRange > 43200000:
 					return 'every 3 hour'
-				/* Over 8 hours */
-				case timeRange > 28800000:
+				/* Over 6 hours */
+				case timeRange > 21600000:
 					return 'every 1 hour'
 				/* Over 4 hours */
 				case timeRange > 14400000:

@@ -3,3 +3,7 @@
 /application/config/default.json
 /application/src/client/node_modules
 /esp8266/credentials
+/stm32_rtos/.metadata
+/stm32_rtos/RemoteSystemsTempFiles
+/stm32_rtos/stm32_plant_monitor/Debug
+/stm32_rtos/stm32_plant_monitor/Release

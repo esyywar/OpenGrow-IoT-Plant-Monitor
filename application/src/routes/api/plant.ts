@@ -185,7 +185,8 @@ router.post(
 			setpoint,
 		}
 
-		mqttClient.publish(topic, JSON.stringify(data), { qos: config.get('mqtt.qos') })
+		/* Publish control data to ESP subscriber -> Retain in case ESP is offline (msg will be delivered next time ESP connects) */
+		mqttClient.publish(topic, JSON.stringify(data), { qos: config.get('mqtt.qos'), retain: true })
 
 		try {
 			const plant: IPlant | null = await Plant.findById(plantId)
@@ -234,7 +235,8 @@ router.post(
 			tolerance,
 		}
 
-		mqttClient.publish(topic, JSON.stringify(data), { qos: config.get('mqtt.qos') })
+		/* Publish control data to ESP subscriber -> Retain in case ESP is offline (msg will be delivered next time ESP connects) */
+		mqttClient.publish(topic, JSON.stringify(data), { qos: config.get('mqtt.qos'), retain: true })
 
 		try {
 			const plant: IPlant | null = await Plant.findById(plantId)
