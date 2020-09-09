@@ -28,4 +28,5 @@ This complete IoT solution can be broken up into 3 parts:
 
 The following diagram illustrates interaction between these components.
 
+
 <img src="images/OpenGrow_Block_Diagram.jpg" />
