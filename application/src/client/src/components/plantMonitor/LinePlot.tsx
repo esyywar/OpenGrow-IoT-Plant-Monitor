@@ -215,6 +215,8 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 		),
 	}
 
+	console.log(trimPlotData)
+
 	/* Function passed to child component for local state update */
 	const updateTimeScale = (newTimeScale: TimeScaleEnum) => {
 		if (timeScale !== newTimeScale) {
