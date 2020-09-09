@@ -11,10 +11,8 @@ OpenGrow is easy to set-up and in this guide I will detail the steps to running 
 1. System Architecture
 1. Parts List
 1. Web Application Set-Up
-  1. MongoDB Database
-  1. Configuration Options
-1. Flash ESP8266 NodeMCU
-1. Flash STM32 FreeRTOS Firmware
+1. ESP8266 NodeMCU Firmware
+1. STM32F4 Firmware
 1. Electrical Schematic
 1. Done!
 
