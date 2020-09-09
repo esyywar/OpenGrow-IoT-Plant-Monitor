@@ -30,3 +30,22 @@ The following diagram illustrates interaction between these components.
 <br />
 
 <img src="images/OpenGrow_Block_Diagram.jpg" />
+
+## Parts List
+
+| Part  | Quantity | Description |
+| -------- | ---- | ---- |
+| STM NUCLEO-STM32F446 | 1 | Evaluation board for the STM32F446RE processor based on ARM Cortex M4 core. Any STM43F4 series processor will do here |
+| ESP8266 NodeMCU | 1 | Low-cost wi-fi integated microchip where we can run the NodeMCU firmware framework |
+| Digilent Pmod OLED: 128 x 32 Pixel Monochromatic OLED Display | 1 | Not a necessary component but cool to have! Not much trouble to modify code to work with any SSD1306 based display. |
+| Soil Moisture Sensor | 1 | Capacitive soil moisture sensor which outputs an analog voltage signal |
+| Submersible Water Pump | 1 | Pushes water from an outlet where we attach some tubing leading into the potted plant |
+| 2N222A BJT | 1 | Very popular and cheap transistor to switch our pump |
+| 330 Ohm Resistor | 1 | Placed at base of the transistor used to toggle the pump |
+| Photoresistor | 1 | Resistance of this component is proportional to ambient light |
+| 10 Kiloohm Resistor | 1 | Used to create a voltage divider with the photoresistor where we can take analog voltage reading |
+
+
+
+
+
