@@ -27,6 +27,6 @@ This complete IoT solution can be broken up into 3 parts:
 3. Firmware & Electronics
 
 The following diagram illustrates interaction between these components.
-
+<br />
 
 <img src="images/OpenGrow_Block_Diagram.jpg" />
