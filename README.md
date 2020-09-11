@@ -69,6 +69,9 @@ Before proceeding, make sure that you have [installed Node Js installed on your 
 1. From application directory enter src>client and run the command 'npm install' to install the front-end dependencies.
 1. In the application folder run the command 'npm run build' to compile the typescript code into javascript we can run in a browser.
 
+Your directory should appear as below when all is installed:
+<img src="images/app-built.jpg" />
+
 ### Filling Config Options
 
 Navigate to application>config and open the default-rename.json file. You will need to fill some parameters in this file to get up and running.
@@ -84,8 +87,21 @@ Simply copy and paste this string into the 'mongoUri' value field of config.json
 
 #### MQTT
 
+Under MQTT file, choose a quality of service (qos) for messages sent by your web-application. You can read about this MQTT setting [here](https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels/).
+
+Now choose a username and password for your MQTT broker. You may choose whatever you like. We must only make sure to give the same credentials when flashing firmware for the ESP8266 so it can connect!
+
+Lastly, the URL for your MQTT broker which your web application uses to connect. In the file application>src>mqtt-broker>broker.ts the MQTT broker is set to run on local machine at port 1883. If you change this or run your broker elsewhere (maybe on a raspberry pi server?), make sure to update this URL.
+
 #### JWT
 
+The web-application allows multiple user accounts which are password protected. Json-web-tokens are used for authentication.
+
+Follow the URL in the 'jwtSecret' field value to create an encryption string and add it.
+
+Lastly, choose how long you want a user's login to remain valid before they need to login again. Default here is filled as '3h' (3 hours).
+
+## ESP8266 NodeMCU Firmware
 
 
 
