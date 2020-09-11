@@ -3,6 +3,8 @@
 /application/config/default.json
 /application/src/client/node_modules
 /esp8266/credentials
+/esp8266/init.lua/tests
+/esp8266/init.lua
 /stm32_rtos/.metadata
 /stm32_rtos/RemoteSystemsTempFiles
 /stm32_rtos/stm32_plant_monitor/Debug
