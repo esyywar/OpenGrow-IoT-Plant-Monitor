@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		carouselImg: {
 			display: 'block',
 			margin: 'auto',
+			maxHeight: '350px',
 			width: 'auto',
 		},
 	})
@@ -56,34 +57,34 @@ const howItWorksSteps = [
 	{
 		stepNum: 1,
 		text: 'Set-up your MongoDB database and put the connection string in your config file.',
-		img: require('../../media/randoGoat.jpg'),
+		img: require('../../media/mongo_connect.jpg'),
 		imgAlt: 'MongoDB setup.',
 	},
 	{
 		stepNum: 2,
 		text:
 			"Start up the OpenGrow application and create a plant using Postman. Note the plant's ID!",
-		img: require('../../media/randoGoat.jpg'),
+		img: require('../../media/postman_init_plant.jpg'),
 		imgAlt: 'Create plant with postman.',
 	},
 	{
 		stepNum: 3,
 		text:
 			'Flash the ESP8266 firmware with appropriate Wifi, plant ID and server IP address credentials.',
-		img: require('../../media/randoGoat.jpg'),
+		img: require('../../media/esp8266_creds.jpg'),
 		imgAlt: 'Flash the ESP8266 firmware.',
 	},
 	{
 		stepNum: 4,
-		text: 'Flash the STM32 firmware to a STM32F4 series board such as the STM32F446RE Nucleo.',
-		img: require('../../media/randoGoat.jpg'),
+		text:
+			'Flash the STM32 and assemble the OpenGrow circuitry. Your plant now waters itself and sends metrics every 5 minutes!',
+		img: require('../../media/opengrow_assembled.jpg'),
 		imgAlt: 'Flash the STM32 firmware',
 	},
 	{
 		stepNum: 5,
-		text:
-			'Start up the OpenGrow service and leave it running to collect data and control your plant!',
-		img: require('../../media/randoGoat.jpg'),
+		text: 'All done! Sign into the web-app to monitor all your plants and update control settings.',
+		img: require('../../media/opengrow_webapp.jpg'),
 		imgAlt: 'Run OpenGrow.',
 	},
 ]
