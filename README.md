@@ -52,9 +52,40 @@ Following is a list of necessary components for a single OpenGrow plant monitor.
 
 ## Web Application Set-Up
 
-### MongoDB Database
+### Tech Stack
 
-### Configuration Options
+This full stack web application can be separated into the front-end and back-end. 
+
+The front-end is built with React Js framework, styled with Material UI and uses Redux for state management.
+
+The back-end is built with Node Js and the express framework.
+
+### Installing Dependencies
+
+Before proceeding, make sure that you have [installed Node Js installed on your machine](https://nodejs.org/en/download/).
+
+1. Copy the repository to your machine and use command prompt to enter the 'application' directory.
+1. Enter the application directory and run the command 'npm install' to install the necessary back-end dependencies from node.
+1. From application directory enter src>client and run the command 'npm install' to install the front-end dependencies.
+1. In the application folder run the command 'npm run build' to compile the typescript code into javascript we can run in a browser.
+
+### Filling Config Options
+
+Navigate to application>config and open the default-rename.json file. You will need to fill some parameters in this file to get up and running.
+
+#### Mongo URI 
+
+First is the 'mongoUri' field. Your application needs a database to connect to and we must provide it here. Go to [MongoDB's website](https://www.mongodb.com/) and sign-in or create an account. You just need to create a free database for OpenGrow. There are many ways to do this (using Atlas, command line tool, mongoDB website).
+
+When you have created a database, you can get a connection string that looks something like this:
+<img src="images/mongo-conn-string.jpg" />
+
+Simply copy and paste this string into the 'mongoUri' value field of config.json.
+
+#### MQTT
+
+#### JWT
+
 
 
 
