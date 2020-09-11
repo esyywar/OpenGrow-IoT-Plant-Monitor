@@ -111,7 +111,7 @@ You are all set-up! Simply navigate into the 'application' folder and run the co
 
 Now it is important to populate some plants in our database. To do this, make a put request to the route 'http://localhost:3000/api/plant/create'. We can use a service like [Postman](https://www.postman.com/) to do this. The response to our request is ID of the new plant and number of plants in our database. We will pass these IDs to our ESP firmware to identify our plants.
 
-<img src="images/postman-init-plant.jpg" />
+<img src="images/postman_init_plant.jpg" />
 
 ## ESP8266 NodeMCU Firmware
 
