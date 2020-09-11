@@ -103,8 +103,6 @@ const parseTime = timeParse('%m-%d-%Y-%H-%M-%S')
 const toolTipFormat = timeFormat('%b %d, %Y %H:%M')
 
 export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
-	const [isHover, setHover] = useState(false)
-
 	/* Time scale (chosen from menu in TimeScaleMenu component) */
 	const [timeScale, setTimeScale] = useState<TimeScaleEnum>(TimeScaleEnum.Day)
 
@@ -160,7 +158,7 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 				return 4
 			case TimeScaleEnum.Week:
 			case TimeScaleEnum.Max:
-				return 10
+				return 6
 			default:
 				return 0
 		}
@@ -177,7 +175,7 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 				/* Check that the datapoint is within the valid date range */
 				if (x.getTime() >= startDate.getTime()) {
 					/* If entry is greater than 30min apart from the previous point, insert a null to create hole in the plot */
-					if (currInd > 0 && (x.getTime() - rawData[currInd - 1].x.getTime()) / 60000 > 30) {
+					if (currInd > 0 && x.getTime() - rawData[currInd - 1].x.getTime() > 1800000) {
 						let date = new Date(rawData[currInd - 1].x)
 						date.setMinutes(rawData[currInd - 1].x.getMinutes() + 5)
 						trimmed.push({
@@ -214,8 +212,6 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 			[]
 		),
 	}
-
-	console.log(trimPlotData)
 
 	/* Function passed to child component for local state update */
 	const updateTimeScale = (newTimeScale: TimeScaleEnum) => {
@@ -469,16 +465,14 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 
 				<Grid item xs={12} className={classes.chartRoot}>
 					<ResponsiveLine
-						onMouseEnter={() => setHover(true)}
-						onMouseLeave={() => setHover(false)}
 						data={[trimPlotData]}
 						enablePoints={timeScale === TimeScaleEnum.Hour}
 						lineWidth={6}
 						pointSize={10}
 						curve={'monotoneX'}
 						enableGridY={true}
-						enableGridX={true}
-						colors={isHover ? theme.palette.text.primary : theme.palette.text.secondary}
+						enableGridX={!isMobile}
+						colors={theme.palette.text.primary}
 						margin={isMobile ? mobilePlotMargins : desktopPlotMargins}
 						xScale={{ format: '%m-%d-%Y-%H-%M-%S', type: 'time' }}
 						xFormat="time:%m-%d-%Y-%H-%M-%S"
