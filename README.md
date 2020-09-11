@@ -70,17 +70,21 @@ Before proceeding, make sure that you have [installed Node Js installed on your 
 1. In the application folder run the command 'npm run build' to compile the typescript code into javascript we can run in a browser.
 
 Your directory should appear as below when all is installed:
+
 <img src="images/app-built.jpg" />
 
 ### Filling Config Options
 
 Navigate to application>config and open the default-rename.json file. You will need to fill some parameters in this file to get up and running.
 
+<img src="images/config-to-fill.jpg" />
+
 #### Mongo URI 
 
 First is the 'mongoUri' field. Your application needs a database to connect to and we must provide it here. Go to [MongoDB's website](https://www.mongodb.com/) and sign-in or create an account. You just need to create a free database for OpenGrow. There are many ways to do this (using Atlas, command line tool, mongoDB website).
 
 When you have created a database, you can get a connection string that looks something like this:
+
 <img src="images/mongo-conn-string.jpg" />
 
 Simply copy and paste this string into the 'mongoUri' value field of config.json.
