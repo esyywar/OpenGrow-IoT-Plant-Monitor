@@ -47,8 +47,13 @@ const useStyles = makeStyles((theme: Theme) =>
 		carouselImg: {
 			display: 'block',
 			margin: 'auto',
-			maxHeight: '350px',
 			width: 'auto',
+			[theme.breakpoints.down('sm')]: {
+				maxHeight: '250px',
+			},
+			[theme.breakpoints.up('md')]: {
+				maxHeight: '350px',
+			},
 		},
 	})
 )
