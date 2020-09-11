@@ -105,7 +105,21 @@ Follow the URL in the 'jwtSecret' field value to create an encryption string and
 
 Lastly, choose how long you want a user's login to remain valid before they need to login again. Default here is filled as '3h' (3 hours).
 
+#### Run The Application and Create Plants
+
+You are all set-up! Simply navigate into the 'application' folder and run the command 'npm run dev' to launch OpenGrow.
+
+Now it is important to populate some plants in our database. To do this, make a put request to the route 'http://localhost:3000/api/plant/create'. We can use a service like [Postman](https://www.postman.com/) to do this. The response to our request is ID of the new plant and number of plants in our database. We will pass these IDs to our ESP firmware to identify our plants.
+
+<img src="images/postman-init-plant.jpg" />
+
 ## ESP8266 NodeMCU Firmware
+
+The NodeMCU packages used for this application include MQTT, Bit, Wifi, GPIO, Timer and File. I have provided the built firmware binaries in esp8266>nodemcu-firmware-build which can be flashed using esptool.py following [this procedure](https://nodemcu.readthedocs.io/en/master/flash/).
+
+
+
+
 
 
 
