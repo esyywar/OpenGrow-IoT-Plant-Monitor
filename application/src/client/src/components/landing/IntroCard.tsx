@@ -38,6 +38,12 @@ const useStyles = makeStyles((theme: Theme) =>
 				fontSize: '34px',
 			},
 		},
+		plantImageContainer: {
+			overflow: 'hidden',
+			[theme.breakpoints.down('sm')]: {
+				display: 'none',
+			},
+		},
 		plantImage: {
 			[theme.breakpoints.down('sm')]: {
 				maxHeight: '300px',
@@ -106,7 +112,7 @@ export default function IntroCard() {
 				</Grid>
 
 				<Grid item container spacing={6} direction="row" alignItems="center" justify="center">
-					<Grid item xs={11} lg={5} style={{ overflow: 'hidden' }}>
+					<Grid item xs={11} lg={5} className={classes.plantImageContainer}>
 						<img className={classes.plantImage} alt="potted-plant" src={pottedPlantImg} />
 					</Grid>
 					<Grid item xs={11} lg={6}>
