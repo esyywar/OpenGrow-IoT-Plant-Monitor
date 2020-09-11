@@ -75,7 +75,9 @@ Your directory should appear as below when all is installed:
 
 ### Filling Config Options
 
-Navigate to application>config and open the default-rename.json file. You will need to fill some parameters in this file to get up and running.
+Navigate to application>config and open the 'default-rename.json' file. You will need to fill some parameters in this file to get up and running.
+
+When you are done, you must remember to rename this file to 'default.json'!!
 
 <img src="images/config-to-fill.jpg" />
 
@@ -116,6 +118,22 @@ Now it is important to populate some plants in our database. To do this, make a 
 ## ESP8266 NodeMCU Firmware
 
 The NodeMCU packages used for this application include MQTT, Bit, Wifi, GPIO, Timer and File. I have provided the built firmware binaries in esp8266>nodemcu-firmware-build which can be flashed using esptool.py following [this procedure](https://nodemcu.readthedocs.io/en/master/flash/).
+
+Now we will fill-in the configuration files for the ESP.
+
+### Device Info
+
+In 'device_info.lua', fill the ID of any plant which you have created in the database. Your ESP will use this ID in the topic string it publishes data to. Likewise, your web application will send messages to a topic containing the ID string which ESP will subscribe to.
+
+### Wi-fi credentials
+
+In 'wifi_credentials.lua', fill the network name and password for the local wi-fi network your application will run on. 
+
+### MQTT Credentials
+
+Give the username and password to connect to your MQTT broker. They must match the credentials you set in the web-application config file.
+
+The machine you run the OpenGrow application on will be acting as a server for the MQTT broker and web-app back-end. Thus, you must provide the IP address of this machine for the ESP to find it on your local network. You must enter this HOST IP address and port running the MQTT broker in the credential file.
 
 
 
