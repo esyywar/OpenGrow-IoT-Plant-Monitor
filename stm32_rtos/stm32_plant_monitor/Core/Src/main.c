@@ -606,7 +606,7 @@ void Water_Plant(void *pvParameters)
 		}
 
 		PID_p = moistureError * proportionCoeff;
-		PID_i = (moistureError > 50) ? (PID_i + moistureError * integralCoeff) : 0;
+		PID_i = (moistureError > 100) ? (PID_i + moistureError * integralCoeff) : 0;
 
 		/* Derivative proportional to change in error per minutes */
 		PID_d = (moistureError - previousError > 0) ? (((moistureError - previousError) / (RTOS_PLANT_WATER / 60000)) * derivativeCoeff) : 0;
