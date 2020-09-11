@@ -6,6 +6,10 @@ Your plant is also automatically watered 24/7 according to soil moisture setpoin
 
 OpenGrow is easy to set-up and in this guide I will detail the steps to running OpenGrow in your own home.
 
+Program firmware and assemble the circuit | Add plants to your account | Monitor data and update settings
+:-------------------------: | :-------------------------:|:-------------------------:
+<img src="images/opengrow_assembled.jpg" /> | <img src="images/plant_dashboard.jpg" /> | <img src="images/plant_monitor.jpg" />
+
 # Table of Contents
 
 1. System Architecture
