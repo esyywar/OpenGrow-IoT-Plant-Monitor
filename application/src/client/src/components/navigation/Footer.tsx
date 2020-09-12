@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
 			},
 		},
 		pizzaTag: {
+			float: 'right',
 			[theme.breakpoints.down('sm')]: {
 				margin: '6px auto',
 			},
@@ -72,11 +73,7 @@ export default function Footer() {
 				justify="space-around"
 			>
 				<Grid item xs={12} md={3}>
-					<Grid
-						container
-						justify="flex-start"
-						className={`${classes.footerTextContainer} ${classes.openSourceTag}`}
-					>
+					<div className={`${classes.footerTextContainer} ${classes.openSourceTag}`}>
 						<Typography className={classes.footerText}>
 							OpenGrow is proudly an open-source project!{'  '}
 							<a
@@ -88,7 +85,7 @@ export default function Footer() {
 								<GitHubIcon />
 							</a>
 						</Typography>
-					</Grid>
+					</div>
 				</Grid>
 				<Grid item xs={12} md={6}>
 					<Grid container justify="center">
@@ -96,7 +93,7 @@ export default function Footer() {
 					</Grid>
 				</Grid>
 				<Grid item xs={12} md={3}>
-					<Grid container className={`${classes.footerTextContainer} ${classes.pizzaTag}`}>
+					<div className={`${classes.footerTextContainer} ${classes.pizzaTag}`}>
 						<Typography className={classes.footerText}>
 							You can support OpenGrow and future projects by{' '}
 							<a
@@ -109,7 +106,7 @@ export default function Footer() {
 							</a>
 							<LocalPizzaIcon />
 						</Typography>
-					</Grid>
+					</div>
 				</Grid>
 			</Grid>
 		</Container>

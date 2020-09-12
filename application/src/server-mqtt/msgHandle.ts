@@ -20,10 +20,10 @@ export const soilDataReceived = async (plant: IPlant, soilMoisture: number) => {
 			return
 		}
 
-		const lastEntryMin = plant.data.soilMoisture.slice(-1)[0].date?.getMinutes()
+		const lastEntryTime = plant.data.soilMoisture.slice(-1)[0].date?.getTime()
 
 		/* Check that new data is at least 5 minutes from previous entry */
-		if (!lastEntryMin || Math.abs(currDate.getMinutes() - lastEntryMin) >= 5) {
+		if (!lastEntryTime || currDate.getTime() - lastEntryTime >= 300000) {
 			plant.data.soilMoisture.push({ measurement: soilMoisture, date: currDate })
 			await plant.save()
 		}
@@ -45,10 +45,10 @@ export const lightDataReceived = async (plant: IPlant, lightLevel: number) => {
 			return
 		}
 
-		const lastEntryMin = plant.data.lightLevel.slice(-1)[0].date?.getMinutes()
+		const lastEntryTime = plant.data.lightLevel.slice(-1)[0].date?.getTime()
 
 		/* Check that new data is at least 5 minutes from previous entry */
-		if (!lastEntryMin || Math.abs(currDate.getMinutes() - lastEntryMin) >= 5) {
+		if (!lastEntryTime || currDate.getTime() - lastEntryTime >= 300000) {
 			plant.data.lightLevel.push({ measurement: lightLevel, date: currDate })
 			await plant.save()
 		}
