@@ -44,12 +44,12 @@ const useStyles = makeStyles((theme: Theme) =>
 			},
 		},
 		pizzaTag: {
-			float: 'right',
 			[theme.breakpoints.down('sm')]: {
 				margin: '6px auto',
 			},
 			[theme.breakpoints.up('md')]: {
 				justifySelf: 'flex-end',
+				float: 'right',
 				marginRight: theme.spacing(4),
 			},
 		},

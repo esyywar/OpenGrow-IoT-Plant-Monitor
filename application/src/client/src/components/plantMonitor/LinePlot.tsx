@@ -240,8 +240,8 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 				/* Over 1 week */
 				case timeRange > 604800000:
 					return 'every 3 days'
-				/* Over 4 days */
-				case timeRange > 345600000:
+				/* Over 5 days */
+				case timeRange > 432000000:
 					return 'every 2 days'
 				/* Over 2 days */
 				case timeRange > 172800000:
