@@ -43,6 +43,7 @@ Following is a list of necessary components to make a single OpenGrow plant moni
 | [Digilent Pmod OLED: 128 x 32 Pixel Monochromatic OLED Display](https://www.digikey.ca/en/products/detail/digilent-inc/410-222/3902806) | 1 | Not a necessary component but cool to have! Not much trouble to modify code to work with any SSD1306 based display. |
 | [Soil Moisture Sensor](https://www.amazon.ca/Gikfun-Capacitive-Corrosion-Resistant-Detection/dp/B07H3P1NRM/ref=sxts_sxwds-bia-wc-p13n1_0?cv_ct_cx=Soil+Moisture+Sensor&dchild=1&keywords=Soil+Moisture+Sensor&pd_rd_i=B07H3P1NRM&pd_rd_r=171d6825-b117-4254-be30-a854bf504427&pd_rd_w=bHSon&pd_rd_wg=wgCQb&pf_rd_p=514ff5bd-659e-4ee0-b4fb-c13ee87c5900&pf_rd_r=E74F8BTWB8JX747Z8NW8&psc=1&qid=1599621476&sr=1-1-791c2399-d602-4248-afbb-8a79de2d236f) | 1 | Capacitive soil moisture sensor which outputs an analog voltage signal. |
 | [Submersible Water Pump](https://www.amazon.ca/WayinTop-Submersible-Flexible-Fountain-Aquarium/dp/B07TMW5CDM/ref=sr_1_15?dchild=1&keywords=submersible+water+pump+3-5v&qid=1599621498&sr=8-15) | 1 | Pushes water from an outlet where we attach some tubing leading into the potted plant. |
+| [3.3V and 5V Regulator Board](https://www.amazon.ca/UCEC-Breadboard-Supply-Arduino-Solderless/dp/B074113L8F/ref=sr_1_18?dchild=1&keywords=3.3v+5v+regulator+board&qid=1599967777&sr=8-18) | 1 | Provides 5V to nucleo board and 3.3V to power pump. This is not a necessary component but makes it simpler to follow my provided wiring schematic. You have plenty of options for power and really only need 3.3 V to power the STM32, ESP and pump (with at least 700 mA). 
 | 2N222A BJT* | 1 | Very popular and cheap transistor to switch our pump. |
 | 330 Ohm Resistor* | 1 | Placed at base of the transistor used to toggle the pump. |
 | Photoresistor* | 1 | Resistance of this component is proportional to ambient light. |
@@ -131,7 +132,7 @@ Power-up your OpenGrow system and you are ready to go!
 
 The blue LED on the ESP will blink slowly to indicate it is connected to your MQTT broker and logging data.
 
-To support this project and future open source projects, consider [buying me a pizza!](https://www.buymeacoffee.com/esyywar).
+To support this project and future open source projects, consider [buying me a pizza!](https://www.buymeacoffee.com/esyywar)
 
 
 
