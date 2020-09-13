@@ -1,6 +1,6 @@
 # Welcome to OpenGrow!
 
-OpenGrow is a complete IoT solution for monitoring the soil moisture and light availability for your indoor plants.
+OpenGrow is a complete IoT solution for monitoring the soil moisture and light availability for your plants.
 
 Your plant is also automatically watered 24/7 according to soil moisture setpoints which you can set and update at any time!
 
@@ -34,7 +34,7 @@ The following diagram illustrates interaction between these components.
 
 ## Parts List
 
-Following is a list of necessary components for a single OpenGrow plant monitor. You can make as many as you like to work with your MQTT broker and web application.
+Following is a list of necessary components to make a single OpenGrow plant monitor. You can make as many plant monitors as you like to work with your single MQTT broker and web application.
 
 | Part  | Quantity | Description |
 | -------- | ---- | ---- |
@@ -77,7 +77,7 @@ Your directory should appear as below when all is installed:
 
 Navigate to application>config and open the 'default-rename.json' file. You will need to fill some parameters in this file to get up and running.
 
-When you are done, you must remember to rename this file to 'default.json'!!
+When you are done, you must remember to **rename this file to 'default.json'!!**
 
 <img src="images/config-to-fill.jpg" />
 
@@ -111,7 +111,7 @@ Lastly, choose how long you want a user's login to remain valid before they need
 
 You are all set-up! Simply navigate into the 'application' folder and run the command 'npm run dev' to launch OpenGrow.
 
-Now it is important to populate some plants in our database. To do this, make a put request to the route 'http://localhost:3000/api/plant/create'. We can use a service like [Postman](https://www.postman.com/) to do this. The response to our request is ID of the new plant and number of plants in our database. We will pass these IDs to our ESP firmware to identify our plants.
+Now it is important to populate some plants in our database. To do this, make a put request to the route 'http://localhost:3000/api/plant/create'. We can use a service like [Postman](https://www.postman.com/) to do this. The response to our request includes ID of the new plant and the number of plants in our database. We will pass these IDs to our ESP firmware to identify our plants.
 
 <img src="images/postman_init_plant.jpg" />
 
@@ -122,6 +122,16 @@ Navigate into the 'esp8266' folder of this repo for details on uploading the ESP
 ## STM32F4 Firmware
 
 Navigate into the 'stm32_rtos' folder of this repo for details on uploading the STM32F4 FreeRTOS firmware.
+
+## Electrical Schematic
+
+## Done!
+
+Power-up your OpenGrow system and you are ready to go! 
+
+The blue LED on the ESP will blink slowly to indicate it is connected to your MQTT broker and logging data.
+
+To support this project and future open source projects, consider [buying me a pizza!](https://www.buymeacoffee.com/esyywar).
 
 
 
