@@ -126,6 +126,12 @@ Navigate into the 'stm32_rtos' folder of this repo for details on uploading the 
 
 ## Electrical Schematic
 
+Below is the simple wiring diagram to set up OpenGrow. You can choose to power the STM32 Nucleo board from a 5V power supply if you wish. All other components should be powered only by 3.3V.
+
+Current is required mainly by the submersible pump (up to 300 mA) and the ESP8266 (up to 80 mA). Ensure that the power supply used can provide this.
+
+<img src="images/opengrow_schematic.jpg" />
+
 ## Done!
 
 Power-up your OpenGrow system and you are ready to go! 
