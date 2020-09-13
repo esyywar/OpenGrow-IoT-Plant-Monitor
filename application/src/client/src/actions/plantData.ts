@@ -5,6 +5,7 @@ import { PLANT_DATA_LOAD, PLANT_DATA_CLEAR } from '../actions/types'
 import { setAuthToken } from './setAuthToken'
 
 import { setAlert } from './alerts'
+import { userLogout } from './auth'
 
 /************************ RESPONSE TYPES ***************************/
 
@@ -83,6 +84,11 @@ export const loadPlantData = (plantId: string) => async (dispatch: Function) => 
 		const errors = error.response.data.errors
 
 		errors.forEach((error: any) => dispatch(setAlert(error.msg, 'error')))
+
+		/* Logout user if login is invalid or token has expired */
+		if (errors.includes('Token is invalid')) {
+			dispatch(userLogout())
+		}
 	}
 }
 
