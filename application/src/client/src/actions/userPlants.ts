@@ -64,10 +64,12 @@ export const loadUserPlants = () => async (dispatch: Function) => {
 
 		const errors = error.response.data.errors
 
+		console.log(errors)
+
 		errors.forEach((error: any) => dispatch(setAlert(error.msg, 'error')))
 
 		/* Logout user if login is invalid or token has expired */
-		if (errors.includes((error: { msg: string }) => error.msg === 'Token is not valid')) {
+		if (errors.some((error: { msg: string }) => error.msg === 'Token is not valid')) {
 			dispatch(userLogout())
 		}
 	}

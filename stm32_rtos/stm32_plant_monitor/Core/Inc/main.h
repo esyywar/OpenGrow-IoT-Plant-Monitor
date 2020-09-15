@@ -58,8 +58,8 @@ extern "C" {
 *******************************************************/
 
 /* Plant water pump water settings (to be optimized) */
-#define PID_P_DEFAULT					60
-#define PID_I_DEFAULT					1
+#define PID_P_DEFAULT					80
+#define PID_I_DEFAULT					0
 #define PID_D_DEFAULT					10
 
 /* On-time required for pump to bring water to plant (default) */
