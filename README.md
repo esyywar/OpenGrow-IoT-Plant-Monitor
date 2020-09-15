@@ -8,7 +8,7 @@ OpenGrow is easy to set-up and in this guide I will detail the steps to running 
 
 Program firmware and assemble the circuit | Add plants to your account | Monitor data and update settings
 :-------------------------: | :-------------------------:|:-------------------------:
-<img src="images/opengrow_plant_assembled.jpg" /> | <img src="images/plant_dashboard.jpg" /> | <img src="images/plant_monitor.jpg" />
+<img src="images/opengrow_plant_assembled.jpg" width="300" /> | <img src="images/plant_dashboard.jpg" /> | <img src="images/plant_monitor.jpg" />
 
 # Table of Contents
 
