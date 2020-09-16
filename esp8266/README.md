@@ -6,6 +6,13 @@ Now we will fill-in the configuration files for the ESP.
 
 ## Fill in Credentials
 
+Within the 'user-credentials' folder, you will find the following 3 files:
+1. device_info.lua
+1. mqtt_credentials.lua
+1. wifi_credentials.lua
+
+You must fill-in the fields in each of these files before uploading to the ESP8266 board.
+
 ### Device Info
 
 In 'device_info.lua', fill the ID of any plant which you have created in the database. Your ESP will use this ID in the topic string it publishes data to. Likewise, your web application will send messages to a topic containing the ID string which ESP will subscribe to.
