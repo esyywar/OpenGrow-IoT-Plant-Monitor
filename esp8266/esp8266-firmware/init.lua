@@ -48,7 +48,7 @@ require 'stm32_comm'
 
 -- Mqtt connect configuration
 clientId = "esp_" .. device_info.ID
-qos = 1
+qos = mqtt_creds.QOS
 subTopics = {[device_info.ID .. "/soilMoisture/setpoint"]=qos, [device_info.ID .. "/soilMoisture/tolerance"]=qos}
 pubTopics = {soil=device_info.ID .. "/soilMoisture", light=device_info.ID .. "/lightLevel"}
 
