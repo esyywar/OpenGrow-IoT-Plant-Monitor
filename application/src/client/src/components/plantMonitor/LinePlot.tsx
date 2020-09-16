@@ -314,12 +314,9 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 			}
 		} else {
 			switch (true) {
-				/* Over 1 week */
-				case timeRange > 604800000:
-					return '%b-%d %p'
-				/* Every 4 days */
+				/* Over 4 days */
 				case timeRange > 345600000:
-					return '%b-%d %I:%M %p'
+					return '%b-%d'
 				/* Over 2 days */
 				case timeRange > 172800000:
 					return '%b-%d %p'

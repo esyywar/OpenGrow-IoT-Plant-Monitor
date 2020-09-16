@@ -9,6 +9,7 @@ import { setAuthToken } from './setAuthToken'
 import { setAlert } from './alerts'
 import { clearCtrlData } from './plantControl'
 import { clearPlantData } from './plantData'
+import { userLogout } from './auth'
 
 /************************ ACTION TYPES ***************************/
 
@@ -39,10 +40,13 @@ export const loadActivePlant = (routerHistory: History) => async (dispatch: Func
 		setAuthToken(localStorage.token)
 	}
 
+	/* If no active plant has been set, clear the control data and plant metrics that may currently be in state */
 	if (!localStorage.activePlant) {
 		dispatch(clearActivePlant())
 		return
 	}
+
+	console.log('active plant in local storage')
 
 	/* Load active plant from local storage */
 	const activePlantId = localStorage.activePlant
@@ -109,6 +113,11 @@ export const setActivePlant = (plantId: string) => async (dispatch: Function) =>
 		const errors = error.response.data.errors
 
 		errors.forEach((error: any) => dispatch(setAlert(error.msg, 'error')))
+
+		/* Logout user if login is invalid or token has expired */
+		if (error.response.status === 401) {
+			dispatch(userLogout())
+		}
 	}
 }
 
