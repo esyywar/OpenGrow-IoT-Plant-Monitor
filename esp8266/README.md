@@ -16,7 +16,7 @@ In 'wifi_credentials.lua', fill the network name and password for the local wi-f
 
 ### MQTT Credentials
 
-Give the username and password to connect to your MQTT broker. They must match the credentials you set in the web-application config file.
+Give the username and password to connect to your MQTT broker. Also give the quality of service for messaging. **These configuration values must match what you have set in the web-application config file!**
 
 The machine you run the OpenGrow application on will be acting as a server for the MQTT broker and web-app back-end. Thus, you must provide the IP address of this machine for the ESP to find it on your local network. You must enter this HOST IP address and port running the MQTT broker in the credential file.
 
