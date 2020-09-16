@@ -9,6 +9,8 @@ There are separate tasks used for:
 1. Reading data values from sensors
 1. Watering the plant according to a PID controller formula
 
+**Note:** For the OLED screen display, I have modified existing drivers for SSD1306 based displays to be RTOS safe. The drivers run without blocking so complications associated with write operations being interrupted by context switching are avoided. The SSD1306 drivers are separately available [here](https://github.com/esyywar/ssd1306_drivers).
+
 ## STM32CubeIDE
 
 The project is this repo is built with the STM32CubeIDE development platform. This SDK is ST's adaptation of the popular open-source Eclipse IDE. 
