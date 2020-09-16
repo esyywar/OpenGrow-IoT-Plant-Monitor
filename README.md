@@ -34,7 +34,7 @@ The following diagram illustrates interaction between these components.
 
 ## Parts List
 
-Following is a list of necessary components to make a single OpenGrow plant monitor. You can make as many plant monitors as you like to work with your single MQTT broker and web application.
+Following is a list of necessary components to make a single OpenGrow plant monitor. You can make as many plant monitors as you like! Any number of plants will work with your single MQTT broker and web application.
 
 | Part  | Quantity | Description |
 | -------- | ---- | ---- |
