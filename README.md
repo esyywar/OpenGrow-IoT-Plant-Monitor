@@ -94,7 +94,9 @@ Simply copy and paste this string into the 'mongoUri' value field of config.json
 
 #### MQTT
 
-Under MQTT file, choose a quality of service (qos) for messages sent by your web-application. You can read about this MQTT setting [here](https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels/).
+Under MQTT file, choose a quality of service (qos) for messages sent by your web-application. You can read about this MQTT setting [here](https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels/). 
+
+**Note:** I recommend using QoS of 1! With QoS 1 and 2 we have the availability of retained messages. For OpenGrow, this means you can adjust control setpoints from the web application and even if the electronics are not connected to your MQTT broker at that moment, the message will be delivered the next time they do connect.
 
 Now choose a username and password for your MQTT broker. You may choose whatever you like. We must only make sure to give the same credentials when flashing firmware for the ESP8266 so it can connect!
 
