@@ -84,16 +84,15 @@ uint16_t moistureTolerance;
 uint8_t controlUpdateFlag = RESET;
 
 /* PID controller coefficients (initialized to default values) */
-uint32_t proportionCoeff = PID_P_DEFAULT;
-uint32_t integralCoeff = PID_I_DEFAULT;
-uint32_t derivativeCoeff = PID_D_DEFAULT;
+float proportionCoeff = PID_P_DEFAULT;
+float integralCoeff = PID_I_DEFAULT;
+float derivativeCoeff = PID_D_DEFAULT;
 
 /* Data buffers for I2C from ESP8266 */
 uint8_t espCmdCode;
 
 /* Sum of moisture used to calculate PID response values */
 int32_t moistureErrorSum = 0;
-
 
 /*******************************************************
 ********** Thread functions ****************************
@@ -606,10 +605,12 @@ void Water_Plant(void *pvParameters)
 		}
 
 		PID_p = moistureError * proportionCoeff;
+
+		/* Integral control accumulates error -> helps to adjust for different pot sizes */
 		PID_i = (moistureError > 100) ? (PID_i + moistureError * integralCoeff) : 0;
 
-		/* Derivative proportional to change in error per minutes */
-		PID_d = (moistureError - previousError > 0) ? (((moistureError - previousError) / (RTOS_PLANT_WATER / 60000)) * derivativeCoeff) : 0;
+		/* Derivative control is proportional to the rate of change of the error */
+		PID_d = (moistureError - previousError > 0) ? ((moistureError - previousError) * derivativeCoeff) : PID_d;
 
 		previousError = moistureError;
 

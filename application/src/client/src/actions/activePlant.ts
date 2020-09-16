@@ -46,8 +46,6 @@ export const loadActivePlant = (routerHistory: History) => async (dispatch: Func
 		return
 	}
 
-	console.log('active plant in local storage')
-
 	/* Load active plant from local storage */
 	const activePlantId = localStorage.activePlant
 
