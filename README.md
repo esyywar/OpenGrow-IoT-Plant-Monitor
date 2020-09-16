@@ -140,7 +140,9 @@ Power-up your OpenGrow system and you are ready to go!
 
 The blue LED on the ESP will blink slowly to indicate it is connected to your MQTT broker and logging data.
 
-To support this project and future open source projects, consider [buying me a pizza!](https://www.buymeacoffee.com/esyywar)
+To support this project and future open source projects, consider [buying me a pizza](https://www.buymeacoffee.com/esyywar) and/or starring this repository.
+
+If you encounter any problems running this project, feel free to raise an issue. Pull requests are welcome.
 
 
 
