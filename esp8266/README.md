@@ -17,13 +17,13 @@ You must fill-in the fields in each of these files before uploading to the ESP82
 
 In 'device_info.lua', fill the ID of any plant which you have created in the database. Your ESP will use this ID in the topic string it publishes data to. Likewise, your web application will send messages to a topic containing the ID string which ESP will subscribe to.
 
-<img src="../images/esp_config_device.jpg" width="500" />
+<img src="../images/esp_config_device.jpg" />
 
 ### Wi-fi credentials
 
 In 'wifi_credentials.lua', fill the network name and password for the local wi-fi network your application will run on.
 
-<img src="../images/esp_config_wifi.jpg" width="500" />
+<img src="../images/esp_config_wifi.jpg" />
 
 ### MQTT Credentials
 
@@ -35,7 +35,7 @@ The machine you run the OpenGrow application on will be acting as a server for t
 
 To get your machine's IP address simply open a terminal and give the command 'ipconfig'. Look for the IPv4 address.
 
-<img src="../images/esp_config_mqtt.jpg" width="500" />
+<img src="../images/esp_config_mqtt.JPG" />
 
 NOTE: Your machine's IP address can change sometimes if your router assigns a new address. However, you can assign your machine a static IP address through a procedure like [this one](https://www.youtube.com/watch?v=5iRp1Nug0PU&t=30s).
 
