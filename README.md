@@ -114,7 +114,7 @@ Simply copy and paste this string into the 'mongoUri' value field of default.jso
 
 #### MQTT
 
-Under MQTT file, choose a [quality of service (qos)]((https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels/) for messages sent by your web-application. 
+Under MQTT file, choose a [quality of service (qos)](https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels/) for messages sent by your web-application. 
 
 **Note:** I recommend using QoS of 1! With QoS 1 and 2 we have the availability of retained messages. For OpenGrow, this means you can adjust control setpoints from the web application and even if the electronics are not connected to your MQTT broker at that moment, the message will be delivered the next time they do connect.
 
