@@ -1,8 +1,10 @@
 # Welcome to OpenGrow!
 
-OpenGrow is a complete IoT solution for monitoring the soil moisture and light availability for your plants.
+OpenGrow is a complete IoT solution for autonomously maintaining and tracking the health of your plants.
 
-Your plant is also automatically watered 24/7 according to soil moisture setpoints which you can set and update at any time!
+Connected plants' soil moisture and ambient light levels are continuously monitored and recorded for user's to view through a fully responsive web-application.
+
+Also, OpenGrow plants are automatically watered using a PID control system who's setpoint and tolerance can be set at any-time by the user. 
 
 OpenGrow is easy to set-up and in this guide I will detail the steps to running OpenGrow in your own home.
 
