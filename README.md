@@ -65,12 +65,30 @@ The back-end is built with Node Js and the express framework.
 
 ### Installing Dependencies
 
-Before proceeding, make sure that you have [installed Node Js installed on your machine](https://nodejs.org/en/download/).
+Before proceeding, make sure that you have [installed Node Js installed on your machine](https://nodejs.org/en/download/). You can then execute the following sequency of commands:
 
-1. Copy the repository to your machine and use command prompt to enter the 'application' directory.
-1. Enter the application directory and run the command 'npm install' to install the necessary back-end dependencies from node.
-1. From application directory enter src>client and run the command 'npm install' to install the front-end dependencies.
-1. In the application folder run the command 'npm run build' to compile the typescript code into javascript we can run in a browser.
+1. Copy the repository to your machine.
+```
+git clone https://github.com/esyywar/OpenGrow-IoT-Plant-Monitor.git
+```
+2. Enter the application directory and run the command 'npm install' to install the necessary back-end dependencies from node.
+```
+cd .\OpenGrow-IoT-Plant-Monitor\
+cd .\application\
+npm install
+```
+3. From application directory enter src>client and run the command 'npm install' to install the front-end dependencies.
+```
+cd .\src\
+cd .\client\
+npm install
+```
+4. In the application folder run the command 'npm run build' to compile the typescript code into javascript we can run in a browser.
+```
+cd ..
+cd ..
+npm run build
+```
 
 Your directory should appear as below when all is installed:
 
@@ -92,17 +110,17 @@ When you have created a database, you can get a connection string that looks som
 
 <img src="images/mongo-conn-string.jpg" />
 
-Simply copy and paste this string into the 'mongoUri' value field of config.json.
+Simply copy and paste this string into the 'mongoUri' value field of default.json.
 
 #### MQTT
 
-Under MQTT file, choose a quality of service (qos) for messages sent by your web-application. You can read about this MQTT setting [here](https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels/). 
+Under MQTT file, choose a [quality of service (qos)]((https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels/) for messages sent by your web-application. 
 
 **Note:** I recommend using QoS of 1! With QoS 1 and 2 we have the availability of retained messages. For OpenGrow, this means you can adjust control setpoints from the web application and even if the electronics are not connected to your MQTT broker at that moment, the message will be delivered the next time they do connect.
 
 Now choose a username and password for your MQTT broker. You may choose whatever you like. We must only make sure to give the same credentials when flashing firmware for the ESP8266 so it can connect!
 
-Lastly, the URL for your MQTT broker which your web application uses to connect. In the file application>src>mqtt-broker>broker.ts the MQTT broker is set to run on local machine at port 1883. If you change this or run your broker elsewhere (maybe on a raspberry pi server?), make sure to update this URL.
+Lastly, the URL for your MQTT broker which your web application uses to connect. In the file application>src>mqtt-broker>broker.ts the MQTT broker is set to run on local machine at port 1883. If you change this and run your broker elsewhere, make sure to update this URL.
 
 #### JWT
 
