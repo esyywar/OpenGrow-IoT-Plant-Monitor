@@ -610,7 +610,7 @@ void Water_Plant(void *pvParameters)
 		PID_i = (moistureError > 100) ? (PID_i + moistureError * integralCoeff) : 0;
 
 		/* Derivative control is proportional to the rate of change of the error */
-		PID_d = (moistureError - previousError > 0) ? ((moistureError - previousError) * derivativeCoeff) : PID_d;
+		PID_d = (previousError != 0 && moistureError - previousError > 0) ? ((moistureError - previousError) * derivativeCoeff) : PID_d;
 
 		previousError = moistureError;
 

@@ -25,6 +25,12 @@ export const soilDataReceived = async (plant: IPlant, soilMoisture: number) => {
 		/* Check that new data is at least 5 minutes from previous entry */
 		if (!lastEntryTime || currDate.getTime() - lastEntryTime >= 300000) {
 			plant.data.soilMoisture.push({ measurement: soilMoisture, date: currDate })
+
+			/* Max number of entries to store is 3 weeks (6048 points if every 5 min for 3 weeks) */
+			if (plant.data.soilMoisture.length >= 6048) {
+				plant.data.soilMoisture.shift()
+			}
+
 			await plant.save()
 		}
 	} catch (error) {
@@ -50,6 +56,12 @@ export const lightDataReceived = async (plant: IPlant, lightLevel: number) => {
 		/* Check that new data is at least 5 minutes from previous entry */
 		if (!lastEntryTime || currDate.getTime() - lastEntryTime >= 300000) {
 			plant.data.lightLevel.push({ measurement: lightLevel, date: currDate })
+
+			/* Max number of entries to store is 3 weeks (6048 points if every 5 min for 3 weeks) */
+			if (plant.data.lightLevel.length >= 6048) {
+				plant.data.lightLevel.shift()
+			}
+
 			await plant.save()
 		}
 	} catch (error) {

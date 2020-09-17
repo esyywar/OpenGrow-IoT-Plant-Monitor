@@ -47,6 +47,11 @@ const useStyles = makeStyles((theme: Theme) =>
 			backgroundColor: theme.palette.background.default,
 			borderRadius: '8px',
 		},
+		ctrlEditBtn: {
+			[theme.breakpoints.down('sm')]: {
+				marginLeft: '-20px',
+			},
+		},
 	})
 )
 
@@ -101,13 +106,13 @@ export default function PlantCtrlSettings() {
 						<Grid item xs={5} lg={5}>
 							<h4 className={classes.ctrlSettingText}>Setpoint:</h4>
 						</Grid>
-						<Grid item xs={4} lg={3}>
+						<Grid item xs={5} lg={3}>
 							<h4 className={`${classes.ctrlSettingText} ${classes.ctrlValue}`}>
 								{plantCtrlState.control.soilMoisture.setpoint}
 							</h4>
 						</Grid>
 						<Grid item xs={1}>
-							<Button onClick={() => setSetpointModal(true)}>
+							<Button onClick={() => setSetpointModal(true)} className={classes.ctrlEditBtn}>
 								<EditIcon />
 							</Button>
 						</Grid>
@@ -125,13 +130,13 @@ export default function PlantCtrlSettings() {
 						<Grid item xs={5} lg={5}>
 							<h4 className={classes.ctrlSettingText}>Tolerance:</h4>
 						</Grid>
-						<Grid item xs={4} lg={3}>
+						<Grid item xs={5} lg={3}>
 							<h4 className={`${classes.ctrlSettingText} ${classes.ctrlValue}`}>
 								{plantCtrlState.control.soilMoisture.tolerance}
 							</h4>
 						</Grid>
 						<Grid item xs={1}>
-							<Button onClick={() => setToleranceModal(true)}>
+							<Button onClick={() => setToleranceModal(true)} className={classes.ctrlEditBtn}>
 								<EditIcon />
 							</Button>
 						</Grid>

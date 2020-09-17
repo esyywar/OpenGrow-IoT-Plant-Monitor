@@ -5,7 +5,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import { Container, Grid, Typography } from '@material-ui/core/'
 
 import GitHubIcon from '@material-ui/icons/GitHub'
-import LocalPizzaIcon from '@material-ui/icons/LocalPizza'
+import FreeBreakfastIcon from '@material-ui/icons/FreeBreakfast'
 
 import LogoBtn from '../util/LogoBtn'
 
@@ -102,9 +102,9 @@ export default function Footer() {
 								rel="noopener noreferrer"
 								className={classes.hyperlinkStyle}
 							>
-								buying me a pizza!
+								buying me a coffee!{' '}
 							</a>
-							<LocalPizzaIcon />
+							<FreeBreakfastIcon />
 						</Typography>
 					</div>
 				</Grid>
