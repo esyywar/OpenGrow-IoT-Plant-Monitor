@@ -49,7 +49,7 @@ export default function NamePlantModal({
 		>
 			<DialogTitle id="form-dialog-title">Add A Plant</DialogTitle>
 			<DialogContent>
-				<DialogContentText>What is the ID number of the plant?</DialogContentText>
+				<DialogContentText>What is the ID code of the plant?</DialogContentText>
 				<TextField
 					autoFocus
 					margin="dense"

@@ -185,9 +185,6 @@ router.post(
 			setpoint,
 		}
 
-		/* Publish control data to ESP subscriber -> Retain in case ESP is offline (msg will be delivered next time ESP connects) */
-		mqttClient.publish(topic, JSON.stringify(data), { qos: config.get('mqtt.qos'), retain: true })
-
 		try {
 			const plant: IPlant | null = await Plant.findById(plantId)
 
@@ -198,6 +195,9 @@ router.post(
 			if (setpoint < 0) {
 				return res.status(401).json({ errors: [{ msg: 'Setpoints must be positive values.' }] })
 			}
+
+			/* Publish control data to ESP subscriber -> Retain in case ESP is offline (msg will be delivered next time ESP connects) */
+			mqttClient.publish(topic, JSON.stringify(data), { qos: config.get('mqtt.qos'), retain: true })
 
 			plant.control.soilMoisture.setpoint = setpoint
 
@@ -235,9 +235,6 @@ router.post(
 			tolerance,
 		}
 
-		/* Publish control data to ESP subscriber -> Retain in case ESP is offline (msg will be delivered next time ESP connects) */
-		mqttClient.publish(topic, JSON.stringify(data), { qos: config.get('mqtt.qos'), retain: true })
-
 		try {
 			const plant: IPlant | null = await Plant.findById(plantId)
 
@@ -245,9 +242,12 @@ router.post(
 				return res.status(401).json({ errors: [{ msg: 'Plant not found.' }] })
 			}
 
-			if (tolerance < 0) {
-				return res.status(401).json({ errors: [{ msg: 'Tolerance must be a positive value.' }] })
+			if (tolerance < 100) {
+				return res.status(401).json({ errors: [{ msg: 'Tolerance must be at least 100.' }] })
 			}
+
+			/* Publish control data to ESP subscriber -> Retain in case ESP is offline (msg will be delivered next time ESP connects) */
+			mqttClient.publish(topic, JSON.stringify(data), { qos: config.get('mqtt.qos'), retain: true })
 
 			plant.control.soilMoisture.tolerance = tolerance
 
