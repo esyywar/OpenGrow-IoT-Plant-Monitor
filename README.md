@@ -8,6 +8,8 @@ Also, OpenGrow plants are automatically watered using a PID control system who's
 
 OpenGrow is easy to set-up and in this guide I will detail the steps to running OpenGrow in your own home.
 
+You can also find my [medium article on this project here.](https://medium.com/@rahuleswar_84677/opengrow-building-an-automated-iot-solution-for-plant-care-with-the-stm32-esp8266-and-mern-stack-cd4bb144326e)
+
 Program firmware and assemble the circuit | Add plants to your account | Monitor data and update settings
 :-------------------------: | :-------------------------:|:-------------------------:
 <img src="images/opengrow_plant_assembled.jpg" width="300" /> | <img src="images/plant_dashboard.jpg" /> | <img src="images/plant_monitor.jpg" />
