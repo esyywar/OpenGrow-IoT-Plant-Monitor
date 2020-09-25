@@ -130,7 +130,6 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 
 	/****************************** CALCULATE PLOT DATA DEPENDING ON TIME SCALE ***************************/
 
-	/* End date is latest available entry */
 	const endDate = plotData.data.slice(-1)[0].x
 
 	/* Calculate the start date from timeScale state */
@@ -172,8 +171,11 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 		...plotData,
 		data: plotData.data.reduce(
 			(trimmed: Array<{ x: Date | string; y: null | number }>, { x, y }, currInd, rawData) => {
-				/* Check that the datapoint is within the valid date range */
-				if (x.getTime() >= startDate.getTime()) {
+				/* Check that the datapoint is within the valid date range and at least 30s apart from prev data point - duplicate points cause error in plot */
+				if (
+					x.getTime() >= startDate.getTime() &&
+					x.getTime() - rawData[currInd - 1].x.getTime() > 30000
+				) {
 					/* If entry is greater than 30min apart from the previous point, insert a null to create hole in the plot */
 					if (currInd > 0 && x.getTime() - rawData[currInd - 1].x.getTime() > 1800000) {
 						let date = new Date(rawData[currInd - 1].x)
