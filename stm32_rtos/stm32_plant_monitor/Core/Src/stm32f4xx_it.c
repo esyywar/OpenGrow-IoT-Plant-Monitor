@@ -37,7 +37,7 @@ extern UART_HandleTypeDef huart2;
 extern TIM_HandleTypeDef htim6;
 
 /* i2c command code variable */
-extern uint8_t espCmdCode;
+extern uint8_t ucEspCmdCode;
 
 /* USER CODE BEGIN EV */
 
@@ -205,7 +205,7 @@ void I2C1_ER_IRQHandler(void)
   HAL_I2C_ER_IRQHandler(&hi2c1);
 
   /* Listen for next commands in case error occurs */
-  HAL_I2C_Slave_Receive_IT(&hi2c1, &espCmdCode, 1);
+  HAL_I2C_Slave_Receive_IT(&hi2c1, &ucEspCmdCode, 1);
 }
 
 /**

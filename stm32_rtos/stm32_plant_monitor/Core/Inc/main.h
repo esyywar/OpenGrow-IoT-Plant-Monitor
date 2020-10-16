@@ -62,9 +62,12 @@ extern "C" {
 #define PID_I_DEFAULT					0.25
 #define PID_D_DEFAULT					200
 
-/* On-time required for pump to bring water to plant (default) */
+/* On-time required for pump to bring water to plant (default -> used only on first activation of device) */
 #define PLANT_SETPOINT_DEFAULT			2000U
 #define PLANT_TOLERANCE_DEFAULT			300U
+
+/* Maximum pump on time (milliseconds) */
+#define MAX_PUMP_ON_TIME				15000U
 
 /*******************************************************
 *************** Flash Memory Settings ******************
@@ -72,6 +75,15 @@ extern "C" {
 
 #define FLASH_SECTOR_NUM				7U
 #define FLASH_CONTROL_DATA_ADDR			0x08060000UL
+
+/*******************************************************
+*************** Utility Functions **********************
+*******************************************************/
+
+#define min(a,b) \
+  ({ __typeof__ (a) _a = (a); \
+	  __typeof__ (b) _b = (b); \
+	_a < _b ? _a : _b; })
 
 
 /* Exported functions prototypes ---------------------------------------------*/
