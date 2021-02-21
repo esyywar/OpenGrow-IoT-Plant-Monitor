@@ -167,18 +167,14 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 	const smaWindow = calcSmaWindow()
 
 	/* Create array of plot data by trimming data between relevant dates and applying simple moving average */
-	const trimPlotData = {
+	const trimPlotData = plotData && ({
 		...plotData,
 		data: plotData.data.reduce(
-			(trimmed: Array<{ x: Date | string; y: null | number }>, { x, y }, currInd, rawData) => {
-				/* TODO --> fix null points getting into db */
-				if (x == null) {
-					return trimmed
-				}
-
+			(trimmed: Array<{ x: Date | string; y: null | number }>, {x, y}, currInd, rawData) => {
 				/* Check that the datapoint is within the valid date range and at least 30s apart from prev data point - duplicate points cause error in plot */
 				if (
 					x.getTime() >= startDate.getTime() &&
+					rawData[currInd - 1] &&
 					x.getTime() - rawData[currInd - 1].x.getTime() > 30000
 				) {
 					/* If entry is greater than 30min apart from the previous point, insert a null to create hole in the plot */
@@ -218,7 +214,7 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 			},
 			[]
 		),
-	}
+	})
 
 	/* Function passed to child component for local state update */
 	const updateTimeScale = (newTimeScale: TimeScaleEnum) => {
