@@ -171,6 +171,11 @@ export default function LinePlot({ title, yTitle, plotData }: PlotProps) {
 		...plotData,
 		data: plotData.data.reduce(
 			(trimmed: Array<{ x: Date | string; y: null | number }>, { x, y }, currInd, rawData) => {
+				/* TODO --> fix null points getting into db */
+				if (x == null) {
+					return trimmed
+				}
+
 				/* Check that the datapoint is within the valid date range and at least 30s apart from prev data point - duplicate points cause error in plot */
 				if (
 					x.getTime() >= startDate.getTime() &&
