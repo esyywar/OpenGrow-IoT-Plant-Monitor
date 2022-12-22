@@ -22,7 +22,7 @@
 		"config": "^3.3.1",
 		"express": "^4.17.1",
 		"express-validator": "^6.6.0",
-		"jsonwebtoken": "^8.5.1",
+		"jsonwebtoken": "^9.0.0",
 		"lodash.update": "^4.10.2",
 		"mongoose": "^5.9.21",
 		"mqtt": "^4.1.0",
