@@ -38,7 +38,7 @@
 		"@types/mqtt": "^2.5.0",
 		"@types/node": "^14.0.23",
 		"concurrently": "^5.2.0",
-		"nodemon": "^2.0.4",
+		"nodemon": "^2.0.20",
 		"ts-node": "^8.10.2",
 		"typescript": "^3.9.6"
 	}
